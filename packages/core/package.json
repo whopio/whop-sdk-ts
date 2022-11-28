@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rimraf src dist && pnpm run gen && buildr && pnpm run update-package-version",
-    "gen": "openapi --input https://data.whop.com/api/v2/swagger_doc --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts",
+    "gen": "openapi --input ../spec/openapi.json --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts",
     "update-package-version": "node scripts/update-package-version.mjs"
   },
   "engines": {

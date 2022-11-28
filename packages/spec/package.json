@@ -1,0 +1,13 @@
+{
+  "name": "spec",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "curl https://data.whop.com/api/v2/swagger_doc -s --output openapi.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -9,7 +9,7 @@ export default defineConfig({
       client: "vue-query",
     },
     input: {
-      target: "https://data.whop.com/api/v2/swagger_doc",
+      target: "../spec/openapi.json",
     },
   },
 });
