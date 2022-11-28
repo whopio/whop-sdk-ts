@@ -18,6 +18,7 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.0.0",
+    "octokit": "^2.0.10",
     "tsconfig": "workspace:^0.0.0",
     "tsup": "6.5.0",
     "typescript": "4.9.3"

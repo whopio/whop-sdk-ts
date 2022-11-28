@@ -14,6 +14,30 @@
       "cache": false,
       "inputs": ["src/**"]
     },
+    "@whop-sdk/react-query#build": {
+      "dependsOn": ["repo-utils#build"],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "inputs": ["src/**"]
+    },
+    "@whop-sdk/svelte-query#build": {
+      "dependsOn": ["repo-utils#build"],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "inputs": ["src/**"]
+    },
+    "@whop-sdk/swr#build": {
+      "dependsOn": ["repo-utils#build"],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "inputs": ["src/**"]
+    },
+    "@whop-sdk/vue-query#build": {
+      "dependsOn": ["repo-utils#build"],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "inputs": ["src/**"]
+    },
     "repo-utils#build": {
       "outputs": ["dist/**"],
       "cache": true,
@@ -21,7 +45,13 @@
     },
     "dev": {
       "cache": false,
-      "dependsOn": ["@whop-sdk/core#build"]
+      "dependsOn": [
+        "@whop-sdk/core#build",
+        "@whop-sdk/react-query#build",
+        "@whop-sdk/svelte-query#build",
+        "@whop-sdk/swr#build",
+        "@whop-sdk/vue-query#build"
+      ]
     }
   }
 }
