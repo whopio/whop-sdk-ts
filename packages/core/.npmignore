@@ -1,6 +1,7 @@
 src
 .turbo
 .gitignore
-.swc
 scripts
 request
+tsconfig.json
+package.ts

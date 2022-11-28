@@ -8,6 +8,17 @@
     "lint": {
       "outputs": []
     },
+    "@whop-sdk/core#build": {
+      "dependsOn": ["repo-utils#build"],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "inputs": ["src/**"]
+    },
+    "repo-utils#build": {
+      "outputs": ["dist/**"],
+      "cache": true,
+      "inputs": ["src/**"]
+    },
     "dev": {
       "cache": false,
       "dependsOn": ["@whop-sdk/core#build"]

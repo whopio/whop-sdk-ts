@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declarationMap": false,
+    "types": ["./types"]
+  },
+  "include": ["src/**/*.ts"],
+}
