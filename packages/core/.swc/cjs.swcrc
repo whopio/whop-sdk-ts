@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "dynamicImport": false,
+      "decorators": false
+    },
+    "target": "es5",
+    "loose": false,
+    "externalHelpers": false
+  },
+  "module": {
+    "type": "commonjs"
+  },
+  "sourceMaps": true,
+  "minify": false
+}

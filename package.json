@@ -6,6 +6,10 @@
     "apps/*",
     "packages/*"
   ],
+  "resolutions": {
+    "tsup": "6.5.0",
+    "typescript": "4.9.3"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
