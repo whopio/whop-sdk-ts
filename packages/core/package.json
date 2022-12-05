@@ -11,7 +11,7 @@
   "scripts": {
     "build": "rimraf src dist && pnpm run gen && buildr",
     "gen": "openapi --input ../spec/openapi.json --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts",
-    "release": "echo \"releasing (not yet actually)\""
+    "release": "publishr"
   },
   "engines": {
     "node": "^16.8.0"

@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf src dist && pnpm run gen && buildr",
     "gen": "orval --config ./orval.config.ts",
-    "release": "echo \"releasing (not yet actually)\""
+    "release": "publishr"
   },
   "keywords": [],
   "author": "",

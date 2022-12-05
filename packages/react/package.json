@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsup src/context.tsx --format esm,cjs --dts",
     "dev": "pnpm run build --watch",
-    "release": "echo \"releasing (not yet actually)\""
+    "release": "publishr"
   },
   "keywords": [],
   "author": "",
