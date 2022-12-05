@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - canary
+
+name: Build, test, release
+
+jobs:
+  turbo:
+    name: Check for version increase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.13.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - run: pnpm i --filter=repo-utils --filter=whop-sdk-ts
+      - run: pnpm turbo build --filter=repo-utils
+      - run: pnpm i
+      - name: Check package.json for version increase
+        id: check
+        run: node packages/repo-utils/dist/can-publish.js
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        if: ${{steps.check.outputs.can-release == 'true'}}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run turbo release flow
+        if: ${{steps.check.outputs.can-release == 'true'}}
+        run: pnpm turbo release ${{ steps.check.outputs.filter }}

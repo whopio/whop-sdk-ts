@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "pnpm run build --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup ./src/**/*.ts --format cjs"
+    "build": "tsup ./src/**/*.ts ./src/*.ts --format cjs"
   },
   "bin": {
     "buildr": "dist/build.js",
