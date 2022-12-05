@@ -27,9 +27,9 @@ jobs:
         id: check
         run: node packages/repo-utils/dist/can-publish.js
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-        if: ${{steps.check.outputs.can-release == 'true'}}
+        if: ${{steps.check.outputs.can-publish == 'true'}}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run turbo release flow
-        if: ${{steps.check.outputs.can-release == 'true'}}
+        if: ${{steps.check.outputs.can-publish == 'true'}}
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
