@@ -3,7 +3,7 @@ import { context, getOctokit } from "@actions/github";
 const octo = getOctokit(process.env.GITHUB_TOKEN!);
 
 const INITIAL_COMMIT = process.env.INITIAL_COMMIT!;
-const version = process.env.VERSION!;
+const version = "v" + process.env.VERSION!;
 
 const { owner, repo } = context.repo;
 
@@ -109,6 +109,15 @@ const getLatestRelease = async (includePrerelease: boolean = true) => {
   }
 };
 
+const releaseExists = async (tag: string) => {
+  try {
+    await octo.rest.repos.getReleaseByTag({ repo, owner, tag });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const getLatestCommit = async () => {
   const {
     data: [commit],
@@ -133,6 +142,10 @@ const release = async (
 };
 
 const main2 = async () => {
+  if (await releaseExists(version)) {
+    console.log(`${version} has already been release`);
+    return;
+  }
   const latestRelease = await getLatestRelease(false);
   const latestCommit = await getLatestCommit();
   const stats = await collectCommits(
