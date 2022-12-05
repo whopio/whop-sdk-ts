@@ -43,15 +43,12 @@
       "cache": true,
       "inputs": ["src/**"]
     },
+    "spec#build": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
-      "dependsOn": [
-        "@whop-sdk/core#build",
-        "@whop-sdk/react-query#build",
-        "@whop-sdk/svelte-query#build",
-        "@whop-sdk/swr#build",
-        "@whop-sdk/vue-query#build"
-      ]
+      "dependsOn": ["^dev"]
     }
   }
 }

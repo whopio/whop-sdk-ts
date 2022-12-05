@@ -12,7 +12,7 @@ import Module from "module";
 import { dirname, join, relative } from "path";
 import { promisify } from "util";
 import { runInNewContext } from "vm";
-import { BuildOptions, SwcOptions } from "../types";
+import { BuildOptions } from "../types";
 import { FSWatcher, watch } from "chokidar";
 const glob = promisify(_glob);
 const exec = promisify(_exec);

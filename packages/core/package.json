@@ -1,6 +1,6 @@
 {
   "name": "@whop-sdk/core",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "exports": {
     "import": "./dist/index.mjs",
@@ -9,9 +9,8 @@
   },
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf src dist && pnpm run gen && buildr && pnpm run update-package-version",
-    "gen": "openapi --input ../spec/openapi.json --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts",
-    "update-package-version": "node scripts/update-package-version.mjs"
+    "build": "rimraf src dist && pnpm run gen && buildr",
+    "gen": "openapi --input ../spec/openapi.json --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts"
   },
   "engines": {
     "node": "^16.8.0"
@@ -21,7 +20,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "concurrently": "^7.6.0",
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
     "openapi-typescript-codegen": "^0.23.0",
