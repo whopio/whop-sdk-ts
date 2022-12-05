@@ -27,14 +27,15 @@ const main = async () => {
     });
   }
   await outputJson("package.json", packageJson, { spaces: 2 });
-  await exec(
-    [
-      "pnpm publish",
-      "--access public",
-      isCanary(nextVersion) ? "--tag canary" : "",
-      "--no-git-checks",
-    ].join(" ")
-  );
+  const command = [
+    "pnpm publish",
+    "--access public",
+    isCanary(nextVersion) ? "--tag canary" : "",
+    "--no-git-checks",
+  ].join(" ");
+  console.log("running", command);
+  const { stdout } = await exec(command);
+  console.log(stdout);
 };
 
 main();

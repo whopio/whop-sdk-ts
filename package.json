@@ -1,6 +1,6 @@
 {
   "name": "whop-sdk-ts",
-  "version": "0.0.0-canary.1",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "apps/*",
