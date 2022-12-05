@@ -99,11 +99,13 @@ const getLatestRelease = async (includePrerelease: boolean = true) => {
     });
     return release;
   } else {
-    const { data: release } = await octo.rest.repos.getLatestRelease({
-      repo,
-      owner,
-    });
-    return release;
+    try {
+      const { data: release } = await octo.rest.repos.getLatestRelease({
+        repo,
+        owner,
+      });
+      return release;
+    } catch {}
   }
 };
 
