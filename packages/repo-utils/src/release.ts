@@ -146,16 +146,13 @@ const main2 = async () => {
     console.log(`${version} has already been release`);
     return;
   }
-  const latestRelease = await getLatestRelease(false);
+  const prerelease = /^v\d+\.\d+\.\d+-canary\.\d+$/.test(version);
+  const latestRelease = await getLatestRelease(prerelease);
   const latestCommit = await getLatestCommit();
   const stats = await collectCommits(
     latestCommit.sha,
     latestRelease?.target_commitish
   );
-  await release(
-    latestCommit.sha,
-    stats,
-    /^v\d+\.\d+\.\d+-canary\.\d+$/.test(version)
-  );
+  await release(latestCommit.sha, stats, prerelease);
 };
 main2();
