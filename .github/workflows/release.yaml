@@ -38,7 +38,7 @@ jobs:
         if: steps.check.outputs.can-publish == 'true'
       - name: Github Release
         run: node packages/repo-utils/dist/release.js
-        # if: steps.check.outputs.can-publish == 'true'
+        if: steps.check.outputs.can-publish == 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.check.outputs.version }}

@@ -129,10 +129,9 @@ const release = async (
     target_commitish: head,
     prerelease,
   });
-  console.log(release);
+  console.log(release.html_url);
 };
 
-// collectCommits("66bfbafcd5da382951fe2c9cf01cc5136b4d1550");
 const main2 = async () => {
   const latestRelease = await getLatestRelease(false);
   const latestCommit = await getLatestCommit();
