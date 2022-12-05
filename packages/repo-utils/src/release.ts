@@ -140,7 +140,6 @@ const main2 = async () => {
     latestCommit.sha,
     latestRelease?.target_commitish
   );
-  console.log(stats);
-  // await release(latestCommit.sha, stats, false);
+  await release(latestCommit.sha, stats, false);
 };
 main2();
