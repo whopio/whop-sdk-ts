@@ -1,26 +1,23 @@
-import { Octokit } from "octokit";
+import { context, getOctokit } from "@actions/github";
 
-console.log(process.env.GITHUB_TOKEN);
+const octo = getOctokit(process.env.GITHUB_TOKEN!);
 
-const octo = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
-});
+const INITIAL_COMMIT = process.env.INITIAL_COMMIT!;
+const version = process.env.VERSION!;
 
-const INITIAL_COMMIT = "9a081af6f6b9967a64a8c063593c547e9aed47b1";
-const repo = "testing-prs";
-const owner = "baked-dev";
+const { owner, repo } = context.repo;
 
 const capitalise = (str: string) =>
   `${str.at(0)?.toUpperCase() || ""}${str.slice(1)}`;
 
 const makeGithubReleaseMessage = (stats: ReleaseStats) =>
   `
-${Object.keys(stats.pulls)
+${Object.entries(stats.pulls)
   .map(
-    (key) => `
+    ([key, pulls]) => `
 ### ${capitalise(key)} Changes
 
-${stats.pulls[key].map(({ title }) => `- ${title}`).join("\n")}
+${pulls.map(({ title }) => `- ${title}`).join("\n")}
 `
   )
   .join("")}
@@ -125,7 +122,7 @@ const release = async (
   const { data: release } = await octo.rest.repos.createRelease({
     repo,
     owner,
-    tag_name: "v7",
+    tag_name: version,
     body: makeGithubReleaseMessage(stats),
     target_commitish: head,
     prerelease,

@@ -34,8 +34,8 @@ const main = async () => {
     "--no-git-checks",
   ].join(" ");
   console.log("running", command);
-  const { stdout } = await exec(command);
-  console.log(stdout);
+  await exec(command);
+  console.log(`${packageJson.name}@${nextVersion}: released`);
 };
 
 main();
