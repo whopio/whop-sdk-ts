@@ -152,6 +152,10 @@ const main2 = async () => {
     latestCommit.sha,
     latestRelease?.target_commitish
   );
-  await release(latestCommit.sha, stats, false);
+  await release(
+    latestCommit.sha,
+    stats,
+    /^v\d+\.\d+\.\d+-canary\.\d+$/.test(version)
+  );
 };
 main2();
