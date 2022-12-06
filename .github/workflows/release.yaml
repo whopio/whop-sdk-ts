@@ -7,7 +7,7 @@ name: Build, test, release
 
 jobs:
   turbo:
-    name: Check for version increase
+    name: Publish to npm and release on github
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

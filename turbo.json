@@ -9,31 +9,31 @@
       "outputs": []
     },
     "@whop-sdk/core#build": {
-      "dependsOn": ["repo-utils#build", "spec#build"],
+      "dependsOn": ["spec#build"],
       "outputs": ["dist/**"],
       "cache": false,
       "inputs": ["src/**"]
     },
     "@whop-sdk/react-query#build": {
-      "dependsOn": ["repo-utils#build", "spec#build"],
+      "dependsOn": ["spec#build"],
       "outputs": ["dist/**"],
       "cache": false,
       "inputs": ["src/**"]
     },
     "@whop-sdk/svelte-query#build": {
-      "dependsOn": ["repo-utils#build", "spec#build"],
+      "dependsOn": ["spec#build"],
       "outputs": ["dist/**"],
       "cache": false,
       "inputs": ["src/**"]
     },
     "@whop-sdk/swr#build": {
-      "dependsOn": ["repo-utils#build", "spec#build"],
+      "dependsOn": ["spec#build"],
       "outputs": ["dist/**"],
       "cache": false,
       "inputs": ["src/**"]
     },
     "@whop-sdk/vue-query#build": {
-      "dependsOn": ["repo-utils#build", "spec#build"],
+      "dependsOn": ["spec#build"],
       "outputs": ["dist/**"],
       "cache": false,
       "inputs": ["src/**"]
