@@ -90,7 +90,7 @@ class Buildr {
 
   private fixESM = (code: string) => {
     return code.replace(
-      /(?:(?:^|\s)import\("(\.\.?\/.*)"\)|(?:import|export) (?:[a-zA-Z0-9]|\n|{|}|\s|,)* from "(\.\.?\/.*)";)/gm,
+      /(?:(?:^|\s)import\("(\.\.?\/.*)"\)|(?:import|export) (?:[a-zA-Z0-9_\s{}\n,])* from "(\.\.?\/.*)";)/gm,
       (match, dynamicImport, staticImport) => {
         return match.replace(
           `"${staticImport || dynamicImport}"`,
