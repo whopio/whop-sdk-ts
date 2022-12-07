@@ -88,6 +88,27 @@ class Buildr {
     ]);
   };
 
+  private fixESM = (code: string) => {
+    return code.replace(
+      /(?:(?:^|\s)import\("(\.\.?\/.*)"\)|(?:import|export) (?:[a-zA-Z0-9]|\n|{|}|\s|,)* from "(\.\.?\/.*)";)/gm,
+      (match, dynamicImport, staticImport) => {
+        return match.replace(
+          `"${staticImport || dynamicImport}"`,
+          `"${staticImport || dynamicImport}.mjs"`
+        );
+      }
+    );
+  };
+
+  private fixCJS = (code: string) => {
+    return code.replace(
+      /(?:^|\s)require\("(\.\.?\/.*)"\)/gm,
+      (match, required) => {
+        return match.replace(`"${required}"`, `"${required}.cjs"`);
+      }
+    );
+  };
+
   private buildESM = async (file: string, outBase: string) => {
     await this.writeOutput(
       await transformFile(file, {
@@ -97,7 +118,8 @@ class Buildr {
         },
       }),
       outBase,
-      ".mjs"
+      ".mjs",
+      this.fixESM
     );
   };
 
@@ -110,17 +132,21 @@ class Buildr {
         },
       }),
       outBase,
-      ".cjs"
+      ".cjs",
+      this.fixCJS
     );
   };
 
   private writeOutput = async (
     { code, map }: Output,
     outBase: string,
-    extension: string
+    extension: string,
+    fix: (code: string) => string = (code) => code
   ) => {
     if (this.destroyed) return;
-    const promises: Promise<any>[] = [outputFile(outBase + extension, code)];
+    const promises: Promise<any>[] = [
+      outputFile(outBase + extension, fix(code)),
+    ];
     if (map) promises.push(outputFile(outBase + extension + ".map", map));
     await Promise.all(promises);
   };
