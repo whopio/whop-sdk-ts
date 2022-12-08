@@ -2,7 +2,7 @@ import type { BuildOptions } from "repo-utils";
 
 const config: BuildOptions = {
   src: "src",
-  dist: "dist",
+  dist: ".",
   swc: {
     jsc: {
       parser: {
