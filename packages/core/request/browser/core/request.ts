@@ -1,21 +1,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { ApiError } from "./ApiError";
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import type { ApiResult } from "./ApiResult";
-import { CancelablePromise } from "./CancelablePromise";
-import type { OnCancel } from "./CancelablePromise";
-import type { OpenAPIConfig } from "./OpenAPI";
-import type { Response as UndiciResponse } from "undici";
-
-type FullResponse = Response | UndiciResponse;
-
-const getFetch = async () => {
-  if (typeof window === "undefined" && typeof fetch === "undefined")
-    return import("undici").then(({ fetch }) => fetch);
-  return fetch;
-};
+import { ApiError } from "../../core/ApiError";
+import type { ApiRequestOptions } from "../../core/ApiRequestOptions";
+import type { ApiResult } from "../../core/ApiResult";
+import { CancelablePromise } from "../../core/CancelablePromise";
+import type { OnCancel } from "../../core/CancelablePromise";
+import type { OpenAPIConfig } from "../../core/OpenAPI";
 
 const isDefined = <T>(
   value: T | null | undefined
@@ -52,8 +43,7 @@ const base64 = (str: string): string => {
   try {
     return btoa(str);
   } catch (err) {
-    // @ts-ignore
-    return Buffer.from(str).toString("base64");
+    throw new Error("btoa not available in the current runtime");
   }
 };
 
@@ -152,7 +142,7 @@ const resolve = async <T>(
 const getHeaders = async (
   config: OpenAPIConfig,
   options: ApiRequestOptions
-): Promise<Record<string, string>> => {
+): Promise<Headers> => {
   const token = await resolve(options, config.TOKEN);
   const username = await resolve(options, config.USERNAME);
   const password = await resolve(options, config.PASSWORD);
@@ -193,7 +183,7 @@ const getHeaders = async (
     }
   }
 
-  return headers;
+  return new Headers(headers);
 };
 
 const getRequestBody = (options: ApiRequestOptions): any => {
@@ -219,27 +209,29 @@ export const sendRequest = async (
   url: string,
   body: any,
   formData: FormData | undefined,
-  headers: Record<string, string>,
+  headers: Headers,
   onCancel: OnCancel
-): Promise<FullResponse> => {
+): Promise<Response> => {
   const controller = new AbortController();
 
-  const request = {
+  const request: RequestInit = {
     headers,
     body: body ?? formData,
     method: options.method,
     signal: controller.signal,
-    credentials: config.WITH_CREDENTIALS ? config.CREDENTIALS : undefined,
   };
 
+  if (config.WITH_CREDENTIALS) {
+    request.credentials = config.CREDENTIALS;
+  }
+
   onCancel(() => controller.abort());
-  return await (
-    await getFetch()
-  )(url, request);
+
+  return await fetch(url, request);
 };
 
 const getResponseHeader = (
-  response: FullResponse,
+  response: Response,
   responseHeader?: string
 ): string | undefined => {
   if (responseHeader) {
@@ -251,7 +243,7 @@ const getResponseHeader = (
   return undefined;
 };
 
-const getResponseBody = async (response: FullResponse): Promise<any> => {
+const getResponseBody = async (response: Response): Promise<any> => {
   if (response.status !== 204) {
     try {
       const contentType = response.headers.get("Content-Type");

@@ -6,19 +6,19 @@
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
     "./browser": {
       "import": "./browser/index.mjs",
-      "require": "./browser/index.cjs"
+      "require": "./browser/index.cjs",
+      "types": "./browser/index.d.ts"
     }
   },
   "scripts": {
-    "build": "rimraf dist && pnpm run gen && buildr",
-    "gen": "rimraf src/base src/node src/browser && concurrently \"pnpm run gen:base\" \"pnpm run gen:node\" \"pnpm run gen:browser\" && node scripts/fix-generated-sdk.js",
-    "gen:base": "openapi --input ../spec/openapi.json --output ./src/base --useOptions --indent 2 --name WhopSDK --exportCore false",
-    "gen:node": "openapi --input ../spec/openapi.json --output ./src/node --useOptions --indent 2 --name WhopSDK --request request/node.ts --exportModels false --exportServices false",
-    "gen:browser": "openapi --input ../spec/openapi.json --output ./src/browser --useOptions --indent 2 --name WhopSDK --request request/browser.ts  --exportModels false --exportServices false",
+    "build": "rimraf browser code models node && pnpm run gen && buildr",
+    "gen": "rimraf src/base src/browser src/core src/models src/node && pnpm run gen:base && node scripts/fix-generated-sdk.js",
+    "gen:base": "openapi --input ../spec/openapi.json --output ./src/base --useOptions --indent 2 --name WhopSDK",
     "release": "publishr"
   },
   "engines": {
