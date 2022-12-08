@@ -21,15 +21,22 @@ const coreDist = [
   ["src/browser/core", "request/browser/core"],
 ];
 
-const main = async () => {
-  // copy models from src/base to /src
-  await copy("src/base/models", "src/models", {
-    recursive: true,
-    dereference: true,
-  });
-  // copy src/base/services into all sdks and fix the model imports
+const copyShared = async () => {
+  return Promise.all([
+    copy("src/base/models", "src/models", {
+      recursive: true,
+      dereference: true,
+    }),
+    copy("src/base/core", "src/core", {
+      recursive: true,
+      dereference: true,
+    }),
+  ]);
+};
+
+const copyServices = async () => {
   const serviceFiles = await readdir(servicesDir);
-  await Promise.all(
+  return Promise.all(
     serviceFiles.map(async (serviceFile) => {
       const code = await readFile(join(servicesDir, serviceFile), {
         encoding: "utf8",
@@ -40,27 +47,40 @@ const main = async () => {
           return match.replace(value, `../${value}`);
         }
       );
-      await Promise.all(
+      return Promise.all(
         servicesDist.map(async (dist) => {
           return outputFile(join(dist, serviceFile), fixed);
         })
       );
     })
   );
-  await copy(coreDir, "src/core");
+};
+
+const copyCore = async () => {
   await Promise.all(
-    coreDist.map(async ([dist, request]) => {
-      await remove(dist);
+    moduleTypes.map(async (moduleType) => {
+      const coreDist = join("src", moduleType, "core");
+      const coreSrc = join("request", moduleType, "core");
+      await remove(coreDist);
       return Promise.all([
-        copy(join(request, "request.ts"), join(dist, "request.ts")),
+        copy(join(coreSrc, "request.ts"), join(coreDist, "request.ts")),
         copy(
-          join(request, "FetchHttpRequest.ts"),
-          join(dist, "FetchHttpRequest.ts")
+          join(coreSrc, "FetchHttpRequest.ts"),
+          join(coreDist, "FetchHttpRequest.ts")
         ),
       ]);
     })
   );
-  const indexCode = await readFile("src/base/index.ts", { encoding: "utf8" });
+};
+
+/**
+ *
+ * @param {string} file
+ */
+const copyIndexFile = async (file) => {
+  const indexCode = await readFile(join("src/base", file), {
+    encoding: "utf8",
+  });
   const fixedIndex = indexCode.replace(
     /^(?:export|import) .* from '\.\/((?:models|core)\/.*)';$/gm,
     (match, value) => {
@@ -68,27 +88,31 @@ const main = async () => {
       return match.replace(`./${value}`, `../${value}`);
     }
   );
-  const whopSdkCode = await readFile("src/base/WhopSDK.ts", {
-    encoding: "utf8",
-  });
-  const fixedWhopSDK = whopSdkCode.replace(
-    /^(?:export|import) .* from '\.\/((?:models|core)\/.*)';$/gm,
-    (match, value) => {
-      if (value === "core/FetchHttpRequest") return match;
-      return match.replace(`./${value}`, `../${value}`);
-    }
-  );
-  await Promise.all(
+  return Promise.all(
     moduleTypes.map(async (moduleType) => {
       return Promise.all([
-        outputFile(join("src", moduleType, "index.ts"), fixedIndex),
-        outputFile(join("src", moduleType, "WhopSDK.ts"), fixedWhopSDK),
+        outputFile(join("src", moduleType, file), fixedIndex),
       ]);
     })
   );
-  await unlink("src/core/request.ts");
-  await unlink("src/core/FetchHttpRequest.ts");
-  await remove("src/base");
+};
+
+const copyIndexFiles = async () => {
+  return Promise.all([copyIndexFile("index.ts"), copyIndexFile("WhopSDK.ts")]);
+};
+
+const main = async () => {
+  await Promise.all([
+    copyShared(),
+    copyServices(),
+    copyCore(),
+    copyIndexFiles(),
+  ]);
+  await Promise.all([
+    await unlink("src/core/request.ts"),
+    await unlink("src/core/FetchHttpRequest.ts"),
+    await remove("src/base"),
+  ]);
 };
 
 main();
