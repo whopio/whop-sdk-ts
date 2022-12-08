@@ -1,14 +1,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ApiRequestOptions } from './ApiRequestOptions';
-import { BaseHttpRequest } from './BaseHttpRequest';
-import type { CancelablePromise } from './CancelablePromise';
-import type { OpenAPIConfig } from './OpenAPI';
-import { request as __request } from './request';
+import type { ApiRequestOptions } from "../../core/ApiRequestOptions";
+import { BaseHttpRequest } from "../../core/BaseHttpRequest";
+import type { CancelablePromise } from "../../core/CancelablePromise";
+import type { OpenAPIConfig } from "../../core/OpenAPI";
+import { request as __request } from "./request";
 
 export class FetchHttpRequest extends BaseHttpRequest {
-
   constructor(config: OpenAPIConfig) {
     super(config);
   }

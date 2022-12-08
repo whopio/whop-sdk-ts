@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { WhopSDK } from "@whop-sdk/core";
+import { logMembers } from "../lib/test";
 
 export default function Home() {
   return (
@@ -74,12 +75,10 @@ export default function Home() {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   console.log(WhopSDK);
-  console.log(
-    await new WhopSDK({
+  await logMembers(
+    new WhopSDK({
       TOKEN: process.env.WHOP_BOT_TOKEN,
-    }).members.listMembers({
-      whopCompany: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID!,
-    })
+    }).members
   );
   return {
     props: {},
