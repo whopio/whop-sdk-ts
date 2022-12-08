@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["$WHOP_BOT_TOKEN", "$NEXT_PUBLIC_WHOP_COMPANY_ID"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],

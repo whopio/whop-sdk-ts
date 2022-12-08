@@ -2,15 +2,23 @@
   "name": "@whop-sdk/core",
   "version": "0.0.0",
   "description": "",
+  "types": "./index.d.ts",
   "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs",
-    "types": "./dist/index.d.ts"
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs"
+    },
+    "./browser": {
+      "import": "./browser/index.mjs",
+      "require": "./browser/index.cjs"
+    }
   },
-  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf src dist && pnpm run gen && buildr",
-    "gen": "openapi --input ../spec/openapi.json --output ./src --useOptions --indent 2 --name WhopSDK --request ./request/request.ts",
+    "build": "rimraf dist && pnpm run gen && buildr",
+    "gen": "rimraf src/base src/node src/browser && concurrently \"pnpm run gen:base\" \"pnpm run gen:node\" \"pnpm run gen:browser\" && node scripts/fix-generated-sdk.js",
+    "gen:base": "openapi --input ../spec/openapi.json --output ./src/base --useOptions --indent 2 --name WhopSDK --exportCore false",
+    "gen:node": "openapi --input ../spec/openapi.json --output ./src/node --useOptions --indent 2 --name WhopSDK --request request/node.ts --exportModels false --exportServices false",
+    "gen:browser": "openapi --input ../spec/openapi.json --output ./src/browser --useOptions --indent 2 --name WhopSDK --request request/browser.ts  --exportModels false --exportServices false",
     "release": "publishr"
   },
   "engines": {
@@ -21,6 +29,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^8.0.0",
+    "concurrently": "7.6.0",
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
     "openapi-typescript-codegen": "^0.23.0",
@@ -29,7 +39,8 @@
     "tsconfig": "workspace:^0.0.0",
     "typescript": "^4.9.3"
   },
-  "dependencies": {
-    "undici": "^5.13.0"
+  "browser": "./browser/index.mjs",
+  "optionalDependencies": {
+    "undici": "5.14.0"
   }
 }

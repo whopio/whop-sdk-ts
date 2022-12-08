@@ -1,7 +1,7 @@
 src
 .turbo
 .gitignore
-scripts
 request
+scripts
 tsconfig.json
 package.ts

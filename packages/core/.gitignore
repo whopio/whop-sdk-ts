@@ -1,1 +1,8 @@
-src
+src/browser
+src/models
+src/node
+**/*.cjs
+**/*.cjs.map
+**/*.mjs
+**/*.mjs.map
+**/*.d.ts
