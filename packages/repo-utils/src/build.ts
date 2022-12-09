@@ -102,7 +102,7 @@ class Buildr {
 
   private fixCJS = (code: string) => {
     return code.replace(
-      /(?:^|\s)require\("(\.\.?\/.*)"\)/gm,
+      /(?:^|\s|\W)require\("(\.\.?\/.*)"\)/gm,
       (match, required) => {
         return match.replace(`"${required}"`, `"${required}.cjs"`);
       }
