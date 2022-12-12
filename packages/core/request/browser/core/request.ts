@@ -148,10 +148,20 @@ const getHeaders = async (
   const password = await resolve(options, config.PASSWORD);
   const additionalHeaders = await resolve(options, config.HEADERS);
 
+  const suppliedHeaders = Object.entries(options.headers || {})
+    .filter(([_, value]) => isDefined(value))
+    .reduce(
+      (headers, [key, value]) => ({
+        ...headers,
+        [key]: String(value),
+      }),
+      {} as Record<string, string>
+    );
+
   const headers = Object.entries({
     Accept: "application/json",
     ...additionalHeaders,
-    ...options.headers,
+    ...suppliedHeaders,
   })
     .filter(([_, value]) => isDefined(value))
     .reduce(
