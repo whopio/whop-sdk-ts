@@ -8,6 +8,7 @@ import { CancelablePromise } from "../../core/CancelablePromise";
 import type { OnCancel } from "../../core/CancelablePromise";
 import type { OpenAPIConfig } from "../../core/OpenAPI";
 import type { Response as UndiciResponse } from "undici";
+import FormData from "form-data";
 
 type FullResponse = Response | UndiciResponse;
 

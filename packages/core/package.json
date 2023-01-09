@@ -42,5 +42,8 @@
   "browser": "./browser/index.mjs",
   "optionalDependencies": {
     "undici": "5.14.0"
+  },
+  "dependencies": {
+    "form-data": "4.0.0"
   }
 }
