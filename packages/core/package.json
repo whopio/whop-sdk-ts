@@ -22,7 +22,7 @@
     "release": "publishr"
   },
   "engines": {
-    "node": "^16.8.0"
+    "node": ">=16.8.0"
   },
   "keywords": [],
   "author": "baked-dev",
