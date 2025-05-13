@@ -19,7 +19,7 @@
 	"files": ["dist"],
 	"scripts": {
 		"build": "graphql-codegen && tsup",
-		"check-types": "tsc --noEmit"
+		"check-types": "graphql-codegen && tsc --noEmit"
 	},
 	"dependencies": {
 		"graphql": "16.8.1",
