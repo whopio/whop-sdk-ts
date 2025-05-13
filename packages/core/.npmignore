@@ -1,7 +1,0 @@
-src
-.turbo
-.gitignore
-request
-scripts
-tsconfig.json
-package.ts
