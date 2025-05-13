@@ -16,7 +16,9 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "graphql-codegen && tsup",
 		"check-types": "graphql-codegen && tsc --noEmit"
@@ -24,7 +26,8 @@
 	"dependencies": {
 		"graphql": "16.8.1",
 		"graphql-request": "latest",
-		"graphql-tag": "2.12.6"
+		"graphql-tag": "2.12.6",
+		"jose": "^6.0.11"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "5.0.5",
