@@ -1,0 +1,10 @@
+fragment BaseLedgerAccount on LedgerAccount {
+	id
+	transferFee
+	balanceCaches {
+		nodes {
+			balance
+			currency
+		}
+	}
+}
