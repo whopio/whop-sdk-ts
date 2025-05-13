@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - "jordan/feat-whop-sdk-2025" # just testing here!
 
 jobs:
   publish:
