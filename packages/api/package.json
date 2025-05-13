@@ -1,6 +1,6 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"exports": {
 		".": {
 			"import": {
@@ -16,9 +16,7 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"build": "graphql-codegen && tsup",
 		"check-types": "graphql-codegen && tsc --noEmit"
