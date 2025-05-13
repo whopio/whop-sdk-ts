@@ -1,9 +1,7 @@
-query CompanyLedgerAccount {
-	viewer {
-		company {
-			ledgerAccount {
-				...BaseLedgerAccount
-			}
+query CompanyLedgerAccount($companyId: ID!) {
+	company(id: $companyId) {
+		ledgerAccount {
+			...BaseLedgerAccount
 		}
 	}
 }

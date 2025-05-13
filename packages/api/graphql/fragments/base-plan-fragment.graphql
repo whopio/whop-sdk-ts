@@ -1,0 +1,37 @@
+fragment BasePublicPlan on PublicPlan {
+	id
+	baseCurrency
+	rawRenewalPrice
+	rawInitialPrice
+	initialPriceDue
+	createdAt
+	updatedAt
+	billingPeriod
+	trialPeriodDays
+	expirationDays
+	unlimitedStock
+	paymentLinkDescription
+	releaseMethod
+	stock
+	visibility
+	planType
+}
+
+fragment BasePlan on Plan {
+	id
+	baseCurrency
+	rawRenewalPrice
+	rawInitialPrice
+	initialPriceDue
+	createdAt
+	updatedAt
+	billingPeriod
+	trialPeriodDays
+	expirationDays
+	unlimitedStock
+	paymentLinkDescription
+	releaseMethod
+	stock
+	visibility
+	planType
+}
