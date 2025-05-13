@@ -99,6 +99,8 @@ interface BasePayment {
 	membership?: BaseMembership;
 	plan: BasePlan;
 	access_pass: BaseAccessPass;
+	// biome-ignore lint/suspicious/noExplicitAny: better DX with any here
+	metadata?: Record<string, any>;
 	initial: boolean;
 	created_at: string;
 	paid_at?: string;
