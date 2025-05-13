@@ -5,9 +5,9 @@
 		"build": {
 			"cache": false,
 			"outputs": ["dist/**"],
-			"inputs": ["codegen.ts", "graphql/**", "schema.graphql"],
+			"inputs": ["codegen.ts", "graphql/**"],
 			"dependsOn": ["^build"],
-			"env": ["NEXT_PUBLIC_GRAPH_BASE"]
+			"env": ["BUILD_GRAPHQL_ORIGIN"]
 		}
 	}
 }
