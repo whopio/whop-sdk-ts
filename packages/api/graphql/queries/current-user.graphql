@@ -1,0 +1,22 @@
+query CurrentUser {
+	viewer {
+		user {
+			...BaseUser
+			bio
+			phoneVerified
+			bannerImage
+			createdAt
+			dateOfBirthDay
+			dateOfBirthMonth
+			dateOfBirthYear
+			ledgerAccount {
+				balanceCaches {
+					nodes {
+						balance
+						currency
+					}
+				}
+			}
+		}
+	}
+}

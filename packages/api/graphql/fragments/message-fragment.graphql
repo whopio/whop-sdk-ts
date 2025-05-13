@@ -1,0 +1,23 @@
+fragment Message on DmsPost {
+	id
+	createdAt
+	updatedAt
+	content
+	richContent
+	isDeleted
+	attachments {
+		id
+		contentType
+		sourceUrl
+	}
+	isEdited
+	isPinned
+	isEveryoneMentioned
+	mentionedUserIds
+	messageType
+	replyingToPostId
+	viewCount
+	user {
+		...BasePublicProfileUser
+	}
+}

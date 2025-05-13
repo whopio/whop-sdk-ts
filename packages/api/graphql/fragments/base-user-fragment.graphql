@@ -1,0 +1,18 @@
+fragment BaseUser on User {
+	id
+	email
+	name
+	username
+	profilePicture {
+		sourceUrl
+	}
+}
+
+fragment BasePublicProfileUser on PublicProfileUser {
+	id
+	name
+	username
+	profilePicture {
+		sourceUrl
+	}
+}

@@ -1,0 +1,7 @@
+query ListMessages($type: FeedTypes!, $id: ID!) {
+	feedPosts(feedType: $type, feedId: $id) {
+		posts {
+			...Message
+		}
+	}
+}

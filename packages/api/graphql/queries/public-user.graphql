@@ -1,0 +1,10 @@
+query PublicUser($userId: ID!) {
+	publicUser(id: $userId) {
+		...BasePublicProfileUser
+		bio
+		banner {
+			sourceUrl
+		}
+		createdAt
+	}
+}

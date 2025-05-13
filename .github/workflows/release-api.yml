@@ -1,0 +1,78 @@
+name: Publish @whop/api package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to checkout the repo and read package.json
+
+    steps:
+      - name: Checkout repository with history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Fetch the last 2 commits for version comparison
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@whop' # Scope needed for publishing to npm @whop organization
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9 # Match the version in package.json
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check if version changed
+        id: version_check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const { execSync } = require('child_process');
+
+            const packagePath = 'packages/public-api/package.json';
+
+            // Get current version
+            const currentPackageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+            const currentVersion = currentPackageJson.version;
+            console.log(`Current version: ${currentVersion}`);
+
+            // Get previous version
+            let previousVersion = null;
+            try {
+              const previousPackageJsonContent = execSync(`git show HEAD~1:${packagePath}`, { encoding: 'utf8' });
+              const previousPackageJson = JSON.parse(previousPackageJsonContent);
+              previousVersion = previousPackageJson.version;
+              console.log(`Previous version: ${previousVersion}`);
+            } catch (error) {
+              console.log('Could not get previous version (likely first commit or file did not exist). Assuming version changed.');
+              previousVersion = null; // Treat as changed if previous version can't be determined
+            }
+
+            const changed = currentVersion !== previousVersion;
+            console.log(`Version changed: ${changed}`);
+            core.setOutput('version_changed', changed);
+
+      - name: Build package
+        if: steps.version_check.outputs.version_changed == 'true'
+        run: pnpm --filter @whop/api build
+        env:
+          NEXT_PUBLIC_GRAPH_BASE: 'https://data.whop.com'
+
+      - name: Publish package to npm
+        if: steps.version_check.outputs.version_changed == 'true'
+        run: pnpm publish --filter @whop/api --no-git-checks
+        working-directory: packages/public-api # Run publish from the package directory itself
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.WHOP_ORG_NPM_TOKEN }}
