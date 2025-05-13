@@ -1,0 +1,13 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"cache": false,
+			"outputs": ["dist/**"],
+			"inputs": ["codegen.ts", "graphql/**"],
+			"dependsOn": ["^build"],
+			"env": ["BUILD_GRAPHQL_ORIGIN"]
+		}
+	}
+}

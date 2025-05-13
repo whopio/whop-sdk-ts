@@ -1,0 +1,11 @@
+mutation SendDmMessage($toUserId: String!, $message: String!) {
+	sendMessage(input: { message: $message, toUserId: $toUserId })
+}
+
+mutation SendChatMessage($experienceId: String!, $message: String!) {
+	sendMessage(input: { message: $message, experienceId: $experienceId })
+}
+
+mutation SendFeedMessage($experienceId: String!, $message: String!) {
+	sendMessage(input: { message: $message, experienceId: $experienceId })
+}
