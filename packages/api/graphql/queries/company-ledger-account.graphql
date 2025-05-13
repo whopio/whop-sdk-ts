@@ -1,0 +1,9 @@
+query CompanyLedgerAccount {
+	viewer {
+		company {
+			ledgerAccount {
+				...BaseLedgerAccount
+			}
+		}
+	}
+}

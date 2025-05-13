@@ -1,0 +1,3 @@
+mutation TransferFunds($input: TransferFundsInput!) {
+	transferFunds(input: $input)
+}

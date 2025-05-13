@@ -1,4 +1,8 @@
+import type { WhopWebhookRequestBody } from "./webhook-types";
+
 const DEFAULT_SIGNATURE_HEADER_NAME = "x-whop-signature";
+
+export type { WhopWebhookRequestBody } from "./webhook-types";
 
 export function makeWebhookValidator({
 	webhookSecret,
@@ -17,7 +21,7 @@ export function makeWebhookValidator({
 		["sign"],
 	);
 
-	return async function validateWebhookBody<Data = unknown>(
+	return async function validateWebhookBody<Data = WhopWebhookRequestBody>(
 		req: Request,
 	): Promise<Data> {
 		const body = await req.text();
