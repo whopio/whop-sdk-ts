@@ -1,0 +1,29 @@
+query ListExperiences(
+	$after: String
+	$first: Int
+	$accessPassId: ID
+	$appId: ID
+	$onAccessPass: Boolean
+	$companyId: ID!
+) {
+	company(id: $companyId) {
+		experiencesV2(
+			after: $after
+			first: $first
+			filter: {
+				appId: $appId
+				onAccessPass: $onAccessPass
+				accessPassId: $accessPassId
+			}
+		) {
+			nodes {
+				...ExperienceFragment
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
+			totalCount
+		}
+	}
+}

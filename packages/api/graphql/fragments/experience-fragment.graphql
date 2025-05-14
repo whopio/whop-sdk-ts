@@ -1,0 +1,16 @@
+fragment ExperienceFragment on ExperienceInterface {
+	id
+	name
+	image
+	app {
+		id
+		name
+		icon {
+			sourceUrl
+		}
+	}
+	upsellType
+	upsellPlan {
+		...BasePlan
+	}
+}

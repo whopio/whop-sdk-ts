@@ -47,20 +47,29 @@ export interface VerifyUserTokenOptions<DontThrow extends boolean = false> {
 export function makeUserTokenVerifier<DontThrow extends boolean = false>(
 	options: VerifyUserTokenOptions<DontThrow>,
 ) {
-	return async function verifyUserToken<ST extends boolean = DontThrow>(
+	return async function verifyUserToken<DT extends boolean = DontThrow>(
 		tokenOrHeadersOrRequest: string | Headers | Request | null | undefined,
-		overrideOptions?: Partial<VerifyUserTokenOptions<ST>>,
+		overrideOptions?: Partial<VerifyUserTokenOptions<DT>>,
 	) {
-		return await internalVerifyUserToken<ST>(tokenOrHeadersOrRequest, {
+		return await internalVerifyUserToken<DT>(tokenOrHeadersOrRequest, {
 			...options,
 			...overrideOptions,
-		} as VerifyUserTokenOptions<ST>);
+		} as VerifyUserTokenOptions<DT>);
 	};
+}
+
+export function verifyUserToken<DontThrow extends boolean = false>(
+	tokenOrHeadersOrRequest: string | Headers | Request | null | undefined,
+	overrideOptions?: Partial<VerifyUserTokenOptions<DontThrow>>,
+) {
+	return internalVerifyUserToken<DontThrow>(tokenOrHeadersOrRequest, {
+		...overrideOptions,
+	} as VerifyUserTokenOptions<DontThrow>);
 }
 
 async function internalVerifyUserToken<DontThrow extends boolean = false>(
 	tokenOrHeadersOrRequest: string | Headers | Request | null | undefined,
-	options: VerifyUserTokenOptions<DontThrow>,
+	options: Partial<VerifyUserTokenOptions<DontThrow>>,
 ): Promise<
 	Promise<DontThrow extends true ? UserTokenPayload | null : UserTokenPayload>
 > {

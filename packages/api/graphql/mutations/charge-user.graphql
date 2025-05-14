@@ -1,0 +1,9 @@
+mutation ChargeUser($input: ChargeUserInput!) {
+	chargeUser(input: $input) {
+		status
+		checkoutSession {
+			id
+			purchaseUrl
+		}
+	}
+}
