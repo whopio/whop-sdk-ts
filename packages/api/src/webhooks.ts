@@ -72,8 +72,14 @@ export function isValidWebhook(
 	webhook: unknown,
 ): webhook is WhopWebhookRequestBody {
 	if (!webhook || typeof webhook !== "object") return false;
-	if ("api_version" in webhook && webhook.api_version !== "v5") return false;
-	if ("action" in webhook && typeof webhook.action !== "string") return false;
-	if ("data" in webhook && typeof webhook.data !== "object") return false;
+	if (!("api_version" in webhook) || webhook.api_version !== "v5") return false;
+	if (!("action" in webhook) || typeof webhook.action !== "string")
+		return false;
+	if (
+		!("data" in webhook) ||
+		typeof webhook.data !== "object" ||
+		webhook.data === null
+	)
+		return false;
 	return true;
 }
