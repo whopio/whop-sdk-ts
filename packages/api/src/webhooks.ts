@@ -21,9 +21,9 @@ export function makeWebhookValidator({
 		["sign"],
 	);
 
-	return async function validateWebhookBody<Data = WhopWebhookRequestBody>(
+	return async function validateWebhookBody(
 		req: Request,
-	): Promise<Data> {
+	): Promise<WhopWebhookRequestBody> {
 		const body = await req.text();
 		const header = req.headers.get(
 			signatureHeaderName ?? DEFAULT_SIGNATURE_HEADER_NAME,
@@ -57,7 +57,7 @@ export function makeWebhookValidator({
 
 		const parsedBody = JSON.parse(body) as unknown;
 		if (!isValidWebhook(parsedBody)) throw Error("Invalid webhook payload");
-		return parsedBody as Data;
+		return parsedBody;
 	};
 }
 
