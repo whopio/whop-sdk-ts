@@ -1,0 +1,17 @@
+query AccessPass($accessPassId: ID!) {
+	accessPass: publicAccessPass(id: $accessPassId) {
+		...AccessPassFragment
+		bannerImage {
+			sourceUrl
+		}
+		headline
+		company {
+			id
+			title
+		}
+		reviewsAverage
+		ownerUser {
+			...BasePublicProfileUser
+		}
+	}
+}
