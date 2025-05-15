@@ -32,6 +32,10 @@ fragment PublicExperienceFragment on PublicExperience {
 			sourceUrl
 		}
 	}
+	company {
+		id
+		title
+	}
 	upsellType
 	upsellPlan {
 		...BasePublicPlan
