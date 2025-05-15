@@ -1,7 +1,10 @@
 fragment ExperienceFragment on ExperienceInterface {
 	id
 	name
-	image
+	description
+	logo: imageSrcset {
+		sourceUrl: original
+	}
 	app {
 		id
 		name
@@ -12,5 +15,29 @@ fragment ExperienceFragment on ExperienceInterface {
 	upsellType
 	upsellPlan {
 		...BasePlan
+	}
+}
+
+fragment PublicExperienceFragment on PublicExperience {
+	id
+	name
+	description
+	logo {
+		sourceUrl
+	}
+	app {
+		id
+		name
+		icon {
+			sourceUrl
+		}
+	}
+	company {
+		id
+		title
+	}
+	upsellType
+	upsellPlan {
+		...BasePublicPlan
 	}
 }
