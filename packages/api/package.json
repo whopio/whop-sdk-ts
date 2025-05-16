@@ -1,6 +1,6 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"exports": {
 		".": {
 			"import": {
@@ -18,8 +18,9 @@
 	"types": "./dist/index.d.ts",
 	"files": ["dist"],
 	"scripts": {
-		"build": "graphql-codegen && tsup",
-		"check-types": "graphql-codegen && tsc --noEmit"
+		"build": "pnpm run proto-codegen && graphql-codegen && tsup",
+		"check-types": "pnpm run proto-codegen && graphql-codegen && tsc --noEmit",
+		"proto-codegen": "bash ./scripts/generate-protos.sh"
 	},
 	"dependencies": {
 		"graphql": "16.8.1",
@@ -34,6 +35,7 @@
 		"@graphql-codegen/typescript-operations": "4.5.1",
 		"@types/node": "latest",
 		"dotenv": "^16.5.0",
+		"ts-proto": "^2.7.0",
 		"tsup": "8.2.4",
 		"typescript": "latest"
 	},
