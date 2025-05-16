@@ -15,7 +15,7 @@ protoc \
   --proto_path=../../protos/protos \
   --ts_proto_opt=onlyTypes=true \
   --ts_proto_opt=useJsonWireFormat=true \
-  --ts_proto_opt=snakeToCamel=false \
+  --ts_proto_opt=snakeToCamel=true \
   --ts_proto_opt=env=browser \
   --ts_proto_opt=outputIndex=true \
   --ts_proto_opt=stringEnums=true \
