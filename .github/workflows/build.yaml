@@ -31,7 +31,7 @@ jobs:
       - name: Checkout whop-proto repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ZZ_PROTO_PAT }}
+          token: ${{ secrets.WHOP_PROTO_GH_TOKEN }}
           repository: whopio/whop-proto
           sparse-checkout: |
             protos
