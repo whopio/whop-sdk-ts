@@ -11,6 +11,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -21,7 +27,16 @@ jobs:
         with:
           node-version: '22' # Specify your Node.js version
           cache: 'pnpm'
-
+    
+      - name: Checkout whop-proto repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ZZ_PROTO_PAT }}
+          repository: whopio/whop-proto
+          sparse-checkout: |
+            protos
+          path: "protos"
+  
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

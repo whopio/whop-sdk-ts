@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"ignore": [
-			"packages/api/src/codegen/generated-api.ts",
+			"packages/api/src/codegen/**/*.ts",
 			"packages/*/dist/**",
 			".turbo/**"
 		]
