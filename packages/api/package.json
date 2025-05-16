@@ -19,7 +19,7 @@
 	"files": ["dist"],
 	"scripts": {
 		"build": "pnpm run proto-codegen && graphql-codegen && tsup",
-		"check-types": "graphql-codegen && tsc --noEmit",
+		"check-types": "pnpm run proto-codegen && graphql-codegen && tsc --noEmit",
 		"proto-codegen": "bash ./scripts/generate-protos.sh"
 	},
 	"dependencies": {
