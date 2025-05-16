@@ -1,0 +1,12 @@
+fragment AccessPassFragment on PublicAccessPass {
+	id
+	title
+	shortenedDescription
+	verified
+	visibility
+	route
+	activeUsersCount
+	logo {
+		sourceUrl
+	}
+}

@@ -1,0 +1,20 @@
+query HasAccessToExperience($experienceId: ID!, $userId: ID) {
+	hasAccessToExperience(experienceId: $experienceId, userId: $userId) {
+		hasAccess
+		accessLevel
+	}
+}
+
+query HasAccessToAccessPass($accessPassId: ID!, $userId: ID) {
+	hasAccessToAccessPass(accessPassId: $accessPassId, userId: $userId) {
+		hasAccess
+		accessLevel
+	}
+}
+
+query HasAccessToCompany($companyId: ID!, $userId: ID) {
+	hasAccessToCompany(companyId: $companyId, userId: $userId) {
+		hasAccess
+		accessLevel
+	}
+}
