@@ -6,7 +6,7 @@ export {
 	verifyUserToken,
 	type UserTokenPayload,
 	type VerifyUserTokenOptions,
-} from "./verifyUserToken";
+} from "./verify-user-token";
 export { makeWebhookValidator, type WhopWebhookRequestBody } from "./webhooks";
 export type {
 	ReceivableWebsocketMessage,
