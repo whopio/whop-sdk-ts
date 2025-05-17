@@ -1,0 +1,5 @@
+mutation CreateForumPost($input: CreateForumPostInput!) {
+	createForumPost(input: $input) {
+		...ForumPostFragment
+	}
+}

@@ -1,0 +1,21 @@
+fragment ForumPostFragment on ForumPost {
+	id
+	createdAt
+	updatedAt
+	content
+	richContent
+	isDeleted
+	attachments {
+		id
+		contentType
+		sourceUrl
+	}
+	isEdited
+	isPinned: pinned
+	mentionedUserIds
+	parentId
+	viewCount
+	user {
+		...BasePublicProfileUser
+	}
+}
