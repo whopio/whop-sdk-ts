@@ -17,6 +17,11 @@ jobs:
         with:
           fetch-depth: 2 # Fetch the last 2 commits for version comparison
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -28,6 +33,15 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.9 # Match the version in package.json
+
+      - name: Checkout whop-proto repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WHOP_PROTO_GH_TOKEN }}
+          repository: whopio/whop-proto
+          sparse-checkout: |
+            protos
+          path: "protos"
 
       - name: Install dependencies
         run: pnpm install
