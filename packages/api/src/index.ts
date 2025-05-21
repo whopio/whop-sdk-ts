@@ -8,7 +8,11 @@ export {
 	type VerifyUserTokenOptions,
 } from "./verify-user-token";
 export { makeWebhookValidator, type WhopWebhookRequestBody } from "./webhooks";
-export type {
-	ReceivableWebsocketMessage,
-	SendableWebsocketMessage,
-} from "./websockets";
+export {
+	WhopWebsocketClient,
+	type ReceivableWebsocketMessage,
+	type SendableWebsocketMessage,
+	type WebsocketMessageHandler,
+	type WebsocketStatus,
+	type WebsocketStatusHandler,
+} from "./websockets/client";

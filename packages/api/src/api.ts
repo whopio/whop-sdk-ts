@@ -5,6 +5,7 @@ import type { Requester } from "./codegen/generated-api";
 import { GraphQLClient } from "graphql-request";
 
 import { getSdk } from "./codegen/generated-api";
+import { sendWebsocketMessageFunction } from "./websockets/server";
 
 const DEFAULT_API_ORIGIN = "https://api.whop.com";
 
@@ -13,13 +14,16 @@ export interface WhopApiOptions {
 	onBehalfOfUserId?: string;
 	companyId?: string;
 	apiOrigin?: string;
+	websocketOrigin?: string;
 }
 
 export function WhopApi(options: WhopApiOptions) {
 	const sdk = getSdk(makeRequester(options));
+	const SendWebsocketMessage = sendWebsocketMessageFunction(options);
 
 	return {
 		...sdk,
+		SendWebsocketMessage,
 		withUser(userId: string) {
 			return WhopApi({
 				...options,
