@@ -1,0 +1,6 @@
+mutation CreateForum($input: CreateForumInput!) {
+	createForum(input: $input) {
+		id
+		link
+	}
+}
