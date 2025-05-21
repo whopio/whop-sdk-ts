@@ -32,6 +32,9 @@ importers:
       jose:
         specifier: ^6.0.11
         version: 6.0.11
+      js-md5:
+        specifier: ^0.8.3
+        version: 0.8.3
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 5.0.5
@@ -1611,6 +1614,9 @@ packages:
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
+
+  js-md5@0.8.3:
+    resolution: {integrity: sha512-qR0HB5uP6wCuRMrWPTrkMaev7MJZwJuuw4fnwAzRgP4J4/F8RwtodOKpGp4XpqsLBFzzgqIO42efFAyz2Et6KQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -4193,6 +4199,8 @@ snapshots:
   jose@6.0.11: {}
 
   joycon@3.1.1: {}
+
+  js-md5@0.8.3: {}
 
   js-tokens@4.0.0: {}
 

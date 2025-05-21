@@ -1,18 +1,21 @@
 {
-	"compilerOptions": {
-		"target": "ES2022",
-		"lib": [],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"moduleResolution": "bundler",
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"strictNullChecks": true
-	},
-	"exclude": ["node_modules"],
-	"include": ["**/*.ts"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts"]
 }
