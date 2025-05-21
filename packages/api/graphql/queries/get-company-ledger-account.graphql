@@ -1,4 +1,4 @@
-query CompanyLedgerAccount($companyId: ID!) {
+query GetCompanyLedgerAccount($companyId: ID!) {
 	company(id: $companyId) {
 		ledgerAccount {
 			...BaseLedgerAccount

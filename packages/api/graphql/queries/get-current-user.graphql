@@ -1,4 +1,4 @@
-query CurrentUser {
+query GetCurrentUser {
 	viewer {
 		user {
 			...BaseUser
