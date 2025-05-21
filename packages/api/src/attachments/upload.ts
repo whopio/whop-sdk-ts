@@ -3,10 +3,10 @@ import type { PreparedAttachment } from "@/attachments/prepare";
 import type {
   AttachableRecords,
   AttachmentFragment,
+  Media,
 } from "@/codegen/generated-api";
 
 import { MULTIPART_UPLOAD_CHUNK_SIZE } from "@/attachments/constants";
-import { Media } from "@/codegen/generated-api";
 import { retry } from "@/utils/retry";
 import { sum } from "@/utils/sum";
 
@@ -79,15 +79,17 @@ async function uploadPart({
     xhr.open("PUT", fullURL.href);
 
     if (headers) {
-      Object.entries(headers).forEach(([key, value]) => {
+      for (const [key, value] of Object.entries(headers)) {
         xhr.setRequestHeader(key, value);
-      });
+      }
     }
 
     xhr.send(data);
     onProgress?.(new ProgressEvent("upload", { total: data.size, loaded: 0 }));
   }).finally(() => {
-    cleanup.forEach((fn) => fn());
+    for (const fn of cleanup) {
+      fn();
+    }
   });
 }
 

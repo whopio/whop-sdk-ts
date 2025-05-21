@@ -9,7 +9,7 @@ class RetryError extends Error {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- has to be any
+// biome-ignore lint/suspicious/noExplicitAny: required for type inference
 export async function retry<Fn extends (...args: any[]) => Promise<any>>(
   fn: Fn,
   maxRetries: number,

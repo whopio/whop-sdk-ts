@@ -27,7 +27,8 @@ export function parseAttachment(file: FileAttachment): AttachmentFragment {
       width: file.image.width,
       blurhash: file.image.blurhash,
     };
-  } else if (file.video) {
+  }
+  if (file.video) {
     return {
       __typename: "VideoAttachment" as const,
       ...shared,
@@ -39,7 +40,8 @@ export function parseAttachment(file: FileAttachment): AttachmentFragment {
         url: file.video.thumbnailUrl,
       },
     };
-  } else if (file.audio) {
+  }
+  if (file.audio) {
     return {
       __typename: "AudioAttachment" as const,
       ...shared,
