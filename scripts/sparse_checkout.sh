@@ -53,6 +53,7 @@ function git_sparse_checkout {
 
     local sparse=true
     local opts='--depth=1'
+	 local token="${GITHUB_TOKEN:-}"
 
     # now perform the sparse checkout
     mkdir -p "${dir}"
@@ -62,7 +63,13 @@ function git_sparse_checkout {
         echo "${path}" >> ${dir}/.git/info/sparse-checkout
     done
     git -C "${dir}" remote add origin ${url}
-    git -C "${dir}" fetch ${opts} origin ${tag}
+    if [[ -n "$token" ]]; then
+		git -C "${dir}" \
+				-c http.extraHeader="Authorization: Bearer ${token}" \
+				fetch ${opts} origin ${tag}
+	 else
+		git -C "${dir}"           fetch ${opts} origin ${tag}
+	 fi
     git -C "${dir}" checkout ${tag}
 }
 
