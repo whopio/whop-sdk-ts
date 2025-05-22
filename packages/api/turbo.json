@@ -7,7 +7,7 @@
 			"outputs": ["dist/**"],
 			"inputs": ["src/**"],
 			"dependsOn": ["^build", "build:proto", "build:graphql"],
-			"env": ["BUILD_GRAPHQL_ORIGIN"]
+			"env": ["BUILD_GRAPHQL_ORIGIN", "GITHUB_TOKEN"]
 		},
 		"build:proto": {
 			"cache": false
