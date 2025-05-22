@@ -1,11 +1,17 @@
-mutation SendDmMessage($toUserId: String!, $message: String!) {
+mutation SendDirectMessageToUser($toUserId: String!, $message: String!) {
 	sendMessage(input: { message: $message, toUserId: $toUserId })
 }
 
-mutation SendChatMessage($experienceId: String!, $message: String!) {
+mutation SendMessageToWhopChat($experienceId: String!, $message: String!) {
 	sendMessage(input: { message: $message, experienceId: $experienceId })
 }
 
-mutation SendFeedMessage($experienceId: String!, $message: String!) {
-	sendMessage(input: { message: $message, experienceId: $experienceId })
+mutation SendMessageToChatFeed(
+	$feedId: String!
+	$feedType: FeedTypes!
+	$message: String!
+) {
+	sendMessage(
+		input: { message: $message, feedId: $feedId, feedType: $feedType }
+	)
 }
