@@ -1,6 +1,6 @@
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { headers } from "next/headers";
-import { SectionConnectToTheWebsocketClient } from "./section-08-connect-to-the-websocket.client";
+import { SectionConnectToTheWebsocketClient } from "./index.client";
 
 export async function SectionConnectToTheWebsocket({
 	params,

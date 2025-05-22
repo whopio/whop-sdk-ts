@@ -3,6 +3,7 @@
 import { requestPayment } from "@/lib/actions/request-payment";
 import { iframeSdk } from "@/lib/iframe-sdk";
 import { use, useState } from "react";
+import { SubmitButton } from "./submit-button";
 
 export function SectionRequestAPayment({
 	params,
@@ -42,7 +43,7 @@ export function SectionRequestAPayment({
 						type="number"
 						required
 						name="amount"
-						placeholder="Amount (in cents) to charge"
+						placeholder="Amount (in USD) to charge"
 					/>
 				</div>
 				<div className="flex gap-2 items-center">
@@ -54,12 +55,7 @@ export function SectionRequestAPayment({
 						placeholder="Payment Description"
 					/>
 				</div>
-				<button
-					className="shrink-0 bg-blue-500 text-white rounded-md p-2"
-					type="submit"
-				>
-					Request Payment
-				</button>
+				<SubmitButton>Request Payment</SubmitButton>
 
 				{receiptId && (
 					<div>
