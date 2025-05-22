@@ -1,12 +1,12 @@
-mutation SendDirectMessageToUser($toUserId: String!, $message: String!) {
+mutation sendDirectMessageToUser($toUserId: String!, $message: String!) {
 	sendMessage(input: { message: $message, toUserId: $toUserId })
 }
 
-mutation SendMessageToWhopChat($experienceId: String!, $message: String!) {
+mutation sendMessageToWhopChat($experienceId: String!, $message: String!) {
 	sendMessage(input: { message: $message, experienceId: $experienceId })
 }
 
-mutation SendMessageToChatFeed(
+mutation sendMessageToChatFeed(
 	$feedId: String!
 	$feedType: FeedTypes!
 	$message: String!

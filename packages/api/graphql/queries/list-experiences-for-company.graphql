@@ -1,4 +1,4 @@
-query GetExperiencesForCompanyOrWhop(
+query listExperiencesForCompany(
 	$after: String
 	$first: Int
 	$accessPassId: ID

@@ -1,4 +1,4 @@
-query GetMessagesForFeed($type: FeedTypes!, $id: ID!) {
+query listMessagesForFeed($type: FeedTypes!, $id: ID!) {
 	feedPosts(feedType: $type, feedId: $id) {
 		posts {
 			...Message
