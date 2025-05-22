@@ -17,7 +17,7 @@ export async function SectionSendAMessage({
 			throw new Error("User token is required");
 		}
 
-		const user = await whopApi.getPublicUser({ userId: userToken.userId });
+		const user = await whopApi.getUser({ userId: userToken.userId });
 
 		if (!message || typeof message !== "string") {
 			throw new Error("Chat message is required");
