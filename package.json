@@ -2,7 +2,7 @@
 	"name": "whop-sdk-ts",
 	"private": true,
 	"scripts": {
-		"build": "turbo run build",
+		"build": "turbo build",
 		"check-types": "turbo run check-types",
 		"dev": "turbo run dev",
 		"lint": "biome check .",
