@@ -1,0 +1,3 @@
+mutation ProcessAttachment($input: AnalyzeAttachmentInput!) {
+	mediaAnalyzeAttachment(input: $input)
+}
