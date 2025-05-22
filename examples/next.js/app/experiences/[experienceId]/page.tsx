@@ -5,6 +5,7 @@ import { SectionSendANotification } from "@/components/examples/section-04-send-
 import { SectionSendAMessage } from "@/components/examples/section-05-send-a-message";
 import { SectionMakeForumPost } from "@/components/examples/section-06-make-forum-post";
 import { SectionRequestAPayment } from "@/components/examples/section-07-request-a-payment";
+import { SectionConnectToTheWebsocket } from "@/components/examples/section-08-connect-to-the-websocket.server";
 import { SectionWrapper } from "@/components/section-wrapper";
 import Link from "next/link";
 
@@ -45,6 +46,11 @@ const sections = [
 		title: "Request a Payment",
 		description: "Request a payment from the user",
 		Component: SectionRequestAPayment,
+	},
+	{
+		title: "Connect to the Websocket",
+		description: "Connect to the websocket",
+		Component: SectionConnectToTheWebsocket,
 	},
 ];
 

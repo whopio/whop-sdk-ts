@@ -1,5 +1,5 @@
-import { DEFAULT_API_ORIGIN } from "@/sdk.common";
-import type { WhopServerSdkOptions } from "@/sdk.server";
+import { DEFAULT_API_ORIGIN } from "@/sdk/sdk-common";
+import type { WhopServerSdkOptions } from "@/sdk/server-sdk-shared";
 import type { WebsocketClientOptionsBase } from "./client.common";
 import { WhopWebsocketClientBase } from "./client.common";
 

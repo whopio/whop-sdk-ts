@@ -11,3 +11,5 @@ export interface MultipartUploadTask {
 	onProgress?: (progress: Pick<ProgressEvent, "loaded" | "total">) => void;
 	signal?: AbortSignal;
 }
+
+export type UploadPartFunction = (task: MultipartUploadTask) => Promise<string>;
