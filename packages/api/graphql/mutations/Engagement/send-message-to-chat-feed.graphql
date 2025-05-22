@@ -1,4 +1,4 @@
-mutation SendMessageToChatFeed(
+mutation sendMessageToChatFeed(
 	$feedId: String!
 	$feedType: FeedTypes!
 	$message: String!

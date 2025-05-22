@@ -1,4 +1,4 @@
-query FetchAttachment($id: ID!) {
+query getAttachment($id: ID!) {
 	attachment(id: $id) {
 		...Attachment
 	}

@@ -1,4 +1,4 @@
-query GetUserLedgerAccount {
+query getUserLedgerAccount {
 	viewer {
 		user {
 			ledgerAccount {
