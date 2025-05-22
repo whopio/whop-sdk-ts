@@ -113,8 +113,11 @@ export async function uploadAttachment(
 	input: UploadFileInput,
 	{ onProgress, signal }: UploadFileOptions = {},
 ): Promise<{
-	id: string;
+	/** The direct upload ID - use this to attach the attachment to a resource */
+	directUploadId: string;
+	/** The record type the attachment was attached to */
 	record: AttachableRecords;
+	/** The attachment */
 	attachment: AttachmentFragment;
 }> {
 	// prepare the file
@@ -156,7 +159,7 @@ export async function uploadAttachment(
 	}
 
 	return {
-		id: preparedAttachment.id,
+		directUploadId: preparedAttachment.id,
 		record: preparedAttachment.record,
 		attachment,
 	};
