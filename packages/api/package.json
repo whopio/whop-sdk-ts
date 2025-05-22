@@ -18,9 +18,10 @@
 	"types": "./dist/index.d.ts",
 	"files": ["dist"],
 	"scripts": {
-		"build": "pnpm run proto-codegen && graphql-codegen && tsup",
+		"build": "pnpm run proto-codegen && graphql-codegen && pnpm run lint:fix && tsup",
 		"check-types": "pnpm run proto-codegen && graphql-codegen && tsc --noEmit",
-		"proto-codegen": "bash ./scripts/generate-protos.sh"
+		"proto-codegen": "bash ./scripts/generate-protos.sh",
+		"lint:fix": "biome check --write --unsafe"
 	},
 	"dependencies": {
 		"graphql": "16.8.1",
