@@ -80,7 +80,7 @@ jobs:
 
       - name: Build package
         if: steps.version_check.outputs.version_changed == 'true'
-        run: pnpm --filter @whop/api build
+        run: pnpm build --filter @whop/api
         env:
           NEXT_PUBLIC_GRAPH_BASE: 'https://data.whop.com'
 
