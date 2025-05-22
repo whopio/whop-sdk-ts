@@ -14,4 +14,11 @@ else
 	./scripts/sparse_checkout.sh "https://github.com/whopio/whop-proto.git" main protos -- protos/
 fi
 
+if [ $? -eq 0 ]; then
+  printf '\n ✔︎ Downloaded protos successfully ✔︎\n\n'
+else
+  printf '\n ❌ Failed to download protos ❌\n\n'
+  exit 1
+fi
+
 cd $CURRENT_DIR

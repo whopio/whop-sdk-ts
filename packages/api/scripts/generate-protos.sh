@@ -1,15 +1,4 @@
 #!/bin/bash
-echo "Downloading protos..."
-
-../../scripts/pull_protos.sh
-
-if [ $? -eq 0 ]; then
-  printf '\n ✔︎ Downloaded protos successfully ✔︎\n\n'
-else
-  printf '\n ❌ Failed to download protos ❌\n\n'
-  exit 1
-fi
-
 echo "Generating typescript from protos..."
 
 rm -rf ./src/codegen/proto
