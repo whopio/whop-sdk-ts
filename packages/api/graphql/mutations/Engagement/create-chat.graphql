@@ -1,4 +1,4 @@
-mutation CreateChat($input: CreateChatInput!) {
+mutation CreateOrFindExistingChat($input: CreateChatInput!) {
 	createChat(input: $input) {
 		id
 		link
