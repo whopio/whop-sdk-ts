@@ -1,4 +1,4 @@
-mutation UploadMedia($input: DirectUploadInput!) {
+mutation uploadMedia($input: DirectUploadInput!) {
 	mediaDirectUpload(input: $input) {
 		id
 

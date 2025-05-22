@@ -7,7 +7,7 @@ export async function SectionGetExperienceDetails({
 }) {
 	const { experienceId } = await params;
 
-	const thisExperience = await whopApi.GetExperience({
+	const thisExperience = await whopApi.getExperience({
 		experienceId: experienceId,
 	});
 

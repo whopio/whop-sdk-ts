@@ -1,4 +1,4 @@
-mutation CreateForumPost($input: CreateForumPostInput!) {
+mutation createForumPost($input: CreateForumPostInput!) {
 	createForumPost(input: $input) {
 		...ForumPostFragment
 	}

@@ -17,13 +17,13 @@ export async function SectionSendAMessage({
 			throw new Error("User token is required");
 		}
 
-		const user = await whopApi.GetPublicUser({ userId: userToken.userId });
+		const user = await whopApi.getPublicUser({ userId: userToken.userId });
 
 		if (!message || typeof message !== "string") {
 			throw new Error("Chat message is required");
 		}
 
-		await whopApi.SendMessageToWhopChat({
+		await whopApi.sendMessageToWhopChat({
 			experienceId: chatExperienceId,
 			message: `${
 				user.publicUser.name ?? user.publicUser.username
@@ -45,7 +45,7 @@ export async function SectionSendAMessage({
 			throw new Error("Chat message is required");
 		}
 
-		await whopApi.SendDirectMessageToUser({
+		await whopApi.sendDirectMessageToUser({
 			toUserId: userToken.userId,
 			message: `Hi, you just sent a message via the example app: '${message}'.`,
 		});

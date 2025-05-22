@@ -1,6 +1,0 @@
-mutation CreateOrFindExistingForum($input: CreateForumInput!) {
-	createForum(input: $input) {
-		id
-		link
-	}
-}

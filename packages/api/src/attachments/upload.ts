@@ -133,7 +133,7 @@ export function makeUploadAttachmentFunction({
 	 */
 	return async function uploadAttachment(
 		this: PartialFileSdkExtensions &
-			Pick<ReturnType<typeof getSdk<RequestInit>>, "ProcessAttachment">,
+			Pick<ReturnType<typeof getSdk<RequestInit>>, "processAttachment">,
 		input: UploadFileInput,
 		{ onProgress, signal }: UploadFileOptions = {},
 	): Promise<UploadAttachmentResponse> {
@@ -154,7 +154,7 @@ export function makeUploadAttachmentFunction({
 
 		// request media processing
 		if (preparedAttachment.multipart) {
-			await this.ProcessAttachment({
+			await this.processAttachment({
 				input: {
 					directUploadId: preparedAttachment.id,
 					mediaType,
@@ -163,7 +163,7 @@ export function makeUploadAttachmentFunction({
 				},
 			});
 		} else {
-			await this.ProcessAttachment({
+			await this.processAttachment({
 				input: {
 					directUploadId: preparedAttachment.id,
 					mediaType,
