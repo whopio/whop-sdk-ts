@@ -4,6 +4,7 @@ mutation ChargeUser($input: ChargeUserInput!) {
 		checkoutSession {
 			id
 			purchaseUrl
+			planId
 		}
 	}
 }

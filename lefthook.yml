@@ -1,0 +1,5 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      run: pnpm biome check --apply --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git update-index --again {staged_files}
