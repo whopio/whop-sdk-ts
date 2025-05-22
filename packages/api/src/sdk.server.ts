@@ -1,7 +1,8 @@
 import { type Requester, getSdk } from "@/codegen/generated-api";
-import { DEFAULT_API_ORIGIN, extendSdk, wrappedFetch } from "@/sdk.common";
+import { DEFAULT_API_ORIGIN, wrappedFetch } from "@/sdk.common";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";
+import { fileSdkExtensions } from "./attachments/file-sdk-extensions";
 import { sendWebsocketMessageFunction } from "./websockets/server";
 
 /**
@@ -22,35 +23,37 @@ export interface WhopServerSdkOptions {
 	websocketOrigin?: string;
 }
 
-export function WhopServerSdk(options: WhopServerSdkOptions) {
+function BaseWhopServerSdk(options: WhopServerSdkOptions) {
+	const baseSdk = getSdk(makeRequester(options));
+
 	const SendWebsocketMessage = sendWebsocketMessageFunction(options);
 	// const ConnectToWebsocket = makeConnectToWebsocketFunction(options);
-	const sdk = {
-		...getSdk(makeRequester(options)),
-		SendWebsocketMessage,
-		// ConnectToWebsocket,
-		withUser(userId: string) {
-			return extendSdk(
-				WhopServerSdk({
-					...options,
-					onBehalfOfUserId: userId,
-				}),
-			);
-		},
-		withCompany(companyId: string) {
-			return extendSdk(
-				WhopServerSdk({
-					...options,
-					companyId,
-				}),
-			);
-		},
-	};
 
-	return extendSdk(sdk);
+	const fileSdk = fileSdkExtensions(baseSdk);
+
+	return {
+		...baseSdk,
+		...fileSdk,
+		SendWebsocketMessage,
+	};
 }
 
-export type WhopServerSdk = ReturnType<typeof WhopServerSdk>;
+export function WhopServerSdk(options: WhopServerSdkOptions): WhopServerSdk {
+	const baseSdk = BaseWhopServerSdk(options);
+
+	return {
+		...baseSdk,
+		withUser: (userId: string) =>
+			WhopServerSdk({ ...options, onBehalfOfUserId: userId }),
+		withCompany: (companyId: string) =>
+			WhopServerSdk({ ...options, companyId }),
+	};
+}
+
+export type WhopServerSdk = ReturnType<typeof BaseWhopServerSdk> & {
+	withUser: (userId: string) => WhopServerSdk;
+	withCompany: (companyId: string) => WhopServerSdk;
+};
 
 function makeRequester(
 	apiOptions: WhopServerSdkOptions,

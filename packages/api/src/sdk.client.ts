@@ -1,7 +1,8 @@
 import { type Requester, getSdk } from "@/codegen/generated-api";
-import { extendSdk, wrappedFetch } from "@/sdk.common";
+import { wrappedFetch } from "@/sdk.common";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";
+import { fileSdkExtensions } from "./attachments/file-sdk-extensions";
 import { makeConnectToWebsocketFunction } from "./websockets/client.browser";
 
 /**
@@ -15,15 +16,24 @@ export interface WhopClientSdkOptions {
 }
 
 export function WhopClientSdk(options?: WhopClientSdkOptions) {
-	return extendSdk({
-		ConnectToWebsocket: makeConnectToWebsocketFunction(),
-		...getSdk(
-			makeRequester({
-				apiPath: "/_whop/public-graphql",
-				...options,
-			}),
-		),
-	});
+	const baseSdk = getSdk(
+		makeRequester({
+			apiPath: "/_whop/public-graphql",
+			...options,
+		}),
+	);
+
+	const fileSdk = fileSdkExtensions(baseSdk);
+
+	const ConnectToWebsocket = makeConnectToWebsocketFunction();
+
+	const sdk = {
+		...baseSdk,
+		ConnectToWebsocket,
+		...fileSdk,
+	};
+
+	return sdk;
 }
 
 export type WhopClientSdk = ReturnType<typeof WhopClientSdk>;

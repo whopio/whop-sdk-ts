@@ -1,13 +1,14 @@
-import type { ExtendedSdk } from "@/sdk.common";
 import type { PreparedAttachment } from "@/attachments/prepare";
 import type {
 	AttachableRecords,
 	AttachmentFragment,
 	Media,
+	getSdk,
 } from "@/codegen/generated-api";
 
 import { uploadParts } from "@/attachments/upload-parts";
 import { sum } from "@/utils/sum";
+import type { PartialFileSdkExtensions } from "./partial-file-sdk-extensions";
 
 /**
  * Uploads a prepared file, automatically handling multipart uploads.
@@ -88,7 +89,7 @@ function getMediaType(data: File | Blob): Media {
 /**
  * Additional options for the attachment upload.
  */
-interface UploadFileOptions {
+export interface UploadFileOptions {
 	/**
 	 * This callback is called with the progress of the upload.
 	 */
@@ -118,10 +119,8 @@ export interface UploadAttachmentResponse {
  * @returns The attachment.
  */
 export async function uploadAttachment(
-	this: Pick<
-		ExtendedSdk,
-		"PrepareAttachmentForUpload" | "ProcessAttachment" | "AnalyzeAttachment"
-	>,
+	this: PartialFileSdkExtensions &
+		Pick<ReturnType<typeof getSdk<RequestInit>>, "ProcessAttachment">,
 	input: UploadFileInput,
 	{ onProgress, signal }: UploadFileOptions = {},
 ): Promise<UploadAttachmentResponse> {

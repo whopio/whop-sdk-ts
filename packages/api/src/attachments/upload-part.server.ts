@@ -1,10 +1,10 @@
+import { request } from "node:https";
+import { Readable } from "node:stream";
+import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 import {
 	MULTIPART_UPLOAD_CHUNK_SIZE,
 	type MultipartUploadTask,
 } from "@/attachments/common";
-import { request } from "node:https";
-import { Readable } from "node:stream";
-import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 /**
  * Uploads a part of a file in a node.js environment.
