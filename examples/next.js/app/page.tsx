@@ -51,7 +51,7 @@ export default function Page() {
 							<code>
 								WHOP_API_KEY= {process.env.WHOP_API_KEY} <br />
 								MY_USER_ID= {process.env.MY_USER_ID} <br />
-								WHOP_APP_ID= {process.env.WHOP_APP_ID}
+								WHOP_APP_ID= {process.env.NEXT_PUBLIC_WHOP_APP_ID}
 							</code>
 						</div>
 					</div>
@@ -64,9 +64,9 @@ export default function Page() {
 							Install Your App into your whop
 						</h2>
 						<p className="text-gray-600 ml-11">
-							{process.env.WHOP_APP_ID ? (
+							{process.env.NEXT_PUBLIC_WHOP_APP_ID ? (
 								<a
-									href={`https://whop.com/apps/${process.env.WHOP_APP_ID}/install`}
+									href={`https://whop.com/apps/${process.env.NEXT_PUBLIC_WHOP_APP_ID}/install`}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-500 hover:text-blue-600 underline"
