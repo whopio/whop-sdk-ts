@@ -1,0 +1,6 @@
+mutation findOrCreateChat($input: CreateChatInput!) {
+	createChat(input: $input) {
+		id
+		link
+	}
+}

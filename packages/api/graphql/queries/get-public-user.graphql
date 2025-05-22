@@ -1,4 +1,4 @@
-query GetPublicUser($userId: ID!) {
+query getPublicUser($userId: ID!) {
 	publicUser(id: $userId) {
 		...BasePublicProfileUser
 		bio

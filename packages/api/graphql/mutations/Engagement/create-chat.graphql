@@ -1,6 +1,0 @@
-mutation CreateOrFindExistingChat($input: CreateChatInput!) {
-	createChat(input: $input) {
-		id
-		link
-	}
-}

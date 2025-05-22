@@ -1,4 +1,4 @@
-query GetExperience($experienceId: ID!) {
+query getExperience($experienceId: ID!) {
 	experience: publicExperience(id: $experienceId) {
 		...PublicExperienceFragment
 		upsellType

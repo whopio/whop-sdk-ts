@@ -16,7 +16,7 @@ export async function prepareAttachmentForUpload(
 	record: AttachableRecords,
 ) {
 	const isMultipart = data.size > MULTIPART_UPLOAD_CHUNK_SIZE;
-	const res = await this.UploadMedia({
+	const res = await this.uploadMedia({
 		input: {
 			byteSizeV2: data.size.toString(),
 			record,

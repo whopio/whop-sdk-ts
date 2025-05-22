@@ -8,14 +8,14 @@ import type { BaseSdk } from "./partial-file-sdk-extensions";
  * @returns The attachment.
  */
 export async function analyzeAttachment(
-	this: Pick<BaseSdk, "FetchAttachment">,
+	this: Pick<BaseSdk, "getAttachment">,
 	signedId: string,
 	opts?: {
 		signal?: AbortSignal;
 	},
 ) {
 	while (!opts?.signal?.aborted) {
-		const attachment = await this.FetchAttachment(
+		const attachment = await this.getAttachment(
 			{ id: signedId },
 			{ signal: opts?.signal },
 		)
