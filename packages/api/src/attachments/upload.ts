@@ -100,6 +100,18 @@ interface UploadFileOptions {
 }
 
 /**
+ * Response returned by `UploadAttachment`.
+ */
+export interface UploadAttachmentResponse {
+	/** The direct upload ID - use this to attach the attachment to a resource */
+	directUploadId: string;
+	/** The record type the attachment was attached to */
+	record: AttachableRecords;
+	/** The attachment */
+	attachment: AttachmentFragment;
+}
+
+/**
  * Uploads a file.
  * @param input - The input to upload.
  * @param opts - The options to upload the file.
@@ -112,14 +124,7 @@ export async function uploadAttachment(
 	>,
 	input: UploadFileInput,
 	{ onProgress, signal }: UploadFileOptions = {},
-): Promise<{
-	/** The direct upload ID - use this to attach the attachment to a resource */
-	directUploadId: string;
-	/** The record type the attachment was attached to */
-	record: AttachableRecords;
-	/** The attachment */
-	attachment: AttachmentFragment;
-}> {
+): Promise<UploadAttachmentResponse> {
 	// prepare the file
 	const preparedAttachment =
 		"record" in input && "file" in input
