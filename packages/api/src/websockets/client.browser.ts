@@ -25,9 +25,9 @@ export class WhopWebsocketClientBrowser extends WhopWebsocketClientBase {
 		const path = "/_whop/ws/v1/websockets/connect";
 
 		const searchParams = new URLSearchParams();
-		addChannelIds(searchParams, "joinExperience", this.options.joinExperience);
-		addChannelIds(searchParams, "joinCustom", this.options.joinCustom);
-		addChannelIds(searchParams, "joinPublic", this.options.joinPublic);
+		addChannelIds(searchParams, "join_experience", this.options.joinExperience);
+		addChannelIds(searchParams, "join_custom", this.options.joinCustom);
+		addChannelIds(searchParams, "join_public", this.options.joinPublic);
 
 		const url = new URL(path, window.location.origin);
 		url.protocol = url.protocol.replace("http", "ws");
