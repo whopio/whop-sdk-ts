@@ -1,8 +1,6 @@
 export type { UploadAttachmentResponse } from "@/attachments/upload";
 export type * from "@/codegen/generated-api";
 export * as proto from "@/codegen/proto";
-export { WhopClientSdk, type WhopClientSdkOptions } from "@/sdk.client";
-export { WhopServerSdk, type WhopServerSdkOptions } from "@/sdk.server";
 export {
 	getUserToken,
 	makeUserTokenVerifier,

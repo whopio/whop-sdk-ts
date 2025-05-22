@@ -1,4 +1,4 @@
-import type { proto } from "..";
+import type { proto } from "../index.shared";
 
 export type ReceivableWebsocketMessage =
 	proto.common.WebsocketMessageServerToClient;

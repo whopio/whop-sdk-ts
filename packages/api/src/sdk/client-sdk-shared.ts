@@ -1,9 +1,10 @@
+import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
+import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/generated-api";
-import { wrappedFetch } from "@/sdk.common";
+import { wrappedFetch } from "@/sdk/sdk-common";
+import { makeConnectToWebsocketFunction } from "@/websockets/client.browser";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";
-import { fileSdkExtensions } from "./attachments/file-sdk-extensions";
-import { makeConnectToWebsocketFunction } from "./websockets/client.browser";
 
 /**
  * SDK options for client side use
@@ -15,30 +16,34 @@ export interface WhopClientSdkOptions {
 	apiPath?: string;
 }
 
-export function WhopClientSdk(options?: WhopClientSdkOptions) {
-	const baseSdk = getSdk(
-		makeRequester({
-			apiPath: "/_whop/public-graphql",
-			...options,
-		}),
-	);
+export function makeWhopClientSdk({
+	uploadFile,
+}: { uploadFile: ReturnType<typeof makeUploadAttachmentFunction> }) {
+	return function WhopClientSdk(options?: WhopClientSdkOptions) {
+		const baseSdk = getSdk(
+			makeRequester({
+				apiPath: "/_whop/public-graphql",
+				...options,
+			}),
+		);
 
-	const fileSdk = fileSdkExtensions(baseSdk);
+		const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
 
-	const ConnectToWebsocket = makeConnectToWebsocketFunction();
+		const ConnectToWebsocket = makeConnectToWebsocketFunction();
 
-	const sdk = {
-		...baseSdk,
-		ConnectToWebsocket,
-		...fileSdk,
+		const sdk = {
+			...baseSdk,
+			ConnectToWebsocket,
+			...fileSdk,
+		};
+
+		return sdk;
 	};
-
-	return sdk;
 }
 
-export type WhopClientSdk = ReturnType<typeof WhopClientSdk>;
+export type WhopClientSdk = ReturnType<ReturnType<typeof makeWhopClientSdk>>;
 
-export function makeRequester(
+function makeRequester(
 	apiOptions: WhopClientSdkOptions,
 ): Requester<RequestInit> {
 	const client = makeClient(apiOptions);
