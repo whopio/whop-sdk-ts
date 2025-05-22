@@ -1,0 +1,6 @@
+query checkIfUserHasAccessToExperience($experienceId: ID!, $userId: ID) {
+	hasAccessToExperience(experienceId: $experienceId, userId: $userId) {
+		hasAccess
+		accessLevel
+	}
+}
