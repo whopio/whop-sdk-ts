@@ -1,6 +1,8 @@
-import type { MultipartUploadTask } from "@/attachments/common";
+import type {
+	MultipartUploadTask,
+	UploadPartFunction,
+} from "@/attachments/common";
 
-import { uploadPart } from "@/attachments/upload-part";
 import { retry } from "@/utils/retry";
 
 /**
@@ -19,7 +21,7 @@ const maxWorkers = 10;
  * Drains the upload queue.
  * @returns The etags of the uploaded parts.
  */
-async function uploadWorker() {
+async function uploadWorker(uploadPart: UploadPartFunction) {
 	if (workerCount >= maxWorkers) {
 		return;
 	}
@@ -49,7 +51,11 @@ async function uploadWorker() {
  * @param priority Whether to upload the tasks in priority.
  * @returns The etags of the uploaded parts.
  */
-export function uploadParts(tasks: MultipartUploadTask[], priority = false) {
+export function uploadParts(
+	tasks: MultipartUploadTask[],
+	uploadPart: UploadPartFunction,
+	priority = false,
+) {
 	const promises = tasks.map((task) => {
 		return new Promise<{ etag: string; partNumber: number }>(
 			(resolve, reject) => {
@@ -63,7 +69,7 @@ export function uploadParts(tasks: MultipartUploadTask[], priority = false) {
 	});
 
 	for (let i = 0; i < Math.min(tasks.length, maxWorkers); i++) {
-		void uploadWorker();
+		void uploadWorker(uploadPart);
 	}
 
 	return Promise.all(promises);

@@ -1,4 +1,4 @@
-import type { WhopServerSdkOptions } from "@/sdk.server";
+import type { WhopServerSdkOptions } from "@/sdk/server-sdk-shared";
 
 export const DEFAULT_WEBSOCKET_ORIGIN = "https://ws-prod.whop.com";
 

@@ -8,6 +8,7 @@ import type {
 
 import { uploadParts } from "@/attachments/upload-parts";
 import { sum } from "@/utils/sum";
+import type { UploadPartFunction } from "./common";
 import type { PartialFileSdkExtensions } from "./partial-file-sdk-extensions";
 
 /**
@@ -22,7 +23,12 @@ async function handleUpload(
 	{
 		onProgress,
 		signal,
-	}: { onProgress?: (progress: number) => void; signal?: AbortSignal },
+		uploadPart,
+	}: {
+		onProgress?: (progress: number) => void;
+		signal?: AbortSignal;
+		uploadPart: UploadPartFunction;
+	},
 ) {
 	if (preparedFile.multipart) {
 		const loaded = Array(preparedFile.multipartUploadUrls.length).fill(0);
@@ -38,6 +44,7 @@ async function handleUpload(
 				},
 				signal,
 			})),
+			uploadPart,
 		);
 
 		return result;
@@ -56,6 +63,7 @@ async function handleUpload(
 				signal,
 			},
 		],
+		uploadPart,
 		true,
 	);
 
@@ -112,59 +120,69 @@ export interface UploadAttachmentResponse {
 	attachment: AttachmentFragment;
 }
 
-/**
- * Uploads a file.
- * @param input - The input to upload.
- * @param opts - The options to upload the file.
- * @returns The attachment.
- */
-export async function uploadAttachment(
-	this: PartialFileSdkExtensions &
-		Pick<ReturnType<typeof getSdk<RequestInit>>, "processAttachment">,
-	input: UploadFileInput,
-	{ onProgress, signal }: UploadFileOptions = {},
-): Promise<UploadAttachmentResponse> {
-	// prepare the file
-	const preparedAttachment =
-		"record" in input && "file" in input
-			? await this.PrepareAttachmentForUpload(input.file, input.record)
-			: await input;
+export function makeUploadAttachmentFunction({
+	uploadPart,
+}: {
+	uploadPart: UploadPartFunction;
+}) {
+	/**
+	 * Uploads a file.
+	 * @param input - The input to upload.
+	 * @param opts - The options to upload the file.
+	 * @returns The attachment.
+	 */
+	return async function uploadAttachment(
+		this: PartialFileSdkExtensions &
+			Pick<ReturnType<typeof getSdk<RequestInit>>, "processAttachment">,
+		input: UploadFileInput,
+		{ onProgress, signal }: UploadFileOptions = {},
+	): Promise<UploadAttachmentResponse> {
+		// prepare the file
+		const preparedAttachment =
+			"record" in input && "file" in input
+				? await this.PrepareAttachmentForUpload(input.file, input.record)
+				: await input;
 
-	// upload the file
-	const result = await handleUpload(preparedAttachment, { onProgress, signal });
-	// get the media type
-	const mediaType = getMediaType(preparedAttachment.data);
-
-	// request media processing
-	if (preparedAttachment.multipart) {
-		await this.processAttachment({
-			input: {
-				directUploadId: preparedAttachment.id,
-				mediaType,
-				multipartUploadId: preparedAttachment.multipartUploadId,
-				multipartParts: result,
-			},
+		// upload the file
+		const result = await handleUpload(preparedAttachment, {
+			onProgress,
+			signal,
+			uploadPart,
 		});
-	} else {
-		await this.processAttachment({
-			input: {
-				directUploadId: preparedAttachment.id,
-				mediaType,
-			},
+		// get the media type
+		const mediaType = getMediaType(preparedAttachment.data);
+
+		// request media processing
+		if (preparedAttachment.multipart) {
+			await this.processAttachment({
+				input: {
+					directUploadId: preparedAttachment.id,
+					mediaType,
+					multipartUploadId: preparedAttachment.multipartUploadId,
+					multipartParts: result,
+				},
+			});
+		} else {
+			await this.processAttachment({
+				input: {
+					directUploadId: preparedAttachment.id,
+					mediaType,
+				},
+			});
+		}
+
+		const attachment = await this.AnalyzeAttachment(preparedAttachment.id, {
+			signal,
 		});
-	}
 
-	const attachment = await this.AnalyzeAttachment(preparedAttachment.id, {
-		signal,
-	});
+		if (!attachment) {
+			throw new Error("Failed to analyze Attachment");
+		}
 
-	if (!attachment) {
-		throw new Error("Failed to analyze Attachment");
-	}
-
-	return {
-		directUploadId: preparedAttachment.id,
-		record: preparedAttachment.record,
-		attachment,
+		return {
+			directUploadId: preparedAttachment.id,
+			record: preparedAttachment.record,
+			attachment,
+		};
 	};
 }

@@ -1,9 +1,10 @@
+import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
+import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/graphql";
-import { DEFAULT_API_ORIGIN, wrappedFetch } from "@/sdk.common";
+import { DEFAULT_API_ORIGIN, wrappedFetch } from "@/sdk/sdk-common";
+import { sendWebsocketMessageFunction } from "@/websockets/server";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";
-import { fileSdkExtensions } from "./attachments/file-sdk-extensions";
-import { sendWebsocketMessageFunction } from "./websockets/server";
 
 /**
  * SDK options for server side use
@@ -23,13 +24,16 @@ export interface WhopServerSdkOptions {
 	websocketOrigin?: string;
 }
 
-function BaseWhopServerSdk(options: WhopServerSdkOptions) {
+function BaseWhopServerSdk(
+	options: WhopServerSdkOptions,
+	uploadFile: ReturnType<typeof makeUploadAttachmentFunction>,
+) {
 	const baseSdk = getSdk(makeRequester(options));
 
 	const SendWebsocketMessage = sendWebsocketMessageFunction(options);
 	// const ConnectToWebsocket = makeConnectToWebsocketFunction(options);
 
-	const fileSdk = fileSdkExtensions(baseSdk);
+	const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
 
 	return {
 		...baseSdk,
@@ -38,15 +42,19 @@ function BaseWhopServerSdk(options: WhopServerSdkOptions) {
 	};
 }
 
-export function WhopServerSdk(options: WhopServerSdkOptions): WhopServerSdk {
-	const baseSdk = BaseWhopServerSdk(options);
+export function makeWhopServerSdk({
+	uploadFile,
+}: { uploadFile: ReturnType<typeof makeUploadAttachmentFunction> }) {
+	return function WhopServerSdk(options: WhopServerSdkOptions): WhopServerSdk {
+		const baseSdk = BaseWhopServerSdk(options, uploadFile);
 
-	return {
-		...baseSdk,
-		withUser: (userId: string) =>
-			WhopServerSdk({ ...options, onBehalfOfUserId: userId }),
-		withCompany: (companyId: string) =>
-			WhopServerSdk({ ...options, companyId }),
+		return {
+			...baseSdk,
+			withUser: (userId: string) =>
+				WhopServerSdk({ ...options, onBehalfOfUserId: userId }),
+			withCompany: (companyId: string) =>
+				WhopServerSdk({ ...options, companyId }),
+		};
 	};
 }
 

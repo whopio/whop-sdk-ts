@@ -1,15 +1,35 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.21-canary.0",
+	"version": "0.0.21-canary.1",
 	"exports": {
 		".": {
+			"node": {
+				"import": {
+					"types": "./dist/index.node.d.mts",
+					"default": "./dist/index.node.mjs"
+				},
+				"require": {
+					"types": "./dist/index.node.d.ts",
+					"default": "./dist/index.node.js"
+				}
+			},
+			"browser": {
+				"import": {
+					"types": "./dist/index.browser.d.mts",
+					"default": "./dist/index.browser.mjs"
+				},
+				"require": {
+					"types": "./dist/index.browser.d.ts",
+					"default": "./dist/index.browser.js"
+				}
+			},
 			"import": {
-				"types": "./dist/index.d.ts",
-				"default": "./dist/index.mjs"
+				"types": "./dist/index.browser.d.mts",
+				"default": "./dist/index.browser.mjs"
 			},
 			"require": {
-				"types": "./dist/index.d.ts",
-				"default": "./dist/index.cjs"
+				"types": "./dist/index.browser.d.ts",
+				"default": "./dist/index.browser.js"
 			}
 		}
 	},
