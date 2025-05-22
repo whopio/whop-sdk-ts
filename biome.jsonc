@@ -9,6 +9,7 @@
 		"ignoreUnknown": false,
 		"ignore": [
 			"packages/api/src/codegen/**/*.ts",
+			"packages/api/src/OperationStoreClient.js",
 			"packages/*/dist/**",
 			".turbo/**"
 		]
@@ -24,7 +25,8 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		}
+		},
+		"ignore": ["packages/api/src/OperationStoreClient.js"]
 	},
 	"javascript": {
 		"formatter": {

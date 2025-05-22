@@ -4,6 +4,7 @@ import type { Requester } from "./codegen/generated-api";
 
 import { GraphQLClient } from "graphql-request";
 
+import OperationStoreClient from "./OperationStoreClient";
 import { getSdk } from "./codegen/generated-api";
 
 const DEFAULT_API_ORIGIN = "https://api.whop.com";
@@ -65,6 +66,29 @@ function makeClient(apiOptions: WhopApiOptions) {
 				} else {
 					newUrl.pathname = `${newUrl.pathname}/${req.operationName}`;
 				}
+
+				// Use Operation ID if available
+				try {
+					console.log("--------------------------------");
+					console.log(req.operationName);
+					console.log("--------------------------------");
+					const operationId = OperationStoreClient.getOperationId(
+						req.operationName,
+					);
+					console.log("--------------------------------");
+					console.log(operationId);
+					console.log("--------------------------------");
+
+					// delete req.query; // Omit the "query" param
+					req.operationId = operationId; // Add "operationId" param
+				} catch (e) {
+					// If an error occurs (e.g., operation name not found in OperationStoreClient),
+					// fall back to sending the full query.
+					console.warn(
+						`Failed to get operationId for ${req.operationName}:`,
+						e,
+					);
+				}
 			}
 			req.url = newUrl.href;
 			return req;
@@ -75,6 +99,7 @@ function makeClient(apiOptions: WhopApiOptions) {
 function getHeaders(options: WhopApiOptions) {
 	const headers = new Headers();
 	headers.set("Authorization", `Bearer ${options.appApiKey}`);
+	headers.set("x-hello-world", "hello");
 	if (options.onBehalfOfUserId)
 		headers.set("x-on-behalf-of", options.onBehalfOfUserId);
 	if (options.companyId) headers.set("x-company-id", options.companyId);

@@ -16,7 +16,9 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "pnpm run proto-codegen && graphql-codegen && tsup",
 		"check-types": "pnpm run proto-codegen && graphql-codegen && tsc --noEmit",
@@ -25,6 +27,7 @@
 	"dependencies": {
 		"graphql": "16.8.1",
 		"graphql-request": "latest",
+		"graphql-ruby-client": "^1.14.6",
 		"graphql-tag": "2.12.6",
 		"jose": "^6.0.11"
 	},
