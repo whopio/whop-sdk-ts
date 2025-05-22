@@ -33,7 +33,7 @@ export class WhopWebsocketClientServer extends WhopWebsocketClientBase {
 	}
 }
 
-export function connectToWebsocketFunction(options: WhopServerSdkOptions) {
+export function makeConnectToWebsocketFunction(options: WhopServerSdkOptions) {
 	return function connectToWebsocket(baseOptions: WebsocketClientOptionsBase) {
 		return new WhopWebsocketClientServer(baseOptions, options);
 	};

@@ -24,7 +24,7 @@ export interface WhopServerSdkOptions {
 
 export function WhopServerSdk(options: WhopServerSdkOptions) {
 	const SendWebsocketMessage = sendWebsocketMessageFunction(options);
-	// const ConnectToWebsocket = connectToWebsocketFunction(options);
+	// const ConnectToWebsocket = makeConnectToWebsocketFunction(options);
 	const sdk = {
 		...getSdk(makeRequester(options)),
 		SendWebsocketMessage,

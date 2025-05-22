@@ -55,7 +55,7 @@ function addChannelIds(
 	}
 }
 
-export function connectToWebsocketFunction() {
+export function makeConnectToWebsocketFunction() {
 	return function connectToWebsocket(options: WebsocketClientOptionsClient) {
 		return new WhopWebsocketClientBrowser(options);
 	};
