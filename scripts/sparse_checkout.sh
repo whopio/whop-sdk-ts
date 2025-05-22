@@ -71,6 +71,7 @@ function git_sparse_checkout {
 				-c http.extraHeader="Authorization: Bearer ${token}" \
 				fetch ${opts} origin ${tag}
 	 else
+	   echo "No token"
 		git -C "${dir}"           fetch ${opts} origin ${tag}
 	 fi
     git -C "${dir}" checkout ${tag}
