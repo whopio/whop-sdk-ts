@@ -11,22 +11,29 @@ import { getSdk } from "@/codegen/generated-api";
 
 const DEFAULT_API_ORIGIN = "https://api.whop.com";
 
+/**
+ * SDK options for server side use
+ */
 export interface WhopApiOptions {
+	/** The API key to use for API calls */
 	appApiKey: string;
+	/** Use this to make the API calls on behalf of a user */
 	onBehalfOfUserId?: string;
+	/** Use this to make the API calls on behalf of a company */
 	companyId?: string;
-	/**
-	 * The origin of the API. `undefined` will use the default origin while `null` will omit the origin.
-	 */
+	/** the origin of the API */
 	apiOrigin?: string;
+	/** the path of the API */
 	apiPath?: string;
 }
 
+/**
+ * SDK options for client side use
+ */
 export interface WhopApiClientOptions {
-	/**
-	 * The origin of the API. `undefined` will use the default origin while `null` will omit the origin.
-	 */
-	apiOrigin?: string | null;
+	/** the origin of the API */
+	apiOrigin?: string;
+	/** the path of the API */
 	apiPath?: string;
 }
 
@@ -44,6 +51,11 @@ type ExtendedSdk<S extends BaseSdk = BaseSdk> = S & {
 	): ReturnType<typeof analyzeAttachment>;
 };
 
+/**
+ * Extends the base SDK with the custom methods and helpers.
+ * @param sdk The base SDK
+ * @returns The extended SDK
+ */
 function extendSdk<S extends BaseSdk>(sdk: S): ExtendedSdk<S> {
 	const boundPrepareAttachmentForUpload = prepareAttachmentForUpload.bind(sdk);
 	const boundAnalyzeAttachment = analyzeAttachment.bind(sdk);
@@ -84,12 +96,16 @@ export function WhopApi(options: WhopApiOptions): ExtendedSdk & {
 	return extendSdk(sdk);
 }
 
+/**
+ * Creates a client side SDK for use in browser environments.
+ * @param options The options for the sdk
+ * @returns The client side SDK
+ */
 WhopApi.client = (options?: WhopApiClientOptions) => {
 	return extendSdk(
 		getSdk(
 			makeRequester({
 				apiPath: "/_whop/public-graphql",
-				apiOrigin: null,
 				...options,
 			}),
 		),

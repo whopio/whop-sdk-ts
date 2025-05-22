@@ -3,7 +3,7 @@ import type { FileAttachment } from "@/codegen/proto/common/attachment";
 
 /**
  * Parses a FileAttachment from the proto to an AttachmentFragment
- * @param file - The proto FileAttachment to parse
+ * @param file The proto FileAttachment to parse
  * @returns The parsed AttachmentFragment
  */
 export function parseAttachment(file: FileAttachment): AttachmentFragment {

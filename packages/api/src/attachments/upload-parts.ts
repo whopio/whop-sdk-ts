@@ -3,6 +3,9 @@ import type { MultipartUploadTask } from "@/attachments/common";
 import { uploadPart } from "@/attachments/upload-part";
 import { retry } from "@/utils/retry";
 
+/**
+ * A global queue of tasks to upload a single or multiple files in parts.
+ */
 const uploadTasks: {
 	task: MultipartUploadTask;
 	resolve: (uploadResult: { etag: string; partNumber: number }) => void;
@@ -42,8 +45,8 @@ async function uploadWorker() {
 
 /**
  * Enqueues a list of tasks to upload a file in parts.
- * @param tasks - The tasks to upload.
- * @param priority - Whether to upload the tasks in priority.
+ * @param tasks The tasks to upload.
+ * @param priority Whether to upload the tasks in priority.
  * @returns The etags of the uploaded parts.
  */
 export function uploadParts(tasks: MultipartUploadTask[], priority = false) {

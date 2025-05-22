@@ -4,8 +4,8 @@ import {
 } from "@/attachments/common";
 
 /**
- * Uploads a part of a file.
- * @param task - The task to upload.
+ * Uploads a part of a file in a browser environment.
+ * @param task The task to upload.
  * @returns The etag of the uploaded part.
  */
 export async function uploadPartImpl({

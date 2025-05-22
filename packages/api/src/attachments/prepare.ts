@@ -6,8 +6,8 @@ import { md5 } from "@/utils/md5";
 
 /**
  * Prepares a file for upload.
- * @param data - The file to upload.
- * @param record - The record to upload the file to.
+ * @param data The file to upload.
+ * @param record The record to upload the file to.
  * @returns The prepared file.
  */
 export async function prepareAttachmentForUpload(

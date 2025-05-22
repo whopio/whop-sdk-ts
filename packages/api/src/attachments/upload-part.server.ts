@@ -7,8 +7,8 @@ import { Readable } from "node:stream";
 import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 /**
- * Uploads a part of a file.
- * @param task - The task to upload.
+ * Uploads a part of a file in a node.js environment.
+ * @param task The task to upload.
  * @returns The etag of the uploaded part.
  */
 export async function uploadPartImpl({

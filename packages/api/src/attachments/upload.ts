@@ -11,9 +11,9 @@ import { sum } from "@/utils/sum";
 
 /**
  * Uploads a prepared file, automatically handling multipart uploads.
- * @param preparedFile - The prepared file to upload.
- * @param onProgress - The callback to call when the progress changes.
- * @param signal - The signal to abort the upload.
+ * @param preparedFile The prepared file to upload.
+ * @param onProgress The callback to call when the progress changes.
+ * @param signal The signal to abort the upload.
  * @returns The etags of the uploaded parts.
  */
 async function handleUpload(
@@ -61,6 +61,9 @@ async function handleUpload(
 	return [];
 }
 
+/**
+ * The file input for the attachment upload.
+ */
 type UploadFileInput =
 	| {
 			file: File | Blob;
@@ -82,6 +85,9 @@ function getMediaType(data: File | Blob): Media {
 	}
 }
 
+/**
+ * Additional options for the attachment upload.
+ */
 interface UploadFileOptions {
 	/**
 	 * This callback is called with the progress of the upload.

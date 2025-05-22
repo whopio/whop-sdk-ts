@@ -1,5 +1,12 @@
 import type { WhopSdk } from "@/api";
 
+/**
+ * Analyzes an attachment.
+ * @param this The SDK instance.
+ * @param signedId The signed ID of the attachment.
+ * @param opts The options for the attachment.
+ * @returns The attachment.
+ */
 export async function analyzeAttachment(
 	this: Pick<WhopSdk, "fetchAttachment">,
 	signedId: string,
