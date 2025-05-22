@@ -64,6 +64,8 @@ function git_sparse_checkout {
     done
     git -C "${dir}" remote add origin ${url}
     if [[ -n "$token" ]]; then
+	   git config --global user.name  "baked-dev"
+		git config --global user.email "tristan@whop.com"
 		git -C "${dir}" \
 				-c http.extraHeader="Authorization: Bearer ${token}" \
 				fetch ${opts} origin ${tag}
