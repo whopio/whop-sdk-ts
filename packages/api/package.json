@@ -1,6 +1,6 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.21-canary.1",
+	"version": "0.0.21-canary.2",
 	"exports": {
 		".": {
 			"node": {
