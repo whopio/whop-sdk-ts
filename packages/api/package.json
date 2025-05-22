@@ -24,7 +24,7 @@
 		"dev": "concurrently \"pnpm dev:tsup\" \"pnpm dev:graphql\"",
 		"dev:tsup": "tsup --watch",
 		"dev:graphql": "graphql-codegen --watch",
-		"check-types": "pnpm run proto-codegen && graphql-codegen && pnpm run lint:fix && tsc --noEmit",
+		"check-types": "tsc --noEmit",
 		"lint:fix": "biome check --write --unsafe"
 	},
 	"dependencies": {

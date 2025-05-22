@@ -18,12 +18,17 @@
 			"outputs": ["src/codegen/**", "!src/codegen/proto/**"]
 		},
 		"lint:fix": {
-			"cache": false
+			"cache": false,
+			"dependsOn": ["build"]
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true,
 			"dependsOn": ["build"]
+		},
+		"check-types": {
+			"cache": false,
+			"dependsOn": ["lint:fix"]
 		}
 	}
 }
