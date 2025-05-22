@@ -9,7 +9,7 @@ PROTO_FILES=$(find ../../protos/protos \
   ! -name "profiler.proto" \
   ! -name "data_platform.proto")
 
-protoc \
+pnpm protoc \
   --plugin=./node_modules/.bin/protoc-gen-ts_proto \
   --ts_proto_out=./src/codegen/proto \
   --proto_path=../../protos/protos \
@@ -22,4 +22,9 @@ protoc \
   --ts_proto_opt=enumsAsLiterals=true \
   $PROTO_FILES
 
-printf '\n ✔︎ Generated typescript from protos successfully ✔︎\n\n'
+if [ $? -eq 0 ]; then
+  printf '\n ✔︎ Generated typescript from protos successfully ✔︎\n\n'
+else
+  printf '\n ❌ Failed to generate typescript from protos ❌\n\n'
+  exit 1
+fi
