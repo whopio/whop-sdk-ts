@@ -2,6 +2,7 @@ import { type Requester, getSdk } from "@/codegen/generated-api";
 import { DEFAULT_API_ORIGIN, extendSdk, wrappedFetch } from "@/sdk.common";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";
+import { sendWebsocketMessageFunction } from "./websockets/server";
 
 /**
  * SDK options for server side use
@@ -17,11 +18,17 @@ export interface WhopServerSdkOptions {
 	apiOrigin?: string;
 	/** the path of the API */
 	apiPath?: string;
+	/** the origin of the server to server websocket api */
+	websocketOrigin?: string;
 }
 
 export function WhopServerSdk(options: WhopServerSdkOptions) {
+	const SendWebsocketMessage = sendWebsocketMessageFunction(options);
+	// const ConnectToWebsocket = makeConnectToWebsocketFunction(options);
 	const sdk = {
 		...getSdk(makeRequester(options)),
+		SendWebsocketMessage,
+		// ConnectToWebsocket,
 		withUser(userId: string) {
 			return extendSdk(
 				WhopServerSdk({

@@ -14,4 +14,7 @@ export { makeWebhookValidator, type WhopWebhookRequestBody } from "@/webhooks";
 export type {
 	ReceivableWebsocketMessage,
 	SendableWebsocketMessage,
-} from "@/websockets";
+	WebsocketMessageHandler,
+	WebsocketStatus,
+	WebsocketStatusHandler,
+} from "@/websockets/client.common";
