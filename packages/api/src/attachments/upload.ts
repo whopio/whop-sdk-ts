@@ -1,5 +1,4 @@
 import type { WhopSdk } from "@/api";
-import type { MultipartUploadTask } from "@/attachments/common";
 import type { PreparedAttachment } from "@/attachments/prepare";
 import type {
 	AttachableRecords,
@@ -7,72 +6,8 @@ import type {
 	Media,
 } from "@/codegen/generated-api";
 
-import { uploadPart } from "@/attachments/upload-part";
-import { retry } from "@/utils/retry";
+import { uploadParts } from "@/attachments/upload-parts";
 import { sum } from "@/utils/sum";
-
-const uploadTasks: {
-	task: MultipartUploadTask;
-	resolve: (uploadResult: { etag: string; partNumber: number }) => void;
-	reject: (error: unknown) => void;
-}[] = [];
-
-let workerCount = 0;
-const maxWorkers = 10;
-
-/**
- * Drains the upload queue.
- * @returns The etags of the uploaded parts.
- */
-async function uploadWorker() {
-	if (workerCount >= maxWorkers) {
-		return;
-	}
-
-	workerCount++;
-
-	while (uploadTasks.length > 0) {
-		const task = uploadTasks.shift();
-		if (!task) {
-			continue;
-		}
-
-		try {
-			const etag = await retry(uploadPart, 10, task.task.signal, task.task);
-			task.resolve({ etag, partNumber: task.task.partNumber });
-		} catch (e) {
-			task.reject(e);
-		}
-	}
-
-	workerCount--;
-}
-
-/**
- * Enqueues a list of tasks to upload a file in parts.
- * @param tasks - The tasks to upload.
- * @param priority - Whether to upload the tasks in priority.
- * @returns The etags of the uploaded parts.
- */
-function uploadParts(tasks: MultipartUploadTask[], priority = false) {
-	const promises = tasks.map((task) => {
-		return new Promise<{ etag: string; partNumber: number }>(
-			(resolve, reject) => {
-				if (priority) {
-					uploadTasks.unshift({ task, resolve, reject });
-				} else {
-					uploadTasks.push({ task, resolve, reject });
-				}
-			},
-		);
-	});
-
-	for (let i = 0; i < Math.min(tasks.length, maxWorkers); i++) {
-		void uploadWorker();
-	}
-
-	return Promise.all(promises);
-}
 
 /**
  * Uploads a prepared file, automatically handling multipart uploads.
@@ -88,7 +23,6 @@ async function handleUpload(
 		signal,
 	}: { onProgress?: (progress: number) => void; signal?: AbortSignal },
 ) {
-	console.log(preparedFile);
 	if (preparedFile.multipart) {
 		const loaded = Array(preparedFile.multipartUploadUrls.length).fill(0);
 
