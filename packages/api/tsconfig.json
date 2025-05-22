@@ -1,23 +1,23 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["ESNext", "dom", "DOM.Iterable"],
-    "types": ["node"],
-    "module": "ESNext",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "moduleResolution": "bundler",
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "strictNullChecks": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "exclude": ["node_modules"],
-  "include": ["**/*.ts"]
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": ["ESNext", "dom", "DOM.Iterable"],
+		"types": ["node"],
+		"module": "ESNext",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"moduleResolution": "bundler",
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"strictNullChecks": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"exclude": ["node_modules"],
+	"include": ["**/*.ts"]
 }
