@@ -11,7 +11,7 @@ export async function SectionGetUserDetails() {
 	}
 
 	const user = (
-		await whopApi.getPublicUser({
+		await whopApi.getUser({
 			userId: userTokenData.userId,
 		})
 	).publicUser;
