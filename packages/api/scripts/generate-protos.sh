@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Downloading protos..."
 
-./scripts/sparse_checkout.sh ../../protos/protos/
+../../scripts/pull_protos.sh
 
 if [ $? -eq 0 ]; then
   printf '\n ✔︎ Downloaded protos successfully ✔︎\n\n'
