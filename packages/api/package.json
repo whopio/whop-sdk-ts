@@ -19,7 +19,7 @@
 	"files": ["dist"],
 	"scripts": {
 		"build": "pnpm run proto-codegen && graphql-codegen && pnpm run lint:fix && tsup",
-		"check-types": "pnpm run proto-codegen && graphql-codegen && tsc --noEmit",
+		"check-types": "pnpm run proto-codegen && graphql-codegen && pnpm run lint:fix && tsc --noEmit",
 		"proto-codegen": "bash ./scripts/generate-protos.sh",
 		"lint:fix": "biome check --write --unsafe"
 	},

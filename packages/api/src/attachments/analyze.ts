@@ -1,4 +1,4 @@
-import type { ExtendedSdk } from "@/sdk.common";
+import type { BaseSdk } from "./partial-file-sdk-extensions";
 
 /**
  * Analyzes an attachment.
@@ -8,7 +8,7 @@ import type { ExtendedSdk } from "@/sdk.common";
  * @returns The attachment.
  */
 export async function analyzeAttachment(
-	this: Pick<ExtendedSdk, "FetchAttachment">,
+	this: Pick<BaseSdk, "FetchAttachment">,
 	signedId: string,
 	opts?: {
 		signal?: AbortSignal;

@@ -2,7 +2,7 @@ import type { getSdk } from "@/codegen/generated-api";
 import { analyzeAttachment } from "./analyze";
 import { prepareAttachmentForUpload } from "./prepare";
 
-type BaseSdk = ReturnType<typeof getSdk<RequestInit>>;
+export type BaseSdk = ReturnType<typeof getSdk<RequestInit>>;
 
 export function partialFileSdkExtensions(baseSdk: BaseSdk) {
 	const PrepareAttachmentForUpload = prepareAttachmentForUpload.bind(baseSdk);
