@@ -7,12 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": [
-			"packages/api/src/codegen/**/*.ts",
-			"packages/api/src/OperationStoreClient.js",
-			"packages/*/dist/**",
-			".turbo/**"
-		]
+		"ignore": ["packages/*/dist/**", ".turbo/**"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -25,9 +20,23 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		},
-		"ignore": ["packages/api/src/OperationStoreClient.js"]
+		}
 	},
+	"overrides": [
+		{
+			"include": ["packages/api/src/codegen/**"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noBannedTypes": "off"
+					},
+					"suspicious": {
+						"noExplicitAny": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
