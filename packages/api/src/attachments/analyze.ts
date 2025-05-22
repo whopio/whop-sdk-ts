@@ -1,4 +1,4 @@
-import type { WhopSdk } from "@/api";
+import type { ExtendedSdk } from "@/sdk.common";
 
 /**
  * Analyzes an attachment.
@@ -8,14 +8,14 @@ import type { WhopSdk } from "@/api";
  * @returns The attachment.
  */
 export async function analyzeAttachment(
-	this: Pick<WhopSdk, "fetchAttachment">,
+	this: Pick<ExtendedSdk, "FetchAttachment">,
 	signedId: string,
 	opts?: {
 		signal?: AbortSignal;
 	},
 ) {
 	while (!opts?.signal?.aborted) {
-		const attachment = await this.fetchAttachment(
+		const attachment = await this.FetchAttachment(
 			{ id: signedId },
 			{ signal: opts?.signal },
 		)

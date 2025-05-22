@@ -1,5 +1,5 @@
-query fetchAttachment($id: ID!) {
-  attachment(id: $id) {
-    ...Attachment
-  }
+query FetchAttachment($id: ID!) {
+	attachment(id: $id) {
+		...Attachment
+	}
 }

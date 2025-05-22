@@ -1,4 +1,4 @@
-import type { WhopSdk } from "@/api";
+import type { ExtendedSdk } from "@/sdk.common";
 import type { PreparedAttachment } from "@/attachments/prepare";
 import type {
 	AttachableRecords,
@@ -107,8 +107,8 @@ interface UploadFileOptions {
  */
 export async function uploadAttachment(
 	this: Pick<
-		WhopSdk,
-		"prepareAttachmentForUpload" | "processMedia" | "analyzeAttachment"
+		ExtendedSdk,
+		"PrepareAttachmentForUpload" | "ProcessAttachment" | "AnalyzeAttachment"
 	>,
 	input: UploadFileInput,
 	{ onProgress, signal }: UploadFileOptions = {},
@@ -120,7 +120,7 @@ export async function uploadAttachment(
 	// prepare the file
 	const preparedAttachment =
 		"record" in input && "file" in input
-			? await this.prepareAttachmentForUpload(input.file, input.record)
+			? await this.PrepareAttachmentForUpload(input.file, input.record)
 			: await input;
 
 	// upload the file
@@ -130,7 +130,7 @@ export async function uploadAttachment(
 
 	// request media processing
 	if (preparedAttachment.multipart) {
-		await this.processMedia({
+		await this.ProcessAttachment({
 			input: {
 				directUploadId: preparedAttachment.id,
 				mediaType,
@@ -139,7 +139,7 @@ export async function uploadAttachment(
 			},
 		});
 	} else {
-		await this.processMedia({
+		await this.ProcessAttachment({
 			input: {
 				directUploadId: preparedAttachment.id,
 				mediaType,
@@ -147,7 +147,7 @@ export async function uploadAttachment(
 		});
 	}
 
-	const attachment = await this.analyzeAttachment(preparedAttachment.id, {
+	const attachment = await this.AnalyzeAttachment(preparedAttachment.id, {
 		signal,
 	});
 

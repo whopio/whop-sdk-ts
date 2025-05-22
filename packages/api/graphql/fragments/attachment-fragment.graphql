@@ -1,31 +1,31 @@
 fragment Attachment on AttachmentInterface {
-  __typename
-  id
-  signedId
-  analyzed
-  byteSizeV2
-  filename
-  contentType
-  source(variant: original) {
-    url
-  }
-  ... on ImageAttachment {
-    height
-    width
-    blurhash
-    aspectRatio
-  }
-  ... on VideoAttachment {
-    height
-    width
-    duration
-    aspectRatio
-    preview(variant: original) {
-      url
-    }
-  }
-  ... on AudioAttachment {
-    duration
-    waveformUrl
-  }
+	__typename
+	id
+	signedId
+	analyzed
+	byteSizeV2
+	filename
+	contentType
+	source(variant: original) {
+		url
+	}
+	... on ImageAttachment {
+		height
+		width
+		blurhash
+		aspectRatio
+	}
+	... on VideoAttachment {
+		height
+		width
+		duration
+		aspectRatio
+		preview(variant: original) {
+			url
+		}
+	}
+	... on AudioAttachment {
+		duration
+		waveformUrl
+	}
 }
