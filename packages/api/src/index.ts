@@ -12,3 +12,4 @@ export type {
 	ReceivableWebsocketMessage,
 	SendableWebsocketMessage,
 } from "./websockets";
+export type * from "./codegen/generated-api";

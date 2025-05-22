@@ -1,21 +1,21 @@
 {
-	"name": "whop-sdk-ts",
-	"private": true,
-	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev",
-		"lint": "biome check .",
-		"lint:fix": "biome check --write --unsafe .",
-		"check-types": "turbo run check-types"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"turbo": "^2.5.3",
-		"typescript": "5.8.2"
-	},
-	"packageManager": "pnpm@9.15.9",
-	"engines": {
-		"node": "22.x",
-		"pnpm": "9.15.9"
-	}
+  "name": "whop-sdk-ts",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write --unsafe .",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.5.3",
+    "typescript": "5.8.2"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": "22.x",
+    "pnpm": "9.15.9"
+  }
 }
