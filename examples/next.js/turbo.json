@@ -9,7 +9,7 @@
 				"WHOP_API_KEY",
 				"WHOP_WEBHOOK_SECRET",
 				"MY_USER_ID",
-				"WHOP_APP_ID"
+				"NEXT_PUBLIC_WHOP_APP_ID"
 			]
 		},
 		"dev": {

@@ -1,67 +1,41 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 
-export async function SectionRequestAPayment({
+import { requestPayment } from "@/lib/actions/request-payment";
+import { iframeSdk } from "@/lib/iframe-sdk";
+import { use, useState } from "react";
+
+export function SectionRequestAPayment({
 	params,
 }: {
 	params: Promise<{ experienceId: string }>;
 }) {
-	const { experienceId } = await params;
-	const experience = await whopApi.getExperience({ experienceId });
-	const companyId = experience.experience.company.id;
-
-	async function requestPayment(formData: FormData) {
-		"use server";
-		const requestHeaders = await headers();
-		const userTokenData = await verifyUserToken(requestHeaders);
-		const amount = formData.get("amount");
-		const description = formData.get("description");
-
-		if (
-			!userTokenData?.userId ||
-			!amount ||
-			!description ||
-			typeof userTokenData?.userId !== "string" ||
-			typeof amount !== "string" ||
-			typeof description !== "string"
-		) {
-			throw new Error("User ID, amount, and description are required");
-		}
-
-		console.log({
-			userId: userTokenData.userId,
-			amount: Number.parseInt(amount),
-			description,
-			currency: "usd",
-			metadata: {
-				creditsPurchased: "100",
-				tier: "bronze",
-			},
-		});
-
-		const response = await whopApi.withCompany(companyId).chargeUser({
-			input: {
-				userId: userTokenData.userId,
-				amount: Number.parseInt(amount),
-				description,
-				currency: "usd",
-				metadata: {
-					creditsPurchased: "100",
-					tier: "bronze",
-				},
-			},
-		});
-
-		// Open the payment response URL in a new tab
-		if (response.chargeUser?.checkoutSession?.purchaseUrl) {
-			redirect(response.chargeUser.checkoutSession.purchaseUrl);
-		}
-	}
+	const { experienceId } = use(params);
+	const [receiptId, setReceiptId] = useState<string>();
+	const [error, setError] = useState<string>();
 
 	return (
 		<div>
-			<form action={requestPayment} className="flex flex-col gap-4">
+			<form
+				action={async (data) => {
+					const planId = await requestPayment(data);
+
+					if (planId) {
+						const res = await iframeSdk.inAppPurchase({
+							line_item_id: planId,
+						});
+
+						if (res.status === "ok") {
+							setReceiptId(res.data.receipt_id);
+							setError(undefined);
+						} else {
+							setReceiptId(undefined);
+							setError(res.error);
+						}
+					}
+				}}
+				className="flex flex-col gap-4"
+			>
+				<input type="hidden" name="experienceId" value={experienceId} />
 				<div className="flex gap-2 items-center">
 					<input
 						className="w-full border border-gray-300 rounded-md p-2"
@@ -86,6 +60,18 @@ export async function SectionRequestAPayment({
 				>
 					Request Payment
 				</button>
+
+				{receiptId && (
+					<div>
+						<p>Receipt ID: {receiptId}</p>
+					</div>
+				)}
+
+				{error && (
+					<div>
+						<p>Error: {error}</p>
+					</div>
+				)}
 			</form>
 		</div>
 	);
