@@ -2,6 +2,8 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 import { config as dotenvConfig } from "dotenv";
 
+import { Biome, Distribution } from "@biomejs/js-api";
+
 dotenvConfig({
 	path: [".env.local", ".env.development"],
 });
@@ -27,7 +29,7 @@ const config: CodegenConfig = {
 	},
 	documents: "./graphql/**/*.graphql",
 	generates: {
-		"src/codegen/generated-api.ts": {
+		"src/codegen/graphql/index.ts": {
 			plugins: [
 				"typescript",
 				"typescript-operations",
@@ -53,6 +55,23 @@ const config: CodegenConfig = {
 					Requirements: "Record<string, unknown>",
 				},
 			},
+		},
+	},
+	hooks: {
+		beforeOneFileWrite: async (filePath: string, content: string) => {
+			const biome = await Biome.create({
+				distribution: Distribution.NODE,
+			});
+			const formatted = biome.formatContent(content, {
+				filePath,
+			});
+
+			const result = biome.lintContent(formatted.content, {
+				filePath,
+				fixFileMode: "SafeAndUnsafeFixes",
+			});
+
+			return result.content;
 		},
 	},
 };
