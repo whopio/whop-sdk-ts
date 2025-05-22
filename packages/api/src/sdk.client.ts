@@ -17,10 +17,10 @@ export interface WhopClientSdkOptions {
 
 export function WhopClientSdk(options?: WhopClientSdkOptions) {
 	const baseSdk = getSdk(
-		makeRequester({
-			apiPath: "/_whop/public-graphql",
-			...options,
-		}),
+	makeRequester({
+		apiPath: "/_whop/public-graphql",
+		...options,
+	}),
 	);
 
 	const fileSdk = fileSdkExtensions(baseSdk);
