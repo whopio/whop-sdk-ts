@@ -1,4 +1,4 @@
-import type { getSdk } from "@/codegen/generated-api";
+import type { getSdk } from "@/codegen/graphql";
 import { analyzeAttachment } from "./analyze";
 import { prepareAttachmentForUpload } from "./prepare";
 

@@ -1,6 +1,6 @@
 import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
 import type { makeUploadAttachmentFunction } from "@/attachments/upload";
-import { type Requester, getSdk } from "@/codegen/generated-api";
+import { type Requester, getSdk } from "@/codegen/graphql";
 import { DEFAULT_API_ORIGIN, wrappedFetch } from "@/sdk/sdk-common";
 import { sendWebsocketMessageFunction } from "@/websockets/server";
 import type { DocumentNode } from "graphql";
