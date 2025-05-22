@@ -2,11 +2,11 @@
 	"name": "whop-sdk-ts",
 	"private": true,
 	"scripts": {
-		"build": "turbo run build",
+		"build": "turbo build",
+		"check-types": "turbo run check-types",
 		"dev": "turbo run dev",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write --unsafe .",
-		"check-types": "turbo run check-types"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
