@@ -10,7 +10,8 @@
 			"env": ["BUILD_GRAPHQL_ORIGIN"]
 		},
 		"build:proto": {
-			"cache": false
+			"cache": false,
+			"env": ["GITHUB_TOKEN"]
 		},
 		"build:graphql": {
 			"cache": true,

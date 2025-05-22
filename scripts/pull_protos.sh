@@ -6,6 +6,19 @@ cd $SCRIPT_DIR/../
 
 rm -rf protos/
 mkdir protos
-./scripts/sparse_checkout.sh https://github.com/whopio/whop-proto.git main protos -- protos/
+if [ -n "$GITHUB_TOKEN" ]; then
+   echo "Using token: ${GITHUB_TOKEN:0:15}"
+	./scripts/sparse_checkout.sh "https://${GITHUB_TOKEN}@github.com/whopio/whop-proto.git" main protos -- protos/
+else
+	echo "Not using token"
+	./scripts/sparse_checkout.sh "https://github.com/whopio/whop-proto.git" main protos -- protos/
+fi
+
+if [ $? -eq 0 ]; then
+  printf '\n ✔︎ Downloaded protos successfully ✔︎\n\n'
+else
+  printf '\n ❌ Failed to download protos ❌\n\n'
+  exit 1
+fi
 
 cd $CURRENT_DIR
