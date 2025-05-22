@@ -1,0 +1,5 @@
+query FetchAttachment($id: ID!) {
+	attachment(id: $id) {
+		...Attachment
+	}
+}

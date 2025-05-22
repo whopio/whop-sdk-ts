@@ -1,0 +1,14 @@
+mutation UploadMedia($input: DirectUploadInput!) {
+	mediaDirectUpload(input: $input) {
+		id
+
+		headers
+		uploadUrl
+
+		multipartUploadId
+		multipartUploadUrls {
+			partNumber
+			url
+		}
+	}
+}
