@@ -1,6 +1,6 @@
-import type { WhopApiOptions } from "../api";
+import type { WhopServerSdkOptions } from "@/sdk.server";
 
-const DEFAULT_WEBSOCKET_ORIGIN = "https://ws-prod.whop.com";
+export const DEFAULT_WEBSOCKET_ORIGIN = "https://ws-prod.whop.com";
 
 type SendWebsocketMessageInput = {
 	message: string;
@@ -17,7 +17,7 @@ type SendWebsocketMessageInput = {
 		| "everyone";
 };
 
-export function sendWebsocketMessageFunction(apiOptions: WhopApiOptions) {
+export function sendWebsocketMessageFunction(apiOptions: WhopServerSdkOptions) {
 	const origin = apiOptions.websocketOrigin ?? DEFAULT_WEBSOCKET_ORIGIN;
 	const path = "/v1/websockets/send";
 	const url = new URL(path, origin);
@@ -40,7 +40,5 @@ export function sendWebsocketMessageFunction(apiOptions: WhopApiOptions) {
 		if (!data.ok) {
 			throw new Error("Failed to send websocket message");
 		}
-
-		return data;
 	};
 }

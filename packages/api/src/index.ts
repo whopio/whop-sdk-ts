@@ -10,11 +10,10 @@ export {
 	type VerifyUserTokenOptions,
 } from "@/verify-user-token";
 export { makeWebhookValidator, type WhopWebhookRequestBody } from "@/webhooks";
-export {
-	WhopWebsocketClient,
-	type ReceivableWebsocketMessage,
-	type SendableWebsocketMessage,
-	type WebsocketMessageHandler,
-	type WebsocketStatus,
-	type WebsocketStatusHandler,
-} from "@/websockets/client";
+export type {
+	ReceivableWebsocketMessage,
+	SendableWebsocketMessage,
+	WebsocketMessageHandler,
+	WebsocketStatus,
+	WebsocketStatusHandler,
+} from "@/websockets/client.common";

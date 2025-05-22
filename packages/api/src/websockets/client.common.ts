@@ -11,73 +11,32 @@ export type WebsocketMessageHandler = (
 ) => unknown;
 export type WebsocketStatusHandler = (status: WebsocketStatus) => unknown;
 
-export type WebsocketClientOptionsBase = {
-	/// The origin of the API
-	apiOrigin?: string | null;
-
-	/// The path used to connect to the websocket
-	websocketPath?:
-		| "/v1/websockets/connect"
-		| "/_whop/ws/v1/websockets/connect"
-		| null;
-
+export interface WebsocketClientOptionsBase {
 	/// Called when the connection state of the websocket changes
 	onStatusChange?: WebsocketStatusHandler;
 
 	/// Called when a message is received from the websocket
 	onMessage?: WebsocketMessageHandler;
-};
+}
 
-export type WebsocketClientOptionsClient = {
-	/// The mode of the websocket client. This will set the origin and path correctly.
-	mode?: "client";
-};
-
-export type WebsocketClientOptionsServer = {
-	/// The mode of the websocket client. This will set the origin and path correctly.
-	mode: "server";
-
-	/// Your app API key.
-	apiKey: string;
-
-	/// The user ID to connect to the websocket as
-	userId: string;
-};
-
-export type WebsocketClientOptions =
-	| (WebsocketClientOptionsBase & WebsocketClientOptionsClient)
-	| (WebsocketClientOptionsBase & WebsocketClientOptionsServer);
-
-export class WhopWebsocketClient {
+export class WhopWebsocketClientBase {
 	private websocket: WebSocket | null = null;
 	private failedConnectionAttempts = 0;
 	private status: WebsocketStatus = "disconnected";
 	private onMessage: WebsocketMessageHandler;
 	private onStatusChange: WebsocketStatusHandler;
-
-	private apiOrigin: string | null;
-	private websocketPath: string;
-	private headers?: Record<string, string>;
-
 	private wantsToBeConnected = false;
 
-	constructor(options: WebsocketClientOptions) {
+	constructor(options: WebsocketClientOptionsBase) {
 		this.onMessage = options.onMessage ?? (() => {});
 		this.onStatusChange = options.onStatusChange ?? (() => {});
-
-		this.apiOrigin = options.apiOrigin ?? defaultWebsocketOrigin(options.mode);
-		this.websocketPath =
-			options.websocketPath ?? defaultWebsocketPath(options.mode);
-
-		if (options.mode === "server") {
-			this.headers = {
-				Authorization: `Bearer ${options.apiKey}`,
-				"x-on-behalf-of": options.userId,
-			};
-		}
 	}
 
-	connect() {
+	protected makeWebsocket(): WebSocket {
+		throw new Error("Not implemented in base class");
+	}
+
+	public connect() {
 		if (this.websocket) {
 			this.disconnect();
 		}
@@ -85,10 +44,8 @@ export class WhopWebsocketClient {
 		this.wantsToBeConnected = true;
 
 		this.setStatus("connecting");
-		const url = `${this.apiOrigin ?? ""}${this.websocketPath}`;
-		console.log("[WhopWebsocketClient] Connecting to", url);
-		const options = this.headers ? { headers: this.headers } : undefined;
-		const websocket = new WebSocket(url, options);
+		console.log("[WhopWebsocketClient] Connecting to websocket");
+		const websocket = this.makeWebsocket();
 		this.websocket = websocket;
 
 		websocket.onopen = () => {
@@ -122,7 +79,7 @@ export class WhopWebsocketClient {
 		};
 	}
 
-	disconnect() {
+	public disconnect() {
 		if (this.websocket) {
 			this.websocket.onopen = null;
 			this.websocket.onmessage = null;
@@ -133,6 +90,14 @@ export class WhopWebsocketClient {
 		}
 
 		this.wantsToBeConnected = false;
+	}
+
+	public send(message: SendableWebsocketMessage) {
+		if (!this.websocket) {
+			throw new Error("Websocket not connected");
+		}
+
+		this.websocket.send(JSON.stringify(message));
 	}
 
 	private setStatus(status: WebsocketStatus) {
@@ -160,22 +125,4 @@ export class WhopWebsocketClient {
 	private calculateBackoff(failedConnectionAttempts: number) {
 		return Math.min(50 * 2 ** failedConnectionAttempts, 1000 * 60);
 	}
-}
-
-function defaultWebsocketOrigin(mode: WebsocketClientOptions["mode"]) {
-	if (mode === "server") {
-		return "wss://ws-prod.whop.com";
-	}
-
-	return null;
-}
-
-function defaultWebsocketPath(
-	mode: WebsocketClientOptions["mode"],
-): NonNullable<WebsocketClientOptions["websocketPath"]> {
-	if (mode === "server") {
-		return "/v1/websockets/connect";
-	}
-
-	return "/_whop/ws/v1/websockets/connect";
 }
