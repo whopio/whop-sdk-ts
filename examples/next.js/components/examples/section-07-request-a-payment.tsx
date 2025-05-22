@@ -8,7 +8,7 @@ export async function SectionRequestAPayment({
 	params: Promise<{ experienceId: string }>;
 }) {
 	const { experienceId } = await params;
-	const experience = await whopApi.GetExperience({ experienceId });
+	const experience = await whopApi.getExperience({ experienceId });
 	const companyId = experience.experience.company.id;
 
 	async function requestPayment(formData: FormData) {
@@ -40,7 +40,7 @@ export async function SectionRequestAPayment({
 			},
 		});
 
-		const response = await whopApi.withCompany(companyId).ChargeUser({
+		const response = await whopApi.withCompany(companyId).chargeUser({
 			input: {
 				userId: userTokenData.userId,
 				amount: Number.parseInt(amount),
