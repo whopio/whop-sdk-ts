@@ -1,0 +1,6 @@
+query checkIfUserHasAccessToAccessPass($accessPassId: ID!, $userId: ID) {
+	hasAccessToAccessPass(accessPassId: $accessPassId, userId: $userId) {
+		hasAccess
+		accessLevel
+	}
+}

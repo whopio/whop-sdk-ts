@@ -1,4 +1,4 @@
-query GetAccessPassDetails($accessPassId: ID!) {
+query getAccessPass($accessPassId: ID!) {
 	accessPass: publicAccessPass(id: $accessPassId) {
 		...AccessPassFragment
 		bannerImage {

@@ -1,4 +1,4 @@
-import { type Requester, getSdk } from "@/codegen/generated-api";
+import { type Requester, getSdk } from "@/codegen/graphql";
 import { wrappedFetch } from "@/sdk.common";
 import type { DocumentNode } from "graphql";
 import { GraphQLClient, type Variables } from "graphql-request";

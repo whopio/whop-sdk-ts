@@ -1,0 +1,6 @@
+mutation findOrCreateForum($input: CreateForumInput!) {
+	createForum(input: $input) {
+		id
+		link
+	}
+}
