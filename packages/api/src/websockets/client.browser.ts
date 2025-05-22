@@ -48,6 +48,7 @@ function addChannelIds(
 
 	if (typeof channels === "string" && channels.length > 0) {
 		searchParams.set(key, channels);
+		return;
 	}
 
 	for (const channel of channels) {
