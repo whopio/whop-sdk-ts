@@ -1,0 +1,67 @@
+@layer theme, base, frosted_ui, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "frosted-ui/styles.css" layer(frosted_ui);
+
+@config '../../tailwind.config.js';
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+  --default-font-family: var(--font-inter), sans-serif;
+}
+
+.frosted-ui {
+  --default-font-family: var(--font-inter), sans-serif;
+}
+
+#pencil {
+  position: relative;
+  width: 28px;
+  height: 40px;
+  background-color: var(--pencil-color);
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4) 0%,
+    transparent,
+    transparent,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+}
+
+#pencil-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1/1;
+  transform: translateY(-100%);
+  background: radial-gradient(
+      circle at top center,
+      var(--pencil-color) 0%,
+      var(--pencil-color) 12px,
+      transparent 12px
+    ),
+    conic-gradient(
+      from 45deg at 50% 50%,
+      #000 0deg,
+      #000 90deg,
+      #333 90deg,
+      #333 180deg,
+      #000 180deg,
+      #000 270deg,
+      #333 270deg,
+      #333 360deg
+    );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+#pencil-eraser {
+  width: 10px;
+  height: 10px;
+}

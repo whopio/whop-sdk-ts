@@ -1,0 +1,36 @@
+{
+  "name": "my-first-whop-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "whop-proxy": "whop-proxy"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.6",
+    "@whop-apps/dev-proxy": "0.0.1-canary.110",
+    "@whop-apps/sdk": "0.0.1-canary.111",
+    "@whop/api": "^0.0.20",
+    "balloons-js": "^0.0.3",
+    "frosted-ui": "0.0.1-canary.73",
+    "next": "15.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "simplify-js": "^1.2.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.7",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.2",
+    "tailwindcss": "4.1.7",
+    "typescript": "^5"
+  }
+}
