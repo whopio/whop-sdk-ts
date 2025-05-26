@@ -1,5 +1,5 @@
 ---
-title: Chatbots
+title: Chat bot
 description: "Build an chat bot on Whop that can participate in chats and forums."
 ---
 
@@ -53,7 +53,7 @@ async def connect_to_websocket():
     try:
         async with websockets.connect(uri, additional_headers=headers) as websocket:
             print(f"Successfully connected to {uri}")
-            
+
             # Keep the connection alive and listen for messages
             while True:
                 try:
@@ -148,7 +148,7 @@ payload = {
 }
 
 response = requests.post(
-    "https://api.whop.com/public-graphql", 
+    "https://api.whop.com/public-graphql",
     headers=headers,    # use the same headers as before
     json=payload
 )

@@ -61,15 +61,11 @@
 	"navigation": [
 		{
 			"group": "Getting Started",
-			"pages": ["introduction", "tutorials"]
+			"pages": ["introduction", "tutorials", "tutorials/get-api-key"]
 		},
 		{
 			"group": "Tutorials",
-			"pages": [
-				"tutorials/get-api-key",
-				"tutorials/chat-bots",
-				"tutorials/creator-distributed-ai"
-			]
+			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
 		},
 		{
 			"group": "Features",
