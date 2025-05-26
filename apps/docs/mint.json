@@ -61,27 +61,22 @@
 	"navigation": [
 		{
 			"group": "Getting Started",
-			"pages": ["introduction", "tutorials"]
+			"pages": ["introduction", "tutorials", "get-api-key"]
 		},
 		{
 			"group": "Tutorials",
-			"pages": [
-				"tutorials/get-api-key",
-				"tutorials/chat-bots",
-				"tutorials/creator-distributed-ai"
-			]
+			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
 		},
 		{
 			"group": "Features",
 			"pages": [
-				"what-to-build/oauth-guide",
-				"what-to-build/checkout-embed",
-				"what-to-build/websocket-guide",
-				"what-to-build/webhooks",
-				"features/iframe-auth",
+				"features/webhooks",
+				"features/oauth-guide",
+				"features/checkout-embed",
+				"features/websocket-guide",
 				"features/payments",
-				"features/send-push-notifications",
-				"features/post-content-in-whop"
+				"features/send-push-notification",
+				"features/post-to-feed"
 			]
 		},
 		{
@@ -529,6 +524,6 @@
 	"footerSocials": {
 		"twitter": "https://twitter.com/whopio",
 		"github": "https://github.com/whopio",
-		"discord": "https://discord.gg/mWRKWRezSQ"
+		"instagram": "https://whop.com"
 	}
 }

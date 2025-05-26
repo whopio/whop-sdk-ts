@@ -1,11 +1,11 @@
 ---
-title: Chatbots
-description: "Build an chat bot on Whop that can participate in chats and forums."
+title: Chat bot
+description: "Build a chat bot on Whop that can participate in chats and forums."
 ---
 
 ---
 
-## Building a chatbot
+## Building a chat bot
 
 We'll build an agentic Whop application that plugs into the API in order to manage a user's DMs. At the end of this tutorial, you'll have a good idea of how to interact with the DM API.
 
@@ -53,7 +53,7 @@ async def connect_to_websocket():
     try:
         async with websockets.connect(uri, additional_headers=headers) as websocket:
             print(f"Successfully connected to {uri}")
-            
+
             # Keep the connection alive and listen for messages
             while True:
                 try:
@@ -148,7 +148,7 @@ payload = {
 }
 
 response = requests.post(
-    "https://api.whop.com/public-graphql", 
+    "https://api.whop.com/public-graphql",
     headers=headers,    # use the same headers as before
     json=payload
 )

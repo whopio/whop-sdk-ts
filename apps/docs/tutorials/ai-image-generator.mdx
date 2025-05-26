@@ -1,11 +1,12 @@
 ---
-title: Creator distributed AI
-description: "Learn how to build and deploy a Next.js application that integrates with Whop's platform"
+title: AI image generator
+description: "Build a ChatGPT-powered image generator and creators will be able to install it to their whops."
 ---
 
-### 1/ Set Up Your Next.js Project
+## 1. Set up your Next.js project
 
-<CodeGroup>
+Clone our Next.js app template:
+   <CodeGroup>
 
 ```bash Next.js
 npx create-next-app@latest whop-app -e https://github.com/whopio/whop-nextjs-app-template
@@ -13,8 +14,8 @@ npx create-next-app@latest whop-app -e https://github.com/whopio/whop-nextjs-app
 
 </CodeGroup>
 
-
-<CodeGroup>
+Install dependencies:
+   <CodeGroup>
 
 ```bash pnpm
 pnpm i
@@ -30,7 +31,8 @@ yarn i
 
 </CodeGroup>
 
-<CodeGroup>
+Run the app locally:
+   <CodeGroup>
 
 ```bash pnpm
 pnpm dev
@@ -46,9 +48,9 @@ yarn dev
 
 </CodeGroup>
 
+Now open http://localhost:3000 and follow the directions on the page.
 
-
-### 2/ Fill out your .env file
+## 2. Fill out your .env file
 
 Create a `.env.local` file with the below variables. You can find your keys [here](/tutorials).
 
@@ -68,7 +70,7 @@ WHOP_AGENT_USER_ID=your_agent_user_id
 WHOP_WEBHOOK_SECRET=your_webhook_secret
 ```
 
-### 3/ Set your app base path and install your app to develop
+## 3. Set your app base path and install your app to develop
 
 Under your app settings, set up your app's configuration:
 
@@ -76,7 +78,7 @@ Under your app settings, set up your app's configuration:
 - Install your app to your own Whop via the installation link found in your app details
 - Toggle developer mode from the upper right settings button when in your whop view looking at your app
 
-### 4/ Set up your database
+## 4. Set up your database
 
 First, let's set up a Supabase database:
 
@@ -106,6 +108,7 @@ yarn prisma init
 </CodeGroup>
 
 The `prisma init` command will:
+
 1. Create a new `prisma` directory with a `schema.prisma` file
 2. Add a `.env` file if it doesn't exist
 3. Add an initial DATABASE_URL to your `.env` file
@@ -168,23 +171,24 @@ yarn prisma db push
 Create a database client file at `lib/db.ts`:
 
 ```typescript
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
+  prisma: PrismaClient | undefined;
+};
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 ```
 
 This setup will:
+
 1. Create a Prisma client for database operations
 2. Use connection pooling for better performance
 3. Ensure we don't create multiple instances in development
 
-### 5/ Create the experience helper
+## 5. Create the experience helper
 
 Create a new file `lib/helpers.ts` to manage experience creation and updates:
 
@@ -225,13 +229,14 @@ export async function findOrCreateExperience(experienceId: string) {
 ```
 
 This helper will:
+
 1. Fetch experience details from Whop's API
 2. Create or update the experience in your database
 3. Keep experience metadata in sync with whop
 
 In the future, if you want to store configuration settings for creators who install your app (like the webhook creation URL), you can do so at the experience level in your database.
 
-### 6/ Handle the /experiences/[experienceId]/page.tsx:
+## 6. Handle the /experiences/[experienceId]/page.tsx:
 
 <CodeGroup>
 ```bash app/experiences/[experienceId]/page.tsx
@@ -249,27 +254,28 @@ export default async function ExperiencePage({
   const headersList = await headers();
   const { userId } = await verifyUserToken(headersList);
 
-  const experience = await findOrCreateExperience(params.experienceId);
+const experience = await findOrCreateExperience(params.experienceId);
 
-  const hasAccess = await whopApi.CheckIfUserHasAccessToExperience({
-    userId,
-    experienceId: params.experienceId,
-  });
+const hasAccess = await whopApi.CheckIfUserHasAccessToExperience({
+userId,
+experienceId: params.experienceId,
+});
 
-  return (
-    <div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
-      <ExperiencePrompt
-        prompt={experience.prompt}
-        accessLevel={hasAccess.hasAccessToExperience.accessLevel}
-        experienceId={params.experienceId}
-      />
-    </div>
-  );
-}
-```
+return (
+
+<div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
+  <ExperiencePrompt
+    prompt={experience.prompt}
+    accessLevel={hasAccess.hasAccessToExperience.accessLevel}
+    experienceId={params.experienceId}
+  />
+</div>
+); }
+
+````
 </CodeGroup>
 
-### 7/ Create Required Components
+## 7. Create Required Components
 
 First, create the ExperiencePrompt component in `components/ExperiencePrompt.tsx`:
 
@@ -307,7 +313,7 @@ export default function ExperiencePrompt({
     </div>
   );
 }
-```
+````
 
 Then create the ImageUploader component in `components/ImageUploader.tsx`. This component handles image upload and generation:
 
@@ -489,7 +495,7 @@ export default function ImageUploader({
 }
 ```
 
-### 8/ Set Up the API Route
+## 8. Set Up the API Route
 
 Create a new file `app/api/experiences/[experienceId]/generate/route.ts`:
 
@@ -649,7 +655,7 @@ export async function POST(request: Request) {
 }
 ```
 
-### 9/ Install Dependencies
+## 9. Install Dependencies
 
 Add the required packages:
 
@@ -669,7 +675,7 @@ yarn add openai sharp react-dropzone @radix-ui/react-slot
 
 </CodeGroup>
 
-### 10/ Update Environment Variables
+## 10. Update Environment Variables
 
 Add to your `.env.local`:
 
@@ -678,7 +684,7 @@ Add to your `.env.local`:
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-### 11/ Deploy to Vercel
+## 11. Deploy to Vercel
 
 1. Push your code to GitHub
 2. Create a new project on [Vercel](https://vercel.com)

@@ -1,0 +1,19 @@
+[default]
+extend-ignore-identifiers-re = [
+    "pge_*",
+    "vs_*",
+    "vr_*",
+    "evt_*",
+    "ba_*",
+    "du_*",
+    "app_*",
+    "fk_*",
+    "ws_*",
+    "jod",
+    "ue*"
+]
+
+[default.extend-words]
+# Don't correct the word "whop"
+whop = "whop"
+
