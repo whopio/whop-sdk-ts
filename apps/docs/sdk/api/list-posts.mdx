@@ -1,0 +1,17 @@
+---
+title: List posts
+description: Retrieve a list of posts for a specified forum.
+---
+
+## List Feed Messages
+
+Use the following snippet to fetch messages from a feed. You'll need to provide the feed type and its ID.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+
+const feedMessages = (await whopApi.listMessages({type: "chat_feed", id: "exp_xxx"})).feedPosts;
+
+console.log(feedMessages.posts);
+```

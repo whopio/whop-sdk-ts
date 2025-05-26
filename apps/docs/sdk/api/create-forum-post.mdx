@@ -1,0 +1,32 @@
+---
+title: Create forum post
+description: Create a new post within a specific forum.
+---
+
+Use the following snippet to create a new post in a forum. The `CreateForumPostInput` will require the forum ID, title, and content for the post.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+
+
+const input = {
+  forumId: "feed_xxx", // Replace with actual Forum ID (from findOrCreateForum)
+  title: "New Discussion Topic",
+  content: "What are your thoughts on the latest updates?"
+};
+
+try {
+  const post = (await whopApi.createForumPost({input})).createForumPost;
+
+  if (post) {
+    console.log("Forum Post ID:", post.id);
+    // Access other post details from the ForumPostFragment
+    console.log(post);
+  } else {
+    console.log("Could not create forum post.");
+  }
+} catch (error) {
+  console.error("Error creating forum post:", error);
+}
+```

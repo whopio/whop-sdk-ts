@@ -1,0 +1,36 @@
+---
+title: Find or create forum
+description: Find an existing forum or create a new one for an experience or company.
+---
+
+Use the following snippet to find or create a forum. The `CreateForumInput` will typically require an ID for the entity (e.g., experience ID) to which the forum is linked, and a name for the forum.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+// The CreateForumInput structure needs to be defined based on your GraphQL schema.
+// Example structure:
+// interface CreateForumInput {
+//   experienceId?: string; // Or companyId, etc.
+//   name: string;
+//   // ... other fields as required
+// }
+
+const input = {
+  experienceId: "exp_xxx", // Replace with actual Experience ID or other relevant ID
+  name: "General Discussion"
+};
+
+try {
+  const forum = (await whopApi.findOrCreateForum({input})).createForum;
+
+  if (forum) {
+    console.log("Forum ID:", forum.id);
+    console.log("Forum Link:", forum.link);
+  } else {
+    console.log("Could not find or create forum.");
+  }
+} catch (error) {
+  console.error("Error managing forum:", error);
+}
+```

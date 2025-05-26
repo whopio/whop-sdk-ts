@@ -1,0 +1,18 @@
+---
+title: Get current user
+description: Retrieve the profile and ledger information for the currently authenticated user.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const currentUser = (await whopApi.getCurrentUser()).viewer?.user;
+
+if (currentUser) {
+  console.log(currentUser);
+  // Example: Accessing balance cache
+  // currentUser.ledgerAccount?.balanceCaches?.nodes.forEach(balance => {
+  //   console.log(balance.currency, balance.balance);
+  // });
+}
+```

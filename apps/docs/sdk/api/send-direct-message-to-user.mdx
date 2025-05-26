@@ -1,0 +1,27 @@
+---
+title: Send direct message to user
+description: Send a direct private message to a specific user.
+---
+
+Use the following snippet to send a direct message to a user. You'll need the recipient's user ID and the message content.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  toUserId: "user_xxx", // Replace with actual recipient User ID
+  message: "Hey, check this out!"
+};
+
+try {
+  const success = (await whopApi.sendDirectMessageToUser(input)).sendMessage;
+
+  if (success) {
+    console.log("Direct message sent successfully.");
+  } else {
+    console.log("Failed to send direct message.");
+  }
+} catch (error) {
+  console.error("Error sending direct message:", error);
+}
+```

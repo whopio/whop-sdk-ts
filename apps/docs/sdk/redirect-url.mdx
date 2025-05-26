@@ -1,0 +1,42 @@
+---
+title: Redirect URLs
+---
+
+Since your app is embedded within an iFrame on Whop, you cannot easily create a link that will open your app on a certain page, since you must know both the URL on your site (easy) and the URL the user is currently viewing on Whop (not so easy).
+
+This function will create a special link that links to the current page the user is viewing on Whop.com. When your app is opened, it will not be sent to the default iFrame location you specified in your app settings, but rather the `path` parameter you specify in this function
+
+<Note>This function needs to be called from within a client component</Note>
+
+### Usage
+
+<Note>
+  This function requires the iFrame SDK to be initialized. See [**iFrame
+  Overview**](/sdk/iframe-setup) for more information.
+</Note>
+
+```javascript
+"use client";
+import { useCallback, useState } from "react";
+import { WhopApp } from "@/lib/iframe";
+
+export default function Home() {
+  const [redirectUrl, setRedirectUrl] = useState("");
+
+  const fetchURL = useCallback(async () => {
+    const redirectUrl = await WhopApp.getRedirectUrl({
+      path: "/relative/path/on/my/domain",
+    });
+    setRedirectUrl(redirectUrl.url);
+  }, []);
+
+  return (
+    <div className="space-y-2">
+      <button onClick={fetchURL}>Fetch URL</button>
+      {redirectUrl && <p>Redirect URL: {redirectUrl}</p>}
+    </div>
+  );
+}
+```
+
+This will output a URL that you can use to redirect the user to your app. When the user clicks on the link, your app will be opened in the iFrame and the user will be redirected to the path you specified in the `path` parameter.

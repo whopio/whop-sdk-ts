@@ -1,0 +1,32 @@
+---
+title: Open External Links
+description: Open external links from within the iFrame
+---
+
+If you want to open external links from within the iFrame, you can use the `openExternalLinks` function. This will close your app and move to a new website.
+
+<Tip>
+  This, in combination with [**getRedirectUrl**](/sdk/redirect-url) can be used
+  to initiate OAuth flows.
+</Tip>
+
+### Usage
+
+<Note>
+  This function requires the iFrame SDK to be initialized. See [**iFrame
+  Overview**](/sdk/iframe-setup) for more information.
+</Note>
+
+```javascript
+"use client";
+import { useCallback } from "react";
+import { WhopApp } from "@/lib/iframe";
+
+export default function Home() {
+  const openLink = useCallback(async () => {
+    await WhopApp.openExternalUrl({ url: "https://google.com" });
+  }, []);
+
+  return <button onClick={openLink}>Click me to open Google</button>;
+}
+```

@@ -1,0 +1,26 @@
+---
+title: Send message to Whop chat
+description: Send a message to the chat associated with a specific Whop experience.
+---
+
+Use the following snippet to send a message to an experience's chat. You'll need the experience ID and the message content.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const experienceId = "exp_xxx"; // Replace with actual Experience ID
+const message = "Hello from the SDK!";
+
+try {
+  // The sendMessage mutation often returns a boolean or a status/ID of the message.
+  // The provided GraphQL returns a boolean for the 'sendMessage' field.
+  const success = (await whopApi.sendMessageToWhopChat({experienceId, message})).sendMessage;
+
+  if (success) {
+    console.log("Message sent successfully to Whop chat.");
+  } else {
+    console.log("Failed to send message to Whop chat.");
+  }
+} catch (error) {
+  console.error("Error sending message:", error);
+}

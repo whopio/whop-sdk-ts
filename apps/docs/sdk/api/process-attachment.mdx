@@ -1,0 +1,34 @@
+---
+title: Process attachment
+description: Finalize an attachment upload and initiate its processing.
+---
+
+Use the following snippet after a file has been uploaded via a presigned URL (obtained from `uploadMedia`). This mutation tells the backend to process the uploaded file.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+// The AnalyzeAttachmentInput structure needs to be defined based on your GraphQL schema.
+// It likely requires the ID obtained from the mediaDirectUpload mutation (uploadMedia).
+// Example structure:
+// interface AnalyzeAttachmentInput {
+//   directUploadId: string;
+//   // ... other fields as required by your schema, e.g., filename, context
+// }
+
+const input = {
+  directUploadId: "upload_id_from_uploadMedia", // Replace with actual ID
+  // filename: "example.png", // May or may not be needed, check schema
+};
+
+try {
+  const result = (await whopApi.processAttachment({input})).mediaAnalyzeAttachment;
+  // The result for mediaAnalyzeAttachment is often a boolean or a status.
+  // If it's a boolean as in the query, it might just return true on success.
+  console.log("Attachment processing initiated:", result);
+  // If it returns an object:
+  // console.log("Processing status:", result.status);
+} catch (error) {
+  console.error("Error processing attachment:", error);
+}
+```

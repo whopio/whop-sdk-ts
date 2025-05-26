@@ -1,0 +1,14 @@
+---
+title: Get company ledger account
+description: Retrieve the ledger account details for a specific company by its ID.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const ledgerAccount = (await whopApi.getCompanyLedgerAccount({companyId: "biz_xxx"})).company?.ledgerAccount;
+
+if (ledgerAccount) {
+  console.log(ledgerAccount);
+}
+```

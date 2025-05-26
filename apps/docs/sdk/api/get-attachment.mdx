@@ -1,0 +1,14 @@
+---
+title: Get attachment
+description: Retrieve details for a specific file attachment by its ID.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const attachmentDetails = (await whopApi.getAttachment({id: "id_xxx"})).attachment;
+
+if (attachmentDetails) {
+  console.log(attachmentDetails);
+}
+```

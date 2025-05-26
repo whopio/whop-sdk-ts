@@ -1,0 +1,78 @@
+---
+title: "Login with Whop"
+description: "Learn how to implement Whop OAuth in your application"
+---
+
+## Overview
+
+OAuth allows your users to access your web application by verifying their Whop purchases. Think of it as a digital doorman that checks if users have the right credentials before letting them in.
+
+## Implementation Steps
+
+
+1. Send users to an authentication link with your OAuth client ID (found [here](https://whop.com/dashboard))
+
+```bash
+https://whop.com/oauth/?scope=openid+user&response_type=code&client_id=[YOUR_CLIENT_ID]&redirect_uri=[YOUR_REDIRECT_URL]
+```
+
+2. Get token
+
+```javascript
+export default function Callback() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  // Use this code to get an auth token
+}
+```
+
+3. Exchange the code for an auth token:
+
+```javascript
+const getAuthToken = async (code, clientId, clientSecret, redirect_uri) => {
+  const response = await fetch("https://api.whop.com/v5/oauth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code,
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri,
+    }),
+  });
+  return response.json();
+};
+```
+
+4. Retrieve profile details
+
+Use the token to get user information:
+
+```javascript
+const checkAccess = async (accessToken) => {
+  const response = await fetch("https://api.whop.com/v5/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.json();
+};
+```
+
+You can now make any calls listed [here](https://dev.whop.com/api-reference/v5/apps/memberships/list)
+## Error Handling
+
+Common error codes:
+
+- 400: Invalid or expired authorization code
+- 401: Invalid access token
+- 404: Incorrect API endpoint
+
+## Next Steps
+
+- Store the auth token securely (cookies/session)
+- Implement token refresh logic
+- Add error handling for failed authentications
+- Consider adding a "Login with Whop" button

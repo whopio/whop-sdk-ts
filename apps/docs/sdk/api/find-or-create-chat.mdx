@@ -1,0 +1,27 @@
+---
+title: Find or create chat
+description: Find an existing chat or create a new one, typically linked to an entity like an experience or company.
+---
+
+Use the following snippet to find or create a chat. The `CreateChatInput` will usually require an ID of the entity (e.g., experience ID) the chat is associated with, and potentially a name or other configuration.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  experienceId: "exp_xxx", // Replace with actual Experience ID or other relevant ID
+  name: "Support Chat" // Optional
+};
+
+try {
+  const chat = (await whopApi.findOrCreateChat({input})).createChat;
+
+  if (chat) {
+    console.log("Chat ID:", chat.id);
+    console.log("Chat Link (if applicable):", chat.link);
+  } else {
+    console.log("Could not find or create chat.");
+  }
+} catch (error) {
+  console.error("Error managing chat:", error);
+}

@@ -1,0 +1,108 @@
+---
+title: Make a Call
+description: Make calls to the Whop API.
+---
+
+# Using Your API Key to Make API Calls
+
+Once you have [obtained your App API key](/instructions/get-api-key), you can use it to interact with the Whop API endpoints listed in the GraphQL documentation on the [Apollo Studio Explorer](https://studio.apollographql.com/public/whop-public-gql/variant/current/explorer).
+
+## Making a GraphQL API Call
+
+### 1. Set Up Your Environment
+
+Ensure you have a tool or library to make HTTP requests, such as `curl`, Postman, or a GraphQL client in your preferred programming language.
+
+### 2. Prepare Your Request
+
+#### Endpoint
+Use the GraphQL endpoint: `https://api.whop.com/public-graphql`
+
+#### Headers
+Include your API key in the headers to authenticate your request:
+
+```plaintext
+Authorization: Bearer YOUR_API_KEY
+x-on-behalf-of: user_123
+x-company-id: biz_123
+Content-Type: application/json
+```
+
+#### Headers Explained
+
+##### `x-on-behalf-of`
+This header specifies which User account you are using to make requests. This needs to be a User ID of an account your application has access to. 
+
+Your app can access users in three ways. Any of these methods grant full access to automating the user's account:
+- The User is the owner of the application (Ex. Your own User ID)
+- The User is an Agent User created by the App
+- The User has "installed" / "subscribed" the App by claiming a Membership
+
+##### `x-company-id`
+This header specifies a Company to target when making requests to the GraphQL API. 
+
+Whenever you are making requests that involve managing a creators' whops, you'll need to supply this ID.
+For example, when using the `createPlan`, `createAccessPass`, or `refundReceipt` mutations. The user you are making
+requests for needs to be an owner / team member of the specified company in order for the API calls to succeed.
+
+##### `Authorization: Bearer YOUR_API_KEY`
+This header specifies the API key you are using to make requests. This should be an App API key.
+
+### 3. Craft Your Query
+
+Write your GraphQL query or mutation.
+
+**Example: Retrieve user data**
+```graphql
+query myCurrentUser {
+  viewer {
+    user {
+      id
+      username
+      name
+      email
+    }
+  }
+}
+```
+
+**Example: Retrieve company data**
+```graphql
+query myCurrentCompany {
+  viewer {
+    company {
+      id
+      title
+    }
+  }
+}
+```
+
+**Example: Update a user profile**
+```graphql
+mutation updateMyCurrentUser {
+  updateUser(input: { name: "John Doe" }) {
+    id
+    name
+  }
+}
+```
+
+### 4. Send the Request
+
+Use your tool to send the request to the GraphQL endpoint.
+
+### 5. Handle the Response
+
+Process the response from the server, which will include the data requested or any errors encountered.
+
+## Example Request Using `curl`
+
+```bash
+curl -X POST https://api.whop.com/public-graphql \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "x-on-behalf-of: user_123" \
+  -H "x-company-id: biz_123" \
+  -H "Content-Type: application/json" \
+  -d '{ "query": "query { user { id name email } }" }'
+```

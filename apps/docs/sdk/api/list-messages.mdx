@@ -1,0 +1,14 @@
+---
+title: List messages
+description: Retrieve a list of messages for a specified feed.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+// Assuming FeedTypes is an enum or a set of string constants available
+// e.g., FeedTypes.EXPERIENCE_FEED or "EXPERIENCE_FEED"
+
+const feedMessages = (await whopApi.listMessages({type: "EXPERIENCE_FEED", id: "exp_xxx"})).feedPosts;
+
+console.log(feedMessages.posts);
+```

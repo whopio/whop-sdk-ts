@@ -1,0 +1,13 @@
+---
+title: Check if user has access to access pass
+description: Check if a user has access to a specific access pass and their access level.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const { hasAccess, accessLevel } = (await whopApi.checkIfUserHasAccessToAccessPass({accessPassId: "prod_xxx", userId: "user_xxx"})).hasAccessToAccessPass;
+
+console.log(hasAccess);
+console.log(accessLevel);
+```

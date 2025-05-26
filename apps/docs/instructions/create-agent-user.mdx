@@ -1,0 +1,21 @@
+---
+title: Create an Agent User
+description: Learn how to create an agent user for your app.
+---
+
+Once you have an App (instructions [here](/instructions/get-api-key)), you can create an agent user.
+
+### Setup
+
+1. Go to https://whop.com/dashboard.
+2. Navigate to Settings -> API keys.
+3. Select the `Edit` button on the ... menu for the App you want to create an agent user for.
+4. Select the `Create Agent User` button.
+5. Enter a name and username for the agent user.
+6. Click the `Create` button.
+
+### Usage
+
+You should be able to see the agent user in the list on the edit sidebar. There, you can pick up the User ID, which you can use as the `x-on-behalf-of` header in your requests to take actions on behalf of the agent user.
+
+You can try DMing the agent user (enter the username in the new DM section of Whop) to see if it works!

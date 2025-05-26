@@ -1,0 +1,34 @@
+---
+title: Charge user
+description: Initiate a payment by charging a user for a product or service.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  planId: "plan_xxx", // Replace with actual Plan ID
+  userId: "user_xxx",   // Replace with actual User ID if applicable
+  successUrl: "https://example.com/success",
+  cancelUrl: "https://example.com/cancel",
+  // Add other necessary fields for ChargeUserInput
+};
+
+try {
+  const response = (await whopApi.chargeUser({input})).chargeUser;
+
+  if (response.checkoutSession) {
+    console.log("Checkout Session ID:", response.checkoutSession.id);
+    console.log("Purchase URL:", response.checkoutSession.purchaseUrl);
+    console.log("Status:", response.status);
+    // Redirect the user to response.checkoutSession.purchaseUrl or use it in an iframe
+  } else {
+    console.log("Charge status:", response.status);
+    // Handle cases where checkoutSession might not be returned directly
+  }
+} catch (error) {
+  console.error("Error creating charge:", error);
+}
+```
+
+This mutation typically returns a `checkoutSession` which includes a `purchaseUrl` to redirect the user to complete the payment.
