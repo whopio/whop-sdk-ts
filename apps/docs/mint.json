@@ -340,7 +340,7 @@
 			"pages": ["sdk/retrieve-current-user", "sdk/validate-access"]
 		},
 		{
-			"group": "Core Resources",
+			"group": "Resources",
 			"pages": [
 				{
 					"group": "Users",
@@ -369,12 +369,8 @@
 				{
 					"group": "Experiences",
 					"pages": ["sdk/api/get-experience", "sdk/api/list-experiences"]
-				}
-			]
-		},
-		{
-			"group": "Features",
-			"pages": [
+				},
+
 				{
 					"group": "Notifications",
 					"pages": ["sdk/api/send-notification"]
@@ -407,6 +403,7 @@
 				}
 			]
 		},
+
 		{
 			"group": "iFrame",
 			"pages": ["sdk/iframe-setup", "sdk/external-url", "sdk/redirect-url"]
