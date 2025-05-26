@@ -340,7 +340,7 @@
 			"pages": ["sdk/retrieve-current-user", "sdk/validate-access"]
 		},
 		{
-			"group": "Core Resources (test)",
+			"group": "Core Resources",
 			"pages": [
 				{
 					"group": "Users",
