@@ -1,0 +1,70 @@
+---
+title: Getting Started
+description: Getting started with the Whop iFrame SDK
+---
+
+Whop apps are embedded into the site using iFrames. This SDK provides a type-safe way for you to communicate with the Whop application using a request/response style API powered by `window.postMessage`.
+
+Since this package relies on `window.postMessage`, it only works in **Client Components**.
+
+---
+
+## Setup
+
+The main function exported from this package is the `createAppIframeSDK` function. When called, this function sets up a listener for messages from the main Whop site, using `window.on('message', ...)`.
+
+### Next.js Setup
+
+If you're using Next.js, you'll need to make sure that you're only calling `createAppIframeSDK` on the client. You can do this by using a `client` layout defined in the root of your app.
+
+Here is an example of the project structure:
+
+```
+app/
+├─ layout.tsx
+├─ layout.client.tsx
+lib/
+├─ iframe.ts
+```
+
+```javascript app/layout.tsx
+import { ClientLayout } from "./layout.client";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode,
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <ClientLayout>{children}</ClientLayout>
+      </body>
+    </html>
+  );
+}
+```
+
+Next.js Will mount this code on the client:
+
+```javascript app/layout.client.tsx
+"use client"; // this line is important
+import { FC, PropsWithChildren } from "react";
+import "@/lib/iframe";
+
+export const ClientLayout: FC<PropsWithChildren> = ({ children }) => {
+  return <>{children}</>;
+};
+```
+
+We declare the SDK in a separate file, such that we can import it throughout the rest of the app.
+
+```javascript lib/iframe.ts
+import { createAppIframeSDK } from "@whop-apps/sdk";
+
+export const WhopApp = createAppIframeSDK({
+  onMessage: {},
+});
+```
+
+<Check>We have now setup the SDK and iFrame.</Check>

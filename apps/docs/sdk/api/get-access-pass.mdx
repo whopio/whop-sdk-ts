@@ -1,0 +1,14 @@
+---
+title: Get access pass
+description: Retrieve detailed information for a specific access pass (product) by its ID.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const accessPassDetails = (await whopApi.getAccessPass({accessPassId: "prod_xxx"})).accessPass;
+
+if (accessPassDetails) {
+  console.log(accessPassDetails);
+}
+```

@@ -1,0 +1,16 @@
+---
+title: List experiences
+description: Retrieve a list of experiences for a specific company.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const companyExperiences = (await whopApi.listExperiences({companyId: "biz_xxx", first: 10})).company?.experiencesV2;
+
+if (companyExperiences) {
+  console.log(companyExperiences.nodes);
+  console.log(companyExperiences.totalCount);
+  console.log(companyExperiences.pageInfo);
+}
+```

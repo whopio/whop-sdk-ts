@@ -1,0 +1,29 @@
+---
+title: Send notification
+description: Send a push notification to a user or a group of users.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  userId: "user_xxx", // Or companyId/topic
+  title: "Important Update",
+  message: "Your new content is now available!",
+  url: "https://example.com/new-content"
+  // Add other necessary fields for SendNotificationInput
+};
+
+try {
+  // The sendNotification mutation often returns a boolean or a status.
+  const success = (await whopApi.sendNotification({input})).sendNotification;
+
+  if (success) {
+    console.log("Notification sent successfully.");
+  } else {
+    console.log("Failed to send notification or it's being processed.");
+  }
+} catch (error) {
+  console.error("Error sending notification:", error);
+}
+```

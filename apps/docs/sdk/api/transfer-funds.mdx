@@ -1,0 +1,30 @@
+---
+title: Transfer funds
+description: Initiate a transfer of funds between ledger accounts.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  sourceLedgerAccountId: "ledger_id_source",      // Replace with actual source ledger ID
+  destinationLedgerAccountId: "ledger_id_dest",  // Replace with actual destination ledger ID
+  amount: "100.00", // Example amount as string
+  currency: "USD",
+  description: "Payment for services rendered"
+};
+
+try {
+  // The transferFunds mutation often returns a boolean or a transaction status/ID.
+  // The provided GraphQL returns a boolean.
+  const success = (await whopApi.transferFunds({input})).transferFunds;
+
+  if (success) {
+    console.log("Funds transfer initiated successfully.");
+  } else {
+    console.log("Funds transfer failed or is pending.");
+  }
+} catch (error) {
+  console.error("Error transferring funds:", error);
+}
+```

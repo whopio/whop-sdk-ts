@@ -1,0 +1,14 @@
+---
+title: Get user ledger account
+description: Retrieve the ledger account details for the currently authenticated user.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const ledgerAccount = (await whopApi.getUserLedgerAccount()).viewer?.user?.ledgerAccount;
+
+if (ledgerAccount) {
+  console.log(ledgerAccount);
+}
+```

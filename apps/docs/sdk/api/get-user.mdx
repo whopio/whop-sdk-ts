@@ -1,0 +1,33 @@
+---
+title: Get user
+description: Retrieve the public profile information for any user on Whop
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const user = (await whopApi.getUser({userId: "user_xxxx"})).publicUser;
+
+console.log(user);
+```
+
+```curl
+curl --location 'https://api.whop.com/public-graphql' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_API_KEY' \
+--data '{
+    "operationName": "getUser",
+    "variables": {
+        "userId": "user_123"
+    }
+}'
+```
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const user = (await whopApi.getUser({username: "jack"})).publicUser;
+
+console.log(user);
+```
+

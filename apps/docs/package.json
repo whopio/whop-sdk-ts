@@ -1,0 +1,11 @@
+{
+	"name": "developer-documentation",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "mintlify dev"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"devDependencies": {
+		"mintlify": "^4.0.552"
+	}
+}

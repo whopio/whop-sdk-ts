@@ -1,0 +1,30 @@
+---
+title: Send message to chat feed
+description: Send a message to a specific chat feed (e.g., company or experience feed).
+---
+
+Use the following snippet to send a message to a designated chat feed. You need to provide the feed ID, feed type, and the message content.
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+
+
+const input = {
+  feedId: "feed_xxx",
+  feedType: "chat_feed",
+  message: "Hello world"
+};
+
+try {
+  const success = (await whopApi.sendMessageToChatFeed(input)).sendMessage;
+
+  if (success) {
+    console.log("Message sent successfully to chat feed.");
+  } else {
+    console.log("Failed to send message to chat feed.");
+  }
+} catch (error) {
+  console.error("Error sending message to feed:", error);
+}
+```
