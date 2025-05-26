@@ -100,6 +100,18 @@ export class WhopWebsocketClientBase {
 		this.websocket.send(JSON.stringify(message));
 	}
 
+	public broadcast({
+		message,
+		target,
+	}: { message: string; target: WebsocketBroadcastTarget }) {
+		this.send({
+			broadcastAppMessage: {
+				channel: convertBroadcastTargetToProtoChannel(target),
+				json: message,
+			},
+		});
+	}
+
 	private setStatus(status: WebsocketStatus) {
 		if (status === this.status) return;
 
@@ -125,4 +137,41 @@ export class WhopWebsocketClientBase {
 	private calculateBackoff(failedConnectionAttempts: number) {
 		return Math.min(50 * 2 ** failedConnectionAttempts, 1000 * 60);
 	}
+}
+
+export type WebsocketBroadcastTarget =
+	| {
+			experienceId: string;
+	  }
+	| {
+			customId: string;
+	  }
+	| "everyone";
+
+function convertBroadcastTargetToProtoChannel(
+	target: WebsocketBroadcastTarget,
+): proto.common.Channel {
+	// [app_id] is replaced with the app ID when the message is received on the server.
+	if (target === "everyone") {
+		return {
+			type: "APP",
+			id: "[app_id]",
+		};
+	}
+
+	if ("experienceId" in target) {
+		return {
+			type: "APP",
+			id: `[app_id]_${target.experienceId}`,
+		};
+	}
+
+	if ("customId" in target) {
+		return {
+			type: "APP",
+			id: `[app_id]_c_${target.customId}`,
+		};
+	}
+
+	throw new Error("Invalid broadcast target");
 }
