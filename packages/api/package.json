@@ -67,7 +67,7 @@
 		"concurrently": "^9.1.2",
 		"dotenv": "16.5.0",
 		"ts-proto": "2.7.0",
-		"tsup": "8.2.4",
+		"tsup": "8.5.0",
 		"typescript": "latest"
 	},
 	"packageManager": "pnpm@9.15.9",
