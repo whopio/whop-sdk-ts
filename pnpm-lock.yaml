@@ -110,8 +110,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       '@protobuf-ts/protoc':
-        specifier: 2.10.0
-        version: 2.10.0
+        specifier: 2.11.0
+        version: 2.11.0
       '@types/node':
         specifier: latest
         version: 22.15.21
@@ -1547,8 +1547,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@protobuf-ts/protoc@2.10.0':
-    resolution: {integrity: sha512-S4BtGBh22+uL5E6qLVxV0QNY6tiLVB8QL7RIkvo+KYknipZfSNwubdKy5CPkrwVXzJn4s3cx7bKx1w6BxkBIPg==}
+  '@protobuf-ts/protoc@2.11.0':
+    resolution: {integrity: sha512-GYfmv1rjZ/7MWzUqMszhdXiuoa4Js/j6zCbcxFmeThBBUhbrXdPU42vY+QVCHL9PvAMXO+wEhUfPWYdd1YgnlA==}
     hasBin: true
 
   '@puppeteer/browsers@2.3.0':
@@ -7235,7 +7235,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@protobuf-ts/protoc@2.10.0': {}
+  '@protobuf-ts/protoc@2.11.0': {}
 
   '@puppeteer/browsers@2.3.0':
     dependencies:
