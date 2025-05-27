@@ -3,4 +3,111 @@ title: Post content to the feed
 description: "Create a post in the feed using the API"
 ---
 
-Coming soon!
+## Overview
+
+To post in a forum, you must:
+
+1. Find or create a _Forum Experience_
+2. Create a _Forum Post_ inside the _Forum Experience_
+
+<Info>
+  If you already know what forum experience you want to post in, you can skip
+  step 1, and use the experience ID directly in step 2.
+</Info>
+
+---
+
+## Find or create a forum experience
+
+A forum post must be created within a **Forum Experience**.
+The `findOrCreateForum` method will find an existing forum experience with the specified name,
+or create a new one with all the specified options
+
+```typescript
+await whopApi.findOrCreateForum({
+  input: {
+    accessPassId: "prod_XXXXXX",
+    name: "My App Forum",
+    whoCanPost: "everyone",
+  },
+});
+```
+
+- `accessPassId`: ID of the whop to attach the forum to.
+- `name`: Visible title of the forum experience.
+- `whoCanPost`: "everyone" or "admins"
+
+> If you only have an experience ID, you can pass that as `experienceId: "exp_XXX"` instead of `accessPassId`.
+> This will create the forum in the same whop as the supplied experience.
+
+---
+
+## Create a forum post.
+
+Once you have the `experienceId`, use it to create a post.
+
+### Basic Forum Post
+
+```ts
+await whopApi
+  .withUser("user_XXXXXX")
+  .withCompany("biz_XXXXXX")
+  .createForumPost({
+    input: {
+      forumExperienceId: "exp_XXXXXX",
+      title: "Welcome!",
+      content: "Excited to kick things off in our new forum 🎉",
+    },
+  });
+```
+
+- `withUser()`: ID of the user posting
+- `withCompany()`: ID of the company that owns the forum experience
+- `forumExperienceId`: The ID of the target forum
+- `title` and `content`: Main post body. _(title is optional)_
+
+### Forum post with advanced options
+
+This demonstrates a rich post using all features:
+
+```ts
+await whopApi
+  .withUser("user_XXXXXX")
+  .withCompany("biz_XXXXXX")
+  .createForumPost({
+    input: {
+      forumExperienceId: "exp_XXXXXX",
+
+      // Visible even before purchase.
+      title: "Big Launch + Community Poll!",
+
+      // Visible only after purchase
+      content: "Hidden content unless purchased. 🔒",
+
+      // Add media to the post.
+      // Learn how to upload in the upload-media section
+      attachments: [
+        {
+          directUploadId: "XXXXXXXXXXXXXXXXXXXXXXXXXX",
+        },
+      ],
+
+      // Send a notification to everyone about this post.
+      isMention: true,
+
+      // Lock the content and attachments behind a
+      // one time purchase in the price + currency.
+      paywallAmount: 9.99,
+      paywallCurrency: "usd",
+
+      // Add a poll to the post.
+      poll: {
+        options: [
+          { id: "1", text: "New Product Features" },
+          { id: "2", text: "Exclusive AMA" },
+          { id: "3", text: "Member Giveaways" },
+        ],
+      },
+    },
+  });
+```
