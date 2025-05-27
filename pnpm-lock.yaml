@@ -42,8 +42,8 @@ importers:
         specifier: 0.0.1-canary.111
         version: 0.0.1-canary.111(react@19.1.0)
       '@whop/api':
-        specifier: ^0.0.21-canary.4
-        version: 0.0.21-canary.5
+        specifier: workspace:*
+        version: link:../../packages/api
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -2142,10 +2142,6 @@ packages:
 
   '@whop-apps/typed-transport@0.0.1-canary.113':
     resolution: {integrity: sha512-YUC/ozdFMzfOF/Oz+KNvwgFHTZLQFztaCJCo314XZQD7KiR9b9mZrHfhrr8G+Dd45V1E3xf8QLp5x9BCtg7Ugw==}
-
-  '@whop/api@0.0.21-canary.5':
-    resolution: {integrity: sha512-DXAMOdxD7DbgTeeZgUddJgmHGFoZ0mqlIHmFZYQ1nA9jusxp50YBfYrygMKqVaJRY4Xi9B8Z96a7lw+lApoxjg==}
-    engines: {node: 22.x, pnpm: 9.15.9}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -8053,15 +8049,6 @@ snapshots:
   '@whop-apps/typed-transport@0.0.1-canary.113':
     dependencies:
       zod: 3.25.21
-
-  '@whop/api@0.0.21-canary.5':
-    dependencies:
-      graphql: 16.11.0
-      graphql-request: 7.2.0(graphql@16.11.0)
-      graphql-tag: 2.12.6(graphql@16.11.0)
-      jose: 6.0.11
-      js-md5: 0.8.3
-      tiny-typed-emitter: 2.1.0
 
   abort-controller@3.0.0:
     dependencies:

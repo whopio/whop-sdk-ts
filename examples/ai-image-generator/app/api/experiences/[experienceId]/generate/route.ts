@@ -1,9 +1,13 @@
+import type { ReadableStream } from "node:stream/web";
+
+import { Readable } from "node:stream";
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import sharp from "sharp";
+
 const prisma = new PrismaClient();
 
 const openai = new OpenAI({
@@ -42,57 +46,35 @@ export async function POST(
 			);
 		}
 
-		const publicUser = await whopApi.getUser({
-			userId: userToken.userId,
-		});
+		const [publicUser, experience] = await Promise.all([
+			whopApi.getUser({
+				userId: userToken.userId,
+			}),
+			prisma.experience.findUnique({
+				where: {
+					id: experienceId,
+				},
+			}),
+		]);
 
-		const { image } = await request.json();
-
-		const experience = await prisma.experience.findUnique({
-			where: {
-				id: experienceId,
-			},
-		});
-
-		if (!image || !experience?.prompt) {
+		if (!request.body || !experience?.prompt) {
 			return NextResponse.json(
 				{ error: "Image and prompt are required" },
 				{ status: 400 },
 			);
 		}
 
-		// Extract image format from base64 string
-		const matches = image.match(/^data:image\/([a-zA-Z]+);base64,/);
-		if (!matches || !matches[1]) {
-			return NextResponse.json(
-				{ error: "Invalid image format" },
-				{ status: 400 },
-			);
-		}
-		const imageFormat = matches[1];
-
-		// Convert base64 to buffer
-		const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
-		const imageBuffer = Buffer.from(base64Data, "base64");
-
-		// Log original image information
-		console.log("Original Image Format:", imageFormat);
-		console.log("Original Buffer Size:", imageBuffer.length, "bytes");
-
-		// Convert to PNG using sharp
-		const pngBuffer = await sharp(imageBuffer).png().toBuffer();
-
-		console.log("PNG Buffer Size:", pngBuffer.length, "bytes");
-
-		// Create a File object from the PNG buffer
-		const originalFile = new File([pngBuffer], `${Date.now()}-original.png`, {
-			type: "image/png",
-		});
-
-		// Log File object information
-		console.log("File Size:", originalFile.size, "bytes");
-		console.log("File Type:", originalFile.type);
-		console.log("File Name:", originalFile.name);
+		const originalFile = new File(
+			[
+				await sharp(await request.clone().arrayBuffer())
+					.png()
+					.toBuffer(),
+			],
+			`${Date.now()}-original.png`,
+			{
+				type: "image/png",
+			},
+		);
 
 		// Generate image using DALL-E with prompt
 		const response = await openai.images.edit({
@@ -113,21 +95,24 @@ export async function POST(
 		}
 		const generatedImageBuffer = Buffer.from(base64Image, "base64");
 
-		const originalFileUploadResponse = await whopApi.uploadAttachment({
-			file: originalFile,
-			record: "forum_post",
-		});
+		const generationId = crypto.randomUUID();
 
-		const uploadResponse = await whopApi.uploadAttachment({
-			file: new File(
-				[generatedImageBuffer],
-				`creator-app-generated-${Date.now()}.png`,
-				{
-					type: "image/png",
-				},
-			),
-			record: "forum_post",
-		});
+		const [originalFileUploadResponse, uploadResponse] = await Promise.all([
+			whopApi.uploadAttachment({
+				file: originalFile,
+				record: "forum_post",
+			}),
+			whopApi.uploadAttachment({
+				file: new File(
+					[generatedImageBuffer],
+					`${generationId}-generated.png`,
+					{
+						type: "image/png",
+					},
+				),
+				record: "forum_post",
+			}),
+		]);
 
 		const generatedAttachmentId = uploadResponse.directUploadId;
 		const originalAttachmentId = originalFileUploadResponse.directUploadId;
@@ -149,12 +134,9 @@ export async function POST(
 			},
 		});
 
-		// Convert base64 to data URL for the response
-		const imageUrl = `data:image/png;base64,${base64Image}`;
-
 		return NextResponse.json({
 			success: true,
-			imageUrl,
+			imageUrl: uploadResponse.attachment.source.url,
 			postId: post.createForumPost?.id,
 		});
 	} catch (error) {

@@ -26,9 +26,7 @@ export default function ExperiencePrompt({
 					</Link>
 				</div>
 			)}
-			{prompt ? (
-				<ImageUploader prompt={prompt} experienceId={experienceId} />
-			) : null}
+			{prompt ? <ImageUploader experienceId={experienceId} /> : null}
 		</div>
 	);
 }

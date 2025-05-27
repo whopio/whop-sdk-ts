@@ -424,25 +424,24 @@ function Loader() {
 
 export default function ImageUploader({
 	experienceId,
-	prompt,
 }: {
 	experienceId: string;
-	prompt: string;
 }) {
-	const [image, setImage] = useState<string | null>(null);
+	const [image, setImage] = useState<{
+		file: File;
+		preview: string;
+	} | null>(null);
+	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
-	const [hasGenerated, setHasGenerated] = useState(false);
 	const [uploadProgress, setUploadProgress] = useState(0);
 
 	const onDrop = useCallback((acceptedFiles: File[]) => {
 		const file = acceptedFiles[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				setImage(e.target?.result as string);
-				setHasGenerated(false);
-			};
-			reader.readAsDataURL(file);
+			setImage({
+				file,
+				preview: URL.createObjectURL(file),
+			});
 		}
 	}, []);
 
@@ -454,7 +453,8 @@ export default function ImageUploader({
 		maxFiles: 1,
 	});
 
-	const handleUpload = async (imageData: string) => {
+	const handleUpload = async () => {
+		if (!image) return;
 		try {
 			const response = await fetch(
 				`/api/experiences/${experienceId}/generate`,
@@ -463,10 +463,7 @@ export default function ImageUploader({
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({
-						image: imageData,
-						prompt,
-					}),
+					body: image.file,
 				},
 			);
 
@@ -475,8 +472,7 @@ export default function ImageUploader({
 			}
 
 			const data = await response.json();
-			setImage(data.imageUrl);
-			setHasGenerated(true);
+			setGeneratedImage(data.imageUrl);
 		} catch (error) {
 			console.error("Error uploading image:", error);
 			throw error;
@@ -488,7 +484,7 @@ export default function ImageUploader({
 		setIsGenerating(true);
 		setUploadProgress(0);
 		try {
-			await handleUpload(image);
+			await handleUpload();
 		} catch (error) {
 			console.error("Error generating image:", error);
 		} finally {
@@ -498,17 +494,8 @@ export default function ImageUploader({
 
 	const handleReset = () => {
 		setImage(null);
-		setHasGenerated(false);
+		setGeneratedImage(null);
 		setUploadProgress(0);
-	};
-
-	const handleCopy = async () => {
-		if (!image) return;
-		try {
-			await navigator.clipboard.writeText(image);
-		} catch (error) {
-			console.error("Failed to copy image URL:", error);
-		}
 	};
 
 	if (isGenerating) {
@@ -529,6 +516,8 @@ export default function ImageUploader({
 		);
 	}
 
+	const displayImage = generatedImage || image?.preview;
+
 	return (
 		<div className="w-full max-w-2xl mx-auto p-4 space-y-8">
 			<div
@@ -541,10 +530,10 @@ export default function ImageUploader({
 						}`}
 			>
 				<input {...getInputProps()} capture="environment" />
-				{image ? (
+				{displayImage ? (
 					<div className="relative w-full aspect-square">
 						<Image
-							src={image}
+							src={displayImage}
 							alt="Uploaded image"
 							fill
 							className="object-contain rounded-lg"
@@ -577,11 +566,8 @@ export default function ImageUploader({
 						<Button onClick={handleReset} variant="outline" className="flex-1">
 							Reset
 						</Button>
-						<Button
-							onClick={hasGenerated ? handleCopy : handleGenerate}
-							className="flex-1"
-						>
-							{hasGenerated ? "Copy Image URL" : "Generate Image"}
+						<Button onClick={handleGenerate} className="flex-1">
+							Generate Image
 						</Button>
 					</div>
 				</div>
