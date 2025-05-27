@@ -34,7 +34,7 @@ export async function SectionConnectToTheWebsocket({
 			throw new Error("Message is required");
 		}
 
-		await whopApi.SendWebsocketMessage({
+		await whopApi.sendWebsocketMessage({
 			message: message,
 			target: { experience: experienceId },
 		});
