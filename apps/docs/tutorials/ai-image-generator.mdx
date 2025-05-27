@@ -159,25 +159,6 @@ yarn prisma:db:push
 
 </CodeGroup>
 
-Create a database client file at `lib/db.ts`:
-
-```typescript [expandable] lib/db.ts
-import { PrismaClient } from "@prisma/client";
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-```
-
-This setup will:
-
-1. Create a Prisma client for database operations
-2. Use connection pooling for better performance
-3. Ensure we don't create multiple instances in development
 
 ## 4. Install additional dependencies
 
@@ -828,7 +809,7 @@ export default function EditExperiencePage({
 
 ## 6. Create pages
 
-### `/experiences/[experienceId]/page.tsx`
+### `app/experiences/[experienceId]/page.tsx`
 This page displays the experience prompt and the image uploader. If the user is an admin, they can edit the prompt.
 
 ```typescript app/experiences/[experienceId]/page.tsx [expandable]
@@ -896,7 +877,7 @@ export default async function ExperiencePage({
 }
 ```
 
-### `/experiences/[experienceId]/edit/page.tsx`
+### `app/experiences/[experienceId]/edit/page.tsx`
 This page allows admins to edit the experience prompt.
 
 ```typescript app/experiences/[experienceId]/edit/page.tsx [expandable]
@@ -915,7 +896,7 @@ export default async function Page({
 
 ## 7. Create the API routes
 
-### `/api/experiences/[experienceId]/generate/route.ts`
+### `app/api/experiences/[experienceId]/generate/route.ts`
 This API route generates images using OpenAI's DALL-E API.
 
 ```typescript app/api/experiences/[experienceId]/generate/route.ts [expandable]
@@ -1087,7 +1068,7 @@ export async function POST(
 }
 ```
 
-### `/api/experiences/[experienceId]/route.ts`
+### `app/api/experiences/[experienceId]/route.ts`
 This API route is a PUT operation to an experience in the database.
 
 ```typescript app/api/experiences/[experienceId]/route.ts [expandable]
