@@ -161,7 +161,7 @@ yarn prisma:db:push
 
 Create a database client file at `lib/db.ts`:
 
-```typescript
+```typescript [expandable] lib/db.ts
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -230,7 +230,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 ### `<ImageUploader>`
 This component handles image upload and generation.
 
-```typescript app/components/image-uploader.tsx
+```typescript app/components/image-uploader.tsx [expandable]
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -695,7 +695,7 @@ export default function ImageUploader({
 ### `<ExperiencePrompt>`
 This component displays the experience prompt and image uploader.
 
-```typescript app/components/experience-prompt.tsx
+```typescript app/components/experience-prompt.tsx [expandable]
 import type { AccessLevel } from "@whop/api";
 import Link from "next/link";
 import ImageUploader from "./image-uploader";
@@ -736,7 +736,7 @@ export default function ExperiencePrompt({
 ### `<EditExperiencePrompt>`
 This component allows admins to edit the experience prompt.
 
-```typescript app/components/edit-experience-prompt.tsx
+```typescript app/components/edit-experience-prompt.tsx [expandable]
 "use client";
 
 import { useState } from "react";
@@ -831,7 +831,7 @@ export default function EditExperiencePage({
 ### `/experiences/[experienceId]/page.tsx`
 This page displays the experience prompt and the image uploader. If the user is an admin, they can edit the prompt.
 
-```typescript app/experiences/[experienceId]/page.tsx
+```typescript app/experiences/[experienceId]/page.tsx [expandable]
 import ExperiencePrompt from "@/components/experience-prompt";
 import { prisma } from "@/lib/db";
 import { whopApi } from "@/lib/whop-api";
@@ -899,7 +899,7 @@ export default async function ExperiencePage({
 ### `/experiences/[experienceId]/edit/page.tsx`
 This page allows admins to edit the experience prompt.
 
-```typescript app/experiences/[experienceId]/edit/page.tsx
+```typescript app/experiences/[experienceId]/edit/page.tsx [expandable]
 import EditExperiencePrompt from "@/components/edit-experience-prompt";
 
 export default async function Page({
@@ -918,7 +918,7 @@ export default async function Page({
 ### `/api/experiences/[experienceId]/generate/route.ts`
 This API route generates images using OpenAI's DALL-E API.
 
-```typescript app/api/experiences/[experienceId]/generate/route.ts
+```typescript app/api/experiences/[experienceId]/generate/route.ts [expandable]
 import { prisma } from "@/lib/db";
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { headers } from "next/headers";
@@ -1090,7 +1090,7 @@ export async function POST(
 ### `/api/experiences/[experienceId]/route.ts`
 This API route is a PUT operation to an experience in the database.
 
-```typescript app/api/experiences/[experienceId]/route.ts
+```typescript app/api/experiences/[experienceId]/route.ts [expandable]
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
