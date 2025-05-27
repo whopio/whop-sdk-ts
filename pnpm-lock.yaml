@@ -27,7 +27,7 @@ importers:
         specifier: 4.0.552
         version: 4.0.552(@types/node@22.15.21)(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
 
-  examples/next:
+  examples/nextjs:
     dependencies:
       '@vercel/functions':
         specifier: ^2.0.3
