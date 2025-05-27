@@ -1172,6 +1172,8 @@ export async function PUT(request: Request) {
 6. Deploy and copy your Vercel URL
 7. Update your Whop app settings with the new URL in the "Base URL" field
 
+> Vercel functions automatically timeout after 60 seconds on a hobby account. Images might take longer than 60 seconds. This will cause errors. You can upgrade to a paid account to avoid this or swap out the image generator to a different API.
+
 Your AI image generation app is now ready! Users can upload images, apply AI transformations based on prompts, and share their creations in the community forum.
 
 ## Need Help?
