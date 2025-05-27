@@ -1,19 +1,12 @@
 import type { WhopServerSdkOptions } from "@/sdk/server-sdk-shared";
-import type { WebsocketClientOptionsBase } from "./client.common";
 import { WhopWebsocketClientBase } from "./client.common";
 import { DEFAULT_WEBSOCKET_ORIGIN } from "./server";
-
-export interface WebsocketClientOptionsServer
-	extends WebsocketClientOptionsBase {}
 
 export class WhopWebsocketClientServer extends WhopWebsocketClientBase {
 	private keys: WhopServerSdkOptions;
 
-	constructor(
-		baseOptions: WebsocketClientOptionsBase,
-		keys: WhopServerSdkOptions,
-	) {
-		super(baseOptions);
+	constructor(keys: WhopServerSdkOptions) {
+		super();
 		this.keys = keys;
 	}
 
@@ -36,7 +29,7 @@ export class WhopWebsocketClientServer extends WhopWebsocketClientBase {
 }
 
 export function makeConnectToWebsocketFunction(options: WhopServerSdkOptions) {
-	return function connectToWebsocket(baseOptions: WebsocketClientOptionsBase) {
-		return new WhopWebsocketClientServer(baseOptions, options);
+	return function connectToWebsocket() {
+		return new WhopWebsocketClientServer(options);
 	};
 }

@@ -21,19 +21,20 @@ export function SectionConnectToTheWebsocketClient({
 	const websocket = useRef<WhopWebsocketClientBase | null>(null);
 
 	useEffect(() => {
-		const ws = WhopClientSdk().connectToWebsocket({
+		const ws = WhopClientSdk().websocketClient({
 			joinExperience: experienceId,
-			onMessage: (message) => {
-				const obj = message.appMessage;
-				if (!obj) return;
-				setMessage(obj.json);
-				setIsTrusted(obj.isTrusted);
-				setSenderUserId(obj.fromUserId);
-			},
-			onStatusChange: (status) => {
-				setStatus(status);
-			},
 		});
+
+		ws.on("appMessage", (message) => {
+			setMessage(message.json);
+			setIsTrusted(message.isTrusted);
+			setSenderUserId(message.fromUserId);
+		});
+
+		ws.on("connectionStatus", (status) => {
+			setStatus(status);
+		});
+
 		websocket.current = ws;
 
 		return ws.connect();

@@ -1,3 +1,4 @@
+import { TypedEmitter } from "tiny-typed-emitter";
 import type { proto } from "../index.shared";
 
 export type ReceivableWebsocketMessage =
@@ -11,26 +12,19 @@ export type WebsocketMessageHandler = (
 ) => unknown;
 export type WebsocketStatusHandler = (status: WebsocketStatus) => unknown;
 
-export interface WebsocketClientOptionsBase {
-	/// Called when the connection state of the websocket changes
-	onStatusChange?: WebsocketStatusHandler;
-
-	/// Called when a message is received from the websocket
-	onMessage?: WebsocketMessageHandler;
+export interface WhopWebsocketEvents {
+	message: (message: ReceivableWebsocketMessage) => void;
+	appMessage: (message: proto.common.AppMessage) => void;
+	connectionStatus: (status: WebsocketStatus) => void;
+	connect: () => void;
+	disconnect: () => void;
 }
 
-export class WhopWebsocketClientBase {
+export class WhopWebsocketClientBase extends TypedEmitter<WhopWebsocketEvents> {
 	private websocket: WebSocket | null = null;
 	private failedConnectionAttempts = 0;
 	private status: WebsocketStatus = "disconnected";
-	private onMessage: WebsocketMessageHandler;
-	private onStatusChange: WebsocketStatusHandler;
 	private wantsToBeConnected = false;
-
-	constructor(options: WebsocketClientOptionsBase) {
-		this.onMessage = options.onMessage ?? (() => {});
-		this.onStatusChange = options.onStatusChange ?? (() => {});
-	}
 
 	protected makeWebsocket(): WebSocket {
 		throw new Error("Not implemented in base class");
@@ -53,7 +47,11 @@ export class WhopWebsocketClientBase {
 
 		websocket.onmessage = (event: MessageEvent) => {
 			try {
-				this.onMessage(JSON.parse(event.data) as ReceivableWebsocketMessage);
+				const message = JSON.parse(event.data) as ReceivableWebsocketMessage;
+				this.emit("message", message);
+				if (message.appMessage) {
+					this.emit("appMessage", message.appMessage);
+				}
 			} catch (error) {
 				console.error(
 					"[WhopWebsocketClient] Error parsing message",
@@ -115,24 +113,26 @@ export class WhopWebsocketClientBase {
 		this.status = status;
 
 		if (status === "disconnected") {
-			const backoff = this.calculateBackoff(this.failedConnectionAttempts);
+			const backoff = this.calculateBackoff();
 			this.failedConnectionAttempts++;
 			setTimeout(() => {
 				if (this.wantsToBeConnected) {
 					this.connect();
 				}
 			}, backoff);
+			this.emit("disconnect");
 		}
 
 		if (status === "connected") {
 			this.failedConnectionAttempts = 0;
+			this.emit("connect");
 		}
 
-		this.onStatusChange(status);
+		this.emit("connectionStatus", status);
 	}
 
-	private calculateBackoff(failedConnectionAttempts: number) {
-		return Math.min(50 * 2 ** failedConnectionAttempts, 1000 * 60);
+	private calculateBackoff() {
+		return Math.min(50 * 2 ** this.failedConnectionAttempts, 1000 * 60);
 	}
 }
 
