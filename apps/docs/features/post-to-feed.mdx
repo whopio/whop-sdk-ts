@@ -24,18 +24,23 @@ The `findOrCreateForum` method will find an existing forum experience with the s
 or create a new one with all the specified options
 
 ```typescript
-await whopApi.findOrCreateForum({
-  input: {
-    accessPassId: "prod_XXXXXX",
-    name: "My App Forum",
-    whoCanPost: "everyone",
-  },
-});
+await whopApi
+  .withUser("user_XXXXXX")
+  .withCompany("biz_XXXXXX")
+  .findOrCreateForum({
+    input: {
+      accessPassId: "prod_XXXXXX",
+      name: "My App Forum",
+      whoCanPost: "everyone",
+    },
+  });
 ```
 
 - `accessPassId`: ID of the whop to attach the forum to.
 - `name`: Visible title of the forum experience.
 - `whoCanPost`: "everyone" or "admins"
+- `withUser()`: ID of an admin of the company that owns the access pass.
+- `withCompany()`: ID of the company that owns the access pass.
 
 > If you only have an experience ID, you can pass that as `experienceId: "exp_XXX"` instead of `accessPassId`.
 > This will create the forum in the same whop as the supplied experience.
