@@ -1020,8 +1020,8 @@ export async function POST(
       image: originalFile,
       prompt: experience.prompt,
       n: 1,
-      size: "1024x1024",
-      quality: "high",
+    	size: "auto",
+      quality: "low",
     });
 
     console.log("Response:", response);
