@@ -113,7 +113,7 @@ export class WhopWebsocketClientBase extends TypedEmitter<WhopWebsocketEvents> {
 		this.status = status;
 
 		if (status === "disconnected") {
-			const backoff = this.calculateBackoff(this.failedConnectionAttempts);
+			const backoff = this.calculateBackoff();
 			this.failedConnectionAttempts++;
 			setTimeout(() => {
 				if (this.wantsToBeConnected) {
@@ -131,8 +131,8 @@ export class WhopWebsocketClientBase extends TypedEmitter<WhopWebsocketEvents> {
 		this.emit("connectionStatus", status);
 	}
 
-	private calculateBackoff(failedConnectionAttempts: number) {
-		return Math.min(50 * 2 ** failedConnectionAttempts, 1000 * 60);
+	private calculateBackoff() {
+		return Math.min(50 * 2 ** this.failedConnectionAttempts, 1000 * 60);
 	}
 }
 
