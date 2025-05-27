@@ -48,7 +48,7 @@
 		"lint:fix": "biome check --write --unsafe"
 	},
 	"dependencies": {
-		"graphql": "16.8.1",
+		"graphql": "16.11.0",
 		"graphql-request": "latest",
 		"graphql-tag": "2.12.6",
 		"jose": "6.0.11",
