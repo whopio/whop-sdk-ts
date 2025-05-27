@@ -118,18 +118,12 @@ export async function POST(
 			input: { experienceId: experience.id, name: "AI Uploads" },
 		});
 
-		const experienceFromApi = (
-			await whopApi.getExperience({
-				experienceId,
-			})
-		).experience;
-
 		const forumId = forum.createForum?.id;
 
 		const post = await whopApi.createForumPost({
 			input: {
 				forumExperienceId: forumId,
-				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/${experienceFromApi.company.id}/${experience.id}/app\n\nBefore vs After ⬇️`,
+				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/experiences/${experience.id}/\n\nBefore vs After ⬇️`,
 				attachments: [
 					{ directUploadId: originalAttachmentId },
 					{ directUploadId: generatedAttachmentId },

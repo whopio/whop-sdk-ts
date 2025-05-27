@@ -7,11 +7,6 @@ import { headers } from "next/headers";
 const prisma = new PrismaClient();
 
 async function findOrCreateExperience(experienceId: string) {
-	const result = await whopApi.getExperience({ experienceId });
-	const experienceName = result.experience.name;
-	const companyTitle = result.experience.company.title;
-	const companyId = result.experience.company.id;
-
 	let experience = await prisma.experience.findUnique({
 		where: { id: experienceId },
 	});
