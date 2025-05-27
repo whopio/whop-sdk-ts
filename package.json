@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"turbo": "2.5.3",
-		"typescript": "5.8.2",
+		"typescript": "5.8.3",
 		"lefthook": "1.11.13"
 	},
 	"packageManager": "pnpm@9.15.9",
