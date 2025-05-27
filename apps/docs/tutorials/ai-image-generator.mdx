@@ -54,7 +54,7 @@ yarn dev
 
 Now open http://localhost:3000 and follow the directions on the page.
 
-## 2. Start developing
+## 2. Start developing your app
 After following the instructions on the page, you'll be able to start developing your app. You should have:
 - Created your app
 - Set up your `.env.local` file
@@ -68,10 +68,13 @@ Ensure you're developing in `localhost` mode. See example:
 
 ## 3. Set up your database
 
-First, let's set up a Supabase database:
+### Create a Supabase database
 
-1. Go to [Supabase](https://supabase.com) and create a new account if you don't have one
-2. Create a new project and copy your database password
+Go to [Supabase](https://supabase.com) and create a new account if you don't have one
+
+Create a new project and copy your database password
+
+### Set up Prisma
 
 Now, let's set up Prisma in your project:
 
@@ -98,7 +101,7 @@ The `prisma init` command will create a new `prisma` directory with a `schema.pr
 
 Now, go copy your database connection strings from Supabase for Prisma to use. Then paste the values in your `.env.local` file.
 
-Replace your password with `[YOUR-PASSWORD]` and your project reference with `[YOUR-PROJECT-REF]`.
+Replace your password with `[YOUR-PASSWORD]`
 
 <Frame>
   <img src="/how-to-videos/prisma-setup.gif" alt="How to setup Prisma with Supabase" />
@@ -109,7 +112,7 @@ Replace your password with `[YOUR-PASSWORD]` and your project reference with `[Y
 
 Replace the contents of `prisma/schema.prisma` with:
 
-```prisma
+```prisma prisma/schema.prisma
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -176,57 +179,9 @@ This setup will:
 2. Use connection pooling for better performance
 3. Ensure we don't create multiple instances in development
 
-## 4. Create the experience helper
+## 4. Install additional dependencies
 
-Create a new file `lib/helpers.ts` to manage experience creation and updates:
-
-```typescript
-import { PrismaClient } from "@prisma/client";
-import { whopApi } from "./whop-api";
-
-const prisma = new PrismaClient();
-
-export async function findOrCreateExperience(experienceId: string) {
-  const result = await whopApi.getExperience({ experienceId });
-  const experienceName = result.experience.name;
-  const companyTitle = result.experience.company.title;
-  const companyId = result.experience.company.id;
-
-  let experience = await prisma.experience.findUnique({
-    where: { id: experienceId },
-  });
-  if (!experience) {
-    experience = await prisma.experience.create({
-      data: {
-        id: experienceId,
-        name: experienceName,
-        companyTitle,
-        companyId,
-        prompt: "",
-        webhookUrl: "",
-      },
-    });
-  } else {
-    experience = await prisma.experience.update({
-      where: { id: experienceId },
-      data: { name: experienceName, companyTitle, companyId },
-    });
-  }
-  return experience;
-}
-```
-
-This helper will:
-
-1. Fetch experience details from Whop's API
-2. Create or update the experience in your database
-3. Keep experience metadata in sync with whop
-
-In the future, if you want to store configuration settings for creators who install your app (like the webhook creation URL), you can do so at the experience level in your database.
-
-## 5. Install additional dependencies
-
-Add the required packages:
+### Add the required packages
 
 <CodeGroup>
 
@@ -244,10 +199,10 @@ yarn add openai sharp react-dropzone @radix-ui/react-slot gsap
 
 </CodeGroup>
 
-Install the Shadcn button:
+### Install a Shadcn button
 
 <CodeGroup>
-```bash
+```bash pnpm
 pnpm dlx shadcn@latest add button
 ```
 
@@ -261,11 +216,19 @@ yarn shadcn@latest add button
 
 </CodeGroup>
 
+### Add your OpenAI API key
+Add to your `.env.local`:
 
-## 6. Create components
+```env .env.local
+# OpenAI API Key for image generation
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+
+## 5. Create components
 
 ### `<ImageUploader>`
-This component handles image upload and generation: */}
+This component handles image upload and generation.
 
 ```typescript app/components/image-uploader.tsx
 "use client";
@@ -730,7 +693,7 @@ export default function ImageUploader({
 ```
 
 ### `<ExperiencePrompt>`
-This component displays the experience prompt and image uploader:
+This component displays the experience prompt and image uploader.
 
 ```typescript app/components/experience-prompt.tsx
 import type { AccessLevel } from "@whop/api";
@@ -771,7 +734,7 @@ export default function ExperiencePrompt({
 ```
 
 ### `<EditExperiencePrompt>`
-This component allows admins to edit the experience prompt:
+This component allows admins to edit the experience prompt.
 
 ```typescript app/components/edit-experience-prompt.tsx
 "use client";
@@ -863,17 +826,48 @@ export default function EditExperiencePage({
 ```
 
 
-## 7. Create pages
+## 6. Create pages
 
 ### `/experiences/[experienceId]/page.tsx`
 This page displays the experience prompt and the image uploader. If the user is an admin, they can edit the prompt.
 
 ```typescript app/experiences/[experienceId]/page.tsx
-import ExperiencePrompt from "@/components/ExperiencePrompt";
-import { findOrCreateExperience } from "@/lib/helpers";
+import ExperiencePrompt from "@/components/experience-prompt";
 import { whopApi } from "@/lib/whop-api";
+import { PrismaClient } from "@prisma/client";
 import { verifyUserToken } from "@whop/api";
 import { headers } from "next/headers";
+
+const prisma = new PrismaClient();
+
+async function findOrCreateExperience(experienceId: string) {
+  const result = await whopApi.getExperience({ experienceId });
+  const experienceName = result.experience.name;
+  const companyTitle = result.experience.company.title;
+  const companyId = result.experience.company.id;
+
+  let experience = await prisma.experience.findUnique({
+    where: { id: experienceId },
+  });
+  if (!experience) {
+    experience = await prisma.experience.create({
+      data: {
+        id: experienceId,
+        name: experienceName,
+        companyTitle,
+        companyId,
+        prompt: "",
+        webhookUrl: "",
+      },
+    });
+  } else {
+    experience = await prisma.experience.update({
+      where: { id: experienceId },
+      data: { name: experienceName, companyTitle, companyId },
+    });
+  }
+  return experience;
+}
 
 export default async function ExperiencePage({
   params,
@@ -883,28 +877,27 @@ export default async function ExperiencePage({
   const headersList = await headers();
   const { userId } = await verifyUserToken(headersList);
 
-const experience = await findOrCreateExperience(params.experienceId);
+  const experience = await findOrCreateExperience(params.experienceId);
 
-const hasAccess = await whopApi.CheckIfUserHasAccessToExperience({
-userId,
-experienceId: params.experienceId,
-});
+  const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+    userId,
+    experienceId: params.experienceId,
+  });
 
-return (
-
-<div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
-  <ExperiencePrompt
-    prompt={experience.prompt}
-    accessLevel={hasAccess.hasAccessToExperience.accessLevel}
-    experienceId={params.experienceId}
-  />
-</div>
-); }
-
+  return (
+    <div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
+      <ExperiencePrompt
+        prompt={experience.prompt}
+        accessLevel={hasAccess.hasAccessToExperience.accessLevel}
+        experienceId={params.experienceId}
+      />
+    </div>
+  );
+}
 ```
 
 ### `/experiences/[experienceId]/edit/page.tsx`
-This page allows admins to edit the experience prompt:
+This page allows admins to edit the experience prompt.
 
 ```typescript app/experiences/[experienceId]/edit/page.tsx
 import EditExperiencePrompt from "@/components/edit-experience-prompt";
@@ -1166,16 +1159,7 @@ export async function PUT(request: Request) {
 }
 ```
 
-## 10. Update Environment Variables
-
-Add to your `.env.local`:
-
-```env
-# OpenAI API Key for image generation
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-## 11. Deploy to Vercel
+## 8. Deploy to Vercel
 
 1. Push your code to GitHub
 2. Create a new project on [Vercel](https://vercel.com)
