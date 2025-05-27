@@ -435,6 +435,15 @@ export default function ImageUploader({
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [uploadProgress, setUploadProgress] = useState(0);
 
+	useEffect(() => {
+		const objectUrl = image?.preview;
+		if (objectUrl) {
+			return () => {
+				URL.revokeObjectURL(objectUrl);
+			};
+		}
+	}, [image?.preview]);
+
 	const onDrop = useCallback((acceptedFiles: File[]) => {
 		const file = acceptedFiles[0];
 		if (file) {
