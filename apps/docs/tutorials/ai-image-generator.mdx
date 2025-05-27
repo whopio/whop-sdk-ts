@@ -833,12 +833,11 @@ This page displays the experience prompt and the image uploader. If the user is 
 
 ```typescript app/experiences/[experienceId]/page.tsx
 import ExperiencePrompt from "@/components/experience-prompt";
+import { prisma } from "@/lib/db";
 import { whopApi } from "@/lib/whop-api";
-import { PrismaClient } from "@prisma/client";
 import { verifyUserToken } from "@whop/api";
 import { headers } from "next/headers";
 
-const prisma = new PrismaClient();
 
 async function findOrCreateExperience(experienceId: string) {
   const result = await whopApi.getExperience({ experienceId });
@@ -872,16 +871,17 @@ async function findOrCreateExperience(experienceId: string) {
 export default async function ExperiencePage({
   params,
 }: {
-  params: { experienceId: string };
+  params: Promise<{ experienceId: string }>;
 }) {
   const headersList = await headers();
   const { userId } = await verifyUserToken(headersList);
 
-  const experience = await findOrCreateExperience(params.experienceId);
+  const { experienceId } = await params;
+  const experience = await findOrCreateExperience(experienceId);
 
   const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
     userId,
-    experienceId: params.experienceId,
+    experienceId,
   });
 
   return (
@@ -889,7 +889,7 @@ export default async function ExperiencePage({
       <ExperiencePrompt
         prompt={experience.prompt}
         accessLevel={hasAccess.hasAccessToExperience.accessLevel}
-        experienceId={params.experienceId}
+          experienceId={experienceId}
       />
     </div>
   );
@@ -905,7 +905,7 @@ import EditExperiencePrompt from "@/components/edit-experience-prompt";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ experienceId: string; accessPassId: string }>;
+  params: Promise<{ experienceId: string; }>;
 }) {
   const { experienceId } = await params;
   return <EditExperiencePrompt experienceId={experienceId} />;
@@ -919,25 +919,23 @@ export default async function Page({
 This API route generates images using OpenAI's DALL-E API.
 
 ```typescript app/api/experiences/[experienceId]/generate/route.ts
+import { prisma } from "@/lib/db";
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
-import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import sharp from "sharp";
 
-const prisma = new PrismaClient();
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ experienceId: string }> }
+) {
   try {
-    // Extract experienceId from the URL
-    const url = new URL(request.url);
-    const match = url.pathname.match(/experiences\/([^/]+)\/generate/);
-    const experienceId = match ? match[1] : null;
+    const { experienceId } = await params;
 
     if (!experienceId) {
       return NextResponse.json(
@@ -1087,7 +1085,6 @@ export async function POST(request: Request) {
     );
   }
 }
-
 ```
 
 ### `/api/experiences/[experienceId]/route.ts`
@@ -1098,8 +1095,7 @@ import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/db";
 
 export async function PUT(request: Request) {
   try {
@@ -1166,7 +1162,7 @@ export async function PUT(request: Request) {
 3. Import your GitHub repository
 4. Add all environment variables
 5. Deploy and copy your Vercel URL
-6. Update your Whop app settings with the new URL
+6. Update your Whop app settings with the new URL in the "Base URL" field
 
 Your AI image generation app is now ready! Users can upload images, apply AI transformations based on prompts, and share their creations in the community forum.
 
