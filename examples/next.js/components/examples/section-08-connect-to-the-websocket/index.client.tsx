@@ -25,12 +25,10 @@ export function SectionConnectToTheWebsocketClient({
 			joinExperience: experienceId,
 		});
 
-		ws.on("message", (message) => {
-			const obj = message.appMessage;
-			if (!obj) return;
-			setMessage(obj.json);
-			setIsTrusted(obj.isTrusted);
-			setSenderUserId(obj.fromUserId);
+		ws.on("appMessage", (message) => {
+			setMessage(message.json);
+			setIsTrusted(message.isTrusted);
+			setSenderUserId(message.fromUserId);
 		});
 
 		ws.on("connectionStatus", (status) => {
