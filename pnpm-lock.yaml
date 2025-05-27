@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^1.9.4
+        specifier: 1.9.4
         version: 1.9.4
       lefthook:
         specifier: 1.11.13
         version: 1.11.13
       turbo:
-        specifier: ^2.5.3
+        specifier: 2.5.3
         version: 2.5.3
       typescript:
         specifier: 5.8.2
@@ -24,7 +24,7 @@ importers:
   apps/docs:
     devDependencies:
       mintlify:
-        specifier: ^4.0.552
+        specifier: 4.0.552
         version: 4.0.552(@types/node@22.15.21)(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
 
   examples/next.js:
@@ -77,7 +77,7 @@ importers:
         version: 16.8.1
       graphql-request:
         specifier: latest
-        version: 7.1.2(graphql@16.8.1)
+        version: 7.2.0(graphql@16.8.1)
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@16.8.1)
@@ -89,10 +89,10 @@ importers:
         version: 0.8.3
     devDependencies:
       '@biomejs/js-api':
-        specifier: ^0.7.1
+        specifier: 0.7.1
         version: 0.7.1(@biomejs/wasm-nodejs@1.9.4)
       '@biomejs/wasm-nodejs':
-        specifier: ^1.9.4
+        specifier: 1.9.4
         version: 1.9.4
       '@graphql-codegen/cli':
         specifier: 5.0.5
@@ -107,16 +107,16 @@ importers:
         specifier: 4.5.1
         version: 4.5.1(graphql@16.8.1)
       '@parcel/watcher':
-        specifier: ^2.5.1
+        specifier: 2.5.1
         version: 2.5.1
       '@protobuf-ts/protoc':
-        specifier: ^2.10.0
+        specifier: 2.10.0
         version: 2.10.0
       '@types/node':
         specifier: latest
         version: 22.15.21
       concurrently:
-        specifier: ^9.1.2
+        specifier: 9.1.2
         version: 9.1.2
       dotenv:
         specifier: 16.5.0
@@ -3082,8 +3082,8 @@ packages:
     peerDependencies:
       graphql: 14 - 16
 
-  graphql-request@7.1.2:
-    resolution: {integrity: sha512-+XE3iuC55C2di5ZUrB4pjgwe+nIQBuXVIK9J98wrVwojzDW3GMdSBZfxUk8l4j9TieIpjpggclxhNEU9ebGF8w==}
+  graphql-request@7.2.0:
+    resolution: {integrity: sha512-0GR7eQHBFYz372u9lxS16cOtEekFlZYB2qOyq8wDvzRmdRSJ0mgUVX1tzNcIzk3G+4NY+mGtSz411wZdeDF/+A==}
     peerDependencies:
       graphql: 14 - 16
 
@@ -9022,7 +9022,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  graphql-request@7.1.2(graphql@16.8.1):
+  graphql-request@7.2.0(graphql@16.8.1):
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
       graphql: 16.8.1
