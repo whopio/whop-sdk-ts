@@ -1157,12 +1157,20 @@ export async function PUT(request: Request) {
 
 ## 8. Deploy to Vercel
 
-1. Push your code to GitHub
-2. Create a new project on [Vercel](https://vercel.com)
-3. Import your GitHub repository
-4. Add all environment variables
-5. Deploy and copy your Vercel URL
-6. Update your Whop app settings with the new URL in the "Base URL" field
+1. Add this script to the `scripts` section of your `package.json` to generate the Prisma client:
+
+```json package.json
+  "scripts": {
+    "postinstall": "prisma generate"
+  }
+```
+
+2. Push your code to GitHub
+3. Create a new project on [Vercel](https://vercel.com)
+4. Import your GitHub repository
+5. Add all environment variables
+6. Deploy and copy your Vercel URL
+7. Update your Whop app settings with the new URL in the "Base URL" field
 
 Your AI image generation app is now ready! Users can upload images, apply AI transformations based on prompts, and share their creations in the community forum.
 
