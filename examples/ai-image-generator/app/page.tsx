@@ -17,7 +17,7 @@ export default function Page() {
 							<span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white mr-3">
 								1
 							</span>
-							Create Your Whop App
+							Create your Whop app
 						</h2>
 						<p className="text-gray-600 ml-11">
 							Go to your{" "}
@@ -38,20 +38,22 @@ export default function Page() {
 							<span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white mr-3">
 								2
 							</span>
-							Set Up Environment Variables
+							Set up environment variables
 						</h2>
 						<p className="text-gray-600 ml-11 mb-4">
 							Copy the .env file from your dashboard and create a new .env file
 							in your project root. This will contain all the necessary
 							environment variables for your app.
 						</p>
-						<div className="text-gray-600 ml-11">
-							<code>
-								WHOP_API_KEY= {process.env.WHOP_API_KEY} <br />
-								WHOP_AGENT_USER_ID= {process.env.WHOP_AGENT_USER_ID} <br />
-								WHOP_APP_ID= {process.env.NEXT_PUBLIC_WHOP_APP_ID}
-							</code>
-						</div>
+						{process.env.NODE_ENV === "development" && (
+							<div className="text-gray-600 ml-11">
+								<code>
+									WHOP_API_KEY= {process.env.WHOP_API_KEY} <br />
+									WHOP_AGENT_USER_ID= {process.env.WHOP_AGENT_USER_ID} <br />
+									WHOP_APP_ID= {process.env.WHOP_APP_ID}
+								</code>
+							</div>
+						)}
 					</div>
 
 					<div className="bg-white p-6 rounded-lg shadow-md">
@@ -59,12 +61,12 @@ export default function Page() {
 							<span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white mr-3">
 								3
 							</span>
-							Install Your App into your whop
+							Install your app into your whop
 						</h2>
 						<p className="text-gray-600 ml-11">
-							{process.env.NEXT_PUBLIC_WHOP_APP_ID ? (
+							{process.env.WHOP_APP_ID ? (
 								<a
-									href={`https://whop.com/apps/${process.env.NEXT_PUBLIC_WHOP_APP_ID}/install`}
+									href={`https://whop.com/apps/${process.env.WHOP_APP_ID}/install`}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-500 hover:text-blue-600 underline"

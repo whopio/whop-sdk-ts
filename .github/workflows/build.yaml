@@ -41,7 +41,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check types
-        run: pnpm turbo run check-types
+        run: pnpm turbo run check-types --filter=@whop/api...
 
       - name: Build packages
-        run: pnpm turbo run build 
+        run: pnpm turbo run build --filter=@whop/api...

@@ -1,6 +1,65 @@
 ---
-title: Receive webhooks
-description: "Get notified when changes happen inside of Whop."
+title: "Webhooks"
+description: "Use webhooks to get notified when specific events happen inside your whop."
 ---
 
-Coming soon!
+Using Whop webhooks, connect to external tools – like Zapier, GoHighLevel, and more – to send information from your whop to other platforms or trigger other actions.
+
+Find all available webhooks in your [dashboard](https://whop.com/dashboard) under settings > webhooks.
+
+## Examples
+
+Here are some examples of situations where you can create and use webhooks on Whop to pass information from your whop to other platforms:
+
+- You want to use Zapier to notify your sales team in Slack whenever a customer's payment has failed
+- You want to use Zapier to add customer information to a spreadsheet after they've successfully completed a purchase
+- You want to pass information about a successful payment to GoHighLevel
+
+Get step-by-step instructions on how to [integrate Zapier with Whop here](https://help.whop.com/en/articles/11399888-integrate-zapier-and-whop), and how to integrate [GoHighLevel with Whop here](https://help.whop.com/en/articles/11399889-integrate-gohighlevel-and-whop).
+
+## Trigger events
+
+Using a webhook, these are the events that take place on Whop that you can use to trigger a workflow:
+
+**Payment Succeeded** - triggers when a new payment is successfully processed
+
+**Failed Payment** - triggers when a payment attempt fails
+
+**Membership Went Valid** - triggers when a user gains access to your product
+
+**Membership Went Invalid** - triggers when a user loses access to your product
+
+This means that, whenever any of these events occur in your whop, you (or an automation platform like Zapier) can be notified. You can use these notification triggers to kick off a sequence of other events and/or call other information about your whop.
+
+## Whop API calls
+
+Using the Whop API, you can call to either 1) create events or 2) search for and pull information from your whop:
+
+### 1) Event: Create something in your whop
+
+- **Add free days to a membership** - extend a Membership's next renewal or expiration date by the number of days you set.
+- **Create a checkout session** - creates a new Checkout Session, letting you attach data to a membership after purchase.
+- **Create a plan** - creates a new pricing plan in your whop.
+- **Create a promo code** - creates a promo code for a discount or free days.
+- **Create a quick link** - create a quick checkout link for a price you set.
+- **Terminate a membership** - immediately ends a membership and kicks the customer from their access.
+
+### 2) Event: Search for / pull information
+
+- **List payment fees** - lists applicable fees for the given payment.
+- **Retrieve a company** - returns the company on Whop currently authenticated with the Zapier API key
+- **Retrieve a membership** - pulls information about a user's membership
+- **Retrieve a plan** - pulls a plan, which includes pricing and parameters for purchasing a product.
+- **Retrieve a product** - pulls a product, which includes what the customer accesses with their purchase.
+- **Retrieve an experience** - pulls a specific Experience, which is the on-platform pieces of your offer that customers unlock after purchase.
+- **Retrieve a customer** - pulls information about a member of your whop.
+
+## Webhook setup
+
+Find all available webhooks in your [dashboard](https://whop.com/dashboard) under settings > webhooks.
+
+**Zapier and GoHighLevel webhook setup**
+
+→ [Click here for instructions on how to set up a webhook to integrate Whop with Zapier](https://help.whop.com/en/articles/11399888-integrate-zapier-and-whop)
+
+→ [Click here for instructions on how to set up a webhook to integrate Whop with GoHighLevel](https://help.whop.com/en/articles/11399889-integrate-gohighlevel-and-whop)

@@ -19,9 +19,6 @@ export const whopApi = WhopServerSdk({
 });
 
 export const verifyUserToken = makeUserTokenVerifier({
-	appId:
-		process.env.WHOP_APP_ID ??
-		process.env.NEXT_PUBLIC_WHOP_APP_ID ??
-		"fallback",
+	appId: process.env.WHOP_APP_ID ?? "fallback",
 	dontThrow: true,
 });

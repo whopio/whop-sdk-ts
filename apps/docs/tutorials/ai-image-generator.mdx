@@ -6,13 +6,17 @@ description: "Build a ChatGPT-powered image generator and creators will be able 
 ## 1. Set up your Next.js project
 
 Clone our Next.js app template:
-   <CodeGroup>
 
-```bash Next.js
-npx create-next-app@latest whop-app -e https://github.com/whopio/whop-nextjs-app-template
+```bash
+npx create-next-app@latest ai-image-generator -e https://github.com/whopio/whop-nextjs-app-template
 ```
 
-</CodeGroup>
+Enter the project directory:
+
+```bash
+cd ai-image-generator
+```
+
 
 Install dependencies:
    <CodeGroup>
@@ -50,41 +54,27 @@ yarn dev
 
 Now open http://localhost:3000 and follow the directions on the page.
 
-## 2. Fill out your .env file
+## 2. Start developing your app
+After following the instructions on the page, you'll be able to start developing your app. You should have:
+- Created your app
+- Set up your `.env.local` file
+- Installed your app into your whop
 
-Create a `.env.local` file with the below variables. You can find your keys [here](/tutorials).
+Ensure you're developing in `localhost` mode. See example:
+<Frame>
+  <img src="/how-to-videos/change-to-localhost-mode.gif" alt="How to change to localhost mode" />
+</Frame>
 
-```env
-# Required: Your app's API key from the Whop dashboard
-WHOP_API_KEY=your_api_key_here
 
-# Required: Your app's ID from the Whop dashboard
-WHOP_APP_ID=your_app_id_here
+## 3. Set up your database
 
-# Required: The user ID of your app's agent user
-# This user will make API calls on behalf of your app
-WHOP_AGENT_USER_ID=your_agent_user_id
+### Create a Supabase database
 
-# Optional: Secret for validating webhooks
-# Only needed if you're implementing webhook functionality
-WHOP_WEBHOOK_SECRET=your_webhook_secret
-```
+Go to [Supabase](https://supabase.com) and create a new account if you don't have one
 
-## 3. Set your app base path and install your app to develop
+Create a new project and copy your database password
 
-Under your app settings, set up your app's configuration:
-
-- Configure the "App Path" as `/experiences/[experienceId]`
-- Install your app to your own Whop via the installation link found in your app details
-- Toggle developer mode from the upper right settings button when in your whop view looking at your app
-
-## 4. Set up your database
-
-First, let's set up a Supabase database:
-
-1. Go to [Supabase](https://supabase.com) and create a new account if you don't have one
-2. Create a new project and note down your database credentials
-3. In your project settings, find your database connection strings
+### Set up Prisma
 
 Now, let's set up Prisma in your project:
 
@@ -107,23 +97,22 @@ yarn prisma init
 
 </CodeGroup>
 
-The `prisma init` command will:
+The `prisma init` command will create a new `prisma` directory with a `schema.prisma` file
 
-1. Create a new `prisma` directory with a `schema.prisma` file
-2. Add a `.env` file if it doesn't exist
-3. Add an initial DATABASE_URL to your `.env` file
+Now, go copy your database connection strings from Supabase for Prisma to use. Then paste the values in your `.env.local` file.
 
-Update your `.env` file by replacing the default DATABASE_URL with your Supabase connection strings:
+Replace your password with `[YOUR-PASSWORD]`
 
-```env
-# Database connection strings from Supabase
-DATABASE_URL="postgres://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
-DIRECT_URL="postgres://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
-```
+<Frame>
+  <img src="/how-to-videos/prisma-setup.gif" alt="How to setup Prisma with Supabase" />
+</Frame>
+
+
+
 
 Replace the contents of `prisma/schema.prisma` with:
 
-```prisma
+```prisma prisma/schema.prisma
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -138,150 +127,687 @@ datasource db {
 }
 
 model Experience {
-  id         String @unique
-  title      String
-  prompt     String
-  webhookUrl String
-  bizName    String
-  bizId      String
+  id           String @unique
+  name         String
+  prompt       String
+  webhookUrl   String
+  companyTitle String
+  companyId    String
 }
 ```
 
 Now generate your database and Prisma client:
 
+> These are custom scripts we defined in the package.json file to load your env from .env.local and run the prisma commands. If you want to use the native prisma CLI, you'll need to move your `.env.local` to `.env` and run the commands manually.
+
 <CodeGroup>
 
 ```bash pnpm
-pnpm prisma generate
-pnpm prisma db push
+pnpm prisma:generate
+pnpm prisma:db:push
 ```
 
 ```bash npm
-npx prisma generate
-npx prisma db push
+npm run prisma:generate
+npm run prisma:db push
 ```
 
 ```bash yarn
-yarn prisma generate
-yarn prisma db push
+yarn prisma:generate
+yarn prisma:db:push
 ```
 
 </CodeGroup>
 
-Create a database client file at `lib/db.ts`:
 
-```typescript
-import { PrismaClient } from "@prisma/client";
+## 4. Install additional dependencies
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+### Add the required packages
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+<CodeGroup>
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+```bash pnpm
+pnpm add openai sharp react-dropzone @radix-ui/react-slot gsap
 ```
 
-This setup will:
+```bash npm
+npm install openai sharp react-dropzone @radix-ui/react-slot gsap
+```
 
-1. Create a Prisma client for database operations
-2. Use connection pooling for better performance
-3. Ensure we don't create multiple instances in development
+```bash yarn
+yarn add openai sharp react-dropzone @radix-ui/react-slot gsap
+```
 
-## 5. Create the experience helper
+</CodeGroup>
 
-Create a new file `lib/helpers.ts` to manage experience creation and updates:
+### Install a Shadcn button
 
-```typescript
-import { whopApi } from "./whop-api";
-import { PrismaClient } from "@prisma/client";
+<CodeGroup>
+```bash pnpm
+pnpm dlx shadcn@latest add button
+```
 
-const prisma = new PrismaClient();
+```bash npm
+npx shadcn@latest add button
+```
 
-export async function findOrCreateExperience(experienceId: string) {
-  const whopExperience = await whopApi.GetExperience({ experienceId });
-  const experienceName = whopExperience.experience.name;
-  const bizName = whopExperience.experience.company.title;
-  const bizId = whopExperience.experience.company.id;
+```bash yarn
+yarn shadcn@latest add button
+```
 
-  let experience = await prisma.experience.findUnique({
-    where: { id: experienceId },
-  });
-  if (!experience) {
-    experience = await prisma.experience.create({
-      data: {
-        id: experienceId,
-        title: experienceName,
-        bizName,
-        bizId,
-        prompt: "",
-        webhookUrl: "",
-      },
-    });
-  } else {
-    experience = await prisma.experience.update({
-      where: { id: experienceId },
-      data: { title: experienceName, bizName, bizId },
-    });
-  }
-  return experience;
+</CodeGroup>
+
+### Add your OpenAI API key
+Add to your `.env.local`:
+
+```env .env.local
+# OpenAI API Key for image generation
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+
+## 5. Create components
+
+### `<ImageUploader>`
+This component handles image upload and generation.
+
+```typescript app/components/image-uploader.tsx [expandable]
+"use client";
+
+import { Button } from "@/components/ui/button";
+import gsap from "gsap";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+
+gsap.registerPlugin(DrawSVGPlugin);
+
+function Loader() {
+	const svgRef = useRef<SVGSVGElement>(null);
+
+	useEffect(() => {
+		if (!svgRef.current) return;
+
+		const mid = gsap.utils.toArray("#mid *").reverse();
+
+		const fatTl = gsap.timeline();
+		fatTl.fromTo(
+			"#fat *",
+			{
+				drawSVG: "0% 20%",
+			},
+			{
+				drawSVG: "40% 69%",
+				stagger: {
+					each: 0.05,
+					repeat: -1,
+					yoyo: true,
+				},
+				duration: 0.75,
+				ease: "sine.inOut",
+			},
+		);
+
+		const midTl = gsap.timeline();
+		midTl.fromTo(
+			mid,
+			{
+				drawSVG: "0% 20%",
+			},
+			{
+				drawSVG: "56% 86%",
+				stagger: {
+					each: 0.08,
+					repeat: -1,
+					yoyo: true,
+				},
+				duration: 0.81,
+				ease: "sine.inOut",
+			},
+		);
+
+		const thinTl = gsap.timeline();
+		thinTl.fromTo(
+			"#thin *",
+			{
+				drawSVG: "20% 51%",
+			},
+			{
+				drawSVG: "40% 80%",
+				stagger: {
+					each: 0.092,
+					repeat: -1,
+					yoyo: true,
+				},
+				duration: 1.4,
+				ease: "sine.inOut",
+			},
+		);
+
+		const mainTl = gsap.timeline();
+		mainTl.add([fatTl, midTl, thinTl], 0);
+
+		return () => {
+			mainTl.kill();
+		};
+	}, []);
+
+	return (
+		<div className="w-full h-full flex items-center justify-center">
+
+			<svg
+				ref={svgRef}
+				id="mainSVG"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 800 600"
+				className="w-100 h-100"
+				role="img"
+				aria-label="Loading animation"
+			>
+				        <title>Loading animation</title>
+
+				<linearGradient
+					id="grad1"
+					x1="393.05"
+					y1="400"
+					x2="393.05"
+					y2="200"
+					gradientUnits="userSpaceOnUse"
+				>
+
+					<stop offset="0" stopColor="#3D28F7" />
+
+					<stop offset="1" stopColor="#FF3C20" />
+
+				</linearGradient>
+
+				<linearGradient
+					id="grad2"
+					x1="393.05"
+					y1="391.01"
+					x2="393.05"
+					y2="247.71"
+					gradientUnits="userSpaceOnUse"
+				>
+
+					<stop offset="0" stopColor="#F72785" />
+
+					<stop offset="1" stopColor="#FFEE2A" />
+
+				</linearGradient>
+
+				<linearGradient
+					id="grad3"
+					x1="393.05"
+					y1="400"
+					x2="393.05"
+					y2="200"
+					gradientUnits="userSpaceOnUse"
+				>
+
+					<stop offset="0" stopColor="#FF6820" />
+
+					<stop offset="1" stopColor="#D1FE21" />
+
+				</linearGradient>
+
+				<linearGradient
+					id="grad4"
+					x1="393.05"
+					y1="400"
+					x2="393.05"
+					y2="250"
+					gradientUnits="userSpaceOnUse"
+				>
+
+					<stop offset="0" stopColor="#35AAF9" />
+
+					<stop offset="1" stopColor="#993BDC" />
+
+				</linearGradient>
+
+				<g>
+
+					<g
+						id="bg"
+						stroke="url(#grad3)"
+						fill="none"
+						strokeLinecap="round"
+						strokeMiterlimit="10"
+					>
+
+						<path d="M594.5,250v-.29L594.6,350" />
+
+						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+
+						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+
+						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+
+						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+
+						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+
+						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+
+						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+
+						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+
+						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+
+						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+
+						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+
+						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+
+						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+
+						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+
+						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+
+						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+
+						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+
+						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+
+						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+
+						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+
+						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+
+						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+
+						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+
+						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+
+						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+
+						<polyline points="204.5 250 204.5 350.29 204.5 350" />
+
+					</g>
+
+					<g
+						id="thin"
+						stroke="url(#grad1)"
+						fill="none"
+						strokeLinecap="round"
+						strokeMiterlimit="10"
+						strokeWidth="2"
+					>
+
+						<path d="M594.6,350l-.1-100.29V250" />
+
+						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+
+						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+
+						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+
+						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+
+						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+
+						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+
+						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+
+						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+
+						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+
+						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+
+						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+
+						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+
+						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+
+						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+
+						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+
+						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+
+						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+
+						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+
+						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+
+						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+
+						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+
+						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+
+						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+
+						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+
+						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+
+						<polyline points="204.5 350 204.5 350.29 204.5 250" />
+
+					</g>
+
+					<g
+						id="mid"
+						stroke="url(#grad2)"
+						fill="none"
+						strokeLinecap="round"
+						strokeMiterlimit="10"
+						strokeWidth="4"
+					>
+
+						<path d="M594.6,350l-.1-100.29V250" />
+
+						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+
+						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+
+						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+
+						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+
+						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+
+						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+
+						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+
+						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+
+						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+
+						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+
+						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+
+						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+
+						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+
+						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+
+						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+
+						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+
+						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+
+						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+
+						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+
+						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+
+						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+
+						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+
+						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+
+						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+
+						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+
+						<polyline points="204.5 350 204.5 350.29 204.5 250" />
+
+					</g>
+
+					<g
+						id="fat"
+						stroke="url(#grad4)"
+						fill="none"
+						strokeLinecap="round"
+						strokeMiterlimit="10"
+						strokeWidth="7"
+					>
+
+						<path d="M594.6,350l-.1-100.29V250" />
+
+						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+
+						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+
+						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+
+						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+
+						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+
+						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+
+						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+
+						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+
+						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+
+						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+
+						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+
+						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+
+						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+
+						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+
+						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+
+						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+
+						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+
+						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+
+						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+
+						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+
+						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+
+						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+
+						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+
+						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+
+						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+
+						<polyline points="204.5 350 204.5 350.29 204.5 250" />
+
+					</g>
+
+				</g>
+
+			</svg>
+
+		</div>
+	);
+}
+
+export default function ImageUploader({
+	experienceId,
+}: {
+	experienceId: string;
+}) {
+	const [image, setImage] = useState<{
+		file: File;
+		preview: string;
+	} | null>(null);
+	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [uploadProgress, setUploadProgress] = useState(0);
+
+	// Clean up the object URL when the image is changed
+	useEffect(() => {
+		const objectUrl = image?.preview;
+		if (objectUrl) {
+			return () => {
+				URL.revokeObjectURL(objectUrl);
+			};
+		}
+	}, [image?.preview]);
+
+	const onDrop = useCallback((acceptedFiles: File[]) => {
+		const file = acceptedFiles[0];
+		if (file) {
+			setImage({
+				file,
+				preview: URL.createObjectURL(file),
+			});
+		}
+	}, []);
+
+	const { getRootProps, getInputProps, isDragActive } = useDropzone({
+		onDrop,
+		accept: {
+			"image/*": [".jpeg", ".jpg", ".png", ".gif"],
+		},
+		maxFiles: 1,
+	});
+
+	const handleUpload = async () => {
+		if (!image) return;
+		try {
+			const response = await fetch(
+				`/api/experiences/${experienceId}/generate`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: image.file,
+				},
+			);
+
+			if (!response.ok) {
+				throw new Error("Failed to get upload URL");
+			}
+
+			const data = await response.json();
+			setGeneratedImage(data.imageUrl);
+		} catch (error) {
+			console.error("Error uploading image:", error);
+			throw error;
+		}
+	};
+
+	const handleGenerate = async () => {
+		if (!image) return;
+		setIsGenerating(true);
+		setUploadProgress(0);
+		try {
+			await handleUpload();
+		} catch (error) {
+			console.error("Error generating image:", error);
+		} finally {
+			setIsGenerating(false);
+		}
+	};
+
+	const handleReset = () => {
+		setImage(null);
+		setGeneratedImage(null);
+		setUploadProgress(0);
+	};
+
+	if (isGenerating) {
+		return (
+			<div className="w-full max-w-2xl mx-auto p-4 space-y-8">
+				<div className="w-full aspect-square flex items-center justify-center">
+					<Loader />
+				</div>
+				<div className="flex gap-4">
+					<Button onClick={handleReset} variant="outline" className="flex-1">
+						Cancel
+					</Button>
+					<Button disabled className="flex-1">
+						Generating...
+					</Button>
+				</div>
+			</div>
+		);
+	}
+
+	const displayImage = generatedImage || image?.preview;
+
+	return (
+		<div className="w-full max-w-2xl mx-auto p-4 space-y-8">
+			<div
+				{...getRootProps()}
+				className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+            ${
+							isDragActive
+								? "border-blue-500 bg-blue-50"
+								: "border-gray-300 hover:border-blue-400"
+						}`}
+			>
+				<input {...getInputProps()} capture="environment" />
+				{displayImage ? (
+					<div className="relative w-full aspect-square">
+						<Image
+							src={displayImage}
+							alt="Uploaded image"
+							fill
+							className="object-contain rounded-lg"
+						/>
+					</div>
+				) : (
+					<div className="space-y-4">
+						<div className="text-4xl">📸</div>
+						<p className="text-gray-600">
+							{isDragActive
+								? "Drop the image here..."
+								: "Drag & drop an image here, or click to select"}
+						</p>
+						<p className="text-sm text-gray-500">Supports JPG, PNG, GIF</p>
+					</div>
+				)}
+			</div>
+
+			{image && (
+				<div className="flex flex-col gap-4">
+					{uploadProgress > 0 && uploadProgress < 100 && (
+						<div className="w-full bg-gray-200 rounded-full h-2.5">
+							<div
+								className="bg-blue-600 h-2.5 rounded-full"
+								style={{ width: `${uploadProgress}%` }}
+							/>
+						</div>
+					)}
+					<div className="flex gap-4">
+						<Button onClick={handleReset} variant="outline" className="flex-1">
+							Reset
+						</Button>
+						<Button onClick={handleGenerate} className="flex-1">
+							Generate Image
+						</Button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 }
 ```
 
-This helper will:
+### `<ExperiencePrompt>`
+This component displays the experience prompt and image uploader.
 
-1. Fetch experience details from Whop's API
-2. Create or update the experience in your database
-3. Keep experience metadata in sync with whop
-
-In the future, if you want to store configuration settings for creators who install your app (like the webhook creation URL), you can do so at the experience level in your database.
-
-## 6. Handle the /experiences/[experienceId]/page.tsx:
-
-<CodeGroup>
-```bash app/experiences/[experienceId]/page.tsx
-import ExperiencePrompt from "@/components/ExperiencePrompt";
-import { findOrCreateExperience } from "@/lib/helpers";
-import { whopApi } from "@/lib/whop-api";
-import { verifyUserToken } from "@whop/api";
-import { headers } from "next/headers";
-
-export default async function ExperiencePage({
-  params,
-}: {
-  params: { experienceId: string };
-}) {
-  const headersList = await headers();
-  const { userId } = await verifyUserToken(headersList);
-
-const experience = await findOrCreateExperience(params.experienceId);
-
-const hasAccess = await whopApi.CheckIfUserHasAccessToExperience({
-userId,
-experienceId: params.experienceId,
-});
-
-return (
-
-<div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
-  <ExperiencePrompt
-    prompt={experience.prompt}
-    accessLevel={hasAccess.hasAccessToExperience.accessLevel}
-    experienceId={params.experienceId}
-  />
-</div>
-); }
-
-````
-</CodeGroup>
-
-## 7. Create Required Components
-
-First, create the ExperiencePrompt component in `components/ExperiencePrompt.tsx`:
-
-```typescript
+```typescript app/components/experience-prompt.tsx [expandable]
+import type { AccessLevel } from "@whop/api";
 import Link from "next/link";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "./image-uploader";
 import { Button } from "./ui/button";
 
 export default function ExperiencePrompt({
@@ -290,9 +816,10 @@ export default function ExperiencePrompt({
   experienceId,
 }: {
   prompt: string;
-  accessLevel: "admin" | "customer" | "no_access";
+  accessLevel: AccessLevel;
   experienceId: string;
 }) {
+
   return (
     <div>
       <div className="flex justify-center items-center">
@@ -307,215 +834,369 @@ export default function ExperiencePrompt({
           </Link>
         </div>
       )}
-      {prompt ? (
-        <ImageUploader prompt={prompt} experienceId={experienceId} />
-      ) : null}
-    </div>
-  );
-}
-````
-
-Then create the ImageUploader component in `components/ImageUploader.tsx`. This component handles image upload and generation:
-
-```typescript
-"use client";
-
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Loader from "./Loader";
-
-export default function ImageUploader({
-  experienceId,
-  prompt,
-}: {
-  experienceId: string;
-  prompt: string;
-}) {
-  const [image, setImage] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [hasGenerated, setHasGenerated] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImage(e.target?.result as string);
-        setHasGenerated(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
-    },
-    maxFiles: 1,
-  });
-
-  const handleUpload = async (imageData: string) => {
-    try {
-      const response = await fetch(
-        `/api/experiences/${experienceId}/generate`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            image: imageData,
-            prompt,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to get upload URL");
-      }
-
-      const data = await response.json();
-      setImage(data.imageUrl);
-      setHasGenerated(true);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw error;
-    }
-  };
-
-  const handleGenerate = async () => {
-    if (!image) return;
-    setIsGenerating(true);
-    setUploadProgress(0);
-    try {
-      await handleUpload(image);
-    } catch (error) {
-      console.error("Error generating image:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleReset = () => {
-    setImage(null);
-    setHasGenerated(false);
-    setUploadProgress(0);
-  };
-
-  const handleCopy = async () => {
-    if (!image) return;
-    try {
-      await navigator.clipboard.writeText(image);
-    } catch (error) {
-      console.error("Failed to copy image URL:", error);
-    }
-  };
-
-  if (isGenerating) {
-    return (
-      <div className="w-full max-w-2xl mx-auto p-4 space-y-8">
-        <div className="w-full aspect-square flex items-center justify-center">
-          <Loader />
-        </div>
-        <div className="flex gap-4">
-          <Button onClick={handleReset} variant="outline" className="flex-1">
-            Cancel
-          </Button>
-          <Button disabled className="flex-1">
-            Generating...
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-full max-w-2xl mx-auto p-4 space-y-8">
-      <div
-        {...getRootProps()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${
-            isDragActive
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-300 hover:border-blue-400"
-          }`}
-      >
-        <input {...getInputProps()} capture="environment" />
-        {image ? (
-          <div className="relative w-full aspect-square">
-            <Image
-              src={image}
-              alt="Uploaded image"
-              fill
-              className="object-contain rounded-lg"
-            />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="text-4xl">📸</div>
-            <p className="text-gray-600">
-              {isDragActive
-                ? "Drop the image here..."
-                : "Drag & drop an image here, or click to select"}
-            </p>
-            <p className="text-sm text-gray-500">Supports JPG, PNG, GIF</p>
-          </div>
-        )}
-      </div>
-
-      {image && (
-        <div className="flex flex-col gap-4">
-          {uploadProgress > 0 && uploadProgress < 100 && (
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className="bg-blue-600 h-2.5 rounded-full"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
-          )}
-          <div className="flex gap-4">
-            <Button onClick={handleReset} variant="outline" className="flex-1">
-              Reset
-            </Button>
-            <Button
-              onClick={hasGenerated ? handleCopy : handleGenerate}
-              className="flex-1"
-            >
-              {hasGenerated ? "Copy Image URL" : "Generate Image"}
-            </Button>
-          </div>
-        </div>
-      )}
+		{prompt ? <ImageUploader experienceId={experienceId} /> : null}
     </div>
   );
 }
 ```
 
-## 8. Set Up the API Route
+### `<EditExperiencePrompt>`
+This component allows admins to edit the experience prompt.
 
-Create a new file `app/api/experiences/[experienceId]/generate/route.ts`:
+```typescript app/components/edit-experience-prompt.tsx [expandable]
+"use client";
 
-```typescript
-import { NextResponse } from "next/server";
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+
+export default function EditExperiencePage({
+  experienceId,
+}: {
+  experienceId: string;
+}) {
+  const router = useRouter();
+  const [prompt, setPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`/api/experiences/${experienceId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update experience");
+      }
+
+      router.push(`/experiences/${experienceId}`);
+      router.refresh();
+    } catch (error) {
+      console.error("Error updating experience:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Edit Prompt</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="prompt"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Prompt
+          </label>
+          <textarea
+            id="prompt"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="w-full min-h-[200px] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a new prompt here..."
+            required
+          />
+        </div>
+
+        <div className="flex gap-4">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            {isLoading ? "Saving..." : "Save Changes"}
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+}
+```
+
+
+## 6. Create pages
+
+### `app/experiences/[experienceId]/page.tsx`
+This page displays the experience prompt and the image uploader. If the user is an admin, they can edit the prompt.
+
+```typescript app/experiences/[experienceId]/page.tsx [expandable]
+import ExperiencePrompt from "@/components/experience-prompt";
+import { prisma } from "@/lib/db";
+import { whopApi } from "@/lib/whop-api";
+import { verifyUserToken } from "@whop/api";
 import { headers } from "next/headers";
+
+
+async function findOrCreateExperience(experienceId: string) {
+  const result = await whopApi.getExperience({ experienceId });
+  const experienceName = result.experience.name;
+  const companyTitle = result.experience.company.title;
+  const companyId = result.experience.company.id;
+
+  let experience = await prisma.experience.findUnique({
+    where: { id: experienceId },
+  });
+  if (!experience) {
+    experience = await prisma.experience.create({
+      data: {
+        id: experienceId,
+        name: experienceName,
+        companyTitle,
+        companyId,
+        prompt: "",
+        webhookUrl: "",
+      },
+    });
+  } else {
+    experience = await prisma.experience.update({
+      where: { id: experienceId },
+      data: { name: experienceName, companyTitle, companyId },
+    });
+  }
+  return experience;
+}
+
+export default async function ExperiencePage({
+  params,
+}: {
+  params: Promise<{ experienceId: string }>;
+}) {
+  const headersList = await headers();
+  const { userId } = await verifyUserToken(headersList);
+
+  const { experienceId } = await params;
+  const experience = await findOrCreateExperience(experienceId);
+
+  const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+    userId,
+    experienceId,
+  });
+
+  return (
+    <div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
+      <ExperiencePrompt
+        prompt={experience.prompt}
+        accessLevel={hasAccess.hasAccessToExperience.accessLevel}
+          experienceId={experienceId}
+      />
+    </div>
+  );
+}
+```
+
+### `app/experiences/[experienceId]/edit/page.tsx`
+This page allows admins to edit the experience prompt.
+
+```typescript app/experiences/[experienceId]/edit/page.tsx [expandable]
+import EditExperiencePrompt from "@/components/edit-experience-prompt";
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ experienceId: string; }>;
+}) {
+  const { experienceId } = await params;
+  return <EditExperiencePrompt experienceId={experienceId} />;
+}
+```
+
+
+## 7. Create the API routes
+
+### `app/api/experiences/[experienceId]/generate/route.ts`
+This API route generates images using OpenAI's DALL-E API.
+
+```typescript app/api/experiences/[experienceId]/generate/route.ts [expandable]
+import type { ReadableStream } from "node:stream/web";
+
+import { Readable } from "node:stream";
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { PrismaClient } from "@prisma/client";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import sharp from "sharp";
-import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+	apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(request: Request) {
+export async function POST(
+	request: Request,
+	{ params }: { params: Promise<{ experienceId: string }> },
+) {
+	try {
+		const { experienceId } = await params;
+
+		if (!experienceId) {
+			return NextResponse.json(
+				{ error: "Missing experienceId" },
+				{ status: 400 },
+			);
+		}
+
+		const headersList = await headers();
+		const userToken = await verifyUserToken(headersList);
+		if (!userToken) {
+			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+		}
+
+		const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+			userId: userToken.userId,
+			experienceId,
+		});
+
+		if (!hasAccess.hasAccessToExperience.hasAccess) {
+			return NextResponse.json(
+				{ error: "Unauthorized, no access" },
+				{ status: 401 },
+			);
+		}
+
+		const [publicUser, experience] = await Promise.all([
+			whopApi.getUser({
+				userId: userToken.userId,
+			}),
+			prisma.experience.findUnique({
+				where: {
+					id: experienceId,
+				},
+			}),
+		]);
+
+		if (!request.body || !experience?.prompt) {
+			return NextResponse.json(
+				{ error: "Image and prompt are required" },
+				{ status: 400 },
+			);
+		}
+
+		const originalFile = new File(
+			[
+				await sharp(await request.clone().arrayBuffer())
+					.png()
+					.toBuffer(),
+			],
+			`${Date.now()}-original.png`,
+			{
+				type: "image/png",
+			},
+		);
+
+		// Generate image using DALL-E with prompt
+		const response = await openai.images.edit({
+			model: "gpt-image-1",
+			image: originalFile,
+			prompt: experience.prompt,
+			n: 1,
+			size: "auto",
+			quality: "low",
+		});
+
+		console.log("Response:", response);
+
+		// Get the base64 image data from the response
+		const base64Image = response.data?.[0]?.b64_json;
+		if (!base64Image) {
+			throw new Error("No image data returned from OpenAI");
+		}
+		const generatedImageBuffer = Buffer.from(base64Image, "base64");
+
+		const generationId = crypto.randomUUID();
+
+		const [originalFileUploadResponse, uploadResponse] = await Promise.all([
+			whopApi.uploadAttachment({
+				file: originalFile,
+				record: "forum_post",
+			}),
+			whopApi.uploadAttachment({
+				file: new File(
+					[generatedImageBuffer],
+					`${generationId}-generated.png`,
+					{
+						type: "image/png",
+					},
+				),
+				record: "forum_post",
+			}),
+		]);
+
+		const generatedAttachmentId = uploadResponse.directUploadId;
+		const originalAttachmentId = originalFileUploadResponse.directUploadId;
+
+		const forum = await whopApi.findOrCreateForum({
+			input: { experienceId: experience.id, name: "AI Uploads" },
+		});
+
+		const forumId = forum.createForum?.id;
+
+		const post = await whopApi.createForumPost({
+			input: {
+				forumExperienceId: forumId,
+				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/${experience.companyId}/${experience.id}/app\n\nBefore vs After ⬇️`,
+				attachments: [
+					{ directUploadId: originalAttachmentId },
+					{ directUploadId: generatedAttachmentId },
+				],
+			},
+		});
+
+		return NextResponse.json({
+			success: true,
+			imageUrl: uploadResponse.attachment.source.url,
+			postId: post.createForumPost?.id,
+		});
+	} catch (error) {
+		console.error("Error generating image:", error);
+		return NextResponse.json(
+			{ error: "Failed to generate image" },
+			{ status: 500 },
+		);
+	}
+}
+```
+
+### `app/api/experiences/[experienceId]/route.ts`
+This API route is a PUT operation to an experience in the database.
+
+```typescript app/api/experiences/[experienceId]/route.ts [expandable]
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { PrismaClient } from "@prisma/client";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+
+export async function PUT(request: Request) {
   try {
+    const { prompt } = await request.json();
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const url = new URL(request.url);
-    const match = url.pathname.match(/experiences\/([^/]+)\/generate/);
+    const match = url.pathname.match(/experiences\/([^/]+)/);
     const experienceId = match ? match[1] : null;
 
     if (!experienceId) {
@@ -525,173 +1206,63 @@ export async function POST(request: Request) {
       );
     }
 
-    const headersList = await headers();
-    const userToken = await verifyUserToken(headersList);
-    if (!userToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const hasAccess = await whopApi.CheckIfUserHasAccessToExperience({
+    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
       userId: userToken.userId,
       experienceId,
     });
-
-    if (!hasAccess.hasAccessToExperience.hasAccess) {
+    if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
       return NextResponse.json(
-        { error: "Unauthorized, no access" },
+        { error: "Unauthorized, not admin" },
         { status: 401 }
       );
     }
 
-    const publicUser = await whopApi.GetPublicUser({
-      userId: userToken.userId,
-    });
-
-    const { image } = await request.json();
-
-    const experience = await prisma.experience.findUnique({
+    const updatedExperience = await prisma.experience.update({
       where: {
         id: experienceId,
       },
-    });
-
-    if (!image || !experience?.prompt) {
-      return NextResponse.json(
-        { error: "Image and prompt are required" },
-        { status: 400 }
-      );
-    }
-
-    // Extract image format from base64 string
-    const matches = image.match(/^data:image\/([a-zA-Z]+);base64,/);
-    if (!matches || !matches[1]) {
-      return NextResponse.json(
-        { error: "Invalid image format" },
-        { status: 400 }
-      );
-    }
-    const imageFormat = matches[1];
-
-    // Convert base64 to buffer
-    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
-    const imageBuffer = Buffer.from(base64Data, "base64");
-
-    // Convert to PNG using sharp
-    const pngBuffer = await sharp(imageBuffer).png().toBuffer();
-
-    // Create a File object from the PNG buffer
-    const originalFile = new File([pngBuffer], `${Date.now()}-original.png`, {
-      type: "image/png",
-    });
-
-    // Generate image using DALL-E with prompt
-    const response = await openai.images.edit({
-      model: "gpt-image-1",
-      image: originalFile,
-      prompt: experience.prompt,
-      n: 1,
-      size: "1024x1024",
-      quality: "high",
-    });
-
-    // Get the base64 image data from the response
-    const base64Image = response.data?.[0]?.b64_json;
-    if (!base64Image) {
-      throw new Error("No image data returned from OpenAI");
-    }
-    const generatedImageBuffer = Buffer.from(base64Image, "base64");
-
-    const originalFileUploadResponse = await whopApi.UploadAttachment({
-      file: originalFile,
-      record: "forum_post",
-    });
-
-    const uploadResponse = await whopApi.UploadAttachment({
-      file: new File(
-        [generatedImageBuffer],
-        `creator-app-generated-${Date.now()}.png`,
-        {
-          type: "image/png",
-        }
-      ),
-      record: "forum_post",
-    });
-
-    const generatedAttachmentId = uploadResponse.directUploadId;
-    const originalAttachmentId = originalFileUploadResponse.directUploadId;
-
-    const forum = await whopApi.CreateForum({
-      input: { experienceId: experience.id, name: "AI Uploads" },
-    });
-
-    const forumId = forum.createForum?.id;
-
-    const post = await whopApi.CreateForumPost({
-      input: {
-        experienceId: forumId,
-        content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/${experience.bizId}/${experience.id}/app\n\nBefore vs After ⬇️`,
-        attachments: [
-          { directUploadId: originalAttachmentId },
-          { directUploadId: generatedAttachmentId },
-        ],
+      data: {
+        prompt,
       },
     });
 
-    // Convert base64 to data URL for the response
-    const imageUrl = `data:image/png;base64,${base64Image}`;
-
-    return NextResponse.json({
-      success: true,
-      imageUrl,
-      postId: post.createForumPost?.id,
+    await whopApi.sendNotification({
+      input: {
+        content: prompt,
+        experienceId,
+        title: "Prompt updated ✨",
+      },
     });
+
+    return NextResponse.json(updatedExperience);
   } catch (error) {
-    console.error("Error generating image:", error);
+    console.error("Error updating experience:", error);
     return NextResponse.json(
-      { error: "Failed to generate image" },
+      { error: "Failed to update experience" },
       { status: 500 }
     );
   }
 }
 ```
 
-## 9. Install Dependencies
+## 8. Deploy to Vercel
 
-Add the required packages:
+1. Add this script to the `scripts` section of your `package.json` to generate the Prisma client:
 
-<CodeGroup>
-
-```bash pnpm
-pnpm add openai sharp react-dropzone @radix-ui/react-slot
+```json package.json
+  "scripts": {
+    "postinstall": "prisma generate"
+  }
 ```
 
-```bash npm
-npm install openai sharp react-dropzone @radix-ui/react-slot
-```
+2. Push your code to GitHub
+3. Create a new project on [Vercel](https://vercel.com)
+4. Import your GitHub repository
+5. Add all environment variables
+6. Deploy and copy your Vercel URL
+7. Update your Whop app settings with the new URL in the "Base URL" field
 
-```bash yarn
-yarn add openai sharp react-dropzone @radix-ui/react-slot
-```
-
-</CodeGroup>
-
-## 10. Update Environment Variables
-
-Add to your `.env.local`:
-
-```env
-# OpenAI API Key for image generation
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-## 11. Deploy to Vercel
-
-1. Push your code to GitHub
-2. Create a new project on [Vercel](https://vercel.com)
-3. Import your GitHub repository
-4. Add all environment variables
-5. Deploy and copy your Vercel URL
-6. Update your Whop app settings with the new URL
+> Vercel functions automatically timeout after 60 seconds on a hobby account. Images might take longer than 60 seconds. This will cause errors. You can upgrade to a paid account to avoid this or swap out the image generator to a different API.
 
 Your AI image generation app is now ready! Users can upload images, apply AI transformations based on prompts, and share their creations in the community forum.
 
