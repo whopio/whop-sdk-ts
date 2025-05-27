@@ -88,7 +88,7 @@ importers:
         specifier: 0.8.3
         version: 0.8.3
       tiny-typed-emitter:
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0
     devDependencies:
       '@biomejs/js-api':
