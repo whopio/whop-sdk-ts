@@ -111,6 +111,9 @@ export async function POST(
 			}),
 		]);
 
+		const whopExperience = await whopApi.GetExperience({ experienceId });
+		const bizId = whopExperience.experience.company.id;
+
 		const generatedAttachmentId = uploadResponse.directUploadId;
 		const originalAttachmentId = originalFileUploadResponse.directUploadId;
 
@@ -123,7 +126,7 @@ export async function POST(
 		const post = await whopApi.createForumPost({
 			input: {
 				forumExperienceId: forumId,
-				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/experiences/${experience.id}/\n\nBefore vs After ⬇️`,
+				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/hub/${bizId}/${experience.id}/app\n\nBefore vs After ⬇️`,
 				attachments: [
 					{ directUploadId: originalAttachmentId },
 					{ directUploadId: generatedAttachmentId },
