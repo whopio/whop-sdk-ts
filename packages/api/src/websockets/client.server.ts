@@ -1,7 +1,7 @@
-import { DEFAULT_API_ORIGIN } from "@/sdk/sdk-common";
 import type { WhopServerSdkOptions } from "@/sdk/server-sdk-shared";
 import type { WebsocketClientOptionsBase } from "./client.common";
 import { WhopWebsocketClientBase } from "./client.common";
+import { DEFAULT_WEBSOCKET_ORIGIN } from "./server";
 
 export interface WebsocketClientOptionsServer
 	extends WebsocketClientOptionsBase {}
@@ -19,17 +19,19 @@ export class WhopWebsocketClientServer extends WhopWebsocketClientBase {
 
 	protected makeWebsocket(): WebSocket {
 		const path = "/v1/websockets/connect";
-		const origin = this.keys.apiOrigin ?? DEFAULT_API_ORIGIN;
+		const origin = this.keys.websocketOrigin ?? DEFAULT_WEBSOCKET_ORIGIN;
 		const url = new URL(path, origin);
+		url.protocol = url.protocol.replace("http", "ws");
 
 		const headers = {
 			Authorization: `Bearer ${this.keys.appApiKey}`,
 			"x-on-behalf-of": this.keys.onBehalfOfUserId,
 		};
 
-		console.log("Connecting to websocket", url.toString(), headers);
-
-		throw new Error("Not implement yet on server");
+		// NodeJS 22 has a built in websocket client,
+		// instead of passing protocols as a string, the second parameter accepts an object with headers.
+		// However the types don't know about this yet, hence the weird casting...
+		return new WebSocket(url, { headers } as unknown as string[]);
 	}
 }
 

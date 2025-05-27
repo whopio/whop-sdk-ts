@@ -6,18 +6,18 @@ import type { makeUploadAttachmentFunction } from "./upload";
 
 export function fileSdkExtensions(
 	baseSdk: BaseSdk,
-	uploadAttachment: ReturnType<typeof makeUploadAttachmentFunction>,
+	uploadAttachmentFn: ReturnType<typeof makeUploadAttachmentFunction>,
 ) {
 	const partial = partialFileSdkExtensions(baseSdk);
 
-	const UploadAttachment = uploadAttachment.bind({
+	const uploadAttachment = uploadAttachmentFn.bind({
 		...baseSdk,
 		...partial,
 	});
 
 	return {
 		...partial,
-		UploadAttachment,
+		uploadAttachment,
 	};
 }
 

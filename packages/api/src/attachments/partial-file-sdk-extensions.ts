@@ -1,15 +1,15 @@
 import type { getSdk } from "@/codegen/graphql";
-import { analyzeAttachment } from "./analyze";
-import { prepareAttachmentForUpload } from "./prepare";
+import { analyzeAttachment as analyzeAttachmentFn } from "./analyze";
+import { prepareAttachmentForUpload as prepareAttachmentForUploadFn } from "./prepare";
 
 export type BaseSdk = ReturnType<typeof getSdk<RequestInit>>;
 
 export function partialFileSdkExtensions(baseSdk: BaseSdk) {
-	const PrepareAttachmentForUpload = prepareAttachmentForUpload.bind(baseSdk);
-	const AnalyzeAttachment = analyzeAttachment.bind(baseSdk);
+	const prepareAttachmentForUpload = prepareAttachmentForUploadFn.bind(baseSdk);
+	const analyzeAttachment = analyzeAttachmentFn.bind(baseSdk);
 	return {
-		PrepareAttachmentForUpload,
-		AnalyzeAttachment,
+		prepareAttachmentForUpload,
+		analyzeAttachment,
 	};
 }
 
