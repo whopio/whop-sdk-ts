@@ -13,9 +13,5 @@ datasource db {
 
 model Experience {
   id           String @unique @id
-  name         String
   prompt       String
-  webhookUrl   String
-  companyTitle String
-  companyId    String
 }

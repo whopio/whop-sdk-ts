@@ -15,23 +15,16 @@ async function findOrCreateExperience(experienceId: string) {
 	let experience = await prisma.experience.findUnique({
 		where: { id: experienceId },
 	});
+
 	if (!experience) {
 		experience = await prisma.experience.create({
 			data: {
 				id: experienceId,
-				name: experienceName,
-				companyTitle,
-				companyId,
 				prompt: "",
-				webhookUrl: "",
 			},
 		});
-	} else {
-		experience = await prisma.experience.update({
-			where: { id: experienceId },
-			data: { name: experienceName, companyTitle, companyId },
-		});
 	}
+
 	return experience;
 }
 
