@@ -17,8 +17,8 @@ Enter the project directory:
 cd ai-image-generator
 ```
 
-
 Install dependencies:
+
    <CodeGroup>
 
 ```bash pnpm
@@ -36,6 +36,7 @@ yarn i
 </CodeGroup>
 
 Run the app locally:
+
    <CodeGroup>
 
 ```bash pnpm
@@ -55,16 +56,21 @@ yarn dev
 Now open http://localhost:3000 and follow the directions on the page.
 
 ## 2. Start developing your app
+
 After following the instructions on the page, you'll be able to start developing your app. You should have:
+
 - Created your app
 - Set up your `.env.local` file
 - Installed your app into your whop
 
 Ensure you're developing in `localhost` mode. See example:
-<Frame>
-  <img src="/how-to-videos/change-to-localhost-mode.gif" alt="How to change to localhost mode" />
-</Frame>
 
+<Frame>
+  <img
+    src="/how-to-videos/change-to-localhost-mode.gif"
+    alt="How to change to localhost mode"
+  />
+</Frame>
 
 ## 3. Set up your database
 
@@ -104,11 +110,11 @@ Now, go copy your database connection strings from Supabase for Prisma to use. T
 Replace your password with `[YOUR-PASSWORD]`
 
 <Frame>
-  <img src="/how-to-videos/prisma-setup.gif" alt="How to setup Prisma with Supabase" />
+  <img
+    src="/how-to-videos/prisma-setup.gif"
+    alt="How to setup Prisma with Supabase"
+  />
 </Frame>
-
-
-
 
 Replace the contents of `prisma/schema.prisma` with:
 
@@ -128,11 +134,7 @@ datasource db {
 
 model Experience {
   id           String @unique
-  name         String
   prompt       String
-  webhookUrl   String
-  companyTitle String
-  companyId    String
 }
 ```
 
@@ -158,7 +160,6 @@ yarn prisma:db:push
 ```
 
 </CodeGroup>
-
 
 ## 4. Install additional dependencies
 
@@ -198,6 +199,7 @@ yarn shadcn@latest add button
 </CodeGroup>
 
 ### Add your OpenAI API key
+
 Add to your `.env.local`:
 
 ```env .env.local
@@ -205,10 +207,10 @@ Add to your `.env.local`:
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-
 ## 5. Create components
 
 ### `<ImageUploader>`
+
 This component handles image upload and generation.
 
 ```typescript app/components/image-uploader.tsx [expandable]
@@ -224,584 +226,564 @@ import { useDropzone } from "react-dropzone";
 gsap.registerPlugin(DrawSVGPlugin);
 
 function Loader() {
-	const svgRef = useRef<SVGSVGElement>(null);
-
-	useEffect(() => {
-		if (!svgRef.current) return;
-
-		const mid = gsap.utils.toArray("#mid *").reverse();
-
-		const fatTl = gsap.timeline();
-		fatTl.fromTo(
-			"#fat *",
-			{
-				drawSVG: "0% 20%",
-			},
-			{
-				drawSVG: "40% 69%",
-				stagger: {
-					each: 0.05,
-					repeat: -1,
-					yoyo: true,
-				},
-				duration: 0.75,
-				ease: "sine.inOut",
-			},
-		);
-
-		const midTl = gsap.timeline();
-		midTl.fromTo(
-			mid,
-			{
-				drawSVG: "0% 20%",
-			},
-			{
-				drawSVG: "56% 86%",
-				stagger: {
-					each: 0.08,
-					repeat: -1,
-					yoyo: true,
-				},
-				duration: 0.81,
-				ease: "sine.inOut",
-			},
-		);
-
-		const thinTl = gsap.timeline();
-		thinTl.fromTo(
-			"#thin *",
-			{
-				drawSVG: "20% 51%",
-			},
-			{
-				drawSVG: "40% 80%",
-				stagger: {
-					each: 0.092,
-					repeat: -1,
-					yoyo: true,
-				},
-				duration: 1.4,
-				ease: "sine.inOut",
-			},
-		);
-
-		const mainTl = gsap.timeline();
-		mainTl.add([fatTl, midTl, thinTl], 0);
-
-		return () => {
-			mainTl.kill();
-		};
-	}, []);
-
-	return (
-		<div className="w-full h-full flex items-center justify-center">
-
-			<svg
-				ref={svgRef}
-				id="mainSVG"
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 800 600"
-				className="w-100 h-100"
-				role="img"
-				aria-label="Loading animation"
-			>
-				        <title>Loading animation</title>
-
-				<linearGradient
-					id="grad1"
-					x1="393.05"
-					y1="400"
-					x2="393.05"
-					y2="200"
-					gradientUnits="userSpaceOnUse"
-				>
-
-					<stop offset="0" stopColor="#3D28F7" />
-
-					<stop offset="1" stopColor="#FF3C20" />
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const mid = gsap.utils.toArray("#mid *").reverse();
+
+    const fatTl = gsap.timeline();
+    fatTl.fromTo(
+      "#fat *",
+      {
+        drawSVG: "0% 20%",
+      },
+      {
+        drawSVG: "40% 69%",
+        stagger: {
+          each: 0.05,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 0.75,
+        ease: "sine.inOut",
+      }
+    );
+
+    const midTl = gsap.timeline();
+    midTl.fromTo(
+      mid,
+      {
+        drawSVG: "0% 20%",
+      },
+      {
+        drawSVG: "56% 86%",
+        stagger: {
+          each: 0.08,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 0.81,
+        ease: "sine.inOut",
+      }
+    );
+
+    const thinTl = gsap.timeline();
+    thinTl.fromTo(
+      "#thin *",
+      {
+        drawSVG: "20% 51%",
+      },
+      {
+        drawSVG: "40% 80%",
+        stagger: {
+          each: 0.092,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 1.4,
+        ease: "sine.inOut",
+      }
+    );
+
+    const mainTl = gsap.timeline();
+    mainTl.add([fatTl, midTl, thinTl], 0);
+
+    return () => {
+      mainTl.kill();
+    };
+  }, []);
+
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <svg
+        ref={svgRef}
+        id="mainSVG"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 800 600"
+        className="w-100 h-100"
+        role="img"
+        aria-label="Loading animation"
+      >
+        <title>Loading animation</title>
+
+        <linearGradient
+          id="grad1"
+          x1="393.05"
+          y1="400"
+          x2="393.05"
+          y2="200"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#3D28F7" />
+
+          <stop offset="1" stopColor="#FF3C20" />
+        </linearGradient>
+
+        <linearGradient
+          id="grad2"
+          x1="393.05"
+          y1="391.01"
+          x2="393.05"
+          y2="247.71"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#F72785" />
 
-				</linearGradient>
+          <stop offset="1" stopColor="#FFEE2A" />
+        </linearGradient>
 
-				<linearGradient
-					id="grad2"
-					x1="393.05"
-					y1="391.01"
-					x2="393.05"
-					y2="247.71"
-					gradientUnits="userSpaceOnUse"
-				>
+        <linearGradient
+          id="grad3"
+          x1="393.05"
+          y1="400"
+          x2="393.05"
+          y2="200"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#FF6820" />
 
-					<stop offset="0" stopColor="#F72785" />
+          <stop offset="1" stopColor="#D1FE21" />
+        </linearGradient>
 
-					<stop offset="1" stopColor="#FFEE2A" />
+        <linearGradient
+          id="grad4"
+          x1="393.05"
+          y1="400"
+          x2="393.05"
+          y2="250"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#35AAF9" />
 
-				</linearGradient>
+          <stop offset="1" stopColor="#993BDC" />
+        </linearGradient>
 
-				<linearGradient
-					id="grad3"
-					x1="393.05"
-					y1="400"
-					x2="393.05"
-					y2="200"
-					gradientUnits="userSpaceOnUse"
-				>
+        <g>
+          <g
+            id="bg"
+            stroke="url(#grad3)"
+            fill="none"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+          >
+            <path d="M594.5,250v-.29L594.6,350" />
 
-					<stop offset="0" stopColor="#FF6820" />
+            <line x1="580.5" y1="390" x2="580.32" y2="210" />
 
-					<stop offset="1" stopColor="#D1FE21" />
+            <line x1="565.5" y1="415" x2="565.28" y2="185" />
 
-				</linearGradient>
+            <line x1="550.5" y1="434" x2="550.24" y2="166" />
 
-				<linearGradient
-					id="grad4"
-					x1="393.05"
-					y1="400"
-					x2="393.05"
-					y2="250"
-					gradientUnits="userSpaceOnUse"
-				>
+            <line x1="535.5" y1="449" x2="535.22" y2="151" />
 
-					<stop offset="0" stopColor="#35AAF9" />
+            <line x1="520.5" y1="462" x2="520.2" y2="138" />
 
-					<stop offset="1" stopColor="#993BDC" />
+            <line x1="505.5" y1="472" x2="505.18" y2="128" />
 
-				</linearGradient>
+            <line x1="490.5" y1="480" x2="490.16" y2="120" />
 
-				<g>
+            <line x1="475.5" y1="487" x2="475.14" y2="113" />
 
-					<g
-						id="bg"
-						stroke="url(#grad3)"
-						fill="none"
-						strokeLinecap="round"
-						strokeMiterlimit="10"
-					>
+            <line x1="460.5" y1="492" x2="460.14" y2="108" />
 
-						<path d="M594.5,250v-.29L594.6,350" />
+            <line x1="445.5" y1="496" x2="445.12" y2="104" />
 
-						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+            <line x1="430.5" y1="499" x2="430.12" y2="101" />
 
-						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+            <line x1="415.5" y1="501" x2="415.12" y2="99" />
 
-						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+            <line x1="400.5" y1="501" x2="400.12" y2="99" />
 
-						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+            <line x1="385.5" y1="501" x2="385.12" y2="99" />
 
-						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+            <line x1="370.5" y1="499" x2="370.12" y2="101" />
 
-						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+            <line x1="355.5" y1="496" x2="355.12" y2="104" />
 
-						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+            <line x1="340.5" y1="492" x2="340.14" y2="108" />
 
-						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+            <line x1="325.5" y1="487" x2="325.14" y2="113" />
 
-						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+            <line x1="310.5" y1="480" x2="310.16" y2="120" />
 
-						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+            <line x1="295.5" y1="472" x2="295.18" y2="128" />
 
-						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+            <line x1="280.5" y1="462" x2="280.2" y2="138" />
 
-						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+            <line x1="265.5" y1="449" x2="265.22" y2="151" />
 
-						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+            <line x1="250.5" y1="434" x2="250.24" y2="166" />
 
-						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+            <line x1="235.5" y1="415" x2="235.28" y2="185" />
 
-						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+            <line x1="220.5" y1="390" x2="220.32" y2="210" />
 
-						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+            <polyline points="204.5 250 204.5 350.29 204.5 350" />
+          </g>
 
-						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+          <g
+            id="thin"
+            stroke="url(#grad1)"
+            fill="none"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="2"
+          >
+            <path d="M594.6,350l-.1-100.29V250" />
 
-						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+            <line x1="580.5" y1="390" x2="580.32" y2="210" />
 
-						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+            <line x1="565.5" y1="415" x2="565.28" y2="185" />
 
-						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+            <line x1="550.5" y1="434" x2="550.24" y2="166" />
 
-						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+            <line x1="535.5" y1="449" x2="535.22" y2="151" />
 
-						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+            <line x1="520.5" y1="462" x2="520.2" y2="138" />
 
-						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+            <line x1="505.5" y1="472" x2="505.18" y2="128" />
 
-						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+            <line x1="490.5" y1="480" x2="490.16" y2="120" />
 
-						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+            <line x1="475.5" y1="487" x2="475.14" y2="113" />
 
-						<polyline points="204.5 250 204.5 350.29 204.5 350" />
+            <line x1="460.5" y1="492" x2="460.14" y2="108" />
 
-					</g>
+            <line x1="445.5" y1="496" x2="445.12" y2="104" />
 
-					<g
-						id="thin"
-						stroke="url(#grad1)"
-						fill="none"
-						strokeLinecap="round"
-						strokeMiterlimit="10"
-						strokeWidth="2"
-					>
+            <line x1="430.5" y1="499" x2="430.12" y2="101" />
 
-						<path d="M594.6,350l-.1-100.29V250" />
+            <line x1="415.5" y1="501" x2="415.12" y2="99" />
 
-						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+            <line x1="400.5" y1="501" x2="400.12" y2="99" />
 
-						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+            <line x1="385.5" y1="501" x2="385.12" y2="99" />
 
-						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+            <line x1="370.5" y1="499" x2="370.12" y2="101" />
 
-						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+            <line x1="355.5" y1="496" x2="355.12" y2="104" />
 
-						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+            <line x1="340.5" y1="492" x2="340.14" y2="108" />
 
-						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+            <line x1="325.5" y1="487" x2="325.14" y2="113" />
 
-						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+            <line x1="310.5" y1="480" x2="310.16" y2="120" />
 
-						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+            <line x1="295.5" y1="472" x2="295.18" y2="128" />
 
-						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+            <line x1="280.5" y1="462" x2="280.2" y2="138" />
 
-						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+            <line x1="265.5" y1="449" x2="265.22" y2="151" />
 
-						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+            <line x1="250.5" y1="434" x2="250.24" y2="166" />
 
-						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+            <line x1="235.5" y1="415" x2="235.28" y2="185" />
 
-						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+            <line x1="220.5" y1="390" x2="220.32" y2="210" />
 
-						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+            <polyline points="204.5 350 204.5 350.29 204.5 250" />
+          </g>
 
-						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+          <g
+            id="mid"
+            stroke="url(#grad2)"
+            fill="none"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="4"
+          >
+            <path d="M594.6,350l-.1-100.29V250" />
 
-						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+            <line x1="580.5" y1="390" x2="580.32" y2="210" />
 
-						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+            <line x1="565.5" y1="415" x2="565.28" y2="185" />
 
-						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+            <line x1="550.5" y1="434" x2="550.24" y2="166" />
 
-						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+            <line x1="535.5" y1="449" x2="535.22" y2="151" />
 
-						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+            <line x1="520.5" y1="462" x2="520.2" y2="138" />
 
-						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+            <line x1="505.5" y1="472" x2="505.18" y2="128" />
 
-						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+            <line x1="490.5" y1="480" x2="490.16" y2="120" />
 
-						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+            <line x1="475.5" y1="487" x2="475.14" y2="113" />
 
-						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+            <line x1="460.5" y1="492" x2="460.14" y2="108" />
 
-						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+            <line x1="445.5" y1="496" x2="445.12" y2="104" />
 
-						<polyline points="204.5 350 204.5 350.29 204.5 250" />
+            <line x1="430.5" y1="499" x2="430.12" y2="101" />
 
-					</g>
+            <line x1="415.5" y1="501" x2="415.12" y2="99" />
 
-					<g
-						id="mid"
-						stroke="url(#grad2)"
-						fill="none"
-						strokeLinecap="round"
-						strokeMiterlimit="10"
-						strokeWidth="4"
-					>
+            <line x1="400.5" y1="501" x2="400.12" y2="99" />
 
-						<path d="M594.6,350l-.1-100.29V250" />
+            <line x1="385.5" y1="501" x2="385.12" y2="99" />
 
-						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+            <line x1="370.5" y1="499" x2="370.12" y2="101" />
 
-						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+            <line x1="355.5" y1="496" x2="355.12" y2="104" />
 
-						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+            <line x1="340.5" y1="492" x2="340.14" y2="108" />
 
-						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+            <line x1="325.5" y1="487" x2="325.14" y2="113" />
 
-						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+            <line x1="310.5" y1="480" x2="310.16" y2="120" />
 
-						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+            <line x1="295.5" y1="472" x2="295.18" y2="128" />
 
-						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+            <line x1="280.5" y1="462" x2="280.2" y2="138" />
 
-						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+            <line x1="265.5" y1="449" x2="265.22" y2="151" />
 
-						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+            <line x1="250.5" y1="434" x2="250.24" y2="166" />
 
-						<line x1="445.5" y1="496" x2="445.12" y2="104" />
+            <line x1="235.5" y1="415" x2="235.28" y2="185" />
 
-						<line x1="430.5" y1="499" x2="430.12" y2="101" />
+            <line x1="220.5" y1="390" x2="220.32" y2="210" />
 
-						<line x1="415.5" y1="501" x2="415.12" y2="99" />
+            <polyline points="204.5 350 204.5 350.29 204.5 250" />
+          </g>
 
-						<line x1="400.5" y1="501" x2="400.12" y2="99" />
+          <g
+            id="fat"
+            stroke="url(#grad4)"
+            fill="none"
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            strokeWidth="7"
+          >
+            <path d="M594.6,350l-.1-100.29V250" />
 
-						<line x1="385.5" y1="501" x2="385.12" y2="99" />
+            <line x1="580.5" y1="390" x2="580.32" y2="210" />
 
-						<line x1="370.5" y1="499" x2="370.12" y2="101" />
+            <line x1="565.5" y1="415" x2="565.28" y2="185" />
 
-						<line x1="355.5" y1="496" x2="355.12" y2="104" />
+            <line x1="550.5" y1="434" x2="550.24" y2="166" />
 
-						<line x1="340.5" y1="492" x2="340.14" y2="108" />
+            <line x1="535.5" y1="449" x2="535.22" y2="151" />
 
-						<line x1="325.5" y1="487" x2="325.14" y2="113" />
+            <line x1="520.5" y1="462" x2="520.2" y2="138" />
 
-						<line x1="310.5" y1="480" x2="310.16" y2="120" />
+            <line x1="505.5" y1="472" x2="505.18" y2="128" />
 
-						<line x1="295.5" y1="472" x2="295.18" y2="128" />
+            <line x1="490.5" y1="480" x2="490.16" y2="120" />
 
-						<line x1="280.5" y1="462" x2="280.2" y2="138" />
+            <line x1="475.5" y1="487" x2="475.14" y2="113" />
 
-						<line x1="265.5" y1="449" x2="265.22" y2="151" />
+            <line x1="460.5" y1="492" x2="460.14" y2="108" />
 
-						<line x1="250.5" y1="434" x2="250.24" y2="166" />
+            <line x1="445.5" y1="496" x2="445.12" y2="104" />
 
-						<line x1="235.5" y1="415" x2="235.28" y2="185" />
+            <line x1="430.5" y1="499" x2="430.12" y2="101" />
 
-						<line x1="220.5" y1="390" x2="220.32" y2="210" />
+            <line x1="415.5" y1="501" x2="415.12" y2="99" />
 
-						<polyline points="204.5 350 204.5 350.29 204.5 250" />
+            <line x1="400.5" y1="501" x2="400.12" y2="99" />
 
-					</g>
+            <line x1="385.5" y1="501" x2="385.12" y2="99" />
 
-					<g
-						id="fat"
-						stroke="url(#grad4)"
-						fill="none"
-						strokeLinecap="round"
-						strokeMiterlimit="10"
-						strokeWidth="7"
-					>
+            <line x1="370.5" y1="499" x2="370.12" y2="101" />
 
-						<path d="M594.6,350l-.1-100.29V250" />
+            <line x1="355.5" y1="496" x2="355.12" y2="104" />
 
-						<line x1="580.5" y1="390" x2="580.32" y2="210" />
+            <line x1="340.5" y1="492" x2="340.14" y2="108" />
 
-						<line x1="565.5" y1="415" x2="565.28" y2="185" />
+            <line x1="325.5" y1="487" x2="325.14" y2="113" />
 
-						<line x1="550.5" y1="434" x2="550.24" y2="166" />
+            <line x1="310.5" y1="480" x2="310.16" y2="120" />
 
-						<line x1="535.5" y1="449" x2="535.22" y2="151" />
+            <line x1="295.5" y1="472" x2="295.18" y2="128" />
 
-						<line x1="520.5" y1="462" x2="520.2" y2="138" />
+            <line x1="280.5" y1="462" x2="280.2" y2="138" />
 
-						<line x1="505.5" y1="472" x2="505.18" y2="128" />
+            <line x1="265.5" y1="449" x2="265.22" y2="151" />
 
-						<line x1="490.5" y1="480" x2="490.16" y2="120" />
+            <line x1="250.5" y1="434" x2="250.24" y2="166" />
 
-						<line x1="475.5" y1="487" x2="475.14" y2="113" />
+            <line x1="235.5" y1="415" x2="235.28" y2="185" />
 
-						<line x1="460.5" y1="492" x2="460.14" y2="108" />
+            <line x1="220.5" y1="390" x2="220.32" y2="210" />
 
-						<line x1="445.5" y1="496" x2="445.12" y2="104" />
-
-						<line x1="430.5" y1="499" x2="430.12" y2="101" />
-
-						<line x1="415.5" y1="501" x2="415.12" y2="99" />
-
-						<line x1="400.5" y1="501" x2="400.12" y2="99" />
-
-						<line x1="385.5" y1="501" x2="385.12" y2="99" />
-
-						<line x1="370.5" y1="499" x2="370.12" y2="101" />
-
-						<line x1="355.5" y1="496" x2="355.12" y2="104" />
-
-						<line x1="340.5" y1="492" x2="340.14" y2="108" />
-
-						<line x1="325.5" y1="487" x2="325.14" y2="113" />
-
-						<line x1="310.5" y1="480" x2="310.16" y2="120" />
-
-						<line x1="295.5" y1="472" x2="295.18" y2="128" />
-
-						<line x1="280.5" y1="462" x2="280.2" y2="138" />
-
-						<line x1="265.5" y1="449" x2="265.22" y2="151" />
-
-						<line x1="250.5" y1="434" x2="250.24" y2="166" />
-
-						<line x1="235.5" y1="415" x2="235.28" y2="185" />
-
-						<line x1="220.5" y1="390" x2="220.32" y2="210" />
-
-						<polyline points="204.5 350 204.5 350.29 204.5 250" />
-
-					</g>
-
-				</g>
-
-			</svg>
-
-		</div>
-	);
+            <polyline points="204.5 350 204.5 350.29 204.5 250" />
+          </g>
+        </g>
+      </svg>
+    </div>
+  );
 }
 
 export default function ImageUploader({
-	experienceId,
+  experienceId,
 }: {
-	experienceId: string;
+  experienceId: string;
 }) {
-	const [image, setImage] = useState<{
-		file: File;
-		preview: string;
-	} | null>(null);
-	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-	const [isGenerating, setIsGenerating] = useState(false);
-	const [uploadProgress, setUploadProgress] = useState(0);
+  const [image, setImage] = useState<{
+    file: File;
+    preview: string;
+  } | null>(null);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-	// Clean up the object URL when the image is changed
-	useEffect(() => {
-		const objectUrl = image?.preview;
-		if (objectUrl) {
-			return () => {
-				URL.revokeObjectURL(objectUrl);
-			};
-		}
-	}, [image?.preview]);
+  // Clean up the object URL when the image is changed
+  useEffect(() => {
+    const objectUrl = image?.preview;
+    if (objectUrl) {
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    }
+  }, [image?.preview]);
 
-	const onDrop = useCallback((acceptedFiles: File[]) => {
-		const file = acceptedFiles[0];
-		if (file) {
-			setImage({
-				file,
-				preview: URL.createObjectURL(file),
-			});
-		}
-	}, []);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setImage({
+        file,
+        preview: URL.createObjectURL(file),
+      });
+    }
+  }, []);
 
-	const { getRootProps, getInputProps, isDragActive } = useDropzone({
-		onDrop,
-		accept: {
-			"image/*": [".jpeg", ".jpg", ".png", ".gif"],
-		},
-		maxFiles: 1,
-	});
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
+    },
+    maxFiles: 1,
+  });
 
-	const handleUpload = async () => {
-		if (!image) return;
-		try {
-			const response = await fetch(
-				`/api/experiences/${experienceId}/generate`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: image.file,
-				},
-			);
+  const handleUpload = async () => {
+    if (!image) return;
+    try {
+      const response = await fetch(
+        `/api/experiences/${experienceId}/generate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: image.file,
+        }
+      );
 
-			if (!response.ok) {
-				throw new Error("Failed to get upload URL");
-			}
+      if (!response.ok) {
+        throw new Error("Failed to get upload URL");
+      }
 
-			const data = await response.json();
-			setGeneratedImage(data.imageUrl);
-		} catch (error) {
-			console.error("Error uploading image:", error);
-			throw error;
-		}
-	};
+      const data = await response.json();
+      setGeneratedImage(data.imageUrl);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw error;
+    }
+  };
 
-	const handleGenerate = async () => {
-		if (!image) return;
-		setIsGenerating(true);
-		setUploadProgress(0);
-		try {
-			await handleUpload();
-		} catch (error) {
-			console.error("Error generating image:", error);
-		} finally {
-			setIsGenerating(false);
-		}
-	};
+  const handleGenerate = async () => {
+    if (!image) return;
+    setIsGenerating(true);
+    setUploadProgress(0);
+    try {
+      await handleUpload();
+    } catch (error) {
+      console.error("Error generating image:", error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
-	const handleReset = () => {
-		setImage(null);
-		setGeneratedImage(null);
-		setUploadProgress(0);
-	};
+  const handleReset = () => {
+    setImage(null);
+    setGeneratedImage(null);
+    setUploadProgress(0);
+  };
 
-	if (isGenerating) {
-		return (
-			<div className="w-full max-w-2xl mx-auto p-4 space-y-8">
-				<div className="w-full aspect-square flex items-center justify-center">
-					<Loader />
-				</div>
-				<div className="flex gap-4">
-					<Button onClick={handleReset} variant="outline" className="flex-1">
-						Cancel
-					</Button>
-					<Button disabled className="flex-1">
-						Generating...
-					</Button>
-				</div>
-			</div>
-		);
-	}
+  if (isGenerating) {
+    return (
+      <div className="w-full max-w-2xl mx-auto p-4 space-y-8">
+        <div className="w-full aspect-square flex items-center justify-center">
+          <Loader />
+        </div>
+        <div className="flex gap-4">
+          <Button onClick={handleReset} variant="outline" className="flex-1">
+            Cancel
+          </Button>
+          <Button disabled className="flex-1">
+            Generating...
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
-	const displayImage = generatedImage || image?.preview;
+  const displayImage = generatedImage || image?.preview;
 
-	return (
-		<div className="w-full max-w-2xl mx-auto p-4 space-y-8">
-			<div
-				{...getRootProps()}
-				className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+  return (
+    <div className="w-full max-w-2xl mx-auto p-4 space-y-8">
+      <div
+        {...getRootProps()}
+        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
             ${
-							isDragActive
-								? "border-blue-500 bg-blue-50"
-								: "border-gray-300 hover:border-blue-400"
-						}`}
-			>
-				<input {...getInputProps()} capture="environment" />
-				{displayImage ? (
-					<div className="relative w-full aspect-square">
-						<Image
-							src={displayImage}
-							alt="Uploaded image"
-							fill
-							className="object-contain rounded-lg"
-						/>
-					</div>
-				) : (
-					<div className="space-y-4">
-						<div className="text-4xl">📸</div>
-						<p className="text-gray-600">
-							{isDragActive
-								? "Drop the image here..."
-								: "Drag & drop an image here, or click to select"}
-						</p>
-						<p className="text-sm text-gray-500">Supports JPG, PNG, GIF</p>
-					</div>
-				)}
-			</div>
+              isDragActive
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-300 hover:border-blue-400"
+            }`}
+      >
+        <input {...getInputProps()} capture="environment" />
+        {displayImage ? (
+          <div className="relative w-full aspect-square">
+            <Image
+              src={displayImage}
+              alt="Uploaded image"
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="text-4xl">📸</div>
+            <p className="text-gray-600">
+              {isDragActive
+                ? "Drop the image here..."
+                : "Drag & drop an image here, or click to select"}
+            </p>
+            <p className="text-sm text-gray-500">Supports JPG, PNG, GIF</p>
+          </div>
+        )}
+      </div>
 
-			{image && (
-				<div className="flex flex-col gap-4">
-					{uploadProgress > 0 && uploadProgress < 100 && (
-						<div className="w-full bg-gray-200 rounded-full h-2.5">
-							<div
-								className="bg-blue-600 h-2.5 rounded-full"
-								style={{ width: `${uploadProgress}%` }}
-							/>
-						</div>
-					)}
-					<div className="flex gap-4">
-						<Button onClick={handleReset} variant="outline" className="flex-1">
-							Reset
-						</Button>
-						<Button onClick={handleGenerate} className="flex-1">
-							Generate Image
-						</Button>
-					</div>
-				</div>
-			)}
-		</div>
-	);
+      {image && (
+        <div className="flex flex-col gap-4">
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                className="bg-blue-600 h-2.5 rounded-full"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
+          <div className="flex gap-4">
+            <Button onClick={handleReset} variant="outline" className="flex-1">
+              Reset
+            </Button>
+            <Button onClick={handleGenerate} className="flex-1">
+              Generate Image
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ### `<ExperiencePrompt>`
+
 This component displays the experience prompt and image uploader.
 
 ```typescript app/components/experience-prompt.tsx [expandable]
@@ -819,7 +801,6 @@ export default function ExperiencePrompt({
   accessLevel: AccessLevel;
   experienceId: string;
 }) {
-
   return (
     <div>
       <div className="flex justify-center items-center">
@@ -834,13 +815,14 @@ export default function ExperiencePrompt({
           </Link>
         </div>
       )}
-		{prompt ? <ImageUploader experienceId={experienceId} /> : null}
+      {prompt ? <ImageUploader experienceId={experienceId} /> : null}
     </div>
   );
 }
 ```
 
 ### `<EditExperiencePrompt>`
+
 This component allows admins to edit the experience prompt.
 
 ```typescript app/components/edit-experience-prompt.tsx [expandable]
@@ -932,46 +914,35 @@ export default function EditExperiencePage({
 }
 ```
 
-
 ## 6. Create pages
 
 ### `app/experiences/[experienceId]/page.tsx`
+
 This page displays the experience prompt and the image uploader. If the user is an admin, they can edit the prompt.
 
 ```typescript app/experiences/[experienceId]/page.tsx [expandable]
 import ExperiencePrompt from "@/components/experience-prompt";
-import { prisma } from "@/lib/db";
 import { whopApi } from "@/lib/whop-api";
+import { PrismaClient } from "@prisma/client";
 import { verifyUserToken } from "@whop/api";
 import { headers } from "next/headers";
 
+const prisma = new PrismaClient();
 
 async function findOrCreateExperience(experienceId: string) {
-  const result = await whopApi.getExperience({ experienceId });
-  const experienceName = result.experience.name;
-  const companyTitle = result.experience.company.title;
-  const companyId = result.experience.company.id;
-
   let experience = await prisma.experience.findUnique({
     where: { id: experienceId },
   });
+
   if (!experience) {
     experience = await prisma.experience.create({
       data: {
         id: experienceId,
-        name: experienceName,
-        companyTitle,
-        companyId,
         prompt: "",
-        webhookUrl: "",
       },
     });
-  } else {
-    experience = await prisma.experience.update({
-      where: { id: experienceId },
-      data: { name: experienceName, companyTitle, companyId },
-    });
   }
+
   return experience;
 }
 
@@ -996,7 +967,7 @@ export default async function ExperiencePage({
       <ExperiencePrompt
         prompt={experience.prompt}
         accessLevel={hasAccess.hasAccessToExperience.accessLevel}
-          experienceId={experienceId}
+        experienceId={experienceId}
       />
     </div>
   );
@@ -1004,6 +975,7 @@ export default async function ExperiencePage({
 ```
 
 ### `app/experiences/[experienceId]/edit/page.tsx`
+
 This page allows admins to edit the experience prompt.
 
 ```typescript app/experiences/[experienceId]/edit/page.tsx [expandable]
@@ -1012,23 +984,20 @@ import EditExperiencePrompt from "@/components/edit-experience-prompt";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ experienceId: string; }>;
+  params: Promise<{ experienceId: string }>;
 }) {
   const { experienceId } = await params;
   return <EditExperiencePrompt experienceId={experienceId} />;
 }
 ```
 
-
 ## 7. Create the API routes
 
 ### `app/api/experiences/[experienceId]/generate/route.ts`
+
 This API route generates images using OpenAI's DALL-E API.
 
 ```typescript app/api/experiences/[experienceId]/generate/route.ts [expandable]
-import type { ReadableStream } from "node:stream/web";
-
-import { Readable } from "node:stream";
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
@@ -1039,145 +1008,146 @@ import sharp from "sharp";
 const prisma = new PrismaClient();
 
 const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function POST(
-	request: Request,
-	{ params }: { params: Promise<{ experienceId: string }> },
+  request: Request,
+  { params }: { params: Promise<{ experienceId: string }> }
 ) {
-	try {
-		const { experienceId } = await params;
+  try {
+    const { experienceId } = await params;
 
-		if (!experienceId) {
-			return NextResponse.json(
-				{ error: "Missing experienceId" },
-				{ status: 400 },
-			);
-		}
+    if (!experienceId) {
+      return NextResponse.json(
+        { error: "Missing experienceId" },
+        { status: 400 }
+      );
+    }
 
-		const headersList = await headers();
-		const userToken = await verifyUserToken(headersList);
-		if (!userToken) {
-			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-		}
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-		const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
-			userId: userToken.userId,
-			experienceId,
-		});
+    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+      userId: userToken.userId,
+      experienceId,
+    });
 
-		if (!hasAccess.hasAccessToExperience.hasAccess) {
-			return NextResponse.json(
-				{ error: "Unauthorized, no access" },
-				{ status: 401 },
-			);
-		}
+    if (!hasAccess.hasAccessToExperience.hasAccess) {
+      return NextResponse.json(
+        { error: "Unauthorized, no access" },
+        { status: 401 }
+      );
+    }
 
-		const [publicUser, experience] = await Promise.all([
-			whopApi.getUser({
-				userId: userToken.userId,
-			}),
-			prisma.experience.findUnique({
-				where: {
-					id: experienceId,
-				},
-			}),
-		]);
+    const [publicUser, experience] = await Promise.all([
+      whopApi.getUser({
+        userId: userToken.userId,
+      }),
+      prisma.experience.findUnique({
+        where: {
+          id: experienceId,
+        },
+      }),
+    ]);
 
-		if (!request.body || !experience?.prompt) {
-			return NextResponse.json(
-				{ error: "Image and prompt are required" },
-				{ status: 400 },
-			);
-		}
+    if (!request.body || !experience?.prompt) {
+      return NextResponse.json(
+        { error: "Image and prompt are required" },
+        { status: 400 }
+      );
+    }
 
-		const originalFile = new File(
-			[
-				await sharp(await request.clone().arrayBuffer())
-					.png()
-					.toBuffer(),
-			],
-			`${Date.now()}-original.png`,
-			{
-				type: "image/png",
-			},
-		);
+    const originalFile = new File(
+      [
+        await sharp(await request.clone().arrayBuffer())
+          .png()
+          .toBuffer(),
+      ],
+      `${Date.now()}-original.png`,
+      {
+        type: "image/png",
+      }
+    );
 
-		// Generate image using DALL-E with prompt
-		const response = await openai.images.edit({
-			model: "gpt-image-1",
-			image: originalFile,
-			prompt: experience.prompt,
-			n: 1,
-			size: "auto",
-			quality: "low",
-		});
+    // Generate image using DALL-E with prompt
+    const response = await openai.images.edit({
+      model: "gpt-image-1",
+      image: originalFile,
+      prompt: experience.prompt,
+      n: 1,
+      size: "auto",
+      quality: "low",
+    });
 
-		console.log("Response:", response);
+    console.log("Response:", response);
 
-		// Get the base64 image data from the response
-		const base64Image = response.data?.[0]?.b64_json;
-		if (!base64Image) {
-			throw new Error("No image data returned from OpenAI");
-		}
-		const generatedImageBuffer = Buffer.from(base64Image, "base64");
+    // Get the base64 image data from the response
+    const base64Image = response.data?.[0]?.b64_json;
+    if (!base64Image) {
+      throw new Error("No image data returned from OpenAI");
+    }
+    const generatedImageBuffer = Buffer.from(base64Image, "base64");
 
-		const generationId = crypto.randomUUID();
+    const generationId = crypto.randomUUID();
 
-		const [originalFileUploadResponse, uploadResponse] = await Promise.all([
-			whopApi.uploadAttachment({
-				file: originalFile,
-				record: "forum_post",
-			}),
-			whopApi.uploadAttachment({
-				file: new File(
-					[generatedImageBuffer],
-					`${generationId}-generated.png`,
-					{
-						type: "image/png",
-					},
-				),
-				record: "forum_post",
-			}),
-		]);
+    const [originalFileUploadResponse, uploadResponse] = await Promise.all([
+      whopApi.uploadAttachment({
+        file: originalFile,
+        record: "forum_post",
+      }),
+      whopApi.uploadAttachment({
+        file: new File(
+          [generatedImageBuffer],
+          `${generationId}-generated.png`,
+          {
+            type: "image/png",
+          }
+        ),
+        record: "forum_post",
+      }),
+    ]);
 
-		const generatedAttachmentId = uploadResponse.directUploadId;
-		const originalAttachmentId = originalFileUploadResponse.directUploadId;
+    const generatedAttachmentId = uploadResponse.directUploadId;
+    const originalAttachmentId = originalFileUploadResponse.directUploadId;
 
-		const forum = await whopApi.findOrCreateForum({
-			input: { experienceId: experience.id, name: "AI Uploads" },
-		});
+    const forum = await whopApi.findOrCreateForum({
+      input: { experienceId: experience.id, name: "AI Uploads" },
+    });
 
-		const forumId = forum.createForum?.id;
+    const forumId = forum.createForum?.id;
 
-		const post = await whopApi.createForumPost({
-			input: {
-				forumExperienceId: forumId,
-				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/${experience.companyId}/${experience.id}/app\n\nBefore vs After ⬇️`,
-				attachments: [
-					{ directUploadId: originalAttachmentId },
-					{ directUploadId: generatedAttachmentId },
-				],
-			},
-		});
+    const post = await whopApi.createForumPost({
+      input: {
+        forumExperienceId: forumId,
+        content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/experiences/${experience.id}/\n\nBefore vs After ⬇️`,
+        attachments: [
+          { directUploadId: originalAttachmentId },
+          { directUploadId: generatedAttachmentId },
+        ],
+      },
+    });
 
-		return NextResponse.json({
-			success: true,
-			imageUrl: uploadResponse.attachment.source.url,
-			postId: post.createForumPost?.id,
-		});
-	} catch (error) {
-		console.error("Error generating image:", error);
-		return NextResponse.json(
-			{ error: "Failed to generate image" },
-			{ status: 500 },
-		);
-	}
+    return NextResponse.json({
+      success: true,
+      imageUrl: uploadResponse.attachment.source.url,
+      postId: post.createForumPost?.id,
+    });
+  } catch (error) {
+    console.error("Error generating image:", error);
+    return NextResponse.json(
+      { error: "Failed to generate image" },
+      { status: 500 }
+    );
+  }
 }
 ```
 
 ### `app/api/experiences/[experienceId]/route.ts`
+
 This API route is a PUT operation to an experience in the database.
 
 ```typescript app/api/experiences/[experienceId]/route.ts [expandable]
