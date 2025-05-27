@@ -2,25 +2,41 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"automerge": true,
 	"automergeType": "pr",
-	"extends": ["config:base"],
-	"gitIgnoredAuthors": ["49736102+kodiakhq[bot]@users.noreply.github.com"],
-	"labels": ["dependencies"],
+	"extends": [
+		"config:recommended"
+	],
+	"gitIgnoredAuthors": [
+		"49736102+kodiakhq[bot]@users.noreply.github.com"
+	],
+	"labels": [
+		"dependencies"
+	],
 	"packageRules": [
 		{
-			"matchUpdateTypes": ["major"],
+			"matchUpdateTypes": [
+				"major"
+			],
 			"dependencyDashboardApproval": true
 		},
 		{
 			"groupName": "whop-apps monorepo",
-			"matchPackageNames": ["@whop-apps/**"]
+			"matchPackageNames": [
+				"@whop-apps/**"
+			]
 		},
 		{
-			"matchDepTypes": ["engines"],
-			"matchPackageNames": ["node"],
+			"matchDepTypes": [
+				"engines"
+			],
+			"matchPackageNames": [
+				"node"
+			],
 			"enabled": false
 		},
 		{
-			"matchManagers": ["npm"],
+			"matchManagers": [
+				"npm"
+			],
 			"rangeStrategy": "pin"
 		}
 	],
