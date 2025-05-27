@@ -1,11 +1,12 @@
 "use client";
 
+import type { proto } from "@whop/api";
+import { useCallback, useState } from "react";
 import {
-	type WebsocketStatus,
-	WhopClientSdk,
-	type WhopWebsocketClientBase,
-} from "@whop/api";
-import { useCallback, useEffect, useRef, useState } from "react";
+	WhopWebsocketProvider,
+	useWebsocket,
+	useWebsocketStatus,
+} from "./websocket-provider";
 
 export function SectionConnectToTheWebsocketClient({
 	experienceId,
@@ -17,44 +18,28 @@ export function SectionConnectToTheWebsocketClient({
 	const [senderUserId, setSenderUserId] = useState<string | undefined>(
 		undefined,
 	);
-	const [status, setStatus] = useState<WebsocketStatus>("disconnected");
-	const websocket = useRef<WhopWebsocketClientBase | null>(null);
 
-	useEffect(() => {
-		const ws = WhopClientSdk().websocketClient({
-			joinExperience: experienceId,
-		});
-
-		ws.on("appMessage", (message) => {
-			setMessage(message.json);
-			setIsTrusted(message.isTrusted);
-			setSenderUserId(message.fromUserId);
-		});
-
-		ws.on("connectionStatus", (status) => {
-			setStatus(status);
-		});
-
-		websocket.current = ws;
-
-		return ws.connect();
-	}, [experienceId]);
+	const onAppMessage = useCallback((message: proto.common.AppMessage) => {
+		setMessage(message.json);
+		setIsTrusted(message.isTrusted);
+		setSenderUserId(message.fromUserId);
+	}, []);
 
 	return (
-		<>
-			<ClientSendMessage
-				experienceId={experienceId}
-				websocket={websocket.current}
-			/>
+		<WhopWebsocketProvider
+			joinExperience={experienceId}
+			onAppMessage={onAppMessage}
+		>
+			<ClientSendMessage experienceId={experienceId} />
 			<div className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-				<WebsocketStatusDisplay status={status} />
+				<WebsocketStatusDisplay />
 				<WebsocketMessageDisplay
 					message={message}
 					isTrusted={isTrusted}
 					senderUserId={senderUserId}
 				/>
 			</div>
-		</>
+		</WhopWebsocketProvider>
 	);
 }
 
@@ -97,7 +82,8 @@ function WebsocketMessageDisplay({
 }
 
 // This component shows the status of the websocket connection. (Connected, Disconnected, Connecting)
-function WebsocketStatusDisplay({ status }: { status: WebsocketStatus }) {
+function WebsocketStatusDisplay() {
+	const status = useWebsocketStatus();
 	return (
 		<div className="mb-4">
 			<span className="font-semibold dark:text-gray-200">Status: </span>
@@ -121,12 +107,11 @@ function WebsocketStatusDisplay({ status }: { status: WebsocketStatus }) {
 // To send a trusted message, you can use the server-side send message function.
 function ClientSendMessage({
 	experienceId,
-	websocket,
 }: {
 	experienceId: string;
-	websocket: WhopWebsocketClientBase | null;
 }) {
 	const [message, setMessage] = useState("");
+	const websocket = useWebsocket();
 
 	const onSubmit = useCallback(
 		(e: React.FormEvent<HTMLFormElement>) => {
