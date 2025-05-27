@@ -22,7 +22,7 @@ Use this to add real-time features to your app, and receive messages you sent fr
 	});
 	```
 
-2. Add event handlers for messages, similar to the server websocket:
+2. Add event handlers for messages:
 
 	```typescript
 	websocket.on("appMessage", (message) => {
@@ -37,7 +37,7 @@ Use this to add real-time features to your app, and receive messages you sent fr
 	});
 	```
 
-3. Handle connection status changes (same as server API):
+3. Handle connection status changes:
 
 	```typescript
 	websocket.on("connectionStatus", (status) => {
@@ -172,7 +172,7 @@ You can use these events to build real-time apps such as chat bots and AI-agents
 	});
 	```
 
-4. Add event handlers for status changes:
+4. Add event handlers for status changes (same as client API):
 
 	```typescript
 	websocket.on("connectionStatus", (status) => {
