@@ -32,7 +32,7 @@ function BaseWhopServerSdk(
 	const baseSdk = getSdk(makeRequester(options));
 
 	const sendWebsocketMessage = sendWebsocketMessageFunction(options);
-	const connectToWebsocket = makeConnectToWebsocketFunction(options);
+	const websocketClient = makeConnectToWebsocketFunction(options);
 
 	const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
 
@@ -40,7 +40,7 @@ function BaseWhopServerSdk(
 		...baseSdk,
 		...fileSdk,
 		sendWebsocketMessage,
-		connectToWebsocket,
+		websocketClient,
 	};
 }
 

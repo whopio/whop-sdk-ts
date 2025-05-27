@@ -1,8 +1,6 @@
-import type { WebsocketClientOptionsBase } from "./client.common";
 import { WhopWebsocketClientBase } from "./client.common";
 
-export interface WebsocketClientOptionsClient
-	extends WebsocketClientOptionsBase {
+export interface WebsocketClientOptionsClient {
 	/// Pass an experience ID to join the channel for this experience(s). Access will be restricted to just users with access to the experience(s).
 	joinExperience?: string | string[] | null;
 
@@ -17,7 +15,7 @@ export class WhopWebsocketClientBrowser extends WhopWebsocketClientBase {
 	private options: WebsocketClientOptionsClient;
 
 	constructor(options: WebsocketClientOptionsClient) {
-		super(options);
+		super();
 		this.options = options;
 	}
 

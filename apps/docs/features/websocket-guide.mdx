@@ -2,4 +2,199 @@
 title: "Connect to websocket"
 description: "Learn how to implement real-time features using Whop's websocket API"
 ---
-Coming soon!
+
+## Server websocket.
+
+<Info>Before you start, make sure you are using NodeJS 22.4 or higher, or Bun to run your server.</Info>
+
+Use the server websocket API to receive events such as chat messages as forum posts for a particular user on your server.
+You can use these events to build real-time apps such as chat bots and AI-agents that react to events on the platform.
+
+1. Construct (or reuse) an instance of the whop server sdk and pass your API key: 
+
+	```typescript
+	import { WhopServerSdk } from "@whop/api";
+
+	const whopApi = WhopServerSdk({
+		appApiKey: process.env.WHOP_API_KEY,
+	});
+	```
+
+2. Create your websocket client and add handlers for messages / status changes:
+
+	```typescript
+	const websocket = whopApi
+		// Pass the user id of the user you want to receive events for
+		.withUser("user_v9KUoZvTGp6ID")
+		// Construct the websocket client
+		.websocketClient();
+	```
+
+3. Add event handlers for messages:
+
+	```typescript
+	websocket.on("message", (message) => {
+		console.log("Received Message:", message);
+		
+		const chatMessage = message.feedEntity?.dmsPost;
+		if (chatMessage) {
+			// handle the chat message
+		}
+
+		const forumPost = message.feedEntity?.forumPost;
+		if (forumPost) {
+			// handle the forum post
+		}
+	});
+	```
+
+4. Add event handlers for status changes:
+
+	```typescript
+	websocket.on("connectionStatus", (status) => {
+		console.log("Websocket Status Updated:", status);
+	});
+
+	// Or you can also listen to the connect and disconnect events:
+	websocket.on("connect", () => {
+		console.log("Websocket Connected");
+	});
+
+	websocket.on("disconnect", () => {
+		console.log("Websocket Disconnected");
+	});
+	```
+
+5. Connect to the websocket and start receiving events:
+
+	```typescript
+	websocket.connect();
+	```
+
+6. _Optional:_ Disconnect from the websocket:
+
+	```typescript
+	websocket.disconnect();
+	```
+
+### Send messages from the server
+
+You can broadcast trusted websocket messages from your server to connected clients by using the `whopApi.sendWebsocketMessage` function.
+
+1. Construct an instance of the whop server sdk and pass your API key:
+
+	```typescript
+	import { WhopServerSdk } from "@whop/api";
+
+	const whopApi = WhopServerSdk({
+		appApiKey: process.env.WHOP_API_KEY,
+	});
+	```
+
+2. Send a custom string message via websocket.
+
+	```typescript
+	// Send to all users currently on your app across all experiences / views.
+	whopApi.sendWebsocketMessage({
+		message: JSON.stringify({ hello: "world" }),
+		target: "everyone",
+	});
+
+	// send to all users currently on this experience
+	// (only works if the experience belongs to your app)
+	whopApi.sendWebsocketMessage({
+		message: JSON.stringify({ hello: "world" }),
+		target: { experience: "exp_XXXX" },
+	});
+
+	// create a custom channel that your websocket client can subscribe to.
+	// Only works if when connecting on the client, you pass the same custom channel name.
+	whopApi.sendWebsocketMessage({
+		message: JSON.stringify({ hello: "world" }),
+		target: { custom: "some_custom_channel" },
+	});
+
+	// send to a specific user on your app
+	whopApi.sendWebsocketMessage({
+		message: JSON.stringify({ hello: "world" }),
+		target: { user: "user_XXXX" },
+	});
+	```
+
+## Client websocket
+
+You can also connect to the websocket from your client side frontend code running in the whop iframe.
+Use this to add real-time features to your frontend app, and receive messages you sent from your server. 
+
+1. Create the websocket client:
+
+	```typescript
+	import { WhopClientSdk } from "@whop/api";
+
+	const whopApi = WhopClientSdk();
+
+	const websocket = whopApi.websocketClient({
+		joinExperience: "exp_XXXX", // optional, you can join a specfic experience channel (ie, the one you are currently viewing).
+		joinCustom: "some_custom_channel", // optional, you can join a custom channel.
+	});
+	```
+
+2. Add event handlers for messages, similar to the server websocket:
+
+	```typescript
+	websocket.on("appMessage", (message) => {
+		console.log("Received custom message:", message);
+		
+		// message.isTrusted is true if and only if the message was sent from your server with your private app API key.
+		
+		// message.json is the JSON string you sent from your server / client.
+
+		// if you sent the message from the client using websocket.broadcast, 
+		// message.fromUserId will include the user id of the user who sent the message.
+	});
+	```
+
+3. Handle connection status changes (same as server API):
+
+	```typescript
+	websocket.on("connectionStatus", (status) => {
+		console.log("Websocket Status Updated:", status);
+	});
+
+	websocket.on("connect", () => {
+		console.log("Websocket Connected");
+	});
+
+	websocket.on("disconnect", () => {
+		console.log("Websocket Disconnected");
+	});
+	```
+
+4. Connect to the websocket and start receiving events:
+
+	```typescript
+	websocket.connect();
+	```
+
+5. _Optional:_ Disconnect from the websocket:
+
+	```typescript
+	websocket.disconnect();
+	```
+
+### Send messages from the client
+
+You can send messages from the client to the server by using the `websocket.broadcast` function.
+
+1. Create a websocket client as above, and make sure you are connected by calling `websocket.connect()`.
+
+2. Send a custom message via websocket.
+
+	```typescript
+	websocket.broadcast({
+		message: JSON.stringify({ hello: "world" }),
+		target: "everyone",
+	});
+	```
+
+	The target field is the same as the one you would pass to `whopApi.sendWebsocketMessage` on the server.
