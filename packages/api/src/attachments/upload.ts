@@ -140,7 +140,7 @@ export function makeUploadAttachmentFunction({
 		// prepare the file
 		const preparedAttachment =
 			"record" in input && "file" in input
-				? await this.PrepareAttachmentForUpload(input.file, input.record)
+				? await this.prepareAttachmentForUpload(input.file, input.record)
 				: await input;
 
 		// upload the file
@@ -171,7 +171,7 @@ export function makeUploadAttachmentFunction({
 			});
 		}
 
-		const attachment = await this.AnalyzeAttachment(preparedAttachment.id, {
+		const attachment = await this.analyzeAttachment(preparedAttachment.id, {
 			signal,
 		});
 

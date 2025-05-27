@@ -29,11 +29,11 @@ export function makeWhopClientSdk({
 
 		const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
 
-		const ConnectToWebsocket = makeConnectToWebsocketFunction();
+		const connectToWebsocket = makeConnectToWebsocketFunction();
 
 		const sdk = {
 			...baseSdk,
-			ConnectToWebsocket,
+			connectToWebsocket,
 			...fileSdk,
 		};
 

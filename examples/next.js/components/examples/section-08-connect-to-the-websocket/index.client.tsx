@@ -21,7 +21,7 @@ export function SectionConnectToTheWebsocketClient({
 	const websocket = useRef<WhopWebsocketClientBase | null>(null);
 
 	useEffect(() => {
-		const ws = WhopClientSdk().ConnectToWebsocket({
+		const ws = WhopClientSdk().connectToWebsocket({
 			joinExperience: experienceId,
 			onMessage: (message) => {
 				const obj = message.appMessage;

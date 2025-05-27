@@ -44,12 +44,10 @@ export class WhopWebsocketClientBase {
 		this.wantsToBeConnected = true;
 
 		this.setStatus("connecting");
-		console.log("[WhopWebsocketClient] Connecting to websocket");
 		const websocket = this.makeWebsocket();
 		this.websocket = websocket;
 
 		websocket.onopen = () => {
-			console.log("[WhopWebsocketClient] Websocket connected");
 			this.setStatus("connected");
 		};
 
@@ -70,7 +68,6 @@ export class WhopWebsocketClientBase {
 		};
 
 		websocket.onclose = (event: Event) => {
-			console.log("[WhopWebsocketClient] Websocket closed", event);
 			this.setStatus("disconnected");
 		};
 
