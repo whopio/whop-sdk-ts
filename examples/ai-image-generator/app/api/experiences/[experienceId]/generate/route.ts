@@ -111,7 +111,7 @@ export async function POST(
 			}),
 		]);
 
-		const whopExperience = await whopApi.GetExperience({ experienceId });
+		const whopExperience = await whopApi.getExperience({ experienceId });
 		const bizId = whopExperience.experience.company.id;
 
 		const generatedAttachmentId = uploadResponse.directUploadId;
