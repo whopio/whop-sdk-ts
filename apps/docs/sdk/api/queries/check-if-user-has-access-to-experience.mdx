@@ -3,12 +3,11 @@ title: Check If User Has Access To Experience
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.checkIfUserHasAccessToExperience({
-	// Required!
-	experienceId: "exp_XXXXXXXX",
-	userId: "user_XXXXXXXX",
+	import { whopApi } from "@/lib/whop-api";
+
+	const result = await whopApi.checkIfUserHasAccessToExperience({experienceId: "exp_XXXXXXXX" // Required!,
+userId: "user_XXXXXXXX",
 });
-
+	
 ```

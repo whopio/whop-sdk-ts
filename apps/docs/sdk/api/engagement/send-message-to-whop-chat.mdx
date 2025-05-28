@@ -3,13 +3,11 @@ title: Send Message To Whop Chat
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.sendMessageToWhopChat({
-	// Required!
-	experienceId: "some string",
-	// Required!
-	message: "some string",
+	import { whopApi } from "@/lib/whop-api";
+
+	const result = await whopApi.sendMessageToWhopChat({experienceId: "some string" // Required!,
+message: "some string" // Required!,
 });
-
+	
 ```

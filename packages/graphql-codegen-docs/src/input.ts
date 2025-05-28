@@ -78,15 +78,17 @@ class ObjectField extends BaseType {
 
 	toCode(): string {
 		let output = "";
-		if (this.isRequired || this.description) {
-			const required = this.isRequired ? "Required! " : "";
-			const comment = `${required}${this.description ?? ""}`
+		if (this.description) {
+			const comment = `${this.description ?? ""}`
 				.split("\n")
 				.map((line) => `// ${line}`)
 				.join("\n");
 			output += `${comment}\n`;
 		}
 		output += `${this.name}: ${this.type.toCode()}`;
+		if (this.isRequired) {
+			output += " // Required!";
+		}
 		return output;
 	}
 
@@ -219,7 +221,7 @@ function parseType(
 	}
 
 	if (type.kind === Kind.LIST_TYPE) {
-		return new ArrayType(parseType(schema, type.type, objectField));
+		return new ArrayType(parseType(schema, type.type, null));
 	}
 
 	const primitive = parsePrimitiveType(type.name.value, objectField);

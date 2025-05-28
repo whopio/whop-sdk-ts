@@ -3,12 +3,11 @@ title: Check If User Has Access To Company
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.checkIfUserHasAccessToCompany({
-	// Required!
-	companyId: "biz_XXXXXXXX",
-	userId: "user_XXXXXXXX",
+	import { whopApi } from "@/lib/whop-api";
+
+	const result = await whopApi.checkIfUserHasAccessToCompany({companyId: "biz_XXXXXXXX" // Required!,
+userId: "user_XXXXXXXX",
 });
-
+	
 ```
