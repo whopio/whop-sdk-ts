@@ -164,8 +164,6 @@ async function sendPayout(
       currency: "usd",
       // Username of the recipient
       destinationId: recipientUsername,
-      // Unique key to prevent duplicate transfers
-      idempotenceKey: crypto.randomUUID(),
       // Your company's ledger account ID
       ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
       // Optional transfer fee in percentage
