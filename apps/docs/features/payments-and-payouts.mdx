@@ -174,22 +174,3 @@ async function sendPayout(
   });
 }
 ```
-
-### Important Notes
-
-1. **Amounts**: All amounts are in cents (e.g., 100 = $1.00)
-2. **Currencies**: Currently supports "usd" only
-3. **Idempotence**: Always use unique idempotence keys to prevent duplicate transfers
-4. **Transfer Fees**: Optional percentage fee you can add to transfers
-5. **Webhooks**: Set up webhooks to track payment statuses and handle fulfillment
-6. **Ledger Account**: Required for sending payouts, automatically created with your company
-
-### Best Practices
-
-1. **Error Handling**: Always implement proper error handling for payment operations
-2. **Idempotency**: Use unique idempotence keys for each transfer to prevent duplicates
-3. **Metadata**: Include relevant metadata with payments for tracking and fulfillment
-4. **Webhooks**: Set up webhooks to handle payment status updates asynchronously
-5. **Amounts**: Double-check amount calculations to ensure correct currency conversion
-6. **Validation**: Validate all inputs before initiating payment operations
-7. **User Experience**: Use the iframe SDK modal for a seamless in-app experience when possible
