@@ -1,0 +1,15 @@
+---
+title: List Messages
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listMessages({
+	// Required! The type of feed to fetch from
+	type: "chat_feed" /* Valid values: chat_feed | dms_feed | forum_feed | livestream_feed | universal_post | user */,
+	// Required!
+	id: "xxxxxxxxxxx",
+});
+
+```

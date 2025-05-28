@@ -1,0 +1,15 @@
+---
+title: Send Direct Message To User
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.sendDirectMessageToUser({
+	// Required!
+	toUserId: "some string",
+	// Required!
+	message: "some string",
+});
+
+```

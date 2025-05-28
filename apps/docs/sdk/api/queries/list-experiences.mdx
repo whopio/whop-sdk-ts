@@ -1,0 +1,18 @@
+---
+title: List Experiences
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listExperiences({
+	after: "some string",
+	first: 10,
+	accessPassId: "pass_XXXXXXXX",
+	appId: "app_XXXXXXXX",
+	onAccessPass: true,
+	// Required!
+	companyId: "biz_XXXXXXXX",
+});
+
+```

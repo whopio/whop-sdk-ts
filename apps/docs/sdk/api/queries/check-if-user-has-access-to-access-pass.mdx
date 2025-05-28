@@ -1,0 +1,14 @@
+---
+title: Check If User Has Access To Access Pass
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.checkIfUserHasAccessToAccessPass({
+	// Required!
+	accessPassId: "pass_XXXXXXXX",
+	userId: "user_XXXXXXXX",
+});
+
+```

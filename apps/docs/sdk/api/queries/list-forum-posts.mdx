@@ -1,0 +1,13 @@
+---
+title: List Forum Posts
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listForumPosts({
+	// Required!
+	experienceId: "exp_XXXXXXXX",
+});
+
+```
