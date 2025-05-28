@@ -160,7 +160,6 @@ async function sendPayout(
   // 2. Transfer funds to the recipient
   await whopApi.transferFunds({
     input: {
-      // Amount in cents (e.g., 100 = $1.00)
       amount: amount,
       currency: "usd",
       // Username of the recipient
@@ -170,7 +169,7 @@ async function sendPayout(
       // Your company's ledger account ID
       ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
       // Optional transfer fee in percentage
-      transferFee: 3
+      transferFee: ledgerAccount.company?.ledgerAccount.transferFee
     }
   });
 }
