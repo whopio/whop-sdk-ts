@@ -26,7 +26,7 @@ jobs:
         run: pnpm install
 
       - name: Generate documentation
-        run: pnpm --filter @whop/graphql-codegen-docs generate
+        run: pnpm --filter @local/graphql-codegen-docs generate
 
       - name: Check for changes
         id: git-check

@@ -9,7 +9,7 @@ import {
 } from "graphql";
 
 const idPrefixes = {
-	accessPassId: "pass",
+	accessPassId: "prod",
 	experienceId: "exp",
 	forumExperienceId: "exp",
 	companyId: "biz",
