@@ -171,7 +171,7 @@ class ObjectType extends BaseType {
 		let output = "{";
 		for (const field of this.fields) {
 			if (!field.shouldRender) continue;
-			output += `${field.toCode()},\n`;
+			output += `${field.toCode()},\n\n`;
 		}
 		output += "}";
 		return output;

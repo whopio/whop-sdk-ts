@@ -9,6 +9,7 @@ import { whopApi } from "@/lib/whop-api";
 const result = await whopApi.checkIfUserHasAccessToAccessPass({
 	// The ID of the access pass
 	accessPassId: "prod_XXXXXXXX" /* Required! */,
+
 	// The ID of the user
 	userId: "user_XXXXXXXX",
 });
