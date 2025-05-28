@@ -6,10 +6,8 @@ title: Send Direct Message To User
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.sendDirectMessageToUser({
-	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-	toUserId: "Error" /* Required! */,
-	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-	message: "Error" /* Required! */,
+	toUserId: "some string" /* Required! */,
+	message: "some string" /* Required! */,
 });
 
 ```

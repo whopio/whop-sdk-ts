@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           token: ${{ secrets.GH_WRITE_TOKEN }}
 
       - uses: pnpm/action-setup@v2

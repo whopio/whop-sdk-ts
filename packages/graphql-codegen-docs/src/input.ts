@@ -3,9 +3,9 @@ import {
 	type GraphQLSchema,
 	type InputObjectTypeDefinitionNode,
 	Kind,
+	type OperationDefinitionNode,
 	type ScalarTypeDefinitionNode,
 	type TypeNode,
-	type VariableDefinitionNode,
 } from "graphql";
 
 const idPrefixes = {
@@ -180,8 +180,9 @@ class ObjectType extends BaseType {
 
 export function generateExampleInput(
 	schema: GraphQLSchema,
-	variableDefinitions: ReadonlyArray<VariableDefinitionNode> | null | undefined,
+	operation: OperationDefinitionNode,
 ): string | undefined {
+	const variableDefinitions = operation.variableDefinitions;
 	if (!variableDefinitions || variableDefinitions.length === 0) {
 		return undefined;
 	}
@@ -199,6 +200,22 @@ export function generateExampleInput(
 		const type = parseType(schema, def.type, objectField);
 
 		objectField.type = type;
+
+		const selection = operation.selectionSet.selections.at(0);
+		if (selection?.kind === Kind.FIELD) {
+			for (const arg of selection.arguments ?? []) {
+				if (
+					arg.value.kind === Kind.VARIABLE &&
+					arg.value.name.value === varName
+				) {
+					objectField.description = getInputArgDescription(
+						schema,
+						operation,
+						arg.name.value,
+					);
+				}
+			}
+		}
 
 		inputObject.addField(objectField);
 	}
@@ -267,22 +284,22 @@ function parseNamedType(
 ): BaseType {
 	const type = schema.getType(typeName);
 	if (!type) {
-		return new ErrorType();
-	}
-
-	if (parent) {
-		parent.description ??= type.description ?? undefined;
+		return new ErrorType(`No Type for ${typeName}`);
 	}
 
 	const astNode = type.astNode;
 
 	if (!astNode) {
-		return new ErrorType();
+		const primitive = parsePrimitiveType(typeName, parent);
+		if (primitive) {
+			return primitive;
+		}
+		return new ErrorType(`No Ast Node for ${typeName}`);
 	}
 
-	if (parent && astNode.description?.value) {
-		parent.description ??= astNode.description.value;
-	}
+	// if (parent && astNode.description?.value) {
+	// 	parent.description ??= astNode.description.value;
+	// }
 
 	if (astNode.kind === Kind.ENUM_TYPE_DEFINITION) {
 		return parseEnumTypeDefinition(astNode);
@@ -294,11 +311,6 @@ function parseNamedType(
 
 	if (astNode.kind === Kind.SCALAR_TYPE_DEFINITION) {
 		return parseScalarTypeDefinition(astNode);
-	}
-
-	const primitive = parsePrimitiveType(typeName, parent);
-	if (primitive) {
-		return primitive;
 	}
 
 	return new ErrorType(astNode.kind);
@@ -342,9 +354,25 @@ function parseInputObjectTypeDefinition(
 		const type = parseType(schema, f.type, field);
 
 		field.type = type;
+		field.description = f.description?.value;
 
 		object.addField(field);
 	}
 
 	return object;
+}
+
+function getInputArgDescription(
+	schema: GraphQLSchema,
+	operation: OperationDefinitionNode,
+	argName: string,
+) {
+	const firstSelection = operation.selectionSet.selections.at(0);
+	if (firstSelection?.kind === Kind.FIELD) {
+		const field = schema.getQueryType()?.getFields()[firstSelection.name.value];
+		if (!field) return;
+		const arg = field.args?.find((arg) => arg.name === argName);
+		if (!arg) return;
+		return arg.description ?? undefined;
+	}
 }

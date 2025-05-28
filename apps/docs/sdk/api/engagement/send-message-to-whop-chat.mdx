@@ -6,10 +6,8 @@ title: Send Message To Whop Chat
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.sendMessageToWhopChat({
-	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-	experienceId: "Error" /* Required! */,
-	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-	message: "Error" /* Required! */,
+	experienceId: "some string" /* Required! */,
+	message: "some string" /* Required! */,
 });
 
 ```

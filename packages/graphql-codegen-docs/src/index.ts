@@ -3,6 +3,7 @@ import { Biome, Distribution } from "@biomejs/js-api";
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import {
 	type GraphQLSchema,
+	Kind,
 	type OperationDefinitionNode,
 	concatAST,
 	visit,
@@ -99,8 +100,10 @@ function formatOperation(
 	schema: GraphQLSchema,
 ) {
 	const inputCode = value.variableDefinitions
-		? generateExampleInput(schema, value.variableDefinitions)
+		? generateExampleInput(schema, value)
 		: undefined;
+
+	const description = getFieldDescription(schema, value) ?? "";
 
 	const codeExample = `
 	import { whopApi } from "@/lib/whop-api";
@@ -111,7 +114,7 @@ function formatOperation(
 	const formatted = formatCode(codeExample, biome);
 
 	const file = `---
-title: ${camelCaseToTitleCase(value.name?.value ?? "")}
+title: ${camelCaseToTitleCase(value.name?.value ?? "")}${description}
 ---
 
 \`\`\`typescript
@@ -120,6 +123,19 @@ ${formatted}
 `;
 
 	return file;
+}
+
+function getFieldDescription(
+	schema: GraphQLSchema,
+	operation: OperationDefinitionNode,
+) {
+	const firstSelection = operation.selectionSet.selections.at(0);
+	if (firstSelection?.kind === Kind.FIELD) {
+		const field = schema.getQueryType()?.getFields()[firstSelection.name.value];
+		if (field?.description) {
+			return `\ndescription: ${field.description}`;
+		}
+	}
 }
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
