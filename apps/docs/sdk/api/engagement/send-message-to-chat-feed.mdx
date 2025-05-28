@@ -1,0 +1,18 @@
+---
+title: Send Message To Chat Feed
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.sendMessageToChatFeed({
+	// Required!
+	feedId: "some string",
+	// Required! The type of feed to fetch from
+	feedType:
+		"chat_feed" /* Valid values: chat_feed | dms_feed | forum_feed | livestream_feed | universal_post | user */,
+	// Required!
+	message: "some string",
+});
+
+```
