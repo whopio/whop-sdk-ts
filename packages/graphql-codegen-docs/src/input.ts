@@ -86,7 +86,7 @@ class ObjectField extends BaseType {
 			output += `${comment}\n`;
 		}
 		output += `${this.name}: ${this.type.toCode()}`;
-		if (this.isRequired) {
+		if (this.isRequired && this.name !== "input") {
 			output += " /* Required! */";
 		}
 		return output;
@@ -224,11 +224,6 @@ function parseType(
 		return new ArrayType(parseType(schema, type.type, null));
 	}
 
-	const primitive = parsePrimitiveType(type.name.value, objectField);
-	if (primitive) {
-		return primitive;
-	}
-
 	return parseNamedType(type.name.value, schema, objectField);
 }
 
@@ -299,6 +294,11 @@ function parseNamedType(
 
 	if (astNode.kind === Kind.SCALAR_TYPE_DEFINITION) {
 		return parseScalarTypeDefinition(astNode);
+	}
+
+	const primitive = parsePrimitiveType(typeName, parent);
+	if (primitive) {
+		return primitive;
 	}
 
 	return new ErrorType(astNode.kind);
