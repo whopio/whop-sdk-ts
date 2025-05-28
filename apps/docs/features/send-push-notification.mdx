@@ -1,6 +1,25 @@
 ---
-title: Send a push notification
-description: "Send a push notification to a user using the API"
+title: Send push notification
+description: Send a push notification to a user or a group of users.
 ---
 
-Coming soon!
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const input = {
+  experienceId: "exp_XYZ", // Or userId to send to one specific user.
+  title: "Important Update",
+  message: "Your new content is now available!",
+  // url: "https://example.com/new-content" If blank (recommended, users will be brought to your app view.)
+};
+
+
+const success = (await whopApi.sendNotification({input})).sendNotification;
+
+if (success) {
+	console.log("Notification sent successfully.");
+} else {
+	console.log("Failed to send notification or it's being processed.");
+}
+
+```
