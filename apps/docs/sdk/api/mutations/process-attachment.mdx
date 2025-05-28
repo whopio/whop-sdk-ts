@@ -1,0 +1,33 @@
+---
+title: Process Attachment
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.processAttachment({
+	input: {
+		// The ID returned by the direct upload mutation
+		directUploadId: "some string" /* Required! */,
+
+		// The type of media to analyze
+		mediaType:
+			"audio" /* Valid values: audio | image | other | video */ /* Required! */,
+
+		// The parts of the multipart upload
+		multipartParts: [
+			{
+				// The ETag of the part
+				etag: "some string" /* Required! */,
+
+				// The part number of the part
+				partNumber: 10 /* Required! */,
+			},
+		],
+
+		// The ID returned by the direct upload mutation
+		multipartUploadId: "some string",
+	},
+});
+
+```

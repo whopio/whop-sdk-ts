@@ -1,0 +1,14 @@
+---
+title: Get User
+description: Fetch a specific user.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.getUser({
+	// ID of the user by tag or the username.
+	userId: "user_XXXXXXXX" /* Required! */,
+});
+
+```

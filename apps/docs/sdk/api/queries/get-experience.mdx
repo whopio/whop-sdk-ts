@@ -1,0 +1,14 @@
+---
+title: Get Experience
+description: Fetch an experience.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.getExperience({
+	// The ID of the experience
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+});
+
+```
