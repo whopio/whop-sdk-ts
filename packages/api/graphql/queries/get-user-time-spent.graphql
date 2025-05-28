@@ -1,17 +1,17 @@
 query getUserTimeSpent($accessPassId: ID!, $publicUserId: ID!) {
 	publicUser(id: $publicUserId) {
-	 timeSpentPerExperienceL24h {
-        experience {
-          id
-        }
-        timeSpentInSeconds
-      }
-      timeSpentPerAccessPassL24h {
-        accessPass {
-          id
-        }
-        timeSpentInSeconds
-      }
+		timeSpentPerExperienceL24h {
+			experience {
+				id
+			}
+			timeSpentInSeconds
+		}
+		timeSpentPerAccessPassL24h {
+			accessPass {
+				id
+			}
+			timeSpentInSeconds
+		}
 		timeSpentInWhopInSeconds(accessPassId: $accessPassId)
 	}
 }
