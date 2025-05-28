@@ -1,6 +1,6 @@
 ---
-title: Post content to the feed
-description: "Create a post in the feed using the API"
+title: Create forum post
+description: "Create a forum and a post using the API"
 ---
 
 ## Overview
@@ -24,42 +24,37 @@ The `findOrCreateForum` method will find an existing forum experience with the s
 or create a new one with all the specified options
 
 ```typescript
-await whopApi
-  .withUser("user_XXXXXX")
-  .withCompany("biz_XXXXXX")
-  .findOrCreateForum({
+ const newForum = await whopApi.withUser("YOUR_AGENT_USER_ID").findOrCreateForum({
     input: {
-      accessPassId: "prod_XXXXXX",
-      name: "My App Forum",
-      whoCanPost: "everyone",
+      experienceId: experienceId,
+      name: "Dino game results",
+      whoCanPost: "admins",
+		// optional:
+		// expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+		// price: {
+        // baseCurrency: "usd",
+        // initialPrice: 100,
+      // }
     },
   });
 ```
-
-- `accessPassId`: ID of the whop to attach the forum to.
-- `name`: Visible title of the forum experience.
-- `whoCanPost`: "everyone" or "admins"
-- `withUser()`: ID of an admin of the company that owns the access pass.
-- `withCompany()`: ID of the company that owns the access pass.
-
-> If you only have an experience ID, you can pass that as `experienceId: "exp_XXX"` instead of `accessPassId`.
 > This will create the forum in the same whop as the supplied experience.
+
 
 ---
 
 ## Create a forum post.
 
-Once you have the `experienceId`, use it to create a post.
+Once you have the `experienceId` from the above, use it to create a post.
 
 ### Basic Forum Post
 
 ```ts
-await whopApi
-  .withUser("user_XXXXXX")
-  .withCompany("biz_XXXXXX")
+const forumPost = await whopApi
+  .withUser("YOUR_AGENT_USER_ID")
   .createForumPost({
     input: {
-      forumExperienceId: "exp_XXXXXX",
+      forumExperienceId: newForum.createForum?.id,
       title: "Welcome!",
       content: "Excited to kick things off in our new forum 🎉",
     },
@@ -67,7 +62,6 @@ await whopApi
 ```
 
 - `withUser()`: ID of the user posting
-- `withCompany()`: ID of the company that owns the forum experience
 - `forumExperienceId`: The ID of the target forum
 - `title` and `content`: Main post body. _(title is optional)_
 
@@ -76,19 +70,15 @@ await whopApi
 This demonstrates a rich post using all features:
 
 ```ts
-await whopApi
-  .withUser("user_XXXXXX")
-  .withCompany("biz_XXXXXX")
+const forumPost = await whopApi
+  .withUser("YOUR_AGENT_USER_ID")
   .createForumPost({
     input: {
       forumExperienceId: "exp_XXXXXX",
-
       // Visible even before purchase.
       title: "Big Launch + Community Poll!",
-
       // Visible only after purchase
       content: "Hidden content unless purchased. 🔒",
-
       // Add media to the post.
       // Learn how to upload in the upload-media section
       attachments: [
@@ -97,8 +87,8 @@ await whopApi
         },
       ],
 
-      // Send a notification to everyone about this post.
-      isMention: true,
+      // Do not send a notification to everyone about this post.
+      isMention: false,
 
       // Lock the content and attachments behind a
       // one time purchase in the price + currency.

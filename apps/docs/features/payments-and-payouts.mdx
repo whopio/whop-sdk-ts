@@ -77,7 +77,7 @@ export default function PaymentButton({ userId, experienceId }: {
 
       // 2. Open payment modal
       const res = await iframeSdk.inAppPurchase({
-        line_item_id: data.planId,
+        plan_id: data.planId,
       });
 
       if (res.status === "ok") {

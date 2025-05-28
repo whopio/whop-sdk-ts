@@ -22,7 +22,7 @@ export function SectionRequestAPayment({
 
 					if (planId) {
 						const res = await iframeSdk.inAppPurchase({
-							line_item_id: planId,
+							plan_id: planId,
 						});
 
 						if (res.status === "ok") {
