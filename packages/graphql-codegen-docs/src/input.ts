@@ -87,7 +87,7 @@ class ObjectField extends BaseType {
 		}
 		output += `${this.name}: ${this.type.toCode()}`;
 		if (this.isRequired) {
-			output += " // Required!";
+			output += " /* Required! */";
 		}
 		return output;
 	}

@@ -3,11 +3,11 @@ title: Check If User Has Access To Access Pass
 ---
 
 ```typescript
+import { whopApi } from "@/lib/whop-api";
 
-	import { whopApi } from "@/lib/whop-api";
-
-	const result = await whopApi.checkIfUserHasAccessToAccessPass({accessPassId: "prod_XXXXXXXX" // Required!,
-userId: "user_XXXXXXXX",
+const result = await whopApi.checkIfUserHasAccessToAccessPass({
+	accessPassId: "prod_XXXXXXXX" /* Required! */,
+	userId: "user_XXXXXXXX",
 });
-	
+
 ```
