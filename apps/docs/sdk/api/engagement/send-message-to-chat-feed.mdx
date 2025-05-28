@@ -6,11 +6,13 @@ title: Send Message To Chat Feed
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.sendMessageToChatFeed({
-	feedId: "some string" /* Required! */,
+	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+	feedId: "Error" /* Required! */,
 	// The type of feed to fetch from
 	feedType:
 		"chat_feed" /* Valid values: chat_feed | dms_feed | forum_feed | livestream_feed | universal_post | user */ /* Required! */,
-	message: "some string" /* Required! */,
+	// The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+	message: "Error" /* Required! */,
 });
 
 ```
