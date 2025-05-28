@@ -225,10 +225,10 @@ importers:
         specifier: 0.7.1
         version: 0.7.1(@biomejs/wasm-nodejs@1.9.4)
       '@graphql-codegen/plugin-helpers':
-        specifier: ^5.1.0
+        specifier: 5.1.0
         version: 5.1.0(graphql@16.11.0)
       '@graphql-codegen/visitor-plugin-common':
-        specifier: ^5.8.0
+        specifier: 5.8.0
         version: 5.8.0(graphql@16.11.0)
       graphql:
         specifier: 16.11.0

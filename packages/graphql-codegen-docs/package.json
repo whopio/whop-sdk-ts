@@ -24,8 +24,8 @@
 	},
 	"dependencies": {
 		"@biomejs/js-api": "0.7.1",
-		"@graphql-codegen/plugin-helpers": "^5.1.0",
-		"@graphql-codegen/visitor-plugin-common": "^5.8.0",
+		"@graphql-codegen/plugin-helpers": "5.1.0",
+		"@graphql-codegen/visitor-plugin-common": "5.8.0",
 		"graphql": "16.11.0"
 	},
 	"devDependencies": {
