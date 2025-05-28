@@ -1,0 +1,46 @@
+name: Generate Documentation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_WRITE_TOKEN }}
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.15.9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate documentation
+        run: pnpm --filter @local/graphql-codegen-docs generate
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add .
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "docs: update generated documentation" -a
+          git push https://${{ secrets.GH_WRITE_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.head_ref }}
