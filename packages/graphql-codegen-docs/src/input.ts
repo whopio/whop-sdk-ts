@@ -111,7 +111,7 @@ class PrimitiveType extends BaseType {
 	toCode(): string {
 		switch (this.kind) {
 			case "string":
-				return `"some string"`;
+				return this.exampleString();
 			case "boolean":
 				return "true";
 			case "number":
@@ -141,6 +141,12 @@ class PrimitiveType extends BaseType {
 		}
 
 		return `"xxxxxxxxxxx"`;
+	}
+	exampleString(): string {
+		if (this.associatedField?.name === "after") {
+			return `"pageCursor.endCursor"`;
+		}
+		return `"some string"`;
 	}
 }
 

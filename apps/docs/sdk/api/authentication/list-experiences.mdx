@@ -7,7 +7,7 @@ description: Fetch a company
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.listExperiences({
-	after: "some string",
+	after: "pageCursor.endCursor",
 
 	first: 10,
 
