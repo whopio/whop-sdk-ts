@@ -41,14 +41,7 @@ const mainChangesets = readdirSync(".changeset").filter((file) =>
 execSync("git checkout -");
 
 if (changesets.length > mainChangesets.length) {
-	// delete previously generated changeset
-	const changesetToDelete = changesets.filter(
-		(file) => !mainChangesets.includes(file),
-	);
-
-	for (const file of changesetToDelete) {
-		unlinkSync(`.changeset/${file}`);
-	}
+	process.exit(0);
 }
 
 // compare the two lockfiles
