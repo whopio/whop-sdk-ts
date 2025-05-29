@@ -1,0 +1,57 @@
+name: Create Changeset for renovate
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  renovate-changeset:
+    name: Release
+    runs-on: ubuntu-latest
+    if: startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'renovate/pin-dependencies')
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_WRITE_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9 # Match the version in package.json
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create Changeset
+        run: pnpm changeset-renovate
+        env:
+          SKIP_COMMIT: TRUE
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add .
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "docs: update generated documentation" -a
+          git push https://${{ secrets.GH_WRITE_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.head_ref }}
+  
