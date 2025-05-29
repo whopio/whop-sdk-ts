@@ -60,6 +60,7 @@ jobs:
             
             	for (const pr of prs) {
             		const needsUpdate = pr.mergeStateStatus === "BEHIND";
+                  console.log(JSON.stringify(pr, null, 2));
             		if (
             			needsUpdate &&
             			pr.autoMergeRequest &&
