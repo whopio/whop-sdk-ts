@@ -37,6 +37,7 @@ jobs:
         run: pnpm install
 
       - name: Create Changeset
+        id: create-changeset
         run: node scripts/renovate-changeset.mjs
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
