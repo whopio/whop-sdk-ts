@@ -28,7 +28,7 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"dotenv-cli": "^8.0.0",
-		"@whop-apps/dev-proxy": "0.0.1-canary.110",
+		"@whop-apps/dev-proxy": "0.0.1-canary.114",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}
