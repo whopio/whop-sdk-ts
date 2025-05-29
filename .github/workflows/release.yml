@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_WRITE_TOKEN }}
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v3
@@ -78,5 +80,5 @@ jobs:
         with:
           publish: pnpm turbo release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
           NPM_TOKEN: ${{ secrets.WHOP_ORG_NPM_TOKEN }}
