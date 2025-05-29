@@ -10,5 +10,5 @@
 		"@whop/checkout": "0.0.21-canary.6",
 		"@local/graphql-codegen-docs": "0.0.1"
 	},
-	"changesets": []
+	"changesets": ["mean-zebras-bathe"]
 }

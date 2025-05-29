@@ -1,6 +1,6 @@
 {
 	"name": "@whop/checkout",
-	"version": "0.0.21-canary.6",
+	"version": "0.0.21-canary.7",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
