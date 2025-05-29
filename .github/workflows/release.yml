@@ -28,6 +28,8 @@ jobs:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org/'
           scope: '@whop' # Scope needed for publishing to npm @whop organization
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -54,3 +56,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
