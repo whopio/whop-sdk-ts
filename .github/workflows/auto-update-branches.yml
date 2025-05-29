@@ -52,14 +52,15 @@ jobs:
             
             const owner = context.repo.owner;
             const name = context.repo.repo;
-            
+            const promises = [];
             let cursor = null;
             do {
             	const data = await github.graphql(query, { owner, name, cursor });
             	const prs = data.repository.pullRequests.nodes;
+
             
             	for (const pr of prs) {
-            		const needsUpdate = pr.mergeStateStatus === "BEHIND";
+            		const needsUpdate = ["BEHIND", "UNKNOWN"].includes(pr.mergeStateStatus);
                   console.log(JSON.stringify(pr, null, 2));
             		if (
             			needsUpdate &&
@@ -71,7 +72,7 @@ jobs:
             			console.log(
             				`Updating branch for PR #${pr.number} (${pr.authorAssociation}): ${pr.title}`,
             			);
-            			await github.graphql(mutation, { prId: pr.id });
+                     promises.push(github.graphql(mutation, { prId: pr.id }));
             		} else {
             			console.log(
             				`Skipping ${pr.isDraft ? "draft-" : ""}PR #${pr.number} (${pr.authorAssociation} - ${pr.autoMergeRequest ? "automerge enabled" : "automerge disabled"})`,
@@ -83,3 +84,4 @@ jobs:
             		? data.repository.pullRequests.pageInfo.endCursor
             		: null;
             } while (cursor);
+            await Promise.allSettled(promises);
