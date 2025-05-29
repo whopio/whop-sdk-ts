@@ -3,7 +3,10 @@
 	"automerge": true,
 	"automergeType": "pr",
 	"extends": ["config:recommended"],
-	"gitIgnoredAuthors": ["49736102+kodiakhq[bot]@users.noreply.github.com"],
+	"gitIgnoredAuthors": [
+		"49736102+kodiakhq[bot]@users.noreply.github.com",
+		"41898282+github-actions[bot]@users.noreply.github.com"
+	],
 	"labels": ["dependencies"],
 	"packageRules": [
 		{
