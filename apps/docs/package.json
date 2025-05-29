@@ -6,6 +6,6 @@
 	},
 	"packageManager": "pnpm@9.15.9",
 	"devDependencies": {
-		"mintlify": "4.0.556"
+		"mintlify": "4.0.559"
 	}
 }
