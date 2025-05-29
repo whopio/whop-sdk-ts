@@ -2,7 +2,7 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"automerge": true,
 	"automergeType": "pr",
-	"extends": ["config:base"],
+	"extends": ["config:recommended"],
 	"gitIgnoredAuthors": ["49736102+kodiakhq[bot]@users.noreply.github.com"],
 	"labels": ["dependencies"],
 	"packageRules": [

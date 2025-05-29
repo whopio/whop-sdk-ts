@@ -1,0 +1,24 @@
+---
+title: List Experiences
+description: Fetch a company
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listExperiences({
+	after: "pageCursor.endCursor",
+
+	first: 10,
+
+	accessPassId: "prod_XXXXXXXX",
+
+	appId: "app_XXXXXXXX",
+
+	onAccessPass: true,
+
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```

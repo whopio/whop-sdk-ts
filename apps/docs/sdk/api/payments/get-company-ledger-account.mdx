@@ -1,0 +1,14 @@
+---
+title: Get Company Ledger Account
+description: Fetch a company
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.getCompanyLedgerAccount({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```

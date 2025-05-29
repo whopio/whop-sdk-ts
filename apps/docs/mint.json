@@ -74,7 +74,7 @@
 				"features/oauth-guide",
 				"features/checkout-embed",
 				"features/websocket-guide",
-				"features/payments",
+				"features/payments-and-payouts",
 				"features/send-push-notification",
 				"features/post-to-feed",
 				"features/upload-media"
@@ -339,67 +339,60 @@
 			"group": "Resources",
 			"pages": [
 				{
-					"group": "Users",
+					"group": "Access Passes",
+					"pages": ["sdk/api/access-passes/get-access-pass"]
+				},
+				{
+					"group": "Attachments",
 					"pages": [
-						"sdk/api/get-user",
-						"sdk/api/get-current-user",
-						"sdk/api/check-if-user-has-access-to-access-pass",
-						"sdk/api/check-if-user-has-access-to-experience",
-						"sdk/api/check-if-user-has-access-to-company"
+						"sdk/api/attachments/get-attachment",
+						"sdk/api/attachments/process-attachment",
+						"sdk/api/attachments/upload-media"
 					]
+				},
+				{
+					"group": "Authentication",
+					"pages": [
+						"sdk/api/authentication/check-if-user-has-access-to-access-pass",
+						"sdk/api/authentication/check-if-user-has-access-to-company",
+						"sdk/api/authentication/check-if-user-has-access-to-experience",
+						"sdk/api/authentication/get-current-user",
+						"sdk/api/authentication/list-experiences"
+					]
+				},
+				{
+					"group": "Engagement",
+					"pages": [
+						"sdk/api/engagement/create-forum-post",
+						"sdk/api/engagement/find-or-create-chat",
+						"sdk/api/engagement/find-or-create-forum",
+						"sdk/api/engagement/list-forum-posts",
+						"sdk/api/engagement/list-messages",
+						"sdk/api/engagement/send-direct-message-to-user",
+						"sdk/api/engagement/send-message-to-chat-feed",
+						"sdk/api/engagement/send-message-to-whop-chat",
+						"sdk/api/engagement/send-notification"
+					]
+				},
+				{
+					"group": "Experiences",
+					"pages": ["sdk/api/experiences/get-experience"]
 				},
 				{
 					"group": "Payments",
 					"pages": [
-						"sdk/api/get-user-ledger-account",
-						"sdk/api/get-company-ledger-account",
-						"sdk/api/charge-user",
-						"sdk/api/transfer-funds"
-					]
-				},
-
-				{
-					"group": "Access Passes",
-					"pages": ["sdk/api/get-access-pass"]
-				},
-				{
-					"group": "Experiences",
-					"pages": ["sdk/api/get-experience", "sdk/api/list-experiences"]
-				},
-
-				{
-					"group": "Notifications",
-					"pages": ["sdk/api/send-notification"]
-				},
-				{
-					"group": "Forums",
-					"pages": [
-						"sdk/api/create-forum-post",
-						"sdk/api/find-or-create-forum",
-						"sdk/api/list-posts"
+						"sdk/api/payments/charge-user",
+						"sdk/api/payments/get-company-ledger-account",
+						"sdk/api/payments/get-user-ledger-account",
+						"sdk/api/payments/transfer-funds"
 					]
 				},
 				{
-					"group": "Chat",
-					"pages": [
-						"sdk/api/list-messages",
-						"sdk/api/send-message-to-whop-chat",
-						"sdk/api/send-message-to-chat-feed",
-						"sdk/api/send-direct-message-to-user",
-						"sdk/api/find-or-create-chat"
-					]
-				},
-				{
-					"group": "File Attachments",
-					"pages": [
-						"sdk/api/get-attachment",
-						"sdk/api/upload-media",
-						"sdk/api/process-attachment"
-					]
+					"group": "Users",
+					"pages": ["sdk/api/users/get-user"]
 				}
 			]
 		},
-
 		{
 			"group": "iFrame",
 			"pages": ["sdk/iframe-setup", "sdk/external-url", "sdk/redirect-url"]

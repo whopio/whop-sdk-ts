@@ -1,5 +1,5 @@
 {
-	"name": "whop-nextjs-example-app",
+	"name": "@local/whop-nextjs-example-app",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@vercel/functions": "^2.0.3",
-		"@whop-apps/sdk": "0.0.1-canary.113",
+		"@whop-apps/sdk": "0.0.1-canary.114",
 		"@whop/api": "workspace:*",
 		"next": "15.3.2",
 		"react": "^19.0.0",
