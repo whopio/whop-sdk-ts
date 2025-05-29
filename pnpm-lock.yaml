@@ -12,7 +12,7 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@changesets/cli':
-        specifier: ^2.29.4
+        specifier: 2.29.4
         version: 2.29.4
       lefthook:
         specifier: 1.11.13
@@ -277,7 +277,7 @@ importers:
   packages/checkout:
     devDependencies:
       '@swc/core':
-        specifier: ^1.11.29
+        specifier: 1.11.29
         version: 1.11.29
       '@types/node':
         specifier: latest
@@ -289,7 +289,7 @@ importers:
         specifier: 16.5.0
         version: 16.5.0
       serve:
-        specifier: ^14.2.4
+        specifier: 14.2.4
         version: 14.2.4
       ts-proto:
         specifier: 2.7.0
