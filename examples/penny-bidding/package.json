@@ -1,28 +1,34 @@
 {
-	"name": "@local/whop-nextjs-example-app",
+	"name": "@local/penny-bidding",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"dev": "whop-proxy --command 'next dev --turbopack'",
-		"dev:slow": "whop-proxy --command 'next dev'",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"prisma:db:push": "dotenv -e .env.local -- pnpm prisma db push",
+		"prisma:generate": "dotenv -e .env.local -- pnpm prisma generate",
+		"prisma:migrate:dev": "dotenv -e .env.local -- pnpm prisma migrate dev"
 	},
 	"dependencies": {
 		"@vercel/functions": "^2.0.3",
-		"@whop-apps/sdk": "0.0.1-canary.114",
+		"@whop-apps/dev-proxy": "0.0.1-canary.114",
+		"@whop-apps/iframe": "0.0.1-canary.114",
+		"@whop-apps/theme": "0.0.1-canary.114",
 		"@whop/api": "workspace:*",
 		"next": "15.3.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
 		"@tailwindcss/postcss": "^4",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
-		"@whop-apps/dev-proxy": "0.0.1-canary.113",
+		"dotenv-cli": "^8.0.0",
+		"@whop-apps/dev-proxy": "0.0.1-canary.110",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}

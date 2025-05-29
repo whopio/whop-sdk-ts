@@ -1,5 +1,5 @@
 {
-	"name": "whop-nextjs-app-template",
+	"name": "@local/ai-image-generator",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
