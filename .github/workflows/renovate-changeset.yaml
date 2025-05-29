@@ -36,6 +36,7 @@ jobs:
         run: pnpm changesets-renovate
         env:
           SKIP_COMMIT: TRUE
+          SKIP_BRANCH_CHECK: TRUE
 
       - name: Check for changes
         id: git-check
