@@ -63,7 +63,7 @@ jobs:
                   // await github.graphql(mutation, { prId: pr.id });
                 } else {
                   console.log(
-                    `Skipping PR #${pr.number} (${pr.authorAssociation}): ${pr.title}`
+                    `Skipping PR #${pr.number} (${pr.authorAssociation} ${pr.isDraft ? "draft" : "not draft"} - ${pr.autoMergeRequest ? "automerge" : "no automerge"})`
                   );
                 }
               }
