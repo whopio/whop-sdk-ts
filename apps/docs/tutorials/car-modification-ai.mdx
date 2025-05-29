@@ -1,11 +1,9 @@
 ---
-title: 'Car Modification AI Tutorial'
+title: 'Car Modification AI'
 description: 'Build a ChatGPT-powered car modification app and creators will be able to install it to their whops'
 ---
 
-# Build a Car Modification AI App
 
-Build a ChatGPT-powered car modification app where users can upload car images and get AI-generated modification suggestions. Creators will be able to install it to their whops.
 
 ## 1. Set up your Next.js project
 
@@ -91,41 +89,6 @@ Ensure you're developing in localhost mode for proper testing and development wo
     Save the changes and test your app installation to ensure localhost mode is working.
   </Step>
 </Steps>
-
-### Verify your setup
-
-Your development environment should now have:
-
-<CardGroup cols={2}>
-  <Card
-    title="Whop SDK Configured"
-    icon="gear"
-  >
-    Your app can authenticate with Whop and handle webhooks
-  </Card>
-  <Card
-    title="Development Server Running"
-    icon="server"
-  >
-    App accessible at http://localhost:3000 with hot reload
-  </Card>
-  <Card
-    title="Environment Variables Set"
-    icon="key"
-  >
-    Whop credentials properly configured in .env.local
-  </Card>
-  <Card
-    title="App Installed"
-    icon="check"
-  >
-    Your app is installed in your whop for testing
-  </Card>
-</CardGroup>
-
-<Tip>
-Keep your development server running as you build. The Whop development proxy will handle authentication flows and webhook forwarding automatically.
-</Tip>
 
 ## 3. Install additional dependencies
 
@@ -249,7 +212,7 @@ Our car modification app uses several focused components that work together. Let
 These components contain only the functional logic - hooks, utilities, handlers, and business logic. The UI/design elements will be covered in the pages section.
 </Note>
 
-### `components/section-wrapper.tsx`
+### `<section-wrapper>`
 
 Provides consistent section layouts and error handling throughout the app:
 
@@ -284,7 +247,7 @@ function LoadingFallback() {
 }
 ```
 
-### `components/error-boundary.tsx`
+### `<error-boundary>`
 
 Handles errors in our canvas-heavy car modification interface:
 
@@ -334,7 +297,7 @@ export function ErrorFallback({ errorMessage }: { errorMessage: string }) {
 }
 ```
 
-### `hooks/useImageUpload.ts`
+### `<useImageUpload>`
 
 Manages car image upload logic with validation and error handling:
 
@@ -400,7 +363,7 @@ export function useImageUpload(): UseImageUploadReturn {
 }
 ```
 
-### `hooks/useCanvasPainter.ts`
+### `<useCanvasPainter>`
 
 Handles canvas painting logic for selecting car areas to modify:
 
@@ -554,7 +517,7 @@ export function useCanvasPainter(): UseCanvasPainterReturn {
 }
 ```
 
-### `hooks/useCarModification.ts`
+### `<useCarModification>`
 
 Processes AI car modifications and handles forum posting:
 
@@ -663,7 +626,7 @@ export function useCarModification(): UseCarModificationReturn {
 }
 ```
 
-### `utils/imageUtils.ts`
+### `<imageUtils>`
 
 Utility functions for image processing and validation:
 
@@ -736,7 +699,7 @@ export function validateImageFile(file: File): { isValid: boolean; error?: strin
 }
 ```
 
-### `utils/canvasUtils.ts`
+### `<canvasUtils>`
 
 Canvas-specific utility functions for image manipulation:
 
