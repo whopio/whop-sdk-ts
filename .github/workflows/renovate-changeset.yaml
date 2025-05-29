@@ -10,7 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   renovate-changeset:
-    name: Release
+    name: Create Changeset for renovate
     runs-on: ubuntu-latest
     if: startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'renovate/pin-dependencies')
     steps:
