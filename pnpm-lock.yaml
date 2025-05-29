@@ -228,8 +228,8 @@ importers:
         specifier: 6.0.11
         version: 6.0.11
       js-md5:
-        specifier: 0.8.2
-        version: 0.8.2
+        specifier: 0.8.3
+        version: 0.8.3
       tiny-typed-emitter:
         specifier: 2.1.0
         version: 2.1.0
@@ -4114,8 +4114,8 @@ packages:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
 
-  js-md5@0.8.2:
-    resolution: {integrity: sha512-ebDT4s2KT3zc7qzR1k5CoR4o7ouhjPNLHZg80OOVDHCtoRgewFSH2yKbtxMMo8leFZoJKRgu2gq5Z1CCfIsA/g==}
+  js-md5@0.8.3:
+    resolution: {integrity: sha512-qR0HB5uP6wCuRMrWPTrkMaev7MJZwJuuw4fnwAzRgP4J4/F8RwtodOKpGp4XpqsLBFzzgqIO42efFAyz2Et6KQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -10798,7 +10798,7 @@ snapshots:
 
   joycon@3.1.1: {}
 
-  js-md5@0.8.2: {}
+  js-md5@0.8.3: {}
 
   js-tokens@4.0.0: {}
 
