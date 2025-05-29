@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize]
 
 jobs:
   update-automerge-prs:
@@ -72,7 +70,7 @@ jobs:
             			console.log(
             				`Updating branch for PR #${pr.number} (${pr.authorAssociation}): ${pr.title}`,
             			);
-            			// await github.graphql(mutation, { prId: pr.id });
+            			await github.graphql(mutation, { prId: pr.id });
             		} else {
             			console.log(
             				`Skipping ${pr.isDraft ? "draft-" : ""}PR #${pr.number} (${pr.authorAssociation} - ${pr.autoMergeRequest ? "automerge enabled" : "automerge disabled"})`,
