@@ -53,4 +53,4 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.WHOP_ORG_NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
