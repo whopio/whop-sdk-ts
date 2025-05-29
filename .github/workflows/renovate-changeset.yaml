@@ -12,12 +12,16 @@ jobs:
   renovate-changeset:
     name: Create Changeset for renovate
     runs-on: ubuntu-latest
-    if: startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'renovate/pin-dependencies')
+    if: startsWith(github.head_ref, 'renovate/')
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_WRITE_TOKEN }}
+          fetch-depth: 0
+
+      - name: Fetch main branch
+        run: git fetch origin main:main
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -33,9 +37,10 @@ jobs:
         run: pnpm install
 
       - name: Create Changeset
-        run: pnpm changeset-renovate
+        id: create-changeset
+        run: node scripts/renovate-changeset.mjs
         env:
-          SKIP_COMMIT: TRUE
+          PR_TITLE: ${{ github.event.pull_request.title }}
 
       - name: Check for changes
         id: git-check
