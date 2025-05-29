@@ -11,7 +11,8 @@
 		"dev:tsup": "tsup --watch",
 		"dev:serve": "serve ./dist",
 		"check-types": "tsc --noEmit",
-		"lint:fix": "biome check --write --unsafe"
+		"lint:fix": "biome check --write --unsafe",
+		"release": "changeset publish"
 	},
 	"devDependencies": {
 		"@swc/core": "^1.11.29",

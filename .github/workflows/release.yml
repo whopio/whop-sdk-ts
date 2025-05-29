@@ -15,6 +15,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -22,15 +27,28 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
           scope: '@whop' # Scope needed for publishing to npm @whop organization
 
-      - name: Install Dependencies
-        run: yarn
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9 # Match the version in package.json
+
+      - name: Checkout whop-proto repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WHOP_PROTO_GH_TOKEN }}
+          repository: whopio/whop-proto
+          sparse-checkout: |
+            protos
+          path: "protos"
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: yarn release
+          publish: pnpm turbo release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           NPM_TOKEN: ${{ secrets.WHOP_ORG_NPM_TOKEN }}

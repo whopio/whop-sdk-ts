@@ -19,6 +19,10 @@
 		"lint:fix": {
 			"cache": false,
 			"dependsOn": ["build"]
+		},
+		"release": {
+			"cache": false,
+			"dependsOn": ["build"]
 		}
 	}
 }

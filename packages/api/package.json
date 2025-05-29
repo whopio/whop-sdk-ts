@@ -45,7 +45,8 @@
 		"dev:tsup": "tsup --watch",
 		"dev:graphql": "graphql-codegen --watch",
 		"check-types": "tsc --noEmit",
-		"lint:fix": "biome check --write --unsafe"
+		"lint:fix": "biome check --write --unsafe",
+		"release": "changeset publish"
 	},
 	"dependencies": {
 		"graphql": "16.11.0",

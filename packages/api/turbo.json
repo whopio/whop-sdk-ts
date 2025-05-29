@@ -30,6 +30,10 @@
 		"check-types": {
 			"cache": false,
 			"dependsOn": ["lint:fix"]
+		},
+		"release": {
+			"cache": false,
+			"dependsOn": ["build"]
 		}
 	}
 }
