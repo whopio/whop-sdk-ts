@@ -17,7 +17,7 @@ jobs:
           github-token: ${{ secrets.GH_WRITE_TOKEN }}
           script: |
             // Authors who can run CI without the "Approve and run" button
-            const trustedAssociations = ['OWNER', 'MEMBER', 'COLLABORATOR'];
+            const trustedAssociations = ['OWNER', 'MEMBER', 'COLLABORATOR', 'CONTRIBUTOR'];
 
             const query = `
               query($owner: String!, $name: String!, $cursor: String) {
@@ -63,7 +63,7 @@ jobs:
                   // await github.graphql(mutation, { prId: pr.id });
                 } else {
                   console.log(
-                    `Skipping PR #${pr.number} (${pr.authorAssociation} ${pr.isDraft ? "draft" : "not draft"} - ${pr.autoMergeRequest ? "automerge" : "no automerge"})`
+                    `Skipping ${pr.isDraft ? "draft-" : ""}PR #${pr.number} (${pr.authorAssociation} - ${pr.autoMergeRequest ? "automerge enabled" : "automerge disabled"})`
                   );
                 }
               }
