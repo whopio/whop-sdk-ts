@@ -46,36 +46,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Detect changed packages with Changesets
-        id: changed
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { execSync } = require('child_process');
-            const fs = require('fs');
-
-            // 1. Generate a machine-readable report
-            execSync('npx changeset status --output=changeset-status.json', {stdio: 'inherit'});
-
-            // 2. Load it and build the Turbo filter string
-            const status = JSON.parse(fs.readFileSync('changeset-status.json', 'utf8'));
-            const filters = status.releases
-              .filter(r => r.type !== 'none')
-              .map(r => `--filter=${r.name}`)
-              .join(' ');
-
-            core.info(`Detected filters: ${filters || '<none>'}`);
-
-            // 3. Expose as a step output
-            core.setOutput('filters', filters);
-            core.setOutput('has-changes', status.changesets.length > 0);
-
-      - name: Build release packages
-        run: pnpm turbo build ${{ steps.changed.outputs.filters }}
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        if: steps.changed.outputs.has-changes == 'true'
         uses: changesets/action@v1
         with:
           publish: pnpm turbo release
