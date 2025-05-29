@@ -50,7 +50,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm turbo release
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
           NPM_TOKEN: ${{ secrets.WHOP_ORG_NPM_TOKEN }}
