@@ -1,0 +1,87 @@
+name: Auto-update automerge PRs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-automerge-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update automerge PR branches (trusted authors only)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_WRITE_TOKEN }}
+          script: |
+            // Authors who can run CI without the "Approve and run" button
+            const trustedAssociations = ["OWNER", "MEMBER", "COLLABORATOR"];
+            const trustedBots = [
+            	"MDM6Qm90MjkxMzk2MTQ=", // renovate
+            ];
+            
+            const query = `
+              query($owner: String!, $name: String!, $cursor: String) {
+            	 repository(owner: $owner, name: $name) {
+            		pullRequests(states: OPEN, first: 100, after: $cursor) {
+            		  pageInfo { hasNextPage endCursor }
+            		  nodes {
+            			 id
+            			 number
+            			 title
+            			 isDraft
+            			 authorAssociation
+            			 author {
+            				... on Bot {
+            				  id
+            				}
+            			 }
+            			 autoMergeRequest { enabledAt }
+            			 mergeStateStatus
+            		  }
+            		}
+            	 }
+              }`;
+            
+            const mutation = `
+              mutation($prId: ID!) {
+            	 updatePullRequestBranch(input: { pullRequestId: $prId }) {
+            		pullRequest { number }
+            	 }
+              }`;
+            
+            const owner = context.repo.owner;
+            const name = context.repo.repo;
+            const promises = [];
+            let cursor = null;
+            do {
+            	const data = await github.graphql(query, { owner, name, cursor });
+            	const prs = data.repository.pullRequests.nodes;
+
+            
+            	for (const pr of prs) {
+            		const needsUpdate = ["BEHIND", "UNKNOWN"].includes(pr.mergeStateStatus);
+                  console.log(JSON.stringify(pr, null, 2));
+            		if (
+            			needsUpdate &&
+            			pr.autoMergeRequest &&
+            			!pr.isDraft &&
+            			(trustedAssociations.includes(pr.authorAssociation) ||
+            				trustedBots.includes(pr.author.id))
+            		) {
+            			console.log(
+            				`Updating branch for PR #${pr.number} (${pr.authorAssociation}): ${pr.title}`,
+            			);
+                     promises.push(github.graphql(mutation, { prId: pr.id }));
+            		} else {
+            			console.log(
+            				`Skipping ${pr.isDraft ? "draft-" : ""}PR #${pr.number} (${pr.authorAssociation} - ${pr.autoMergeRequest ? "automerge enabled" : "automerge disabled"})`,
+            			);
+            		}
+            	}
+            
+            	cursor = data.repository.pullRequests.pageInfo.hasNextPage
+            		? data.repository.pullRequests.pageInfo.endCursor
+            		: null;
+            } while (cursor);
+            await Promise.allSettled(promises);

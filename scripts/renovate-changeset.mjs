@@ -1,7 +1,7 @@
 // @ts-check
 
 import { execSync } from "node:child_process";
-import { readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { humanId } from "human-id";
 import { parse } from "yaml";
 
