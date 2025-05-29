@@ -31,6 +31,7 @@ jobs:
                       isDraft
                       authorAssociation
                       autoMergeRequest { enabledAt }
+                      mergeStateStatus
                     }
                   }
                 }
@@ -52,7 +53,9 @@ jobs:
               const prs = data.repository.pullRequests.nodes;
 
               for (const pr of prs) {
+                const needsUpdate = pr.mergeStateStatus === 'BEHIND';
                 if (
+                  needsUpdate &&
                   pr.autoMergeRequest &&
                   !pr.isDraft &&
                   trustedAssociations.includes(pr.authorAssociation)
