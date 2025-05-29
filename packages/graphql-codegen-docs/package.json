@@ -1,5 +1,6 @@
 {
 	"name": "@local/graphql-codegen-docs",
+	"private": true,
 	"version": "0.0.1",
 	"exports": {
 		".": {

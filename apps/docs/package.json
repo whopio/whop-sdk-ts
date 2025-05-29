@@ -1,5 +1,6 @@
 {
-	"name": "developer-documentation",
+	"name": "@local/docs",
+	"private": true,
 	"version": "1.0.0",
 	"scripts": {
 		"dev": "mintlify dev"
