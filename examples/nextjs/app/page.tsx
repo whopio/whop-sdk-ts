@@ -22,14 +22,14 @@ export default function Page() {
 						<p className="text-gray-600 ml-11">
 							Go to your{" "}
 							<a
-								href="https://whop.com/dashboard"
+								href="https://whop.com/dashboard/developer/"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="text-blue-500 hover:text-blue-600 underline"
 							>
-								Whop Dashboard
+								Whop Developer Dashboard
 							</a>{" "}
-							and create a new app in the Developer section.
+							and create a new app.
 						</p>
 					</div>
 
