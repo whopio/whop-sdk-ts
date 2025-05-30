@@ -43,6 +43,5 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git pull origin ${{ github.head_ref }}
           git commit -m "docs: update generated documentation" -a
           git push https://${{ secrets.GH_WRITE_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.head_ref }}
