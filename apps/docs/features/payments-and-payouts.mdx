@@ -58,6 +58,7 @@ export default function PaymentButton({ userId, experienceId }: {
   userId: string;
   experienceId: string;
 }) {
+	
   const iframeSdk = useIframeSdk();
   const [receiptId, setReceiptId] = useState<string>();
   const [error, setError] = useState<string>();
