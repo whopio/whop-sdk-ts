@@ -45,7 +45,7 @@ export async function PUT(
 			},
 		});
 
-		await whopApi.sendNotification({
+		await whopApi.sendPushNotification({
 			input: {
 				content: prompt,
 				experienceId,

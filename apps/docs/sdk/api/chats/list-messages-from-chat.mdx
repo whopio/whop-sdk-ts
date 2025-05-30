@@ -1,0 +1,14 @@
+---
+title: List Messages From Chat
+description: Fetch feed posts for the current user
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listMessagesFromChat({
+	// The ID of the experience to fetch posts from
+	chatExperienceId: "xxxxxxxxxxx",
+});
+
+```
