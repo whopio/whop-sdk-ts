@@ -1,0 +1,3810 @@
+---
+title: Complete Interactive Places Map with 3D Globe
+description: "Build a comprehensive Mapbox-powered places management app where creators can add locations and customers can explore them on a beautiful 3D globe. Learn Whop API integration, access control, and map interaction patterns."
+---
+
+# Complete Interactive Places Map Tutorial
+
+## What You'll Build
+
+You'll create a sophisticated places management application that combines:
+- **3D Globe Visualization**: Interactive Mapbox globe with custom pin markers
+- **Whop Integration**: User authentication and role-based access control
+- **Real-time Database**: PostgreSQL with Prisma ORM for place management
+- **Admin Features**: Add/delete places with geocoding support
+- **Customer Experience**: Beautiful read-only map exploration
+- **Forum Integration**: Automatic community notifications for new places
+
+## Understanding Whop: A Quick Primer
+
+**Whop** is a platform for creators to sell digital products and experiences. Think of it like Shopify but for digital creators (courses, communities, software access, etc.).
+
+### Key Whop Concepts:
+
+1. **Experience**: A digital product/service that customers can purchase access to
+2. **Companies (Biz)**: Creator businesses that sell experiences  
+3. **Access Levels**: Different permission levels for users:
+   - `admin`: Full control (usually the creator)
+   - `customer`: Paid access to view/use the experience
+   - `no_access`: No permission to view
+
+### How This App Fits In:
+
+Your places map is an **Experience** that creators can sell. Customers pay to access the interactive map, while creators (admins) can manage the places shown on it.
+
+## 1. Set up your Next.js project
+
+Clone our Next.js app template that includes Whop authentication:
+
+```bash
+npx create-next-app@latest places-map-app -e https://github.com/whopio/whop-nextjs-app-template
+```
+
+```bash
+cd places-map-app
+```
+
+Install dependencies:
+
+<CodeGroup>
+```bash pnpm
+pnpm i
+```
+
+```bash npm
+npm i
+```
+
+```bash yarn
+yarn i
+```
+</CodeGroup>
+
+Run the app locally:
+
+<CodeGroup>
+```bash pnpm
+pnpm dev
+```
+
+```bash npm
+npm run dev
+```
+
+```bash yarn
+yarn dev
+```
+</CodeGroup>
+
+Open http://localhost:3000 and follow the setup instructions.
+
+## 2. Configure Your Whop App
+
+### Create Your Whop App
+
+1. Go to [Whop Developer Dashboard](https://developers.whop.com)
+2. Create a new app
+3. Set the redirect URL to `http://localhost:3000/api/auth/callback/whop`
+4. Copy your App ID and API Key
+
+### Environment Variables
+
+Add these to your `.env.local`:
+
+```env .env.local
+# Whop Configuration
+WHOP_APP_ID=app_your_app_id
+WHOP_API_KEY=whop_your_api_key  
+MY_USER_ID=your_whop_user_id
+
+# Database (we'll set this up next)
+DATABASE_URL="postgresql://..."
+DIRECT_URL="postgresql://..."
+
+# Mapbox (we'll get this later)
+NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token
+
+# App URL for forum post links
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+**Important**: Install your app into your Whop business and switch to localhost mode for development.
+
+## 3. Database Setup with Prisma
+
+### Create Supabase Database
+
+1. Go to [Supabase](https://supabase.com) and create a new project
+2. Copy your database password
+3. Go to Settings → Database → Connection pooling
+4. Copy both connection strings (pooled and direct)
+
+### Install Prisma
+
+<CodeGroup>
+```bash pnpm
+pnpm add prisma @prisma/client
+pnpm prisma init
+```
+
+```bash npm
+npm install prisma @prisma/client
+npx prisma init
+```
+
+```bash yarn
+yarn add prisma @prisma/client
+yarn prisma init
+```
+</CodeGroup>
+
+### Database Schema
+
+Create `prisma/schema.prisma`:
+
+```prisma prisma/schema.prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Experience {
+  id         String  @unique
+  title      String
+  webhookUrl String
+  bizName    String
+  bizId      String
+  places     Place[]
+}
+
+model Place {
+  id           String     @id @default(cuid())
+  name         String
+  description  String?
+  latitude     Float
+  longitude    Float
+  address      String?
+  category     String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experienceId String
+}
+```
+
+### Database Operations
+
+Update your `package.json` scripts:
+
+```json package.json
+{
+  "name": "whop-nextjs-app-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "whop-proxy --command 'next dev --turbopack'",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@shadcn/ui": "^0.0.4",
+    "@types/mapbox-gl": "^3.4.1",
+    "@vercel/functions": "^2.0.3",
+    "@whop-apps/sdk": "0.0.1-canary.111",
+    "@whop/api": "^0.0.21-canary.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "frosted-ui": "0.0.1-canary.73",
+    "gsap": "^3.13.0",
+    "js-md5": "^0.8.3",
+    "lucide-react": "^0.511.0",
+    "mapbox-gl": "^3.12.0",
+    "next": "15.3.2",
+    "openai": "^4.100.0",
+    "prisma": "^6.8.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-map-gl": "^8.0.4",
+    "sharp": "^0.34.2",
+    "tailwind-merge": "^3.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.17.51",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@whop-apps/dev-proxy": "latest",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.0",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531"
+}
+```
+
+Generate and push schema:
+
+<CodeGroup>
+```bash pnpm
+pnpm prisma generate
+pnpm prisma db push
+```
+
+```bash npm
+npm run prisma:generate
+npm run prisma:db:push
+```
+
+```bash yarn
+yarn prisma:generate
+yarn prisma:db:push
+```
+</CodeGroup>
+
+## 4. Whop API Integration
+
+### Understanding the Whop SDK
+
+Create `lib/whop-api.ts`:
+
+```typescript lib/whop-api.ts
+import { WhopServerSdk, makeUserTokenVerifier } from "@whop/api";
+
+export const whopApi = WhopServerSdk({
+  // Add your app api key here - this is required.
+  // You can get this from the Whop dashboard after creating an app in the "API Keys" section.
+  appApiKey: process.env.WHOP_API_KEY ?? "fallback",
+
+  // This will make api requests on behalf of this user.
+  // This is optional, however most api requests need to be made on behalf of a user.
+  // You can create an agent user for your app, and use their userId here.
+  // You can also apply a different userId later with the `withUser` function.
+  onBehalfOfUserId: process.env.MY_USER_ID,
+
+  // This is the companyId that will be used for the api requests.
+  // When making api requests that query or mutate data about a company, you need to specify the companyId.
+  // This is optional, however if not specified certain requests will fail.
+  // This can also be applied later with the `withCompany` function.
+  companyId: "biz_fsyAlxa8BZM1Ca",
+});
+
+export const verifyUserToken = makeUserTokenVerifier({
+  appId: process.env.WHOP_APP_ID ?? "fallback",
+  dontThrow: true,
+});
+```
+
+**Key Concepts:**
+
+- **App API Key**: Authenticates your app to Whop's API
+- **User Token**: Proves a specific user is making the request
+- **Experience Access**: Whop manages who can access what experiences
+
+## 5. Get Your Mapbox Token
+
+1. Go to [Mapbox](https://mapbox.com) and create a free account
+2. Navigate to your [Account page](https://account.mapbox.com/)
+3. Copy your default public token (starts with `pk.`)
+4. Add it to your `.env.local`:
+
+```env .env.local
+NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token_here
+```
+
+## 6. Configuration Files
+
+### Next.js Configuration
+
+Create `next.config.ts`:
+
+```typescript next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+	/* config options here */
+	images: {
+		remotePatterns: [{ hostname: "**" }],
+	},
+};
+
+export default nextConfig;
+```
+
+### TypeScript Configuration
+
+Create `tsconfig.json`:
+
+```json tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+### Shadcn Components Configuration
+
+Create `components.json`:
+
+```json components.json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+```
+
+### PostCSS Configuration
+
+Create `postcss.config.mjs`:
+
+```javascript postcss.config.mjs
+/** @type {import('postcss-load-config').Config} */
+const config = {
+	plugins: {
+		tailwindcss: {},
+	},
+};
+
+export default config;
+```
+
+## 7. Database Helper Functions
+
+Create `lib/prisma.ts`:
+
+```typescript lib/prisma.ts
+import { PrismaClient } from "@prisma/client";
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+```
+
+Create `lib/utils.ts`:
+
+```typescript lib/utils.ts
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+### Database Helper Functions
+
+Create `lib/helpers.ts`:
+
+```typescript lib/helpers.ts
+import { whopApi } from "./whop-api";
+import { PrismaClient } from "@prisma/client";
+import { maybeSimulateSlow } from "./timeout-test";
+
+const prisma = new PrismaClient();
+
+export async function findOrCreateExperience(experienceId: string) {
+  const whopExperience = await whopApi.getExperience({ experienceId });
+  const experienceName = whopExperience.experience.name;
+  const bizName = whopExperience.experience.company.title;
+  const bizId = whopExperience.experience.company.id;
+
+  let experience = await prisma.experience.findUnique({
+    where: { id: experienceId },
+    include: { places: true },
+  });
+  if (!experience) {
+    experience = await prisma.experience.create({
+      data: {
+        id: experienceId,
+        title: experienceName,
+        bizName,
+        bizId,
+        webhookUrl: "",
+      },
+      include: { places: true },
+    });
+    sendWhopWebhook({
+      content: "Someone installed the map places app in their whop!",
+    });
+  } else {
+    experience = await prisma.experience.update({
+      where: { id: experienceId },
+      data: { title: experienceName, bizName, bizId },
+      include: { places: true },
+    });
+  }
+  return experience;
+}
+
+export async function createPlace({
+  experienceId,
+  name,
+  description,
+  latitude,
+  longitude,
+  address,
+  category,
+}: {
+  experienceId: string;
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  address?: string;
+  category?: string;
+}) {
+  return await prisma.place.create({
+    data: {
+      experienceId,
+      name,
+      description,
+      latitude,
+      longitude,
+      address,
+      category,
+    },
+  });
+}
+
+export async function getPlaces(experienceId: string) {
+  return await prisma.place.findMany({
+    where: { experienceId },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
+export async function deletePlace(placeId: string) {
+  return await prisma.place.delete({
+    where: { id: placeId },
+  });
+}
+
+export async function updatePlace({
+  placeId,
+  name,
+  description,
+  latitude,
+  longitude,
+  address,
+  category,
+}: {
+  placeId: string;
+  name?: string;
+  description?: string;
+  latitude?: number;
+  longitude?: number;
+  address?: string;
+  category?: string;
+}) {
+  return await prisma.place.update({
+    where: { id: placeId },
+    data: {
+      ...(name !== undefined && { name }),
+      ...(description !== undefined && { description }),
+      ...(latitude !== undefined && { latitude }),
+      ...(longitude !== undefined && { longitude }),
+      ...(address !== undefined && { address }),
+      ...(category !== undefined && { category }),
+    },
+  });
+}
+
+export async function sendWhopWebhook({
+  content,
+  experienceId = "exp_QccW4l1rRJok5d",
+}: {
+  content: string;
+  experienceId?: string;
+}) {
+  const payload = {
+    content, // For simple display if the webhook supports it (Discord-style)
+  };
+
+  const experience = await prisma.experience.findUnique({
+    where: {
+      id: experienceId,
+    },
+  });
+
+  const webhookUrl =
+    experience?.webhookUrl || process.env.DEFAULT_WEBHOOK_URL || "";
+
+  // Skip webhook if no URL is configured
+  if (!webhookUrl || webhookUrl.trim() === "") {
+    console.log("No webhook URL configured, skipping webhook");
+    return;
+  }
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const responseBody = await response.text();
+      console.error(
+        `Webhook to Whop failed with status ${
+          response.status
+        }: ${responseBody}. Payload: ${JSON.stringify(payload)}`
+      );
+    }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(
+      `Error sending Whop webhook: ${errorMessage}. Payload: ${JSON.stringify(
+        payload
+      )}`
+    );
+  }
+}
+
+/**
+ * OPTIMIZED: Gets a smaller, faster-loading Mapbox Static image
+ */
+export async function getMapboxStaticImage(lat: number, lng: number, name: string): Promise<string | null> {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  if (!mapboxToken) {
+    console.warn("No Mapbox token configured");
+    return null;
+  }
+
+  try {
+    // OPTIMIZATION: Smaller image size (300x200 instead of 600x400@2x)
+    // OPTIMIZATION: Single resolution (no @2x) for faster download
+    const staticImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
+      `pin-s-marker+dc2626(${lng},${lat})/` + // Red pin marker
+      `${lng},${lat},12,0/` + // OPTIMIZATION: Lower zoom (12 instead of 14)
+      `300x200?` + // OPTIMIZATION: Smaller size for faster loading
+      `access_token=${mapboxToken}`;
+
+    return staticImageUrl;
+  } catch (error) {
+    console.error("Error generating Mapbox Static image URL:", error);
+    return null;
+  }
+}
+
+/**
+ * OPTIMIZED: Faster image upload with aggressive timeout controls for Vercel
+ */
+export async function uploadImageToWhop(imageUrl: string, userId: string, bizId: string): Promise<string | null> {
+  const startTime = Date.now();
+  console.log(`⬆️ === IMAGE UPLOAD START ===`);
+  console.log(`🔗 Image URL: ${imageUrl.substring(0, 80)}...`);
+  
+  try {
+    // OPTIMIZATION: Much more aggressive timeout limits for Vercel
+    const FETCH_TIMEOUT = 5000; // 5 seconds for image fetch (was 10s)
+    const UPLOAD_TIMEOUT = 8000; // 8 seconds for upload (was 15s)
+    
+    console.log(`⚙️ Timeouts: Fetch=${FETCH_TIMEOUT}ms, Upload=${UPLOAD_TIMEOUT}ms`);
+    
+    // Step A: Fetch image from Mapbox
+    const fetchStart = Date.now();
+    console.log(`📥 Step A: Fetching image from Mapbox...`);
+    
+    // OPTIMIZATION: Fetch with very aggressive timeout control
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+    
+    const imageResponse = await maybeSimulateSlow(
+      () => fetch(imageUrl, { 
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; WhopApp/1.0)',
+        }
+      }),
+      8000, // 8 second delay in simulation mode
+      "Mapbox image fetch"
+    );
+
+    clearTimeout(timeoutId);
+    const fetchDuration = Date.now() - fetchStart;
+
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+    }
+
+    console.log(`✅ Step A completed in ${fetchDuration}ms - Status: ${imageResponse.status}`);
+
+    // Step B: Convert to blob
+    const blobStart = Date.now();
+    console.log(`🔄 Step B: Converting response to blob...`);
+    
+    const imageBlob = await imageResponse.blob();
+    const blobDuration = Date.now() - blobStart;
+    
+    console.log(`✅ Step B completed in ${blobDuration}ms - Size: ${imageBlob.size} bytes`);
+    
+    // Step C: Size check
+    const sizeCheckStart = Date.now();
+    console.log(`🔍 Step C: Checking file size...`);
+    
+    // OPTIMIZATION: Skip upload if image is too large (>300KB for faster processing)
+    if (imageBlob.size > 300000) {
+      const sizeCheckDuration = Date.now() - sizeCheckStart;
+      console.warn(`⚠️ Step C completed in ${sizeCheckDuration}ms - Image too large (${imageBlob.size} bytes), skipping upload`);
+      return null;
+    }
+    
+    const sizeCheckDuration = Date.now() - sizeCheckStart;
+    console.log(`✅ Step C completed in ${sizeCheckDuration}ms - Size OK (${imageBlob.size} bytes)`);
+    
+    // Step D: Upload to Whop
+    const uploadStart = Date.now();
+    console.log(`🚀 Step D: Uploading to Whop via API route...`);
+    
+    // OPTIMIZATION: Upload with aggressive timeout control
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const uploadController = new AbortController();
+    const uploadTimeoutId = setTimeout(() => uploadController.abort(), UPLOAD_TIMEOUT);
+    
+    const uploadResponse = await Promise.race([
+      fetch(`${baseUrl}/api/upload`, {
+        method: 'POST',
+        body: imageBlob,
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'x-user-id': userId,
+          'x-biz-id': bizId,
+        },
+        signal: uploadController.signal,
+      }),
+      new Promise<Response>((_, reject) => 
+        setTimeout(() => reject(new Error('Upload timeout')), UPLOAD_TIMEOUT)
+      )
+    ]);
+
+    clearTimeout(uploadTimeoutId);
+    const uploadDuration = Date.now() - uploadStart;
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      throw new Error(`Upload API failed: ${uploadResponse.status} - ${errorText}`);
+    }
+
+    console.log(`✅ Step D completed in ${uploadDuration}ms - Upload response: ${uploadResponse.status}`);
+
+    // Step E: Parse response
+    const parseStart = Date.now();
+    console.log(`📋 Step E: Parsing upload response...`);
+    
+    const uploadResult = await uploadResponse.json();
+    const parseDuration = Date.now() - parseStart;
+    const totalDuration = Date.now() - startTime;
+
+    if (uploadResult.success && uploadResult.attachmentId) {
+      console.log(`✅ Step E completed in ${parseDuration}ms - Success!`);
+      console.log(`🎯 === IMAGE UPLOAD COMPLETE ===`);
+      console.log(`⏱️ TOTAL TIME: ${totalDuration}ms`);
+      console.log(`📊 BREAKDOWN:`);
+      console.log(`   - Step A (Fetch): ${fetchDuration}ms`);
+      console.log(`   - Step B (Blob): ${blobDuration}ms`);
+      console.log(`   - Step C (Size check): ${sizeCheckDuration}ms`);
+      console.log(`   - Step D (Upload): ${uploadDuration}ms`);
+      console.log(`   - Step E (Parse): ${parseDuration}ms`);
+      console.log(`📎 Attachment ID: ${uploadResult.attachmentId}`);
+      return uploadResult.attachmentId;
+    } else {
+      console.error(`❌ Step E completed in ${parseDuration}ms - Upload result missing attachmentId:`, uploadResult);
+      return null;
+    }
+  } catch (error) {
+    const totalDuration = Date.now() - startTime;
+    console.error(`❌ Image upload failed after ${totalDuration}ms:`, error);
+    
+    // OPTIMIZATION: Log specific error types for debugging
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        console.error("⚠️ Image upload aborted due to timeout");
+      } else if (error.message.includes('fetch')) {
+        console.error("⚠️ Network error during image fetch");
+      } else if (error.message.includes('timeout')) {
+        console.error("⚠️ Timeout during image processing");
+      }
+    }
+    
+    return null;
+  }
+}
+
+/**
+ * Timeout wrapper for any async operation
+ */
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, operation: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`${operation} timed out after ${timeoutMs}ms`)), timeoutMs)
+    )
+  ]);
+}
+
+/**
+ * Resilient Whop API call wrapper
+ */
+async function resilientWhopCall<T>(
+  apiCall: () => Promise<T>, 
+  operation: string, 
+  timeoutMs: number = 3000
+): Promise<T | null> {
+  try {
+    console.log(`🔄 Attempting ${operation} (timeout: ${timeoutMs}ms)...`);
+    const result = await withTimeout(apiCall(), timeoutMs, operation);
+    console.log(`✅ ${operation} succeeded`);
+    return result;
+  } catch (error) {
+    console.error(`❌ ${operation} failed:`, error);
+    return null;
+  }
+}
+
+/**
+ * OPTIMIZED: Creates forum post with optional pre-uploaded attachment
+ * This version accepts an attachment that was already uploaded from the client
+ */
+export async function createPlaceAnnouncementPostWithAttachment({
+  experienceId,
+  placeName,
+  placeDescription,
+  latitude,
+  longitude,
+  address,
+  category,
+  attachmentId,
+}: {
+  experienceId: string;
+  placeName: string;
+  placeDescription?: string;
+  latitude: number;
+  longitude: number;
+  address?: string;
+  category?: string;
+  attachmentId: string;
+}) {
+  const startTime = Date.now();
+  console.log(`🚀 === FORUM POST CREATION START for "${placeName}" (with attachment: true) ===`);
+
+  try {
+    // Step 1: Get experience details with timeout
+    const step1Start = Date.now();
+    console.log(`📋 Step 1: Getting experience details...`);
+    
+    const whopExperience = await resilientWhopCall(
+      () => whopApi.getExperience({ experienceId }),
+      "getExperience",
+      3000 // 3 second timeout
+    );
+
+    if (!whopExperience) {
+      console.error(`❌ Step 1 failed - Cannot get experience details, skipping forum post`);
+      return { success: false, reason: "Experience details timeout" };
+    }
+
+    const step1Duration = Date.now() - step1Start;
+    console.log(`✅ Step 1 completed in ${step1Duration}ms - Experience: ${whopExperience.experience?.name || 'Unknown'}`);
+
+    // Step 2: Generate map URL
+    const step2Start = Date.now();
+    console.log(`🔗 Step 2: Generating map URL...`);
+    
+    const mapUrl = `${process.env.NEXT_PUBLIC_APP_URL}/experiences/${experienceId}`;
+    const step2Duration = Date.now() - step2Start;
+    console.log(`✅ Step 2 completed in ${step2Duration}ms - URL: ${mapUrl}`);
+
+    // Step 3: Create forum post content
+    const step3Start = Date.now();
+    console.log(`📝 Step 3: Creating forum post content...`);
+    
+    const content = `📍 **New Place Added: ${placeName}**
+
+A new place has been added to the map! 🗺️
+${placeDescription ? `\n**Description:** ${placeDescription}` : ''}
+${address ? `\n**Address:** ${address}` : ''}
+${category ? `\n**Category:** ${category}` : ''}
+
+🔗 **[View on Map](${mapUrl})**
+
+Click the link above to explore this location and all other places on our interactive map!`;
+
+    const step3Duration = Date.now() - step3Start;
+    console.log(`✅ Step 3 completed in ${step3Duration}ms - Content prepared (${content.length} chars)`);
+
+    // Step 4: Get bizId and create/find forum
+    const step4Start = Date.now();
+    console.log(`🏛️ Step 4: Creating/finding Places Forum...`);
+    
+    const bizId = whopExperience.experience?.company.id;
+    if (!bizId) {
+      console.error(`❌ Step 4 failed - No bizId found`);
+      return { success: false, reason: "No bizId found" };
+    }
+
+    // Use the same pattern as the working code
+    let forumId: string | null = null;
+    try {
+      const forumResult = await resilientWhopCall(
+        () => whopApi
+          .withCompany(bizId)
+          .findOrCreateForum({
+            input: {
+              experienceId: experienceId,
+              name: "Places Forum",
+              whoCanPost: "everyone",
+            },
+          }),
+        "findOrCreateForum",
+        5000
+      );
+      
+      forumId = forumResult?.createForum?.id || experienceId;
+    } catch (error) {
+      console.log(`⚠️ Forum creation attempt failed, using experienceId as fallback...`);
+      forumId = experienceId;
+    }
+
+    if (!forumId) {
+      console.error(`❌ Step 4 failed - Cannot create/find forum`);
+      return { success: false, reason: "Forum creation timeout" };
+    }
+
+    const step4Duration = Date.now() - step4Start;
+    console.log(`✅ Step 4 completed in ${step4Duration}ms - Forum ready: ${forumId}`);
+
+    // Step 5: Prepare forum post input
+    const step5Start = Date.now();
+    console.log(`🛠️ Step 5: Preparing forum post input...`);
+    console.log(`📎 Including pre-uploaded attachment: ${attachmentId}`);
+    
+    const forumPostInput = {
+      forumExperienceId: forumId,
+      title: `📍 New Place Added: ${placeName}`,
+      content,
+      isMention: true,
+      attachments: [
+        {
+          directUploadId: attachmentId,
+        },
+      ],
+    };
+
+    const step5Duration = Date.now() - step5Start;
+    console.log(`✅ Step 5 completed in ${step5Duration}ms - Post input prepared`);
+
+    // Step 6: Create forum post with timeout
+    const step6Start = Date.now();
+    console.log(`📤 Step 6: Creating forum post...`);
+    
+    const postResult = await resilientWhopCall(
+      () => whopApi
+        .withCompany(bizId)
+        .createForumPost({
+          input: forumPostInput,
+        }),
+      "createForumPost",
+      5000
+    );
+
+    if (!postResult?.createForumPost?.id) {
+      console.error(`❌ Step 6 failed - Forum post creation timeout or no ID returned`);
+      return { success: false, reason: "Forum post creation timeout" };
+    }
+
+    const step6Duration = Date.now() - step6Start;
+    const totalDuration = Date.now() - startTime;
+
+    console.log(`✅ Step 6 completed in ${step6Duration}ms - Forum post created!`);
+    console.log(`📝 Post ID: ${postResult.createForumPost.id}`);
+    console.log(`📸 With pre-uploaded attachment: ${attachmentId}`);
+    console.log(`🎯 === FORUM POST CREATION COMPLETE ===`);
+    console.log(`⏱️ TOTAL TIME: ${totalDuration}ms`);
+    console.log(`📊 BREAKDOWN:`);
+    console.log(`   - Step 1 (Experience): ${step1Duration}ms`);
+    console.log(`   - Step 2 (URL): ${step2Duration}ms`);
+    console.log(`   - Step 3 (Content): ${step3Duration}ms`);
+    console.log(`   - Step 4 (Forum): ${step4Duration}ms`);
+    console.log(`   - Step 5 (Prepare): ${step5Duration}ms`);
+    console.log(`   - Step 6 (Post): ${step6Duration}ms`);
+
+    return { 
+      success: true, 
+      postId: postResult.createForumPost.id, 
+      duration: totalDuration,
+      attachmentId 
+    };
+
+  } catch (error) {
+    const totalDuration = Date.now() - startTime;
+    console.error(`❌ Forum post creation failed after ${totalDuration}ms:`, error);
+    return { 
+      success: false, 
+      reason: error instanceof Error ? error.message : "Unknown error",
+      duration: totalDuration 
+    };
+  }
+}
+```
+
+## 8. Timeout Testing Utilities
+
+Create `lib/timeout-test.ts`:
+
+```typescript lib/timeout-test.ts
+/**
+ * Timeout testing utilities for development
+ * These help simulate Vercel's timeout behavior locally
+ */
+
+// Global flag to enable/disable timeout simulation
+const SIMULATE_SLOW = process.env.NODE_ENV === 'development' && process.env.SIMULATE_SLOW === 'true';
+
+/**
+ * Conditionally adds delay to async operations for testing timeout behavior
+ */
+export async function maybeSimulateSlow<T>(
+  operation: () => Promise<T>,
+  delayMs: number = 5000,
+  operationName: string = "operation"
+): Promise<T> {
+  if (SIMULATE_SLOW) {
+    console.log(`🐌 SIMULATING SLOW ${operationName} (${delayMs}ms delay)...`);
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  }
+  
+  return await operation();
+}
+
+/**
+ * Simulates a timeout error for testing
+ */
+export function simulateTimeout(operationName: string): never {
+  throw new Error(`Simulated timeout for ${operationName}`);
+}
+
+/**
+ * Wraps an operation with timeout simulation
+ */
+export async function withSimulatedTimeout<T>(
+  operation: () => Promise<T>,
+  timeoutMs: number,
+  operationName: string
+): Promise<T> {
+  if (SIMULATE_SLOW) {
+    console.log(`⏰ SIMULATING TIMEOUT for ${operationName} (${timeoutMs}ms)`);
+    return new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`Simulated timeout: ${operationName} exceeded ${timeoutMs}ms`));
+      }, timeoutMs);
+    });
+  }
+  
+  return await operation();
+}
+```
+
+Create `lib/timeout-simulator.ts`:
+
+```typescript lib/timeout-simulator.ts
+/**
+ * Advanced timeout simulation for Vercel deployment testing
+ * This helps test how the app behaves under Vercel's 30-second timeout limit
+ */
+
+interface TimeoutConfig {
+  timeoutMs: number;
+  warningMs?: number;
+  progressInterval?: number;
+}
+
+/**
+ * Wraps an API handler with timeout simulation and monitoring
+ */
+export function withAdvancedTimeout<T extends (...args: any[]) => Promise<any>>(
+  handler: T,
+  config: TimeoutConfig
+): T {
+  return (async (...args: any[]) => {
+    const startTime = Date.now();
+    const { timeoutMs, warningMs = timeoutMs * 0.8, progressInterval = 5000 } = config;
+    
+    console.log(`⏱️ === TIMEOUT MONITOR START ===`);
+    console.log(`🎯 Timeout limit: ${timeoutMs}ms`);
+    console.log(`⚠️ Warning threshold: ${warningMs}ms`);
+    console.log(`📊 Progress interval: ${progressInterval}ms`);
+    
+    // Set up progress monitoring
+    const progressTimer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const remaining = timeoutMs - elapsed;
+      const percentage = (elapsed / timeoutMs) * 100;
+      
+      console.log(`📊 Progress: ${elapsed}ms elapsed (${percentage.toFixed(1)}%), ${remaining}ms remaining`);
+      
+      if (elapsed > warningMs) {
+        console.warn(`⚠️ WARNING: Approaching timeout limit! ${remaining}ms remaining`);
+      }
+    }, progressInterval);
+    
+    // Set up timeout warning
+    const warningTimer = setTimeout(() => {
+      console.warn(`⚠️ === TIMEOUT WARNING ===`);
+      console.warn(`🚨 Operation has exceeded ${warningMs}ms`);
+      console.warn(`⏰ ${timeoutMs - warningMs}ms remaining before timeout`);
+    }, warningMs);
+    
+    // Set up actual timeout
+    const timeoutTimer = setTimeout(() => {
+      console.error(`❌ === TIMEOUT EXCEEDED ===`);
+      console.error(`💥 Operation exceeded ${timeoutMs}ms limit`);
+      console.error(`🔄 This simulates Vercel's timeout behavior`);
+    }, timeoutMs);
+    
+    try {
+      // Execute the actual handler
+      const result = await handler(...args);
+      
+      const duration = Date.now() - startTime;
+      console.log(`✅ === OPERATION COMPLETED ===`);
+      console.log(`⏱️ Total duration: ${duration}ms`);
+      console.log(`📊 Performance: ${((duration / timeoutMs) * 100).toFixed(1)}% of timeout limit used`);
+      
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      console.error(`❌ === OPERATION FAILED ===`);
+      console.error(`⏱️ Failed after: ${duration}ms`);
+      console.error(`💥 Error:`, error);
+      throw error;
+    } finally {
+      // Clean up timers
+      clearInterval(progressTimer);
+      clearTimeout(warningTimer);
+      clearTimeout(timeoutTimer);
+    }
+  }) as T;
+}
+
+/**
+ * Simulates network delays for testing
+ */
+export async function simulateNetworkDelay(
+  operation: string,
+  minMs: number = 1000,
+  maxMs: number = 5000
+): Promise<void> {
+  if (process.env.NODE_ENV === 'development' && process.env.SIMULATE_NETWORK_DELAY === 'true') {
+    const delay = Math.random() * (maxMs - minMs) + minMs;
+    console.log(`🌐 Simulating network delay for ${operation}: ${delay.toFixed(0)}ms`);
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
+}
+
+/**
+ * Monitors memory usage during operations
+ */
+export function logMemoryUsage(operation: string): void {
+  if (typeof process !== 'undefined' && process.memoryUsage) {
+    const usage = process.memoryUsage();
+    console.log(`🧠 Memory usage for ${operation}:`);
+    console.log(`   - RSS: ${(usage.rss / 1024 / 1024).toFixed(2)} MB`);
+    console.log(`   - Heap Used: ${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`);
+    console.log(`   - Heap Total: ${(usage.heapTotal / 1024 / 1024).toFixed(2)} MB`);
+    console.log(`   - External: ${(usage.external / 1024 / 1024).toFixed(2)} MB`);
+  }
+}
+```
+
+## 9. App Layout and Styling
+
+### Root Layout
+
+Create `app/layout.tsx`:
+
+```typescript app/layout.tsx
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { Theme } from "frosted-ui";
+import { WhopThemeProvider } from "@whop-apps/sdk";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Whop App",
+  description: "My Whop App",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`  ${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <WhopThemeProvider>
+          <div className="flex flex-col h-screen">
+            <div className="flex-1">{children}</div>
+          </div>
+        </WhopThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Global Styles
+
+Create `app/globals.css`:
+
+```css app/globals.css
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+	--radius: 0.625rem;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.141 0.005 285.823);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.141 0.005 285.823);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.141 0.005 285.823);
+	--primary: oklch(0.21 0.006 285.885);
+	--primary-foreground: oklch(0.985 0 0);
+	--secondary: oklch(0.967 0.001 286.375);
+	--secondary-foreground: oklch(0.21 0.006 285.885);
+	--muted: oklch(0.967 0.001 286.375);
+	--muted-foreground: oklch(0.552 0.016 285.938);
+	--accent: oklch(0.967 0.001 286.375);
+	--accent-foreground: oklch(0.21 0.006 285.885);
+	--destructive: oklch(0.577 0.245 27.325);
+	--border: oklch(0.92 0.004 286.32);
+	--input: oklch(0.92 0.004 286.32);
+	--ring: oklch(0.705 0.015 286.067);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: oklch(0.985 0 0);
+	--sidebar-foreground: oklch(0.141 0.005 285.823);
+	--sidebar-primary: oklch(0.21 0.006 285.885);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.967 0.001 286.375);
+	--sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+	--sidebar-border: oklch(0.92 0.004 286.32);
+	--sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.dark {
+	--background: oklch(0.141 0.005 285.823);
+	--foreground: oklch(0.985 0 0);
+	--card: oklch(0.21 0.006 285.885);
+	--card-foreground: oklch(0.985 0 0);
+	--popover: oklch(0.21 0.006 285.885);
+	--popover-foreground: oklch(0.985 0 0);
+	--primary: oklch(0.92 0.004 286.32);
+	--primary-foreground: oklch(0.21 0.006 285.885);
+	--secondary: oklch(0.274 0.006 286.033);
+	--secondary-foreground: oklch(0.985 0 0);
+	--muted: oklch(0.274 0.006 286.033);
+	--muted-foreground: oklch(0.705 0.015 286.067);
+	--accent: oklch(0.274 0.006 286.033);
+	--accent-foreground: oklch(0.985 0 0);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.552 0.016 285.938);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: oklch(0.21 0.006 285.885);
+	--sidebar-foreground: oklch(0.985 0 0);
+	--sidebar-primary: oklch(0.488 0.243 264.376);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.274 0.006 286.033);
+	--sidebar-accent-foreground: oklch(0.985 0 0);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+```
+
+## 10. Main Experience Page
+
+Create `app/experiences/[experienceId]/page.tsx`:
+
+```typescript app/experiences/[experienceId]/page.tsx
+import { findOrCreateExperience } from "@/lib/helpers";
+import { headers } from "next/headers";
+import { whopApi, verifyUserToken } from "@/lib/whop-api";
+import MapView from "@/components/MapView";
+
+interface PageProps {
+  params: Promise<{ experienceId: string }>;
+}
+
+export default async function ExperiencePage({ params }: PageProps) {
+  const { experienceId } = await params;
+  const headersList = await headers();
+  const userToken = await verifyUserToken(headersList);
+
+  if (!userToken) {
+    return <div>Please log in to access this experience.</div>;
+  }
+
+  const experience = await findOrCreateExperience(experienceId);
+
+  const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+    userId: userToken.userId,
+    experienceId: experienceId,
+  });
+
+  if (!hasAccess.hasAccessToExperience.hasAccess) {
+    return <div>You don't have access to this experience.</div>;
+  }
+
+  return (
+    <div className="flex flex-col h-screen relative">
+      {/* Compact info card in top-left corner */}
+      <div className="absolute top-4 left-4 z-10 bg-white/95 backdrop-blur-md border border-white/20 rounded-lg px-3 py-2 shadow-lg max-w-xs">
+        <h1 className="text-sm font-semibold text-gray-900 truncate">{experience.title}</h1>
+        <p className="text-xs text-gray-600">
+          {hasAccess.hasAccessToExperience.accessLevel === "admin" 
+            ? "Admin access"
+            : "View Places"}
+        </p>
+      </div>
+
+      <div className="flex-1">
+        <MapView
+          places={experience.places || []}
+          accessLevel={hasAccess.hasAccessToExperience.accessLevel as "admin" | "customer" | "no_access"}
+          experienceId={experienceId}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## 11. TypeScript Definitions
+
+Create `components/map/types.ts`:
+
+```typescript components/map/types.ts
+export interface Place {
+  id: string;
+  name: string;
+  description: string | null;
+  latitude: number;
+  longitude: number;
+  address: string | null;
+  category: string | null;
+  experienceId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MapViewProps {
+  places: Place[];
+  accessLevel: "admin" | "customer" | "no_access";
+  experienceId: string;
+}
+
+export interface NewPlacePosition {
+  lng: number;
+  lat: number;
+}
+
+export interface GeocodingResult {
+  lng: number;
+  lat: number;
+  fullAddress: string;
+}
+
+declare global {
+  interface Window {
+    deletePlace: (placeId: string) => Promise<void>;
+  }
+}
+```
+
+## 12. Map Utilities
+
+Create `components/map/utils.ts`:
+
+```typescript components/map/utils.ts
+import type { GeocodingResult } from './types';
+
+/**
+ * Converts an address string into GPS coordinates using Mapbox Geocoding API
+ * This allows users to add places by typing an address instead of clicking
+ */
+export const geocodeAddress = async (address: string): Promise<GeocodingResult | null> => {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  if (!mapboxToken) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxToken}&limit=1`
+    );
+    
+    const data = await response.json();
+    
+    if (data.features && data.features.length > 0) {
+      const feature = data.features[0];
+      return {
+        lng: feature.center[0],
+        lat: feature.center[1],
+        fullAddress: feature.place_name,
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Geocoding error:', error);
+    return null;
+  }
+};
+
+/**
+ * Checks if a point is currently visible in the map viewport
+ * Useful for optimizing marker rendering
+ */
+export const isPointVisible = (map: any, point: [number, number]): boolean => {
+  const bounds = map.getBounds();
+  return bounds.contains(point);
+};
+```
+
+## 13. Map Styling
+
+Create `components/map/styles.ts`:
+
+```typescript components/map/styles.ts
+// Main map container styling for 3D globe effect
+export const mapStyles = `
+  .mapboxgl-map {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgb(12, 12, 35) !important; /* Space-like background */
+  }
+  
+  .mapboxgl-canvas {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    outline: none !important;
+    /* Subtle color adjustments for better visual appeal */
+    filter: brightness(0.9) contrast(1.05) saturate(0.95) !important;
+  }
+  
+  /* Hide default Mapbox controls - we'll create custom ones */
+  .mapboxgl-control-container {
+    display: none !important;
+  }
+  
+  /* Custom popup styling for place details */
+  .place-popup {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    z-index: 999 !important;
+    pointer-events: auto !important;
+  }
+  
+  .place-popup .mapboxgl-popup-content {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Remove default popup arrow */
+  .place-popup .mapboxgl-popup-tip {
+    display: none !important;
+  }
+  
+  /* Place information display */
+  .place-info {
+    padding: 16px;
+    min-width: 200px;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .place-info h3 {
+    margin: 0 0 8px 0;
+    color: #1a1a1a;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  
+  .place-info .place-description {
+    margin: 0 0 8px 0;
+    color: #666;
+    font-size: 13px;
+  }
+  
+  .place-info .place-category {
+    margin: 0 0 4px 0;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .place-info .place-location {
+    margin: 0 0 12px 0;
+    color: #999;
+    font-size: 12px;
+  }
+  
+  /* Delete button for admin users */
+  .delete-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    width: 100%;
+    transition: background 0.2s ease;
+    pointer-events: auto;
+  }
+  
+  .delete-btn:hover {
+    background: #b91c1c;
+  }
+  
+  /* Custom marker pin styling */
+  .custom-marker {
+    width: 24px;
+    height: 30px;
+    cursor: pointer;
+  }
+  
+  .custom-marker:hover {
+    opacity: 0.8;
+  }
+`;
+
+// Control panel styling for admin place management
+export const controlPanelStyles = `
+  .places-controls {
+    position: absolute !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    z-index: 1 !important;
+    width: 240px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .control-button {
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    font-weight: 500 !important;
+    color: #1a1a1a !important;
+    font-size: 12px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .control-button:hover {
+    background: #f8f8f8 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .control-button.active {
+    background: #f0f0f0 !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #000 !important;
+  }
+  
+  .control-input {
+    width: 100% !important;
+    padding: 6px 8px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 4px !important;
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+    background: white !important;
+    box-sizing: border-box !important;
+  }
+  
+  .control-input::placeholder {
+    color: #999 !important;
+  }
+  
+  .control-status {
+    font-size: 10px !important;
+    color: #10b981 !important;
+    margin-bottom: 8px !important;
+    text-align: center !important;
+  }
+  
+  .control-actions {
+    display: flex !important;
+    gap: 6px !important;
+    margin-top: 6px !important;
+  }
+  
+  .places-list-container {
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    margin-top: 8px !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding-top: 8px !important;
+  }
+  
+  .place-item {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 4px !important;
+    padding: 6px 8px !important;
+    margin-bottom: 4px !important;
+    font-size: 11px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .place-item:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .place-item-name {
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .place-item-details {
+    color: #666 !important;
+    font-size: 10px !important;
+  }
+  
+  .error-message {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+    padding: 6px 8px !important;
+    border-radius: 4px !important;
+    font-size: 10px !important;
+    margin-bottom: 6px !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  }
+  
+  .success-message {
+    background: rgba(34, 197, 94, 0.1) !important;
+    color: #16a34a !important;
+    padding: 6px 8px !important;
+    border-radius: 4px !important;
+    font-size: 10px !important;
+    margin-bottom: 6px !important;
+    border: 1px solid rgba(34, 197, 94, 0.2) !important;
+  }
+  
+  .loading-spinner {
+    display: inline-block !important;
+    width: 12px !important;
+    height: 12px !important;
+    border: 2px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 50% !important;
+    border-top-color: #1a1a1a !important;
+    animation: spin 1s ease-in-out infinite !important;
+    margin-right: 6px !important;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+`;
+```
+
+## 14. UI Components
+
+### Button Component
+
+Create `components/ui/button.tsx`:
+
+```typescript components/ui/button.tsx
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+```
+
+## 15. Main MapView Component
+
+Create `components/MapView.tsx`:
+
+```typescript components/MapView.tsx
+"use client";
+
+import { useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import type { MapViewProps, NewPlacePosition } from './map/types';
+import MapContainer from './map/MapContainer';
+import PlaceControlPanel from './map/PlaceControlPanel';
+import PlacesList from './map/PlacesList';
+
+// Create proper SVG pin marker
+const createPinMarker = (color = '#dc2626') => {
+  const markerEl = document.createElement('div');
+  markerEl.innerHTML = `
+    <svg width="24" height="30" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.372 0 0 5.372 0 12C0 18.628 12 30 12 30S24 18.628 24 12C24 5.372 18.628 0 12 0Z" fill="${color}"/>
+      <circle cx="12" cy="12" r="4" fill="white"/>
+    </svg>
+  `;
+  markerEl.style.cursor = 'pointer';
+  markerEl.style.width = '24px';
+  markerEl.style.height = '30px';
+  markerEl.style.display = 'block';
+  markerEl.style.border = 'none';
+  markerEl.style.borderRadius = '0';
+  markerEl.style.padding = '0';
+  return markerEl;
+};
+
+export default function MapView({
+  places,
+  accessLevel,
+  experienceId,
+}: MapViewProps) {
+  const [isAddingPlace, setIsAddingPlace] = useState(false);
+  const [newPlacePosition, setNewPlacePosition] = useState<NewPlacePosition | null>(null);
+  const newMarkerRef = useRef<mapboxgl.Marker | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+
+  const updateNewMarker = (lng: number, lat: number) => {
+    if (!mapRef.current) return;
+    
+    // Remove existing new marker
+    if (newMarkerRef.current) {
+      newMarkerRef.current.remove();
+    }
+    
+    // Create new marker element with proper green pin
+    const markerEl = createPinMarker('#10b981'); // Green color for new place
+    
+    // Add new marker with proper anchor
+    newMarkerRef.current = new mapboxgl.Marker({ 
+      element: markerEl,
+      anchor: 'bottom'
+    })
+      .setLngLat([lng, lat])
+      .addTo(mapRef.current);
+  };
+
+  const handleDeletePlace = async (placeId: string) => {
+    if (!confirm("Are you sure you want to delete this place?")) return;
+
+    try {
+      const response = await fetch(
+        `/api/experiences/${experienceId}/places/${placeId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete place");
+      }
+
+      // Refresh the page to remove the deleted place
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting place:", error);
+    }
+  };
+
+  const handleMapReady = (map: mapboxgl.Map) => {
+    mapRef.current = map;
+  };
+
+  if (accessLevel === "no_access") {
+    return (
+      <div className="flex items-center justify-center h-64 text-gray-400 bg-[rgb(12,12,35)]">
+        You don't have access to view this map.
+      </div>
+    );
+  }
+
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  
+  if (!mapboxToken) {
+    return (
+      <PlacesList 
+        places={places}
+        accessLevel={accessLevel}
+        onDeletePlace={handleDeletePlace}
+      />
+    );
+  }
+
+  return (
+    <div className="w-full h-full relative overflow-hidden">
+      <MapContainer
+        places={places}
+        accessLevel={accessLevel}
+        experienceId={experienceId}
+        isAddingPlace={isAddingPlace}
+        newPlacePosition={newPlacePosition}
+        setNewPlacePosition={setNewPlacePosition}
+        updateNewMarker={updateNewMarker}
+        onDeletePlace={handleDeletePlace}
+        onMapReady={handleMapReady}
+      />
+      
+      {/* Control panel - show for all users, but functionality varies by access level */}
+      <PlaceControlPanel
+        experienceId={experienceId}
+        accessLevel={accessLevel}
+        isAddingPlace={isAddingPlace}
+        setIsAddingPlace={setIsAddingPlace}
+        newPlacePosition={newPlacePosition}
+        setNewPlacePosition={setNewPlacePosition}
+        updateNewMarker={updateNewMarker}
+        map={mapRef.current}
+      />
+    </div>
+  );
+}
+```
+
+**Key Design Decisions:**
+
+1. **Conditional Rendering**: Different UI for admin vs customer users
+2. **Graceful Degradation**: Falls back to list view if Mapbox token missing
+3. **State Management**: Local state for place creation workflow
+4. **Ref Management**: Direct DOM manipulation for optimal map performance
+
+## 16. API Routes
+
+### Places API Route
+
+Create `app/api/experiences/[experienceId]/places/route.ts`:
+
+```typescript app/api/experiences/[experienceId]/places/route.ts
+import { NextResponse } from "next/server";
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { headers } from "next/headers";
+import { createPlace, getPlaces, createPlaceAnnouncementPostWithAttachment } from "@/lib/helpers";
+import { withAdvancedTimeout } from "@/lib/timeout-simulator";
+
+// OPTIMIZATION: Set timeout for Vercel
+export const maxDuration = 30;
+
+/**
+ * GET /api/experiences/[experienceId]/places
+ * Fetches all places for an experience
+ * Available to both admins and customers
+ */
+export async function GET(request: Request) {
+  try {
+    // Extract experience ID from URL
+    const url = new URL(request.url);
+    const match = url.pathname.match(/experiences\/([^/]+)\/places/);
+    const experienceId = match ? match[1] : null;
+
+    if (!experienceId) {
+      return NextResponse.json(
+        { error: "Missing experienceId" },
+        { status: 400 }
+      );
+    }
+
+    // Verify user authentication
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user has access to this experience
+    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+      userId: userToken.userId,
+      experienceId,
+    });
+
+    if (!hasAccess.hasAccessToExperience.hasAccess) {
+      return NextResponse.json(
+        { error: "Unauthorized, no access" },
+        { status: 401 }
+      );
+    }
+
+    // Fetch and return places
+    const places = await getPlaces(experienceId);
+    return NextResponse.json(places);
+  } catch (error) {
+    console.error("Error fetching places:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch places" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * OPTIMIZED: POST /api/experiences/[experienceId]/places
+ * Creates a new place with optional pre-uploaded attachment from client
+ * Much faster than server-side image processing
+ * 
+ * NOW WITH CLIENT-SIDE IMAGE UPLOAD SUPPORT
+ */
+async function postHandler(request: Request): Promise<NextResponse> {
+  const startTime = Date.now();
+  
+  try {
+    // Extract experience ID from URL
+    const url = new URL(request.url);
+    const match = url.pathname.match(/experiences\/([^/]+)\/places/);
+    const experienceId = match ? match[1] : null;
+
+    if (!experienceId) {
+      return NextResponse.json(
+        { error: "Missing experienceId" },
+        { status: 400 }
+      );
+    }
+
+    // Verify user authentication
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user has ADMIN access (not just customer access)
+    const hasAdminAccess = await whopApi.checkIfUserHasAccessToExperience({
+      userId: userToken.userId,
+      experienceId,
+    });
+
+    if (!hasAdminAccess.hasAccessToExperience.hasAccess) {
+      return NextResponse.json(
+        { error: "Unauthorized, no access" },
+        { status: 401 }
+      );
+    }
+
+    if (hasAdminAccess.hasAccessToExperience.accessLevel !== "admin") {
+      return NextResponse.json(
+        { error: "Unauthorized, admin access required" },
+        { status: 401 }
+      );
+    }
+
+    // Parse request body
+    const { name, description, latitude, longitude, address, category, attachmentId, skipForumPost } =
+      await request.json();
+
+    // Validate required fields
+    if (!name || typeof latitude !== "number" || typeof longitude !== "number") {
+      return NextResponse.json(
+        { error: "Name, latitude, and longitude are required" },
+        { status: 400 }
+      );
+    }
+
+    console.log(`📝 Place data: ${name} at ${latitude}, ${longitude}`);
+    console.log(`📎 Pre-uploaded attachment: ${attachmentId ? attachmentId.substring(0, 20) + '...' : 'None'}`);
+    console.log(`🚫 Skip forum post: ${skipForumPost ? 'YES' : 'NO'}`);
+
+    // OPTIMIZATION: Create the place first (fast operation)
+    const place = await createPlace({
+      experienceId,
+      name,
+      description,
+      latitude,
+      longitude,
+      address,
+      category,
+    });
+
+    const duration = Date.now() - startTime;
+    console.log(`✅ Place created in ${duration}ms: ${place.id}`);
+
+    // Only create forum post if not skipped by client
+    if (!skipForumPost) {
+      // OPTIMIZATION: Get bizId from experience data for forum post
+      try {
+        const experienceData = await whopApi.getExperience({ experienceId });
+        const bizId = experienceData.experience.company.id;
+        
+        // Fire and forget forum post creation with pre-uploaded attachment
+        setImmediate(() => {
+          if (attachmentId) {
+            console.log(`🚀 Creating forum post with pre-uploaded attachment: ${attachmentId}`);
+            createPlaceAnnouncementPostWithAttachment({
+              experienceId,
+              placeName: place.name,
+              placeDescription: place.description || undefined,
+              latitude: place.latitude,
+              longitude: place.longitude,
+              address: place.address || undefined,
+              category: place.category || undefined,
+              attachmentId,
+            }).catch((error: any) => {
+              console.error("Background forum post creation with attachment failed:", error);
+            });
+          } else {
+            console.log(`🚀 Creating forum post without attachment (client-side upload failed)`);
+            // Skip forum post creation if no attachment - the client-side approach should always provide one
+            console.log(`⚠️ Skipping forum post creation - no attachment provided`);
+          }
+        });
+        
+        console.log(`🔄 Forum post creation started in background`);
+      } catch (error) {
+        console.error("Failed to get experience data for forum post:", error);
+      }
+    } else {
+      console.log(`⏭️ Forum post creation skipped (client will handle it)`);
+    }
+
+    // Return immediately with the created place
+    return NextResponse.json({
+      ...place,
+      meta: {
+        createdIn: duration,
+        forumPostQueued: !skipForumPost,
+        hasAttachment: !!attachmentId
+      }
+    });
+
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    console.error(`❌ Place creation failed after ${duration}ms:`, error);
+    return NextResponse.json(
+      { error: "Failed to create place" },
+      { status: 500 }
+    );
+  }
+}
+
+// Wrap POST handler with Vercel timeout simulation
+export const POST = withAdvancedTimeout(postHandler, {
+  timeoutMs: 30000,     // 30 second Vercel limit
+  warningMs: 20000,     // Warn at 20 seconds  
+  progressInterval: 5000 // Log progress every 5 seconds
+});
+```
+
+### Place Deletion API Route
+
+Create `app/api/experiences/[experienceId]/places/[placeId]/route.ts`:
+
+```typescript app/api/experiences/[experienceId]/places/[placeId]/route.ts
+import { NextResponse } from "next/server";
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { headers } from "next/headers";
+import { deletePlace } from "@/lib/helpers";
+
+export async function DELETE(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const pathMatch = url.pathname.match(/experiences\/([^/]+)\/places\/([^/]+)/);
+    const experienceId = pathMatch ? pathMatch[1] : null;
+    const placeId = pathMatch ? pathMatch[2] : null;
+
+    if (!experienceId || !placeId) {
+      return NextResponse.json(
+        { error: "Missing experienceId or placeId" },
+        { status: 400 }
+      );
+    }
+
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+      userId: userToken.userId,
+      experienceId,
+    });
+
+    if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
+      return NextResponse.json(
+        { error: "Unauthorized, admin access required" },
+        { status: 401 }
+      );
+    }
+
+    await deletePlace(placeId);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting place:", error);
+    return NextResponse.json(
+      { error: "Failed to delete place" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### Forum Post Creation API Route
+
+Create `app/api/experiences/[experienceId]/create-forum-post/route.ts`:
+
+```typescript app/api/experiences/[experienceId]/create-forum-post/route.ts
+import { NextResponse } from "next/server";
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { headers } from "next/headers";
+
+/**
+ * POST /api/experiences/[experienceId]/create-forum-post
+ * Client-side forum post creation
+ * This endpoint receives place data from client and creates forum post
+ */
+export async function POST(request: Request) {
+  console.log(`🌐 === CLIENT FORUM POST API START ===`);
+  
+  try {
+    // Extract experience ID from URL
+    const url = new URL(request.url);
+    const match = url.pathname.match(/experiences\/([^/]+)\/create-forum-post/);
+    const experienceId = match ? match[1] : null;
+
+    if (!experienceId) {
+      return NextResponse.json(
+        { error: "Missing experienceId" },
+        { status: 400 }
+      );
+    }
+
+    console.log(`📍 Experience ID: ${experienceId}`);
+
+    // Verify user authentication
+    const headersList = await headers();
+    const userToken = await verifyUserToken(headersList);
+    if (!userToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user has admin access
+    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+      userId: userToken.userId,
+      experienceId,
+    });
+
+    if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
+      return NextResponse.json(
+        { error: "Unauthorized, admin access required" },
+        { status: 401 }
+      );
+    }
+
+    console.log(`✅ Admin access verified`);
+
+    // Parse request body
+    const { placeName, placeDescription, address, category, attachmentId } = await request.json();
+
+    console.log(`📝 Forum post data:`, {
+      placeName,
+      placeDescription: placeDescription?.substring(0, 50) + '...',
+      address: address?.substring(0, 50) + '...',
+      category,
+      attachmentId: attachmentId?.substring(0, 20) + '...'
+    });
+
+    // Step 1: Get experience details
+    console.log(`📋 Step 1: Getting experience details...`);
+    const step1Start = Date.now();
+    
+    const whopExperience = await whopApi.getExperience({ experienceId });
+    const experienceName = whopExperience.experience.name;
+    const bizId = whopExperience.experience.company.id;
+    
+    console.log(`✅ Step 1 completed in ${Date.now() - step1Start}ms`);
+    console.log(`🏢 Experience: ${experienceName}, Biz: ${bizId}`);
+
+    // Step 2: Generate app URL (using correct whop.com format)
+    console.log(`🔗 Step 2: Generating app URL...`);
+    
+    // Helper function to create URL-friendly strings
+    const urlFriendly = (str: string) => str
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    // Create Whop public URL format
+    const bizNameUrl = urlFriendly(whopExperience.experience.company.title);
+    const experienceTitleUrl = urlFriendly(experienceName);
+    const expIdWithoutPrefix = experienceId.slice(4);
+    const mapUrl = `https://whop.com/${bizNameUrl}/${experienceTitleUrl}-${expIdWithoutPrefix}/app`;
+    
+    console.log(`✅ Step 2 completed - URL: ${mapUrl}`);
+
+    // Step 3: Create forum content (NO MARKDOWN - plain text only)
+    console.log(`📝 Step 3: Creating forum content...`);
+    let content = `\n`;
+    content += `A new place has been added to the map! 🗺️\n\n`;
+    
+    if (address) {
+      content += `Address: ${address}\n`;
+    }
+    if (category) {
+      content += `Category: ${category}\n`;
+    }
+    if (placeDescription) {
+      content += `Description: ${placeDescription}\n`;
+    }
+    
+    content += `\nView on Map: ${mapUrl}\n\n`;
+    content += `Click the link above to explore this location and all other places on our interactive map!`;
+    
+    console.log(`✅ Step 3 completed - Content: ${content.length} chars`);
+
+    // Step 4: Create/find Places Forum
+    console.log(`🏛️ Step 4: Finding or creating Places Forum...`);
+    const step4Start = Date.now();
+    
+    let placesForumId: string;
+    
+    try {
+      const forumResult = await whopApi
+        .withCompany(bizId)
+        .findOrCreateForum({
+          input: {
+            experienceId: experienceId,
+            name: "Places Forum",
+            whoCanPost: "everyone",
+          },
+        });
+      
+      placesForumId = forumResult.createForum?.id || experienceId;
+    } catch (error) {
+      console.error(`❌ Forum creation/finding failed:`, error);
+      // Use experienceId as fallback
+      placesForumId = experienceId;
+      console.log(`⚠️ Using experienceId as forum fallback: ${placesForumId}`);
+    }
+    
+    console.log(`✅ Step 4 completed in ${Date.now() - step4Start}ms`);
+
+    // Step 5: Create forum post
+    console.log(`📤 Step 5: Creating forum post...`);
+    const step5Start = Date.now();
+    
+    const forumPostInput: any = {
+      forumExperienceId: placesForumId,
+      title: `📍 New Place Added: ${placeName}`,
+      content,
+      isMention: true, // Notify all members
+    };
+
+    // Add attachment if provided
+    if (attachmentId) {
+      console.log(`📎 Including attachment: ${attachmentId}`);
+      forumPostInput.attachments = [
+        {
+          directUploadId: attachmentId,
+        },
+      ];
+    }
+
+    const forumPost = await whopApi
+      .withCompany(bizId)
+      .createForumPost({
+        input: forumPostInput,
+      });
+    
+    console.log(`✅ Step 5 completed in ${Date.now() - step5Start}ms`);
+    console.log(`📝 Forum post created: ${forumPost.createForumPost?.id}`);
+    console.log(`🎯 === CLIENT FORUM POST API COMPLETE ===`);
+
+    return NextResponse.json({
+      success: true,
+      postId: forumPost.createForumPost?.id,
+      forumId: placesForumId,
+    });
+
+  } catch (error) {
+    console.error("❌ Error creating forum post:", error);
+    return NextResponse.json(
+      { 
+        error: "Failed to create forum post",
+        details: error instanceof Error ? error.message : String(error)
+      },
+      { status: 500 }
+    );
+  }
+}
+```
+
+## 17. Production Deployment
+
+### Environment Variables for Production
+
+Update your production environment with:
+
+```env
+# Production Environment Variables
+WHOP_APP_ID=app_your_production_app_id
+WHOP_API_KEY=whop_your_production_api_key
+MY_USER_ID=your_whop_user_id
+DATABASE_URL=postgresql://your_production_db_url
+DIRECT_URL=postgresql://your_production_direct_url
+NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token
+NEXT_PUBLIC_APP_URL=https://your-production-domain.com
+
+# Optional
+DEFAULT_WEBHOOK_URL=https://your-webhook-endpoint.com
+```
+
+### Deployment Steps
+
+1. **Push to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Complete places map implementation"
+   git push origin main
+   ```
+
+2. **Deploy to Vercel**:
+   - Connect your GitHub repository
+   - Add all environment variables
+   - Deploy
+
+3. **Update Whop App Settings**:
+   - Change redirect URL to your production domain
+   - Update any webhook URLs
+   - Switch from localhost to production mode
+
+### Performance Optimizations
+
+1. **Database Indexing**:
+   ```sql
+   CREATE INDEX idx_places_experience_id ON places(experienceId);
+   CREATE INDEX idx_places_coordinates ON places(latitude, longitude);
+   ```
+
+2. **Mapbox Optimization**:
+   - Use vector tiles for better performance
+   - Implement marker clustering for many places
+   - Add map bounds restrictions if needed
+
+3. **Caching Strategy**:
+   - Cache place data with Redis or similar
+   - Implement incremental static regeneration
+   - Use CDN for static assets
+
+## 18. Advanced Features
+
+### Automatic Forum Posts
+
+Every time an admin adds a new place, the system automatically creates a forum post in the "Places Forum" that includes:
+
+- **📍 Place name and details** 
+- **🗺️ Direct link to view the place on the map**
+- **📸 Mapbox Static image URL** of the location with a pin marker
+- **🔔 Notification to all members**
+
+The forum posts are created in a dedicated "Places Forum" within the same experience as your places map. This keeps your community engaged and informed about new additions to your map.
+
+**How it works:**
+1. Admin adds a place through the control panel
+2. Place is saved to the database
+3. System generates a Mapbox Static image URL with a pin marker
+4. "Places Forum" is created using `CreateForum` API (if it doesn't exist)
+5. Forum post is created with place details using `CreateForumPost` API
+6. All members get notified about the new place (`isMention: true`)
+
+**Forum Post Example:**
+```
+📍 New Place Added: SpaceX Headquarters
+
+A new place has been added to the map! 🗺️
+
+Address: 1 Rocket Road, Hawthorne, California 90250, United States
+Category: Technology
+Description: SpaceX headquarters and manufacturing facility
+
+View on Map: https://whop.com/spacex/places-map-exp123/app
+
+Click the link above to explore this location and all other places on our interactive map!
+```
+
+**Technical Implementation:**
+- Uses Whop's `CreateForum` API to create the "Places Forum" experience  
+- Creates rich forum posts with `CreateForumPost` API with correct parameters
+- Includes direct links to map view and location images
+- Handles errors gracefully with fallback logging and webhook notifications
+- Notifies all community members when new places are added
+
+## Summary
+
+You've built a comprehensive places management application that demonstrates:
+
+### Technical Achievements
+- **3D Globe Visualization**: Beautiful Mapbox integration with custom markers
+- **Role-Based Access Control**: Secure admin/customer permissions via Whop API
+- **Real-time Database**: PostgreSQL with Prisma for reliable data management
+- **Geocoding Integration**: Address-to-coordinates conversion
+- **Responsive Design**: Works across all devices and screen sizes
+- **Forum Integration**: Automatic community notifications for new places
+- **Client-side Optimization**: Fast image uploads and forum post creation
+
+### Business Value
+- **Creator Monetization**: Sell access to curated place collections
+- **Customer Engagement**: Interactive exploration experiences
+- **Community Building**: Automatic forum posts keep users engaged
+- **Scalable Architecture**: Easy to extend with new features
+- **Professional Polish**: Production-ready with proper error handling
+
+### Next Steps
+1. **Add Analytics**: Track user engagement and popular places
+2. **Implement Categories**: Better organization and filtering
+3. **Add Media Upload**: Photos and videos for places
+4. **Social Features**: Comments, ratings, and sharing
+5. **Mobile App**: React Native version using same backend
+
+Your places map application is now ready to launch and start generating revenue for creators on the Whop platform!
+
+## 19. Complete Map Components
+
+The tutorial above covers the main structure, but here are the complete implementations of all map components for full functionality:
+
+### MapContainer Component
+
+Create `components/map/MapContainer.tsx`:
+
+```typescript components/map/MapContainer.tsx
+"use client";
+
+import { useEffect, useRef } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import type { Place, NewPlacePosition } from './types';
+import { mapStyles } from './styles';
+
+interface MapContainerProps {
+  places: Place[];
+  accessLevel: "admin" | "customer" | "no_access";
+  experienceId: string;
+  isAddingPlace: boolean;
+  newPlacePosition: NewPlacePosition | null;
+  setNewPlacePosition: (position: NewPlacePosition | null) => void;
+  updateNewMarker: (lng: number, lat: number) => void;
+  onDeletePlace: (placeId: string) => Promise<void>;
+  onMapReady: (map: mapboxgl.Map) => void;
+}
+
+/**
+ * Creates a custom SVG pin marker
+ * This is the same function as in MapView - consider extracting to utils
+ */
+const createPinMarker = (color = '#dc2626') => {
+  const markerEl = document.createElement('div');
+  markerEl.className = 'custom-marker';
+  markerEl.innerHTML = `
+    <svg width="24" height="30" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.372 0 0 5.372 0 12C0 18.628 12 30 12 30S24 18.628 24 12C24 5.372 18.628 0 12 0Z" fill="${color}"/>
+      <circle cx="12" cy="12" r="4" fill="white"/>
+    </svg>
+  `;
+  return markerEl;
+};
+
+/**
+ * Uploads image from client-side (triggered on map click for new places)
+ * This bypasses server-side Mapbox fetching issues entirely
+ */
+async function uploadImageFromClient(staticImageUrl: string, experienceId: string): Promise<string | null> {
+  console.log(`🌐 === CLIENT IMAGE UPLOAD START ===`);
+  console.log(`🔗 Fetching image: ${staticImageUrl}`);
+  
+  try {
+    // Fetch image from Mapbox
+    const imageResponse = await fetch(staticImageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+    }
+
+    const imageBlob = await imageResponse.blob();
+    console.log(`📦 Image blob size: ${imageBlob.size} bytes`);
+
+    // Upload via our API route
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+    const uploadResponse = await fetch(`${baseUrl}/api/upload`, {
+      method: 'POST',
+      body: imageBlob,
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'x-user-id': 'client-upload',
+        'x-biz-id': experienceId,
+      },
+    });
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      throw new Error(`Upload failed: ${uploadResponse.status} - ${errorText}`);
+    }
+
+    const uploadResult = await uploadResponse.json();
+    console.log(`✅ CLIENT IMAGE UPLOAD SUCCESS: ${uploadResult.attachmentId}`);
+    return uploadResult.attachmentId;
+
+  } catch (error) {
+    console.error(`❌ CLIENT IMAGE UPLOAD FAILED:`, error);
+    return null;
+  }
+}
+
+export default function MapContainer({
+  places,
+  accessLevel,
+  experienceId,
+  isAddingPlace,
+  newPlacePosition,
+  setNewPlacePosition,
+  updateNewMarker,
+  onDeletePlace,
+  onMapReady,
+}: MapContainerProps) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
+
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+
+    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    if (!mapboxToken) return;
+
+    mapboxgl.accessToken = mapboxToken;
+
+    // Initialize map with 3D globe projection
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      projection: 'globe', // This creates the 3D globe effect
+      center: [0, 20], // Start with a nice global view
+      zoom: 2,
+      maxBounds: undefined, // Allow global exploration
+      attributionControl: false,
+    });
+
+    mapRef.current = map;
+
+    // Set up the 3D globe atmosphere effect
+    map.on('load', () => {
+      map.setFog({
+        'color': 'rgb(12, 12, 35)', // Darker space-like background
+        'high-color': 'rgb(12, 12, 35)',
+        'horizon-blend': 0.02,
+        'space-color': 'rgb(12, 12, 35)',
+        'star-intensity': 0.6,
+      });
+
+      onMapReady(map);
+    });
+
+    // Handle map clicks for adding new places (admin only)
+    if (accessLevel === "admin") {
+      map.on('click', async (e) => {
+        if (!isAddingPlace) return;
+
+        const { lng, lat } = e.lngLat;
+        setNewPlacePosition({ lng, lat });
+        updateNewMarker(lng, lat);
+
+        console.log(`📍 Map clicked at ${lat}, ${lng} - ready to add place`);
+      });
+    }
+
+    return () => {
+      // Clean up markers
+      markersRef.current.forEach(marker => marker.remove());
+      markersRef.current = [];
+      map.remove();
+    };
+  }, [accessLevel, isAddingPlace, setNewPlacePosition, updateNewMarker, onMapReady]);
+
+  // Update markers when places change
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Remove existing markers
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
+    // Add markers for all places
+    places.forEach(place => {
+      const markerEl = createPinMarker('#dc2626');
+      
+      const marker = new mapboxgl.Marker({
+        element: markerEl,
+        anchor: 'bottom'
+      })
+        .setLngLat([place.longitude, place.latitude])
+        .addTo(mapRef.current!);
+
+      // Create popup content
+      const popupContent = document.createElement('div');
+      popupContent.className = 'place-info';
+      popupContent.innerHTML = `
+        <h3>${place.name}</h3>
+        ${place.description ? `<p class="place-description">${place.description}</p>` : ''}
+        ${place.category ? `<p class="place-category">${place.category}</p>` : ''}
+        ${place.address ? `<p class="place-location">${place.address}</p>` : ''}
+        ${accessLevel === "admin" ? `
+          <button class="delete-btn" onclick="window.deletePlace('${place.id}')">
+            Delete Place
+          </button>
+        ` : ''}
+      `;
+
+      const popup = new mapboxgl.Popup({
+        offset: 30,
+        className: 'place-popup'
+      }).setDOMContent(popupContent);
+
+      marker.setPopup(popup);
+      markersRef.current.push(marker);
+    });
+
+    // Set up global delete function for admin
+    if (accessLevel === "admin") {
+      window.deletePlace = onDeletePlace;
+    }
+  }, [places, accessLevel, onDeletePlace]);
+
+  // Inject custom styles
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = mapStyles;
+    document.head.appendChild(styleEl);
+
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, []);
+
+  return (
+    <div 
+      ref={mapContainerRef}
+      className="w-full h-full"
+      style={{ background: 'rgb(12, 12, 35)' }}
+    />
+  );
+}
+```
+
+### PlaceControlPanel Component
+
+Create `components/map/PlaceControlPanel.tsx`:
+
+```typescript components/map/PlaceControlPanel.tsx
+"use client";
+
+import { useState, useEffect } from 'react';
+import type { NewPlacePosition, Place } from './types';
+import { geocodeAddress } from './utils';
+import { controlPanelStyles } from './styles';
+
+interface PlaceControlPanelProps {
+  experienceId: string;
+  accessLevel: "admin" | "customer" | "no_access";
+  isAddingPlace: boolean;
+  setIsAddingPlace: (value: boolean) => void;
+  newPlacePosition: NewPlacePosition | null;
+  setNewPlacePosition: (position: NewPlacePosition | null) => void;
+  updateNewMarker: (lng: number, lat: number) => void;
+  map: any;
+}
+
+/**
+ * Generate Mapbox Static Image URL with high quality and no watermark
+ */
+function getMapboxStaticImageUrl(lat: number, lng: number): string | null {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  if (!mapboxToken) {
+    console.warn("No Mapbox token configured");
+    return null;
+  }
+
+  try {
+    // HIGH QUALITY: Larger size, better zoom, retina quality, no logo
+    const staticImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
+      `pin-l-marker+dc2626(${lng},${lat})/` + // Large pin marker (pin-l instead of pin-s)
+      `${lng},${lat},14,0/` + // Higher zoom level (14 instead of 12) for more detail
+      `600x400@2x?` + // Larger size (600x400) with retina quality (@2x)
+      `logo=false&` + // Remove Mapbox logo/watermark
+      `access_token=${mapboxToken}`;
+
+    return staticImageUrl;
+  } catch (error) {
+    console.error("Error generating Mapbox Static image URL:", error);
+    return null;
+  }
+}
+
+/**
+ * Uploads image from client-side (triggered on map click for new places)
+ * This bypasses server-side Mapbox fetching issues entirely
+ */
+async function uploadImageFromClient(staticImageUrl: string, experienceId: string): Promise<string | null> {
+  console.log(`🌐 === CLIENT IMAGE UPLOAD START ===`);
+  console.log(`🔗 Fetching image: ${staticImageUrl}`);
+  
+  try {
+    // Fetch image from Mapbox
+    const imageResponse = await fetch(staticImageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+    }
+
+    const imageBlob = await imageResponse.blob();
+    console.log(`📦 Image blob size: ${imageBlob.size} bytes`);
+
+    // Upload via our API route
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+    const uploadResponse = await fetch(`${baseUrl}/api/upload`, {
+      method: 'POST',
+      body: imageBlob,
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'x-user-id': 'client-upload',
+        'x-biz-id': experienceId,
+      },
+    });
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      throw new Error(`Upload failed: ${uploadResponse.status} - ${errorText}`);
+    }
+
+    const uploadResult = await uploadResponse.json();
+    console.log(`✅ CLIENT IMAGE UPLOAD SUCCESS: ${uploadResult.attachmentId}`);
+    return uploadResult.attachmentId;
+
+  } catch (error) {
+    console.error(`❌ CLIENT IMAGE UPLOAD FAILED:`, error);
+    return null;
+  }
+}
+
+export default function PlaceControlPanel({
+  experienceId,
+  accessLevel,
+  isAddingPlace,
+  setIsAddingPlace,
+  newPlacePosition,
+  setNewPlacePosition,
+  updateNewMarker,
+  map,
+}: PlaceControlPanelProps) {
+  const [placeName, setPlaceName] = useState('');
+  const [placeDescription, setPlaceDescription] = useState('');
+  const [placeCategory, setPlaceCategory] = useState('');
+  const [placeAddress, setPlaceAddress] = useState('');
+  const [statusMessage, setStatusMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Inject control panel styles
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = controlPanelStyles;
+    document.head.appendChild(styleEl);
+
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, []);
+
+  const handleAddressGeocode = async () => {
+    if (!placeAddress.trim()) {
+      setErrorMessage('Please enter an address');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+    
+    try {
+      const result = await geocodeAddress(placeAddress);
+      if (result) {
+        setNewPlacePosition({ lng: result.lng, lat: result.lat });
+        updateNewMarker(result.lng, result.lat);
+        setPlaceAddress(result.fullAddress); // Update with full formatted address
+        setStatusMessage(`📍 Found location: ${result.fullAddress}`);
+        
+        // Fly to the geocoded location
+        if (map) {
+          map.flyTo({
+            center: [result.lng, result.lat],
+            zoom: 14,
+            duration: 2000
+          });
+        }
+      } else {
+        setErrorMessage('Address not found. Please try a different address.');
+      }
+    } catch (error) {
+      setErrorMessage('Failed to find address. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCreatePlace = async () => {
+    if (!placeName.trim()) {
+      setErrorMessage('Please enter a place name');
+      return;
+    }
+
+    if (!newPlacePosition) {
+      setErrorMessage('Please click on the map or enter an address to set location');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+    setStatusMessage('Creating place...');
+
+    try {
+      // Step 1: Generate Mapbox static image URL
+      const staticImageUrl = getMapboxStaticImageUrl(
+        newPlacePosition.lat, 
+        newPlacePosition.lng
+      );
+
+      let attachmentId: string | null = null;
+
+      // Step 2: Upload image from client if URL available
+      if (staticImageUrl) {
+        setStatusMessage('📸 Uploading map image...');
+        attachmentId = await uploadImageFromClient(staticImageUrl, experienceId);
+        
+        if (attachmentId) {
+          console.log(`✅ Image uploaded successfully: ${attachmentId}`);
+        } else {
+          console.warn(`⚠️ Image upload failed, continuing without attachment`);
+        }
+      }
+
+      // Step 3: Create the place
+      setStatusMessage('📍 Creating place...');
+      const response = await fetch(`/api/experiences/${experienceId}/places`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: placeName,
+          description: placeDescription || null,
+          latitude: newPlacePosition.lat,
+          longitude: newPlacePosition.lng,
+          address: placeAddress || null,
+          category: placeCategory || null,
+          attachmentId, // Pass the pre-uploaded attachment
+          skipForumPost: false, // Let server handle forum post creation
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create place');
+      }
+
+      const newPlace = await response.json();
+      console.log('✅ Place created:', newPlace);
+
+      // Step 4: Create forum post separately for better control
+      if (attachmentId) {
+        setStatusMessage('📝 Creating forum announcement...');
+        try {
+          const forumResponse = await fetch(`/api/experiences/${experienceId}/create-forum-post`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              placeName,
+              placeDescription: placeDescription || null,
+              address: placeAddress || null,
+              category: placeCategory || null,
+              attachmentId,
+            }),
+          });
+
+          if (forumResponse.ok) {
+            console.log('✅ Forum post created successfully');
+            setStatusMessage('✅ Place created and announced in forum!');
+          } else {
+            console.warn('⚠️ Forum post failed, but place was created');
+            setStatusMessage('✅ Place created (forum post failed)');
+          }
+        } catch (forumError) {
+          console.warn('⚠️ Forum post error:', forumError);
+          setStatusMessage('✅ Place created (forum post failed)');
+        }
+      } else {
+        setStatusMessage('✅ Place created successfully!');
+      }
+
+      // Reset form
+      setPlaceName('');
+      setPlaceDescription('');
+      setPlaceCategory('');
+      setPlaceAddress('');
+      setNewPlacePosition(null);
+      setIsAddingPlace(false);
+
+      // Refresh page to show new place
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error creating place:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to create place');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsAddingPlace(false);
+    setNewPlacePosition(null);
+    setPlaceName('');
+    setPlaceDescription('');
+    setPlaceCategory('');
+    setPlaceAddress('');
+    setStatusMessage('');
+    setErrorMessage('');
+  };
+
+  if (accessLevel === "no_access") {
+    return null;
+  }
+
+  return (
+    <div className="places-controls">
+      {accessLevel === "admin" ? (
+        <>
+          {!isAddingPlace ? (
+            <button
+              className="control-button"
+              onClick={() => setIsAddingPlace(true)}
+              disabled={isLoading}
+            >
+              📍 Add New Place
+            </button>
+          ) : (
+            <>
+              <div className="control-status">
+                {newPlacePosition 
+                  ? '✓ Location set - fill in details below'
+                  : 'Click map or enter address to set location'
+                }
+              </div>
+
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
+
+              {statusMessage && (
+                <div className="success-message">{statusMessage}</div>
+              )}
+
+              <input
+                type="text"
+                placeholder="Place name (required)"
+                value={placeName}
+                onChange={(e) => setPlaceName(e.target.value)}
+                className="control-input"
+                disabled={isLoading}
+              />
+
+              <input
+                type="text"
+                placeholder="Description"
+                value={placeDescription}
+                onChange={(e) => setPlaceDescription(e.target.value)}
+                className="control-input"
+                disabled={isLoading}
+              />
+
+              <input
+                type="text"
+                placeholder="Category"
+                value={placeCategory}
+                onChange={(e) => setPlaceCategory(e.target.value)}
+                className="control-input"
+                disabled={isLoading}
+              />
+
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '6px' }}>
+                <input
+                  type="text"
+                  placeholder="Address (optional)"
+                  value={placeAddress}
+                  onChange={(e) => setPlaceAddress(e.target.value)}
+                  className="control-input"
+                  style={{ marginBottom: '0', flex: '1' }}
+                  disabled={isLoading}
+                />
+                <button
+                  className="control-button"
+                  onClick={handleAddressGeocode}
+                  style={{ marginBottom: '0', width: 'auto', padding: '6px 8px' }}
+                  disabled={isLoading || !placeAddress.trim()}
+                >
+                  🔍
+                </button>
+              </div>
+
+              <div className="control-actions">
+                <button
+                  className="control-button"
+                  onClick={handleCreatePlace}
+                  disabled={isLoading || !placeName.trim() || !newPlacePosition}
+                  style={{ 
+                    background: newPlacePosition && placeName ? '#10b981' : undefined,
+                    color: newPlacePosition && placeName ? 'white' : undefined
+                  }}
+                >
+                  {isLoading ? (
+                    <>
+                      <span className="loading-spinner"></span>
+                      Creating...
+                    </>
+                  ) : (
+                    '✓ Create Place'
+                  )}
+                </button>
+                <button
+                  className="control-button"
+                  onClick={handleCancel}
+                  disabled={isLoading}
+                >
+                  ✕ Cancel
+                </button>
+              </div>
+            </>
+          )}
+        </>
+      ) : (
+        <div style={{ textAlign: 'center', padding: '16px' }}>
+          <h3 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600' }}>
+            Interactive Places Map
+          </h3>
+          <p style={{ margin: '0', fontSize: '12px', color: '#666' }}>
+            Click on pins to view place details
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### PlacesList Component
+
+Create `components/map/PlacesList.tsx`:
+
+```typescript components/map/PlacesList.tsx
+"use client";
+
+import type { Place } from './types';
+
+interface PlacesListProps {
+  places: Place[];
+  accessLevel: "admin" | "customer" | "no_access";
+  onDeletePlace: (placeId: string) => Promise<void>;
+}
+
+export default function PlacesList({ places, accessLevel, onDeletePlace }: PlacesListProps) {
+  if (accessLevel === "no_access") {
+    return (
+      <div className="flex items-center justify-center h-64 text-gray-400">
+        You don't have access to view these places.
+      </div>
+    );
+  }
+
+  if (places.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+        <h3 className="text-lg font-semibold mb-2">No Places Yet</h3>
+        <p className="text-sm text-center">
+          {accessLevel === "admin" 
+            ? "Add places using the map interface when Mapbox is configured."
+            : "Check back later for new places!"
+          }
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6">Places ({places.length})</h2>
+      
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {places.map((place) => (
+          <div
+            key={place.id}
+            className="bg-white rounded-lg border shadow-sm p-4 hover:shadow-md transition-shadow"
+          >
+            <h3 className="font-semibold text-lg mb-2">{place.name}</h3>
+            
+            {place.description && (
+              <p className="text-gray-600 text-sm mb-3">{place.description}</p>
+            )}
+            
+            <div className="space-y-1 text-xs text-gray-500">
+              {place.category && (
+                <p className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full inline-block">
+                  {place.category}
+                </p>
+              )}
+              
+              {place.address && (
+                <p className="flex items-center gap-1">
+                  📍 {place.address}
+                </p>
+              )}
+              
+              <p className="flex items-center gap-1">
+                🌍 {place.latitude.toFixed(4)}, {place.longitude.toFixed(4)}
+              </p>
+              
+              <p className="text-gray-400">
+                Added {new Date(place.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+            
+            {accessLevel === "admin" && (
+              <button
+                onClick={() => onDeletePlace(place.id)}
+                className="mt-3 w-full bg-red-600 text-white text-sm py-2 px-3 rounded hover:bg-red-700 transition-colors"
+              >
+                Delete Place
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## 20. Additional API Routes
+
+### Image Upload API Route
+
+Create `app/api/upload/route.ts`:
+
+```typescript app/api/upload/route.ts
+import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { withAdvancedTimeout } from "@/lib/timeout-simulator";
+
+// OPTIMIZATION: Lightweight File polyfill
+class FilePolyfill extends Blob {
+  public name: string;
+  public lastModified: number;
+  public webkitRelativePath: string;
+
+  constructor(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag) {
+    super(fileBits, options);
+    this.name = fileName;
+    this.lastModified = options?.lastModified ?? Date.now();
+    this.webkitRelativePath = '';
+  }
+}
+
+if (typeof globalThis.File === 'undefined') {
+  globalThis.File = FilePolyfill as any;
+}
+
+// OPTIMIZATION: Set function timeout to 30 seconds for Vercel
+export const maxDuration = 30;
+
+async function postHandler(request: Request): Promise<NextResponse> {
+  const startTime = Date.now();
+  const userId = request.headers.get('x-user-id');
+  const bizId = request.headers.get('x-biz-id');
+  
+  console.log(`🚀 === UPLOAD API START ===`);
+  console.log(`👤 User: ${userId}, 🏢 Biz: ${bizId}`);
+
+  if (!userId || !bizId) {
+    const duration = Date.now() - startTime;
+    console.error(`❌ Upload failed in ${duration}ms - Missing headers`);
+    return NextResponse.json(
+      { error: 'Missing user ID or business ID headers' },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Step 1: Get file data
+    const step1Start = Date.now();
+    console.log(`📁 Step 1: Reading request body...`);
+    
+    const fileData = await request.arrayBuffer();
+    const step1Duration = Date.now() - step1Start;
+    
+    console.log(`✅ Step 1 completed in ${step1Duration}ms - Size: ${fileData.byteLength} bytes`);
+
+    // Step 2: Create File object for Whop API
+    const step2Start = Date.now();
+    console.log(`🔄 Step 2: Creating File object...`);
+    
+    const fileName = `mapbox-image-${Date.now()}.jpg`;
+    const file = new File([fileData], fileName, { type: 'image/jpeg' });
+    const step2Duration = Date.now() - step2Start;
+    
+    console.log(`✅ Step 2 completed in ${step2Duration}ms - File: ${fileName}`);
+
+    // Step 3: Upload to Whop
+    const step3Start = Date.now();
+    console.log(`🚀 Step 3: Uploading to Whop...`);
+    
+    const uploadResult = await whopApi
+      .withCompany(bizId)
+      .uploadAttachment({
+        file: file,
+      });
+
+    const step3Duration = Date.now() - step3Start;
+    const totalDuration = Date.now() - startTime;
+
+    if (!uploadResult?.uploadAttachment?.id) {
+      console.error(`❌ Step 3 failed in ${step3Duration}ms - No attachment ID returned`);
+      return NextResponse.json(
+        { error: 'Upload failed - no attachment ID returned' },
+        { status: 500 }
+      );
+    }
+
+    console.log(`✅ Step 3 completed in ${step3Duration}ms`);
+    console.log(`🎯 === UPLOAD API SUCCESS ===`);
+    console.log(`⏱️ TOTAL TIME: ${totalDuration}ms`);
+    console.log(`📊 BREAKDOWN:`);
+    console.log(`   - Step 1 (Read): ${step1Duration}ms`);
+    console.log(`   - Step 2 (File): ${step2Duration}ms`);
+    console.log(`   - Step 3 (Upload): ${step3Duration}ms`);
+    console.log(`📎 Attachment ID: ${uploadResult.uploadAttachment.id}`);
+
+    return NextResponse.json({
+      success: true,
+      attachmentId: uploadResult.uploadAttachment.id,
+      fileName: fileName,
+      size: fileData.byteLength,
+      duration: totalDuration,
+    });
+
+  } catch (error) {
+    const totalDuration = Date.now() - startTime;
+    console.error(`❌ Upload failed after ${totalDuration}ms:`, error);
+    
+    return NextResponse.json(
+      { 
+        error: 'Upload failed',
+        details: error instanceof Error ? error.message : String(error),
+        duration: totalDuration,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// Wrap POST handler with timeout monitoring
+export const POST = withAdvancedTimeout(postHandler, {
+  timeoutMs: 30000,     // 30 second Vercel limit
+  warningMs: 20000,     // Warn at 20 seconds  
+  progressInterval: 5000 // Log progress every 5 seconds
+});
+```
+
+### Timeout Testing API Route
+
+Create `app/api/test-timeout/route.ts`:
+
+```typescript app/api/test-timeout/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { withAdvancedTimeout } from "@/lib/timeout-simulator";
+import { maybeSimulateSlow } from "@/lib/timeout-test";
+
+async function testTimeoutHandler(request: NextRequest): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const duration = parseInt(searchParams.get('duration') || '5000');
+  const scenario = searchParams.get('scenario') || 'basic';
+  
+  console.log(`🧪 Testing timeout scenario: ${scenario} (${duration}ms)`);
+  
+  try {
+    switch (scenario) {
+      case 'basic':
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, duration)),
+          duration,
+          'basic test'
+        );
+        break;
+        
+      case 'image-upload':
+        console.log('📸 Simulating image upload flow...');
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.3, 5000))),
+          Math.min(duration * 0.3, 5000),
+          'image fetch'
+        );
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.7, 20000))),
+          Math.min(duration * 0.7, 20000),
+          'image upload'
+        );
+        break;
+        
+      case 'database':
+        console.log('🗄️ Simulating database operations...');
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.2, 2000))),
+          Math.min(duration * 0.2, 2000),
+          'user auth'
+        );
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.3, 5000))),
+          Math.min(duration * 0.3, 5000),
+          'place creation'
+        );
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.5, 10000))),
+          Math.min(duration * 0.5, 10000),
+          'forum post'
+        );
+        break;
+        
+      case 'network':
+        console.log('🌐 Simulating network operations...');
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.4, 8000))),
+          Math.min(duration * 0.4, 8000),
+          'API call 1'
+        );
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, Math.min(duration * 0.6, 15000))),
+          Math.min(duration * 0.6, 15000),
+          'API call 2'
+        );
+        break;
+        
+      default:
+        await maybeSimulateSlow(
+          () => new Promise(resolve => setTimeout(resolve, duration)),
+          duration,
+          scenario
+        );
+    }
+    
+    return NextResponse.json({
+      success: true,
+      scenario,
+      duration,
+      message: `Test completed successfully in approximately ${duration}ms`
+    });
+    
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      scenario,
+      duration,
+      error: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
+  }
+}
+
+// Wrap handler with timeout monitoring for testing
+export const GET = withAdvancedTimeout(testTimeoutHandler, {
+  timeoutMs: 60000,     // 60 second limit for testing
+  warningMs: 45000,     // Warn at 45 seconds  
+  progressInterval: 10000 // Log progress every 10 seconds for testing
+});
+```
+
+## 21. Additional Components
+
+### Error Boundary Component
+
+Create `components/error-boundary.tsx`:
+
+```typescript components/error-boundary.tsx
+"use client";
+
+import React from "react";
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback?: React.ComponentType<{ error?: Error }>;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return <this.props.fallback error={this.state.error} />;
+      }
+
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
+          <h2 className="text-xl font-semibold text-red-600 mb-4">Something went wrong</h2>
+          <p className="text-gray-600 text-center mb-4">
+            {this.state.error?.message || "An unexpected error occurred"}
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false })}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Try again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+### Admin Settings Component
+
+Create `components/AdminSettings.tsx`:
+
+```typescript components/AdminSettings.tsx
+"use client";
+
+// Placeholder for future admin settings functionality
+export default function AdminSettings() {
+  return (
+    <div>
+      {/* Admin settings UI will go here */}
+    </div>
+  );
+}
+```
+
+### Loader Component
+
+Create `components/Loader.tsx`:
+
+```typescript components/Loader.tsx
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+
+gsap.registerPlugin(DrawSVGPlugin);
+
+export default function Loader() {
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const mid = gsap.utils.toArray("#mid *").reverse();
+
+    const fatTl = gsap.timeline();
+    fatTl.fromTo(
+      "#fat *",
+      {
+        drawSVG: "0% 20%",
+      },
+      {
+        drawSVG: "40% 69%",
+        stagger: {
+          each: 0.05,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 0.75,
+        ease: "sine.inOut",
+      }
+    );
+
+    const midTl = gsap.timeline();
+    midTl.fromTo(
+      mid,
+      {
+        drawSVG: "0% 20%",
+      },
+      {
+        drawSVG: "56% 86%",
+        stagger: {
+          each: 0.08,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 0.81,
+        ease: "sine.inOut",
+      }
+    );
+
+    const skinnyTl = gsap.timeline();
+    skinnyTl.fromTo(
+      "#skinny *",
+      {
+        drawSVG: "0% 10%",
+      },
+      {
+        drawSVG: "86% 95%",
+        stagger: {
+          each: 0.11,
+          repeat: -1,
+          yoyo: true,
+        },
+        duration: 0.91,
+        ease: "sine.inOut",
+      }
+    );
+
+    return () => {
+      fatTl.kill();
+      midTl.kill();
+      skinnyTl.kill();
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-background z-50">
+      <svg
+        ref={svgRef}
+        id="loader"
+        viewBox="0 0 200 80"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-48 h-20"
+      >
+        <g id="fat">
+          <circle
+            cx="31.5"
+            cy="40"
+            r="26.5"
+            stroke="url(#grad1)"
+            strokeWidth="10"
+          />
+          <circle
+            cx="31.5"
+            cy="40"
+            r="18.5"
+            stroke="url(#grad1)"
+            strokeWidth="6"
+          />
+          <circle
+            cx="31.5"
+            cy="40"
+            r="11.5"
+            stroke="url(#grad1)"
+            strokeWidth="3"
+          />
+        </g>
+        
+        <g id="mid">
+          <circle
+            cx="100"
+            cy="40"
+            r="26.5"
+            stroke="url(#grad2)"
+            strokeWidth="8"
+          />
+          <circle
+            cx="100"
+            cy="40"
+            r="18.5"
+            stroke="url(#grad2)"
+            strokeWidth="5"
+          />
+          <circle
+            cx="100"
+            cy="40"
+            r="11.5"
+            stroke="url(#grad2)"
+            strokeWidth="3"
+          />
+        </g>
+        
+        <g id="skinny">
+          <circle
+            cx="168.5"
+            cy="40"
+            r="26.5"
+            stroke="url(#grad3)"
+            strokeWidth="6"
+          />
+          <circle
+            cx="168.5"
+            cy="40"
+            r="18.5"
+            stroke="url(#grad3)"
+            strokeWidth="4"
+          />
+          <circle
+            cx="168.5"
+            cy="40"
+            r="11.5"
+            stroke="url(#grad3)"
+            strokeWidth="2"
+          />
+        </g>
+        
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#1d4ed8" />
+          </linearGradient>
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#047857" />
+          </linearGradient>
+          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#d97706" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+```
+
+## 22. Prisma Database Helper
+
+Create `lib/prisma.ts` (if not already exists):
+
+```typescript lib/prisma.ts
+import { PrismaClient } from "@prisma/client";
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+```
+
+## Need Help?
+- Join the [Developer Whop](https://whop.com/whop-devs)
+- View the template [here](https://github.com/whopio/whop-nextjs-app-template)
+- View the source code of Whop Map [here](https://github.com/0ni-x4/whop-map)
+- Visit our [SDK GitHub repository](https://github.com/whopio/whop-sdk-ts)
+- DM @0ni_x4 on Discord
