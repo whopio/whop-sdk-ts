@@ -61,7 +61,8 @@ const result = await whopApi.findOrCreateForum({
 		},
 
 		// This is who is allowed to create posts inside the forum. Select 'admin' if you
-		// only want the team members to post, or select 'everyone' if any member of the whop can post.
+		// only want the team members to post, or select 'everyone' if any member of the
+		// whop can post. Default value is 'admins'.
 		whoCanPost: "admins" /* Valid values: admins | everyone */,
 	},
 });
