@@ -54,6 +54,15 @@ async function handlePaymentWebhook(
 	if (currency.toLowerCase() !== "usd") return;
 	if (amount_after_fees === null || amount_after_fees === undefined) return;
 
+	console.log("handlePaymentWebhook", {
+		receiptId,
+		userId,
+		amount,
+		currency,
+		amount_after_fees,
+		metadata,
+	});
+
 	await db.transaction(async (tx) => {
 		const existingTransaction = await tx
 			.select()

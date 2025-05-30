@@ -246,7 +246,7 @@ function MessageWinnerButton({ winnerUserId }: { winnerUserId: string }) {
 	return (
 		<Button type="button" className="w-full" asChild>
 			<Link
-				href={`https://whop.com/messages/?toUserId=${winnerUserId}`}
+				href={`https://whop.com/messages/?to_user_id=${winnerUserId}`}
 				target="_blank"
 			>
 				Message winner
