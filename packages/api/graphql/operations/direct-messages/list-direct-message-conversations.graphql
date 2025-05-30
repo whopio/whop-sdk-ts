@@ -1,0 +1,30 @@
+query listDirectMessageConversations(
+	$beforeTimestamp: BigInt
+	$limit: Int
+	$query: String
+	$status: DmsFeedMemberStatuses
+	$unread: Boolean
+) {
+	myDmsChannelsV2(
+		before: $beforeTimestamp
+		limit: $limit
+		query: $query
+		status: $status
+		unread: $unread
+	) {
+		createdAt
+		id
+		isPinned
+		customName
+		isGroupChat
+		feedMembers {
+			username
+			id
+		}
+		isUnread
+		lastMessage: lastPost {
+			content
+			userId
+		}
+	}
+}

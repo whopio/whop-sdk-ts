@@ -1,0 +1,22 @@
+---
+title: List Users For Experience
+description: Fetch an experience.
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listUsersForExperience({
+	// The ID of the experience
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	direction: "asc" /* Valid values: asc | desc */,
+
+	first: 10,
+});
+
+```
