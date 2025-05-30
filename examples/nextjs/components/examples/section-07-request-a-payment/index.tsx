@@ -24,7 +24,7 @@ export function SectionRequestAPayment({
 						const res = await iframeSdk.inAppPurchase(inAppPurchase);
 
 						if (res.status === "ok") {
-							setReceiptId(res.data.receipt_id);
+							setReceiptId(res.data.receiptId);
 							setError(undefined);
 						} else {
 							setReceiptId(undefined);
