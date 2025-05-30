@@ -1,9 +1,16 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { bidsTable, listingsTable, userCreditsTable } from "@/lib/db/schema";
+import {
+	type Listing,
+	bidsTable,
+	listingsTable,
+	userCreditsTable,
+} from "@/lib/db/schema";
 import { verifyUser } from "@/lib/verify-user";
+import { waitUntil } from "@vercel/functions";
 import { and, eq, gt, sql } from "drizzle-orm";
+import { whopApi } from "../whop-api";
 import { sendListing, sendWebsocketMessage } from "./send-websocket-message";
 
 export async function placeBid({ listingId }: { listingId: string }) {
@@ -68,6 +75,7 @@ export async function placeBid({ listingId }: { listingId: string }) {
 			.update(listingsTable)
 			.set({
 				currentPrice: nextBidAmount,
+				numBids: sql`num_bids + 1`,
 				lastBidderUserId: userId,
 			})
 			.where(
@@ -91,4 +99,26 @@ export async function placeBid({ listingId }: { listingId: string }) {
 			{ type: "credits", data: newCredits },
 		),
 	]);
+
+	waitUntil(sendNotification(updatedListing, listing));
+}
+
+async function sendNotification(updatedListing: Listing, oldListing: Listing) {
+	if (oldListing.lastBidderUserId) {
+		const { publicUser: newUser } = await whopApi.getUser({
+			userId: updatedListing.lastBidderUserId ?? "",
+		});
+
+		const newUserName = newUser.name ?? newUser.username;
+
+		await whopApi.sendPushNotification({
+			input: {
+				title: `New bid from ${newUserName}`,
+				content: `"${newUserName} just bid ${updatedListing.currentPrice} for ${updatedListing.title}. You just lost the top spot!"`,
+				experienceId: updatedListing.experienceId,
+				isMention: true,
+				userIds: [oldListing.lastBidderUserId],
+			},
+		});
+	}
 }

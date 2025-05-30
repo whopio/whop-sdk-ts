@@ -1,3 +1,4 @@
+import { ExperienceOverlay } from "@/components/experience-overlay";
 import ExperienceLayoutClient from "./layout.client";
 
 export default function ExperienceLayout({
@@ -8,10 +9,13 @@ export default function ExperienceLayout({
 	params: Promise<{ experienceId: string }>;
 }) {
 	return (
-		<div className="max-w-7xl mx-auto p-6 space-y-8">
-			<ExperienceLayoutClient params={params}>
-				{children}
-			</ExperienceLayoutClient>
-		</div>
+		<>
+			<ExperienceOverlay />
+			<div className="max-w-7xl mx-auto p-6 space-y-8">
+				<ExperienceLayoutClient params={params}>
+					{children}
+				</ExperienceLayoutClient>
+			</div>
+		</>
 	);
 }
