@@ -51,8 +51,8 @@ importers:
         specifier: ^2.0.3
         version: 2.1.0
       '@whop-apps/sdk':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114(react@19.1.0)
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116(react@19.1.0)
       '@whop/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -109,8 +109,8 @@ importers:
         specifier: ^19
         version: 19.1.5(@types/react@19.1.5)
       '@whop-apps/dev-proxy':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -130,8 +130,8 @@ importers:
         specifier: ^2.0.3
         version: 2.1.0
       '@whop-apps/sdk':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114(react@19.1.0)
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116(react@19.1.0)
       '@whop/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -158,8 +158,8 @@ importers:
         specifier: ^19
         version: 19.1.5(@types/react@19.1.5)
       '@whop-apps/dev-proxy':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116
       tailwindcss:
         specifier: ^4
         version: 4.1.7
@@ -173,14 +173,14 @@ importers:
         specifier: ^2.0.3
         version: 2.1.0
       '@whop-apps/dev-proxy':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116
       '@whop-apps/iframe':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116
       '@whop-apps/theme':
-        specifier: 0.0.1-canary.114
-        version: 0.0.1-canary.114(react@19.1.0)
+        specifier: 0.0.1-canary.116
+        version: 0.0.1-canary.116(react@19.1.0)
       '@whop/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -2330,40 +2330,40 @@ packages:
     resolution: {integrity: sha512-Nst5JdK47VIl9UcGwtv2Rcgyn5lWtZ0/mhRQ4G8NN2isxpq2TO30iqHzmwoJycjWuyUfg3GFXqP/gFHXeV57IA==}
     engines: {node: '>=16.0.0'}
 
-  '@whop-apps/api@0.0.1-canary.114':
-    resolution: {integrity: sha512-6jOCqbQRCqXlnPY2n1uu5GWc93N4xynU0YkXutqG/+MTB0kuZxcufiyc2Re35n2pzw944fGEsLqameKcNnqlQw==}
+  '@whop-apps/api@0.0.1-canary.116':
+    resolution: {integrity: sha512-8ts4Y5xy5WSKEzlQ+6ep8W2sXfoHNCc2ncW4PeA0/IaEBJ8TEOEQ+tnzWc9r6YZuQ3NzEJtCUxRh3iJopc9QdQ==}
 
-  '@whop-apps/auth@0.0.1-canary.114':
-    resolution: {integrity: sha512-+6nRalIT1h3tXT2L4TXvkfupPlbAjxTPwcitvbIPU6zJj4gTTnDI3ZnhPO3/r8KDyrIdXSCfXha8LtHtbaiYtw==}
+  '@whop-apps/auth@0.0.1-canary.116':
+    resolution: {integrity: sha512-QDseBEe9F+Y4oDdVpBzoxBXNjsWWjZuMb1m+O9RyFXzjAkhraVCG5FOSVJHkK0ZD2r9w0McFNojfJ+vcpSphSQ==}
 
-  '@whop-apps/core@0.0.1-canary.114':
-    resolution: {integrity: sha512-udvszBk3xFE26a4h4rbTC/cGgnw5Veg0y5oTjNdyRHoa2dyOh/Gnqx4RiF80l1o/sw9vpQMtn1Dh+K2Utq/Eog==}
+  '@whop-apps/core@0.0.1-canary.116':
+    resolution: {integrity: sha512-8dKsoY3NCQXGnDmYvDC4UYeAQnGTPUuqMIWEM3XgFKkK6+JLcKcJ7FfD4pw5kEz7Bops8GQCPO210vlG49YfCQ==}
 
-  '@whop-apps/dev-proxy@0.0.1-canary.114':
-    resolution: {integrity: sha512-MzeWBLid/TMV3LK7wfotcQecnlbd2rKZotzy0Bx8mY7wQ9GcrdMHSNVFM4UgBhlP7ZqYym3In8PvknlEGAnnHw==}
+  '@whop-apps/dev-proxy@0.0.1-canary.116':
+    resolution: {integrity: sha512-7droSqunJt/Qa4wpZIbYXVOqs30F+GT1BQUOGwPThjoX08RW/G9SshS3Sp/uMIA2uX6BH3ZinBrNjhHEfv0p+g==}
     hasBin: true
 
-  '@whop-apps/iframe@0.0.1-canary.114':
-    resolution: {integrity: sha512-J+dNQMRWnlgWkhA6cZKShq/kOCGg1ZkVRKWrj+bzVOAdnfa6lHz4x3SXlgELoc3B/KAEhfKOx5iP7k4m/k6y8Q==}
+  '@whop-apps/iframe@0.0.1-canary.116':
+    resolution: {integrity: sha512-66IFLJOQ9JZ5o/S7yZdT8uO9L2fWgHIJurtWL6OufEsec4e+/LLLNRL/sD+BHw9LLunNQURHfvoNYPQLUTeqVQ==}
 
-  '@whop-apps/oauth@0.0.1-canary.114':
-    resolution: {integrity: sha512-IOBkmI5kyvi9EEY2XkH0jo6ug/n3x6ZvMHer8318w9IXpZSx9gIDgJGnkNWwVToPaNAwkVivng52Gu9oUNCD1Q==}
+  '@whop-apps/oauth@0.0.1-canary.116':
+    resolution: {integrity: sha512-TvjR5yGZ/Yb0OvsccY9sEYiVBgU331TuyQyMlDbT1QJNW8Fk6hLYejbMYmgvGyVF6/7nUl6LjV3aWOqkKwo4UQ==}
 
-  '@whop-apps/sdk@0.0.1-canary.114':
-    resolution: {integrity: sha512-vLJSBEf2+qN0/N/XlS3kDLM9xyk+41zTJK1gjknziPnc5lO5pP2ye8EKoPNi9tUnNt8NUewVxPRPMdz19osgVw==}
+  '@whop-apps/sdk@0.0.1-canary.116':
+    resolution: {integrity: sha512-wMLqm6470FYtHIpYpRMaqcRnGUJ2bE8RSulTUWMVeFSymHnZjuthZ+SgP8GsJlBOz8HtVWYTpqguTK5iLnWDpg==}
     hasBin: true
 
-  '@whop-apps/theme@0.0.1-canary.114':
-    resolution: {integrity: sha512-eyLBKpc3hgNt8IEmZ7Qq16QDw7yCnoChnYrglQ0gf/a9yiOaYAHh5QKlUq2GX04YK6kCTUgDzJAbNOUyUH+bpg==}
+  '@whop-apps/theme@0.0.1-canary.116':
+    resolution: {integrity: sha512-+80ArNsZ8kLBMuAT6+oUSAdq22xcL2J7tWN3OerQMzbByChsv855wyjpmkXB8EJeJLqVZo7AxHqcqsjBsOENKA==}
     peerDependencies:
       react: ^18.2.0
 
-  '@whop-apps/typed-api@0.0.1-canary.114':
-    resolution: {integrity: sha512-UL7Eqdt0kMpI+jeErqekN8bfPPD0CZcUevMeYlVR7KKOBq9OAf0585trRsPZhgzjJRnpEcJH0DRp5rDO5CKVMg==}
+  '@whop-apps/typed-api@0.0.1-canary.116':
+    resolution: {integrity: sha512-4++7N/a/OQk+R4CQ8Dx6Du0fAM8JHIMG3GCyP5p3/oVEHQw7Bm/R8Ct1PJ1TjWmChjySFQ5QExHIBXLc8v1w3g==}
     hasBin: true
 
-  '@whop-apps/typed-transport@0.0.1-canary.114':
-    resolution: {integrity: sha512-QKXtX+B4uixgqte4kO6b14yodUTbKBsI5ElBJi7n6SKaqgp14i1ft0l9jSVG+85OOdE6nU7S/koN+fwOIrqEVQ==}
+  '@whop-apps/typed-transport@0.0.1-canary.116':
+    resolution: {integrity: sha512-JI8tBQIzENmet9VKmVpqb5DjtbFbsm5DGlcPID+bHXz+0dlssND+aupxJnRJaU/M/bksCf5B059Vu8uTARaymA==}
 
   '@zeit/schemas@2.36.0':
     resolution: {integrity: sha512-7kjMwcChYEzMKjeex9ZFXkt1AyNov9R5HZtjBKVsmVpw7pa7ZtlCGvCBC2vnnXctaYN+aRI61HjIqeetZW5ROg==}
@@ -8579,67 +8579,67 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@whop-apps/api@0.0.1-canary.114':
+  '@whop-apps/api@0.0.1-canary.116':
     dependencies:
-      '@whop-apps/auth': 0.0.1-canary.114
-      '@whop-apps/core': 0.0.1-canary.114
-      '@whop-apps/typed-api': 0.0.1-canary.114
+      '@whop-apps/auth': 0.0.1-canary.116
+      '@whop-apps/core': 0.0.1-canary.116
+      '@whop-apps/typed-api': 0.0.1-canary.116
       openapi-typescript-helpers: 0.0.2
 
-  '@whop-apps/auth@0.0.1-canary.114':
+  '@whop-apps/auth@0.0.1-canary.116':
     dependencies:
-      '@whop-apps/core': 0.0.1-canary.114
+      '@whop-apps/core': 0.0.1-canary.116
       cookie: 1.0.2
       jose: 4.15.9
 
-  '@whop-apps/core@0.0.1-canary.114': {}
+  '@whop-apps/core@0.0.1-canary.116': {}
 
-  '@whop-apps/dev-proxy@0.0.1-canary.114':
+  '@whop-apps/dev-proxy@0.0.1-canary.116':
     dependencies:
       '@types/http-proxy': 1.17.16
-      '@whop-apps/core': 0.0.1-canary.114
+      '@whop-apps/core': 0.0.1-canary.116
       cookie: 1.0.2
       http-proxy: 1.18.1
       jose: 4.15.9
     transitivePeerDependencies:
       - debug
 
-  '@whop-apps/iframe@0.0.1-canary.114':
+  '@whop-apps/iframe@0.0.1-canary.116':
     dependencies:
-      '@whop-apps/core': 0.0.1-canary.114
-      '@whop-apps/typed-transport': 0.0.1-canary.114
+      '@whop-apps/core': 0.0.1-canary.116
+      '@whop-apps/typed-transport': 0.0.1-canary.116
       zod: 3.25.21
 
-  '@whop-apps/oauth@0.0.1-canary.114':
+  '@whop-apps/oauth@0.0.1-canary.116':
     dependencies:
-      '@whop-apps/auth': 0.0.1-canary.114
-      '@whop-apps/core': 0.0.1-canary.114
-      '@whop-apps/iframe': 0.0.1-canary.114
-      '@whop-apps/typed-api': 0.0.1-canary.114
+      '@whop-apps/auth': 0.0.1-canary.116
+      '@whop-apps/core': 0.0.1-canary.116
+      '@whop-apps/iframe': 0.0.1-canary.116
+      '@whop-apps/typed-api': 0.0.1-canary.116
       zod: 3.25.21
 
-  '@whop-apps/sdk@0.0.1-canary.114(react@19.1.0)':
+  '@whop-apps/sdk@0.0.1-canary.116(react@19.1.0)':
     dependencies:
-      '@whop-apps/api': 0.0.1-canary.114
-      '@whop-apps/auth': 0.0.1-canary.114
-      '@whop-apps/core': 0.0.1-canary.114
-      '@whop-apps/dev-proxy': 0.0.1-canary.114
-      '@whop-apps/iframe': 0.0.1-canary.114
-      '@whop-apps/oauth': 0.0.1-canary.114
-      '@whop-apps/theme': 0.0.1-canary.114(react@19.1.0)
+      '@whop-apps/api': 0.0.1-canary.116
+      '@whop-apps/auth': 0.0.1-canary.116
+      '@whop-apps/core': 0.0.1-canary.116
+      '@whop-apps/dev-proxy': 0.0.1-canary.116
+      '@whop-apps/iframe': 0.0.1-canary.116
+      '@whop-apps/oauth': 0.0.1-canary.116
+      '@whop-apps/theme': 0.0.1-canary.116(react@19.1.0)
     transitivePeerDependencies:
       - debug
       - react
 
-  '@whop-apps/theme@0.0.1-canary.114(react@19.1.0)':
+  '@whop-apps/theme@0.0.1-canary.116(react@19.1.0)':
     dependencies:
       react: 19.1.0
 
-  '@whop-apps/typed-api@0.0.1-canary.114':
+  '@whop-apps/typed-api@0.0.1-canary.116':
     dependencies:
-      '@whop-apps/core': 0.0.1-canary.114
+      '@whop-apps/core': 0.0.1-canary.116
 
-  '@whop-apps/typed-transport@0.0.1-canary.114':
+  '@whop-apps/typed-transport@0.0.1-canary.116':
     dependencies:
       zod: 3.25.21
 
