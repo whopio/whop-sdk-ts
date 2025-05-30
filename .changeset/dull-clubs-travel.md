@@ -2,4 +2,4 @@
 "@whop/checkout": patch
 ---
 
-allow passing api session to embedded checkout
+support data-whop-checkout-session-id for embedded checkout
