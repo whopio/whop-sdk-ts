@@ -36,7 +36,17 @@ export async function GET() {
 }
 
 async function sendAboutToFinishNotification(listing: Listing) {
-	if (!listing.lastBidderUserId) return;
+	if (!listing.lastBidderUserId) {
+		await whopApi.sendNotification({
+			input: {
+				title: "⏰ Auction Ending Soon!",
+				content: `"${listing.title}" is about to finish and no bids have been placed yet. Will you be the first?`,
+				experienceId: listing.experienceId,
+				isMention: true,
+			},
+		});
+		return;
+	}
 
 	const { publicUser: currentBidder } = await whopApi.getUser({
 		userId: listing.lastBidderUserId,
