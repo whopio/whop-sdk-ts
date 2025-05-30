@@ -1,11 +1,11 @@
 query listUsersForExperience(
-	$publicExperienceId: ID!
+	$experienceId: ID!
 	$after: String
 	$before: String
 	$direction: Direction
 	$first: Int
 ) {
-	publicExperience(id: $publicExperienceId) {
+	publicExperience(id: $experienceId) {
 		users(
 			after: $after
 			before: $before
