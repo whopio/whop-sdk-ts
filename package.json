@@ -15,7 +15,7 @@
 		"@changesets/cli": "2.29.4",
 		"human-id": "4.1.1",
 		"lefthook": "1.11.13",
-		"turbo": "2.5.3",
+		"turbo": "2.5.4",
 		"typescript": "5.8.3",
 		"yaml": "2.8.0"
 	},
