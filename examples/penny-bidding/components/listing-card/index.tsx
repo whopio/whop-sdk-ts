@@ -114,7 +114,12 @@ function ListingCta({
 				/>
 			);
 		case "purchase":
-			return <PurchaseButton listingId={listing.id} />;
+			return (
+				<PurchaseButton
+					listingId={listing.id}
+					listingQuestion={listing.fulfillmentQuestion}
+				/>
+			);
 		default:
 			return <DisabledCta status={status} />;
 	}
@@ -309,11 +314,12 @@ function PurchaseButton({
 
 				<form action={mutateAsyncWithoutThrowing}>
 					{listingQuestion && (
-						<div className="space-y-2">
+						<div className="space-y-2 pb-3">
 							<p className="text-sm text-muted-foreground">{listingQuestion}</p>
 							<Input
 								placeholder="Enter your answer"
 								required
+								name="listingAnswer"
 								className="w-full"
 								disabled={isPending}
 							/>
