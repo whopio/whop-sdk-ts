@@ -1,7 +1,4 @@
----
-title: "Embed checkout (coming soon)"
-description: "Learn how to embed Whop's checkout flow on your website"
----
+# @whop/checkout - Embed Whop checkout on your page
 
 Embedded checkout allows you to embed Whop's checkout flow on your own website in two easy steps. This allows you to offer your users a seamless checkout experience without leaving your website.
 

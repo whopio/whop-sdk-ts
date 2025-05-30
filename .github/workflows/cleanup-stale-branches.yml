@@ -1,0 +1,24 @@
+name: cleanup-stale-branches
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  run-cleanup:
+    runs-on: ubuntu-latest
+    name: cleanup old branches
+    steps:
+      - name: delete old branches
+        uses: phpdocker-io/github-actions-delete-abandoned-branches@v2.0.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          last_commit_age_days: 7
+          dry_run: no
+      - name: get output
+        run: "echo 'Deleted branches: ${{ steps.delete_stuff.outputs.deleted_branches }}'"
