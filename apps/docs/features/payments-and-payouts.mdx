@@ -58,7 +58,7 @@ export default function PaymentButton({ userId, experienceId }: {
   userId: string;
   experienceId: string;
 }) {
-	
+
   const iframeSdk = useIframeSdk();
   const [receiptId, setReceiptId] = useState<string>();
   const [error, setError] = useState<string>();
@@ -159,13 +159,13 @@ async function sendPayout(
   const ledgerAccount = await whopApi.getCompanyLedgerAccount({ companyId });
 
   // 2. Transfer funds to the recipient
-  await whopApi.transferFunds({
+  await whopApi.payUser({
     input: {
       amount: amount,
       currency: "usd",
-      // Username of the recipient
+      // Username or ID or ledger account ID of the recipient user
       destinationId: recipientUsername,
-      // Your company's ledger account ID
+      // Your company's ledger account ID that can be retrieve from whopApi.getCompanyLedgerAccount()
       ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
       // Optional transfer fee in percentage
       transferFee: ledgerAccount.company?.ledgerAccount.transferFee
