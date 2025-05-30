@@ -47,12 +47,16 @@ async function handlePaymentWebhook(
 	userId: string | null | undefined,
 	amount: number,
 	currency: string,
-	amount_after_fees: number | null | undefined,
+	amount_after_fees: number | string | null | undefined,
 	metadata: PaymentMetadata,
 ) {
 	if (!userId) return;
 	if (currency.toLowerCase() !== "usd") return;
 	if (amount_after_fees === null || amount_after_fees === undefined) return;
+	const amountAfterFees =
+		typeof amount_after_fees === "string"
+			? amount_after_fees
+			: amount_after_fees.toFixed(2);
 
 	console.log("handlePaymentWebhook", {
 		receiptId,
@@ -61,6 +65,7 @@ async function handlePaymentWebhook(
 		currency,
 		amount_after_fees,
 		metadata,
+		amountAfterFees,
 	});
 
 	await db.transaction(async (tx) => {
@@ -77,12 +82,12 @@ async function handlePaymentWebhook(
 				receiptId,
 				amount: amount.toFixed(2),
 				currency,
-				amountAfterFees: amount_after_fees?.toFixed(2) ?? "0.00",
+				amountAfterFees,
 				purchaseType: metadata.type,
 				experienceId: metadata.experienceId,
 			});
 
-			const creditsAmount = Math.floor(amount_after_fees);
+			const creditsAmount = Math.floor(Number.parseFloat(amountAfterFees));
 
 			const newCredits = await appendCredits(userId, creditsAmount, tx);
 
@@ -100,7 +105,7 @@ async function handlePaymentWebhook(
 				receiptId,
 				amount: amount.toFixed(2),
 				currency,
-				amountAfterFees: amount_after_fees?.toFixed(2) ?? "0.00",
+				amountAfterFees,
 				purchaseType: metadata.type,
 				experienceId: metadata.experienceId,
 				listingId: metadata.listingId,
