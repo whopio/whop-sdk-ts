@@ -1,5 +1,8 @@
 import { appendCredits } from "@/lib/actions/append-credits";
-import { sendListing } from "@/lib/actions/send-websocket-message";
+import {
+	sendListing,
+	sendWebsocketMessage,
+} from "@/lib/actions/send-websocket-message";
 import { db } from "@/lib/db";
 import { listingsTable, paymentsTable } from "@/lib/db/schema";
 import type { PaymentMetadata } from "@/lib/types";
@@ -72,7 +75,14 @@ async function handlePaymentWebhook(
 
 			const creditsAmount = Math.floor(amount_after_fees);
 
-			await appendCredits(userId, creditsAmount, tx);
+			const newCredits = await appendCredits(userId, creditsAmount, tx);
+
+			waitUntil(
+				sendWebsocketMessage(
+					{ user: userId },
+					{ type: "credits", data: newCredits },
+				),
+			);
 		}
 
 		if (metadata.type === "listing") {
