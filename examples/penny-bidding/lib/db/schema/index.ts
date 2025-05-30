@@ -73,6 +73,13 @@ export const listingsTable = pgTable(
 		}),
 		/// Set in the webhook when the auction payment is confirmed.
 		fulfillmentReceiptId: varchar("fulfillment_receipt_id", { length: 255 }),
+
+		numBids: integer("num_bids").notNull().default(0),
+		minimumBidsCount: integer("minimum_bids_count").notNull().default(1),
+		lastNotificationSentAt: timestamp("last_notification_sent_at", {
+			mode: "string",
+			withTimezone: true,
+		}),
 	},
 	(t) => [index("experience_id").on(t.experienceId, t.createdAt.desc())],
 );

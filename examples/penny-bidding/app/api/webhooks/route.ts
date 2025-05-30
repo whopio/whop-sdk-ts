@@ -4,8 +4,9 @@ import {
 	sendWebsocketMessage,
 } from "@/lib/actions/send-websocket-message";
 import { db } from "@/lib/db";
-import { listingsTable, paymentsTable } from "@/lib/db/schema";
+import { type Listing, listingsTable, paymentsTable } from "@/lib/db/schema";
 import type { PaymentMetadata } from "@/lib/types";
+import { whopApi } from "@/lib/whop-api";
 import { waitUntil } from "@vercel/functions";
 import { makeWebhookValidator } from "@whop/api";
 import { eq } from "drizzle-orm";
@@ -121,7 +122,29 @@ async function handlePaymentWebhook(
 
 			if (updatedListing) {
 				waitUntil(sendListing(updatedListing));
+				waitUntil(sendNotification(updatedListing));
 			}
 		}
+	});
+}
+
+async function sendNotification(updatedListing: Listing) {
+	// Get company id
+	const { experience } = await whopApi.getExperience({
+		experienceId: updatedListing.experienceId,
+	});
+	const { publicUser: bidderUser } = await whopApi.getUser({
+		userId: updatedListing.lastBidderUserId ?? "",
+	});
+
+	const name = bidderUser.name ?? bidderUser.username;
+
+	await whopApi.sendNotification({
+		input: {
+			title: `${name} just purchased an item!`,
+			content: `${name} just purchased ${updatedListing.title} for ${updatedListing.currentPrice}. You can now fulfill the order.`,
+			companyTeamId: experience.company.id,
+			isMention: true,
+		},
 	});
 }
