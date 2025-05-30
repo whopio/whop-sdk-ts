@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  yaml: 2.8.0
+
 importers:
 
   .:
@@ -14,6 +17,9 @@ importers:
       '@changesets/cli':
         specifier: 2.29.4
         version: 2.29.4
+      human-id:
+        specifier: 4.1.1
+        version: 4.1.1
       lefthook:
         specifier: 1.11.13
         version: 1.11.13
@@ -23,6 +29,9 @@ importers:
       typescript:
         specifier: 5.8.3
         version: 5.8.3
+      yaml:
+        specifier: 2.8.0
+        version: 2.8.0
 
   apps/docs:
     devDependencies:
@@ -42,8 +51,8 @@ importers:
         specifier: ^2.0.3
         version: 2.1.0
       '@whop-apps/sdk':
-        specifier: 0.0.1-canary.111
-        version: 0.0.1-canary.111(react@19.1.0)
+        specifier: 0.0.1-canary.114
+        version: 0.0.1-canary.114(react@19.1.0)
       '@whop/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -100,8 +109,8 @@ importers:
         specifier: ^19
         version: 19.1.5(@types/react@19.1.5)
       '@whop-apps/dev-proxy':
-        specifier: 0.0.1-canary.110
-        version: 0.0.1-canary.110
+        specifier: 0.0.1-canary.114
+        version: 0.0.1-canary.114
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -149,8 +158,8 @@ importers:
         specifier: ^19
         version: 19.1.5(@types/react@19.1.5)
       '@whop-apps/dev-proxy':
-        specifier: 0.0.1-canary.113
-        version: 0.0.1-canary.113
+        specifier: 0.0.1-canary.114
+        version: 0.0.1-canary.114
       tailwindcss:
         specifier: ^4
         version: 4.1.7
@@ -269,7 +278,7 @@ importers:
         version: 2.7.0
       tsup:
         specifier: 8.5.0
-        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.1)
+        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       typescript:
         specifier: latest
         version: 5.8.3
@@ -296,7 +305,7 @@ importers:
         version: 2.7.0
       tsup:
         specifier: 8.5.0
-        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.1)
+        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       typescript:
         specifier: latest
         version: 5.8.3
@@ -333,7 +342,7 @@ importers:
         version: 22.15.24
       tsup:
         specifier: 8.5.0
-        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.1)
+        version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0)
       typescript:
         specifier: latest
         version: 5.8.3
@@ -2321,86 +2330,37 @@ packages:
     resolution: {integrity: sha512-Nst5JdK47VIl9UcGwtv2Rcgyn5lWtZ0/mhRQ4G8NN2isxpq2TO30iqHzmwoJycjWuyUfg3GFXqP/gFHXeV57IA==}
     engines: {node: '>=16.0.0'}
 
-  '@whop-apps/api@0.0.1-canary.111':
-    resolution: {integrity: sha512-Lze58P9mRvaENWbaOmYttw+2rPhfgAicSd0UXvJMdd/qwjar5NJq3iArKDDecVPUso86kkwKOs9Kfo6fivaLZg==}
-
   '@whop-apps/api@0.0.1-canary.114':
     resolution: {integrity: sha512-6jOCqbQRCqXlnPY2n1uu5GWc93N4xynU0YkXutqG/+MTB0kuZxcufiyc2Re35n2pzw944fGEsLqameKcNnqlQw==}
-
-  '@whop-apps/auth@0.0.1-canary.111':
-    resolution: {integrity: sha512-0POUiJKqigIzfzJHusTw6ElOgT5oX5i09Zvj8n9k3kph7FQMZrOahbXlcL2XgRTjpmssU9dQATv3vcVJv4Y8Fw==}
 
   '@whop-apps/auth@0.0.1-canary.114':
     resolution: {integrity: sha512-+6nRalIT1h3tXT2L4TXvkfupPlbAjxTPwcitvbIPU6zJj4gTTnDI3ZnhPO3/r8KDyrIdXSCfXha8LtHtbaiYtw==}
 
-  '@whop-apps/core@0.0.1-canary.110':
-    resolution: {integrity: sha512-caKD/uGzk4m7m9jEYtMzJ78At67frWQfIUA1J6vqkft3XBd3/PbBr50DeLRjpifkSbCb2nbmDsaSwBdJh29yVw==}
-
-  '@whop-apps/core@0.0.1-canary.111':
-    resolution: {integrity: sha512-Mp5RLwiamh1RKcx+4y4UW0OjjWKl3iPnTIsvHqZA5cQtgdSTRWRkYfmMUVF6jPef+3lPF3gCzK/CJrL4GdOZSw==}
-
-  '@whop-apps/core@0.0.1-canary.113':
-    resolution: {integrity: sha512-XBypB5GZdgNtdtNDa23RdNrYszzP23maHIvlSip1KMIOrILGcuzW58OKuWJFJaURadyzIzDcjfft/EmmCEh+FA==}
-
   '@whop-apps/core@0.0.1-canary.114':
     resolution: {integrity: sha512-udvszBk3xFE26a4h4rbTC/cGgnw5Veg0y5oTjNdyRHoa2dyOh/Gnqx4RiF80l1o/sw9vpQMtn1Dh+K2Utq/Eog==}
-
-  '@whop-apps/dev-proxy@0.0.1-canary.110':
-    resolution: {integrity: sha512-kuaeVYcyZshCIVubNUVism0nt5oTTC5QXopZv2SG2Bk/20fOwPgKic7W6gy+egCA81njBteL9lNe5hG3AtuCHA==}
-    hasBin: true
-
-  '@whop-apps/dev-proxy@0.0.1-canary.111':
-    resolution: {integrity: sha512-62523NP1dqWI9z6gbs4ApX4DCCGA2WzSUFNzxyLndZWWsrzjdMYgCG6BSQKOdTAscXBSXr1mn5n58QrfC1WtYw==}
-    hasBin: true
-
-  '@whop-apps/dev-proxy@0.0.1-canary.113':
-    resolution: {integrity: sha512-6epOA3+zR2wxXNv1yOuhqyX3pd5Pa37IZrV2j+JUdQtzeAbNwCLgaFVNTvnNhUNGzH7Vl405e7mqAiDSo84Vpg==}
-    hasBin: true
 
   '@whop-apps/dev-proxy@0.0.1-canary.114':
     resolution: {integrity: sha512-MzeWBLid/TMV3LK7wfotcQecnlbd2rKZotzy0Bx8mY7wQ9GcrdMHSNVFM4UgBhlP7ZqYym3In8PvknlEGAnnHw==}
     hasBin: true
 
-  '@whop-apps/iframe@0.0.1-canary.111':
-    resolution: {integrity: sha512-yS5yArmCuxBn+Wbp66ILKKSZplPMtxl89edZTH8apuS7IblDZBKJPoIiJ6fK8TJ+WAml12CpgPe7fZx5MqQvIg==}
-
   '@whop-apps/iframe@0.0.1-canary.114':
     resolution: {integrity: sha512-J+dNQMRWnlgWkhA6cZKShq/kOCGg1ZkVRKWrj+bzVOAdnfa6lHz4x3SXlgELoc3B/KAEhfKOx5iP7k4m/k6y8Q==}
-
-  '@whop-apps/oauth@0.0.1-canary.111':
-    resolution: {integrity: sha512-CZ3cShyeRPY3bfS2fQJwrR4MssMSoAGKm6TAXQTGiZNO9ZW19GnyliLbIZpiO/c1y/184QkqPHfZhQvljXhu9w==}
 
   '@whop-apps/oauth@0.0.1-canary.114':
     resolution: {integrity: sha512-IOBkmI5kyvi9EEY2XkH0jo6ug/n3x6ZvMHer8318w9IXpZSx9gIDgJGnkNWwVToPaNAwkVivng52Gu9oUNCD1Q==}
 
-  '@whop-apps/sdk@0.0.1-canary.111':
-    resolution: {integrity: sha512-lySM5zOye4JCaXSB/8q+QdMZk8uZEJ2yHWEEH9GDYjrpBOUgoIhAFEksVx2zEPPTZCeEBi0ufbCp8X6z/Kcy1Q==}
-    hasBin: true
-
   '@whop-apps/sdk@0.0.1-canary.114':
     resolution: {integrity: sha512-vLJSBEf2+qN0/N/XlS3kDLM9xyk+41zTJK1gjknziPnc5lO5pP2ye8EKoPNi9tUnNt8NUewVxPRPMdz19osgVw==}
     hasBin: true
-
-  '@whop-apps/theme@0.0.1-canary.111':
-    resolution: {integrity: sha512-WrNGnJUzTqAYHzobgqePZJcpHhg/LEDLleWHawO9sK6K34I4qIE+Yt3Qhby4Ev95AvUAA4RhkPQPTf2/dxbiiQ==}
-    peerDependencies:
-      react: ^18.2.0
 
   '@whop-apps/theme@0.0.1-canary.114':
     resolution: {integrity: sha512-eyLBKpc3hgNt8IEmZ7Qq16QDw7yCnoChnYrglQ0gf/a9yiOaYAHh5QKlUq2GX04YK6kCTUgDzJAbNOUyUH+bpg==}
     peerDependencies:
       react: ^18.2.0
 
-  '@whop-apps/typed-api@0.0.1-canary.111':
-    resolution: {integrity: sha512-XUe5nTrEOh7x4cptw5cxKtU/tO04nEWLJ20dnJl0Bf4YRbDb3hCFjJRK/ox4MrY+icW8qQUu72Gr1TQAtNgZtA==}
-    hasBin: true
-
   '@whop-apps/typed-api@0.0.1-canary.114':
     resolution: {integrity: sha512-UL7Eqdt0kMpI+jeErqekN8bfPPD0CZcUevMeYlVR7KKOBq9OAf0585trRsPZhgzjJRnpEcJH0DRp5rDO5CKVMg==}
     hasBin: true
-
-  '@whop-apps/typed-transport@0.0.1-canary.111':
-    resolution: {integrity: sha512-jvs9C11P4VGhNgREk4JDnFGSBeSw+GS2ORvnZJgS0o2AxBevB8nAKPElRArEEYrPFmNasoi5t0KcF5EkEoJ+wA==}
 
   '@whop-apps/typed-transport@0.0.1-canary.114':
     resolution: {integrity: sha512-QKXtX+B4uixgqte4kO6b14yodUTbKBsI5ElBJi7n6SKaqgp14i1ft0l9jSVG+85OOdE6nU7S/koN+fwOIrqEVQ==}
@@ -2972,10 +2932,6 @@ packages:
 
   cookie-signature@1.0.6:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
-
-  cookie@0.5.0:
-    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
-    engines: {node: '>= 0.6'}
 
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
@@ -5058,7 +5014,7 @@ packages:
       jiti: '>=1.21.0'
       postcss: '>=8.0.9'
       tsx: ^4.8.1
-      yaml: ^2.4.2
+      yaml: 2.8.0
     peerDependenciesMeta:
       jiti:
         optional: true
@@ -6165,9 +6121,9 @@ packages:
   yaml-ast-parser@0.0.43:
     resolution: {integrity: sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A==}
 
-  yaml@2.7.1:
-    resolution: {integrity: sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==}
-    engines: {node: '>= 14'}
+  yaml@2.8.0:
+    resolution: {integrity: sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==}
+    engines: {node: '>= 14.6'}
     hasBin: true
 
   yargs-parser@18.1.3:
@@ -6933,7 +6889,7 @@ snapshots:
       string-env-interpolation: 1.0.1
       ts-log: 2.2.7
       tslib: 2.8.1
-      yaml: 2.7.1
+      yaml: 2.8.0
       yargs: 17.7.2
     optionalDependencies:
       '@parcel/watcher': 2.5.1
@@ -7884,7 +7840,7 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.17.1)
       jsonpointer: 5.0.1
       leven: 4.0.0
-      yaml: 2.7.1
+      yaml: 2.8.0
 
   '@mintlify/prebuild@1.0.510(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)':
     dependencies:
@@ -8534,7 +8490,7 @@ snapshots:
 
   '@types/http-proxy@1.17.16':
     dependencies:
-      '@types/node': 22.15.24
+      '@types/node': 20.17.50
 
   '@types/js-yaml@4.0.9': {}
 
@@ -8623,13 +8579,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@whop-apps/api@0.0.1-canary.111':
-    dependencies:
-      '@whop-apps/auth': 0.0.1-canary.111
-      '@whop-apps/core': 0.0.1-canary.111
-      '@whop-apps/typed-api': 0.0.1-canary.111
-      openapi-typescript-helpers: 0.0.2
-
   '@whop-apps/api@0.0.1-canary.114':
     dependencies:
       '@whop-apps/auth': 0.0.1-canary.114
@@ -8637,55 +8586,13 @@ snapshots:
       '@whop-apps/typed-api': 0.0.1-canary.114
       openapi-typescript-helpers: 0.0.2
 
-  '@whop-apps/auth@0.0.1-canary.111':
-    dependencies:
-      '@whop-apps/core': 0.0.1-canary.111
-      cookie: 0.5.0
-      jose: 4.15.9
-
   '@whop-apps/auth@0.0.1-canary.114':
     dependencies:
       '@whop-apps/core': 0.0.1-canary.114
       cookie: 1.0.2
       jose: 4.15.9
 
-  '@whop-apps/core@0.0.1-canary.110': {}
-
-  '@whop-apps/core@0.0.1-canary.111': {}
-
-  '@whop-apps/core@0.0.1-canary.113': {}
-
   '@whop-apps/core@0.0.1-canary.114': {}
-
-  '@whop-apps/dev-proxy@0.0.1-canary.110':
-    dependencies:
-      '@types/http-proxy': 1.17.16
-      '@whop-apps/core': 0.0.1-canary.110
-      cookie: 0.5.0
-      http-proxy: 1.18.1
-      jose: 4.15.9
-    transitivePeerDependencies:
-      - debug
-
-  '@whop-apps/dev-proxy@0.0.1-canary.111':
-    dependencies:
-      '@types/http-proxy': 1.17.16
-      '@whop-apps/core': 0.0.1-canary.111
-      cookie: 0.5.0
-      http-proxy: 1.18.1
-      jose: 4.15.9
-    transitivePeerDependencies:
-      - debug
-
-  '@whop-apps/dev-proxy@0.0.1-canary.113':
-    dependencies:
-      '@types/http-proxy': 1.17.16
-      '@whop-apps/core': 0.0.1-canary.113
-      cookie: 1.0.2
-      http-proxy: 1.18.1
-      jose: 4.15.9
-    transitivePeerDependencies:
-      - debug
 
   '@whop-apps/dev-proxy@0.0.1-canary.114':
     dependencies:
@@ -8697,24 +8604,10 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@whop-apps/iframe@0.0.1-canary.111':
-    dependencies:
-      '@whop-apps/core': 0.0.1-canary.111
-      '@whop-apps/typed-transport': 0.0.1-canary.111
-      zod: 3.25.21
-
   '@whop-apps/iframe@0.0.1-canary.114':
     dependencies:
       '@whop-apps/core': 0.0.1-canary.114
       '@whop-apps/typed-transport': 0.0.1-canary.114
-      zod: 3.25.21
-
-  '@whop-apps/oauth@0.0.1-canary.111':
-    dependencies:
-      '@whop-apps/auth': 0.0.1-canary.111
-      '@whop-apps/core': 0.0.1-canary.111
-      '@whop-apps/iframe': 0.0.1-canary.111
-      '@whop-apps/typed-api': 0.0.1-canary.111
       zod: 3.25.21
 
   '@whop-apps/oauth@0.0.1-canary.114':
@@ -8724,19 +8617,6 @@ snapshots:
       '@whop-apps/iframe': 0.0.1-canary.114
       '@whop-apps/typed-api': 0.0.1-canary.114
       zod: 3.25.21
-
-  '@whop-apps/sdk@0.0.1-canary.111(react@19.1.0)':
-    dependencies:
-      '@whop-apps/api': 0.0.1-canary.111
-      '@whop-apps/auth': 0.0.1-canary.111
-      '@whop-apps/core': 0.0.1-canary.111
-      '@whop-apps/dev-proxy': 0.0.1-canary.111
-      '@whop-apps/iframe': 0.0.1-canary.111
-      '@whop-apps/oauth': 0.0.1-canary.111
-      '@whop-apps/theme': 0.0.1-canary.111(react@19.1.0)
-    transitivePeerDependencies:
-      - debug
-      - react
 
   '@whop-apps/sdk@0.0.1-canary.114(react@19.1.0)':
     dependencies:
@@ -8751,25 +8631,13 @@ snapshots:
       - debug
       - react
 
-  '@whop-apps/theme@0.0.1-canary.111(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-
   '@whop-apps/theme@0.0.1-canary.114(react@19.1.0)':
     dependencies:
       react: 19.1.0
 
-  '@whop-apps/typed-api@0.0.1-canary.111':
-    dependencies:
-      '@whop-apps/core': 0.0.1-canary.111
-
   '@whop-apps/typed-api@0.0.1-canary.114':
     dependencies:
       '@whop-apps/core': 0.0.1-canary.114
-
-  '@whop-apps/typed-transport@0.0.1-canary.111':
-    dependencies:
-      zod: 3.25.21
 
   '@whop-apps/typed-transport@0.0.1-canary.114':
     dependencies:
@@ -9371,8 +9239,6 @@ snapshots:
   convert-source-map@2.0.0: {}
 
   cookie-signature@1.0.6: {}
-
-  cookie@0.5.0: {}
 
   cookie@0.7.1: {}
 
@@ -11953,13 +11819,13 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.7.1):
+  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.8.0):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 2.4.2
       postcss: 8.5.3
-      yaml: 2.7.1
+      yaml: 2.8.0
 
   postcss@8.4.31:
     dependencies:
@@ -12974,7 +12840,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.1):
+  tsup@8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.8.0):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.25.4)
       cac: 6.7.14
@@ -12985,7 +12851,7 @@ snapshots:
       fix-dts-default-cjs-exports: 1.0.1
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.7.1)
+      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.8.0)
       resolve-from: 5.0.0
       rollup: 4.40.2
       source-map: 0.8.0-beta.0
@@ -13242,7 +13108,7 @@ snapshots:
   vfile-matter@5.0.1:
     dependencies:
       vfile: 6.0.3
-      yaml: 2.7.1
+      yaml: 2.8.0
 
   vfile-message@4.0.2:
     dependencies:
@@ -13375,7 +13241,7 @@ snapshots:
 
   yaml-ast-parser@0.0.43: {}
 
-  yaml@2.7.1: {}
+  yaml@2.8.0: {}
 
   yargs-parser@18.1.3:
     dependencies:

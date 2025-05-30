@@ -22,7 +22,7 @@
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
-		"@whop-apps/dev-proxy": "0.0.1-canary.113",
+		"@whop-apps/dev-proxy": "0.0.1-canary.114",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}
