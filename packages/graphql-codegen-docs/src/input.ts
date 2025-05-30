@@ -145,7 +145,10 @@ class PrimitiveType extends BaseType {
 	}
 	exampleString(): string {
 		if (this.associatedField?.name === "after") {
-			return `"pageCursor.endCursor"`;
+			return `"pageInfo.endCursor"`;
+		}
+		if (this.associatedField?.name === "before") {
+			return `"pageInfo.startCursor"`;
 		}
 		return `"some string"`;
 	}
