@@ -10,9 +10,9 @@ const result = await whopApi.listUsersForExperience({
 	// The ID of the experience
 	experienceId: "exp_XXXXXXXX" /* Required! */,
 
-	after: "pageCursor.endCursor",
+	after: "pageInfo.endCursor",
 
-	before: "some string",
+	before: "pageInfo.startCursor",
 
 	direction: "asc" /* Valid values: asc | desc */,
 
