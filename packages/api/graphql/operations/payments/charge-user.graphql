@@ -1,9 +1,8 @@
 mutation chargeUser($input: ChargeUserInput!) {
 	chargeUser(input: $input) {
 		status
-		checkoutSession {
+		inAppPurchase: checkoutSession {
 			id
-			purchaseUrl
 			planId
 		}
 	}
