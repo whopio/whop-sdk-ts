@@ -139,7 +139,7 @@ async function sendNotification(updatedListing: Listing) {
 
 	const name = bidderUser.name ?? bidderUser.username;
 
-	await whopApi.sendNotification({
+	await whopApi.sendPushNotification({
 		input: {
 			title: `${name} just purchased an item!`,
 			content: `${name} just purchased ${updatedListing.title} for ${updatedListing.currentPrice}. You can now fulfill the order.`,

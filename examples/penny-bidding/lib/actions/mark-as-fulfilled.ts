@@ -35,7 +35,7 @@ export async function markAsFulfilled(listingId: string) {
 
 async function sendNotification(updatedListing: Listing) {
 	if (updatedListing.lastBidderUserId) {
-		await whopApi.sendNotification({
+		await whopApi.sendPushNotification({
 			input: {
 				title: "Listing fulfilled",
 				content: `"${updatedListing.title} was fulfilled"`,

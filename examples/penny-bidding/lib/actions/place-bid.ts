@@ -111,7 +111,7 @@ async function sendNotification(updatedListing: Listing, oldListing: Listing) {
 
 		const newUserName = newUser.name ?? newUser.username;
 
-		await whopApi.sendNotification({
+		await whopApi.sendPushNotification({
 			input: {
 				title: `New bid from ${newUserName}`,
 				content: `"${newUserName} just bid ${updatedListing.currentPrice} for ${updatedListing.title}. You just lost the top spot!"`,

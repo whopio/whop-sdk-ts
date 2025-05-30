@@ -37,7 +37,7 @@ export async function GET() {
 
 async function sendAboutToFinishNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
-		await whopApi.sendNotification({
+		await whopApi.sendPushNotification({
 			input: {
 				title: "⏰ Auction Ending Soon!",
 				content: `"${listing.title}" is about to finish and no bids have been placed yet. Will you be the first?`,
@@ -56,7 +56,7 @@ async function sendAboutToFinishNotification(listing: Listing) {
 		(new Date(listing.biddingEndsAt).getTime() - Date.now()) / 1000,
 	);
 
-	await whopApi.sendNotification({
+	await whopApi.sendPushNotification({
 		input: {
 			title: "⏰ Auction Ending Soon!",
 			content: `${currentBidder.name ?? currentBidder.username} is currently winning "${listing.title}" at $${listing.currentPrice} with ${listing.numBids} bids! Only ${timeLeft} seconds left to place your bid!`,
@@ -68,7 +68,7 @@ async function sendAboutToFinishNotification(listing: Listing) {
 
 async function sendJustFinishedNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
-		await whopApi.sendNotification({
+		await whopApi.sendPushNotification({
 			input: {
 				title: "Auction Ended - No Winner",
 				content: `"${listing.title}" has ended with no bids. The item will be relisted soon!`,
@@ -83,7 +83,7 @@ async function sendJustFinishedNotification(listing: Listing) {
 		userId: listing.lastBidderUserId,
 	});
 
-	await whopApi.sendNotification({
+	await whopApi.sendPushNotification({
 		input: {
 			title: "🎉 Auction Winner!",
 			content: `${winner.name ?? winner.username} won "${listing.title}" for $${listing.currentPrice} after ${listing.numBids} bids! They can now purchase the item.`,
