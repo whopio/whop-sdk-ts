@@ -1,5 +1,14 @@
+import { appendCredits } from "@/lib/actions/append-credits";
+import {
+	sendListing,
+	sendWebsocketMessage,
+} from "@/lib/actions/send-websocket-message";
+import { db } from "@/lib/db";
+import { listingsTable, paymentsTable } from "@/lib/db/schema";
+import type { PaymentMetadata } from "@/lib/types";
 import { waitUntil } from "@vercel/functions";
 import { makeWebhookValidator } from "@whop/api";
+import { eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
 
 const validateWebhook = makeWebhookValidator({
@@ -12,24 +21,20 @@ export async function POST(request: NextRequest): Promise<Response> {
 
 	// Handle the webhook event
 	if (webhookData.action === "payment.succeeded") {
-		const { id, final_amount, amount_after_fees, currency, user_id } =
+		const { id, final_amount, amount_after_fees, currency, user_id, metadata } =
 			webhookData.data;
-
-		// final_amount is the amount the user paid
-		// amount_after_fees is the amount that is received by you, after card fees and processing fees are taken out
 
 		console.log(
 			`Payment ${id} succeeded for ${user_id} with amount ${final_amount} ${currency}`,
 		);
 
-		// if you need to do work that takes a long time, use waitUntil to run it in the background
-		waitUntil(
-			potentiallyLongRunningHandler(
-				user_id,
-				final_amount,
-				currency,
-				amount_after_fees,
-			),
+		await handlePaymentWebhook(
+			id,
+			user_id,
+			final_amount,
+			currency,
+			amount_after_fees,
+			metadata as PaymentMetadata,
 		);
 	}
 
@@ -37,12 +42,72 @@ export async function POST(request: NextRequest): Promise<Response> {
 	return new Response("OK", { status: 200 });
 }
 
-async function potentiallyLongRunningHandler(
-	_user_id: string | null | undefined,
-	_amount: number,
-	_currency: string,
-	_amount_after_fees: number | null | undefined,
+async function handlePaymentWebhook(
+	receiptId: string,
+	userId: string | null | undefined,
+	amount: number,
+	currency: string,
+	amount_after_fees: number | null | undefined,
+	metadata: PaymentMetadata,
 ) {
-	// This is a placeholder for a potentially long running operation
-	// In a real scenario, you might need to fetch user data, update a database, etc.
+	if (!userId) return;
+	if (currency.toLowerCase() !== "usd") return;
+	if (amount_after_fees === null || amount_after_fees === undefined) return;
+
+	await db.transaction(async (tx) => {
+		const existingTransaction = await tx
+			.select()
+			.from(paymentsTable)
+			.where(eq(paymentsTable.receiptId, receiptId));
+
+		if (existingTransaction.length > 0) return;
+
+		if (metadata.type === "credits") {
+			await tx.insert(paymentsTable).values({
+				userId,
+				receiptId,
+				amount: amount.toFixed(2),
+				currency,
+				amountAfterFees: amount_after_fees?.toFixed(2) ?? "0.00",
+				purchaseType: metadata.type,
+				experienceId: metadata.experienceId,
+			});
+
+			const creditsAmount = Math.floor(amount_after_fees);
+
+			const newCredits = await appendCredits(userId, creditsAmount, tx);
+
+			waitUntil(
+				sendWebsocketMessage(
+					{ user: userId },
+					{ type: "credits", data: newCredits },
+				),
+			);
+		}
+
+		if (metadata.type === "listing") {
+			await tx.insert(paymentsTable).values({
+				userId,
+				receiptId,
+				amount: amount.toFixed(2),
+				currency,
+				amountAfterFees: amount_after_fees?.toFixed(2) ?? "0.00",
+				purchaseType: metadata.type,
+				experienceId: metadata.experienceId,
+				listingId: metadata.listingId,
+			});
+
+			const [updatedListing] = await tx
+				.update(listingsTable)
+				.set({
+					fulfillmentReceiptId: receiptId,
+					updatedAt: new Date().toISOString(),
+				})
+				.where(eq(listingsTable.id, metadata.listingId));
+
+			if (updatedListing) {
+				waitUntil(sendListing(updatedListing));
+			}
+		}
+	});
 }
