@@ -35,7 +35,7 @@ export async function purchaseListing({
 			.update(listingsTable)
 			.set({
 				fulfillmentAnswer: listingAnswer,
-				updatedAt: new Date().toUTCString(),
+				updatedAt: new Date().toISOString(),
 			})
 			.where(eq(listingsTable.id, listingId))
 			.returning();

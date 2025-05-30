@@ -39,7 +39,7 @@ export async function createListing(formData: FormData) {
 			description,
 			biddingEndsAt: new Date(
 				Date.now() + durationAsMilliseconds,
-			).toUTCString(),
+			).toISOString(),
 			initialPrice: initialPriceAsNumber.toFixed(2),
 			currentPrice: initialPriceAsNumber.toFixed(2),
 			increment: INCREMENT,

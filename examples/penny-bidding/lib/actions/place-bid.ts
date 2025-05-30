@@ -73,7 +73,7 @@ export async function placeBid({ listingId }: { listingId: string }) {
 			.where(
 				and(
 					eq(listingsTable.id, listingId),
-					gt(listingsTable.biddingEndsAt, new Date().toUTCString()),
+					gt(listingsTable.biddingEndsAt, new Date().toISOString()),
 				),
 			)
 			.returning();

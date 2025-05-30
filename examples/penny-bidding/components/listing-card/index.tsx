@@ -78,6 +78,15 @@ export function ListingCard({
 						<LastBidder userId={listing.lastBidderUserId} />
 					</div>
 				</div>
+
+				<div className="flex flex-col gap-2 justify-between items-center">
+					<span className="text-sm text-muted-foreground">
+						{listing.biddingEndsAt}
+					</span>
+					<span className="text-sm text-muted-foreground">
+						{new Date(listing.biddingEndsAt).toISOString()}
+					</span>
+				</div>
 			</CardContent>
 
 			<CardFooter>
@@ -134,6 +143,13 @@ function useListingStatus(
 		getListingStatus(listing, currentUserId, isAdmin, new Date()),
 	);
 	useEffect(() => {
+		const instantStatus = getListingStatus(
+			listing,
+			currentUserId,
+			isAdmin,
+			new Date(),
+		);
+		setStatus(instantStatus);
 		const interval = setInterval(() => {
 			const status = getListingStatus(
 				listing,

@@ -36,7 +36,7 @@ export const fetchListings = cache(
 // 	const listings = await db.query.listingsTable.findMany({
 // 		where: and(
 // 			eq(listingsTable.experienceId, experienceId),
-// 			lt(listingsTable.biddingEndsAt, now.toUTCString()),
+// 			lt(listingsTable.biddingEndsAt, now.toISOString()),
 // 			eq(listingsTable.lastBidderUserId, userId),
 // 		),
 // 		orderBy: [desc(listingsTable.createdAt)],
@@ -56,7 +56,7 @@ export const fetchListings = cache(
 // 	const listings = await db.query.listingsTable.findMany({
 // 		where: and(
 // 			eq(listingsTable.experienceId, experienceId),
-// 			lt(listingsTable.biddingEndsAt, new Date().toUTCString()),
+// 			lt(listingsTable.biddingEndsAt, new Date().toISOString()),
 // 		),
 // 		orderBy: [desc(listingsTable.createdAt)],
 // 		limit: 100,
@@ -75,7 +75,7 @@ export const fetchListings = cache(
 // 	const listings = await db.query.listingsTable.findMany({
 // 		where: and(
 // 			eq(listingsTable.experienceId, experienceId),
-// 			gt(listingsTable.biddingEndsAt, new Date().toUTCString()),
+// 			gt(listingsTable.biddingEndsAt, new Date().toISOString()),
 // 		),
 // 		orderBy: [desc(listingsTable.createdAt)],
 // 		limit: 100,

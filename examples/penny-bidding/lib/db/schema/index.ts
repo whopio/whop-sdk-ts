@@ -10,8 +10,12 @@ import {
 } from "drizzle-orm/pg-core";
 
 const timestamps = {
-	createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
-	updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
+	createdAt: timestamp("created_at", { mode: "string", withTimezone: true })
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true })
+		.notNull()
+		.defaultNow(),
 };
 
 function primaryKeyColumn() {
@@ -34,7 +38,10 @@ export const listingsTable = pgTable(
 		experienceId: varchar("experience_id", { length: 255 }).notNull(),
 		createdByUserId: varchar("created_by_user_id", { length: 255 }).notNull(),
 
-		biddingEndsAt: timestamp("bidding_ends_at", { mode: "string" }).notNull(),
+		biddingEndsAt: timestamp("bidding_ends_at", {
+			mode: "string",
+			withTimezone: true,
+		}).notNull(),
 		initialPrice: decimal("initial_price", {
 			precision: 10,
 			scale: 2,
@@ -50,14 +57,20 @@ export const listingsTable = pgTable(
 		description: varchar("description", { length: 255 }),
 
 		lastBidderUserId: varchar("last_bidder_user_id", { length: 255 }),
-		lastBidAt: timestamp("last_bid_at", { mode: "string" }),
+		lastBidAt: timestamp("last_bid_at", {
+			mode: "string",
+			withTimezone: true,
+		}),
 
 		/// Set by the creator to optionally ask the auction winner to provide details before purchasing
 		fulfillmentQuestion: text("fulfillment_question"),
 		/// Set by the auction winner before paying for the listing.
 		fulfillmentAnswer: text("fulfillment_answer"),
 		/// Set in the webhook when the auction payment is confirmed.
-		fulfilledAt: timestamp("fulfilled_at", { mode: "string" }),
+		fulfilledAt: timestamp("fulfilled_at", {
+			mode: "string",
+			withTimezone: true,
+		}),
 		/// Set in the webhook when the auction payment is confirmed.
 		fulfillmentReceiptId: varchar("fulfillment_receipt_id", { length: 255 }),
 	},
