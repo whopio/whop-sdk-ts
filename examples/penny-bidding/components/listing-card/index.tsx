@@ -78,15 +78,6 @@ export function ListingCard({
 						<LastBidder userId={listing.lastBidderUserId} />
 					</div>
 				</div>
-
-				<div className="flex flex-col gap-2 justify-between items-center">
-					<span className="text-sm text-muted-foreground">
-						{listing.biddingEndsAt}
-					</span>
-					<span className="text-sm text-muted-foreground">
-						{new Date(listing.biddingEndsAt).toISOString()}
-					</span>
-				</div>
 			</CardContent>
 
 			<CardFooter>
