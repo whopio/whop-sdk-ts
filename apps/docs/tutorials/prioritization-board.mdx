@@ -1,0 +1,415 @@
+---
+title: Prioritization board
+description: "This tutorial will guide you through building a prioritization board application using Next.js, TypeScript, MongoDB, and the Whop SDK. Users can submit feature requests, vote on them, and receive notifications when their status changes."
+---
+
+## Project Setup
+
+First, clone our TypeScript-ready template:
+
+```bash
+git clone https://github.com/whopio/whop-nextjs-app-template
+cd whop-nextjs-app-template
+```
+
+Install dependencies using your preferred package manager:
+
+<CodeGroup>
+  ```bash npm
+  npm install
+  ```
+  ```bash yarn
+  yarn install
+  ```
+  ```bash pnpm
+  pnpm install
+  ```
+  ```bash bun
+  bun install
+  ```
+</CodeGroup>
+
+Add your environment variables:
+
+```env
+WHOP_API_KEY=your_api_key
+WHOP_AGENT_OR_USER_ID=your_user_id
+DATABASE_URL=your_mongodb_connection_string
+DATABASE_NAME=your_database_name
+```
+
+Start the development server:
+
+<CodeGroup>
+  ```bash npm
+  npm run dev
+  ```
+  ```bash yarn
+  yarn dev
+  ```
+  ```bash pnpm
+  pnpm dev
+  ```
+  ```bash bun
+  bun dev
+  ```
+</CodeGroup>
+
+Visit [http://localhost:3000](http://localhost:3000) to see your app.
+
+## Database Setup
+
+Let's set up MongoDB with TypeScript support. Create `apps/api/src/utils/db.ts`:
+
+```typescript
+import mongoose from "mongoose";
+import { env } from "@/src/env";
+
+let isConnected = false;
+
+export async function connectToDatabase() {
+  if (isConnected) {
+    console.log("[MongoDB]: Already connected");
+    return;
+  }
+
+  try {
+    await mongoose.connect(env.DATABASE_URL, {
+      dbName: env.DATABASE_NAME,
+    });
+    isConnected = true;
+    console.log("[MongoDB]: Connected successfully");
+  } catch (error) {
+    console.error("[MongoDB]: Connection failed -", error);
+    process.exit(1);
+  }
+}
+```
+
+## Building the Frontend Components
+
+Let's build our frontend piece by piece. We'll create several components that work together.
+
+### 1. Types and Interfaces
+
+Create `types/issue.ts`:
+
+```typescript
+export type Status = "planned" | "in-progress" | "completed" | "declined";
+export type Tag = "Bug" | "Feature Request" | "Enhancement" | "Documentation" | "Question";
+
+export interface Issue {
+  _id: string;
+  title: string;
+  description: string;
+  status: Status;
+  tags: Tag[];
+  votes: number;
+  voters: string[];
+  subscribers: string[];
+  userId: string;
+  userName: string;
+  createdAt: string;
+}
+```
+
+### 2. Issue Card Component
+
+Create `components/IssueCard.tsx`:
+
+```typescript
+import { Bell, ArrowUpDown } from "lucide-react";
+import { Button } from "@workspace/ui/components/button";
+import { Badge } from "@workspace/ui/components/badge";
+import type { Issue } from "../types/issue";
+
+interface IssueCardProps {
+  issue: Issue;
+  userId: string;
+  onVote: (direction: "up" | "down") => void;
+  onNotify: (enabled: boolean) => void;
+  isSubscribed: boolean;
+}
+
+export function IssueCard({
+  issue,
+  userId,
+  onVote,
+  onNotify,
+  isSubscribed
+}: IssueCardProps) {
+  const hasVoted = issue.voters.includes(userId);
+
+  return (
+    <div className="p-4 bg-[#111111] border border-white/10 rounded-lg">
+      <div className="flex justify-between">
+        <h3 className="text-lg font-semibold text-white">{issue.title}</h3>
+        <div className="flex gap-2">
+          <Button
+            variant={hasVoted ? "default" : "ghost"}
+            onClick={() => onVote(hasVoted ? "down" : "up")}
+          >
+            <ArrowUpDown className="h-4 w-4 mr-2" />
+            {issue.votes} Votes
+          </Button>
+          <Button
+            variant={isSubscribed ? "default" : "ghost"}
+            onClick={() => onNotify(!isSubscribed)}
+          >
+            <Bell className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      <p className="text-white/70 mt-2">{issue.description}</p>
+      <div className="flex gap-2 mt-4">
+        {issue.tags.map(tag => (
+          <Badge key={tag}>{tag}</Badge>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### 3. Create Issue Form
+
+Create `components/CreateIssueForm.tsx`:
+
+```typescript
+import { useState } from "react";
+import { Input } from "@workspace/ui/components/input";
+import { Textarea } from "@workspace/ui/components/textarea";
+import { Button } from "@workspace/ui/components/button";
+import type { Tag } from "../types/issue";
+
+interface CreateIssueFormProps {
+  onSubmit: (data: { title: string; description: string; tags: Tag[] }) => void;
+}
+
+export function CreateIssueForm({ onSubmit }: CreateIssueFormProps) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit({ title, description, tags });
+        setTitle("");
+        setDescription("");
+        setTags([]);
+      }}
+      className="space-y-4"
+    >
+      <Input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Issue title"
+        required
+      />
+      <Textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Describe the issue..."
+        required
+      />
+      {/* Tag selection buttons here */}
+      <Button type="submit">Create Issue</Button>
+    </form>
+  );
+}
+```
+
+### 4. Main Board Component
+
+Create `app/(dashboard)/[experienceId]/prioritization-board.tsx`:
+
+```typescript
+"use client";
+
+import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/utils";
+import { IssueCard } from "@/components/IssueCard";
+import { CreateIssueForm } from "@/components/CreateIssueForm";
+import type { Issue, Status } from "@/types/issue";
+
+interface PrioritizationBoardProps {
+  userId: string;
+  experienceId: string;
+}
+
+export function PrioritizationBoard({ userId, experienceId }: PrioritizationBoardProps) {
+  const trpc = useTRPC();
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const {
+    data: issuesData,
+    isLoading,
+    refetch
+  } = useQuery(trpc.issues.getIssues.queryOptions({ experienceId, userId }));
+
+  const createIssueMutation = useMutation(
+    trpc.issues.createIssue.mutationOptions({
+      onSuccess: () => {
+        refetch();
+        setShowCreateForm(false);
+      },
+    })
+  );
+
+  const voteIssueMutation = useMutation(
+    trpc.issues.voteOnIssue.mutationOptions({
+      onSuccess: () => refetch(),
+    })
+  );
+
+  const toggleNotificationMutation = useMutation(
+    trpc.issues.toggleNotification.mutationOptions({
+      onSuccess: () => refetch(),
+    })
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between mb-8">
+        <h1 className="text-2xl font-bold">Prioritization Board</h1>
+        <Button onClick={() => setShowCreateForm(!showCreateForm)}>
+          {showCreateForm ? "Cancel" : "New Issue"}
+        </Button>
+      </div>
+
+      {showCreateForm && (
+        <CreateIssueForm
+          onSubmit={(data) =>
+            createIssueMutation.mutate({
+              ...data,
+              userId,
+              experienceId,
+            })
+          }
+        />
+      )}
+
+      <div className="space-y-4 mt-8">
+        {issuesData?.issues.map((issue: Issue) => (
+          <IssueCard
+            key={issue._id}
+            issue={issue}
+            userId={userId}
+            onVote={(direction) =>
+              voteIssueMutation.mutate({
+                id: issue._id,
+                direction,
+                userId,
+              })
+            }
+            onNotify={(enabled) =>
+              toggleNotificationMutation.mutate({
+                issueId: issue._id,
+                userId,
+                direction: enabled ? "subscribe" : "unsubscribe",
+              })
+            }
+            isSubscribed={issue.subscribers.includes(userId)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## Backend Implementation
+
+### 1. MongoDB Schema
+
+Create `packages/database/src/schema/issues.ts`:
+
+```typescript
+import { model, Schema, Document } from "mongoose";
+
+export interface Issue extends Document {
+  title: string;
+  description: string;
+  status: Status;
+  votes: number;
+  tags: Tag[];
+  voters: string[];
+  subscribers: string[];
+  userId: string;
+  userName: string;
+  experienceId: string;
+  createdAt: Date;
+}
+
+const IssueSchema = new Schema<Issue>(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["planned", "in-progress", "completed", "declined"],
+      default: "planned"
+    },
+    votes: { type: Number, default: 0 },
+    tags: { type: [String], default: [] },
+    voters: { type: [String], default: [] },
+    subscribers: { type: [String], default: [] },
+    userId: { type: String, required: true },
+    userName: { type: String, required: true },
+    experienceId: { type: String, required: true }
+  },
+  { timestamps: true }
+);
+
+export const IssueModel = model<Issue>("Issue", IssueSchema);
+```
+
+### 2. tRPC Router
+
+Create `apps/api/src/routers/issues-router.ts`:
+
+```typescript
+import { createTRPCRouter, publicProcedure } from "@/src/trpc";
+import { IssueModel } from "@workspace/db/src/schema/issues";
+import { z } from "zod";
+
+export const issuesRouter = createTRPCRouter({
+  getIssues: publicProcedure
+    .input(z.object({
+      experienceId: z.string(),
+      userId: z.string(),
+    }))
+    .query(async ({ input }) => {
+      const issues = await IssueModel.find({ experienceId: input.experienceId });
+      return { issues };
+    }),
+
+  // Other endpoints defined here...
+});
+```
+
+## Next Steps
+
+Now that you have your prioritization board running locally, you'll want to deploy it for your users. Consider the following:
+
+- Deploy your Next.js application using a platform like Vercel or Netlify for the simplest setup
+- Set up a production MongoDB database (MongoDB Atlas offers a free tier to get started)
+- Configure your environment variables in your deployment platform:
+```env
+WHOP_API_KEY=your_api_key
+WHOP_AGENT_OR_USER_ID=your_user_id
+DATABASE_URL=your_mongodb_connection_string
+DATABASE_NAME=your_database_name
+```
+
+## Need Help?
+
+- Join [Whop Devs](https://whop.com/whop-devs)
+- Get the [Next.js Template](https://github.com/whopio/whop-nextjs-app-template)
+- Check the [Whop SDK](https://github.com/whopio/whop-sdk-ts)
+- Read our [API Documentation](https://dev.whop.com)
