@@ -1,0 +1,30 @@
+query listUsersForExperience(
+	$publicExperienceId: ID!
+	$after: String
+	$before: String
+	$direction: Direction
+	$first: Int
+) {
+	publicExperience(id: $publicExperienceId) {
+		users(
+			after: $after
+			before: $before
+			direction: $direction
+			first: $first
+		) {
+			nodes {
+				id
+				username
+				profilePicture {
+					sourceUrl
+				}
+			}
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+			}
+			totalCount
+		}
+	}
+}

@@ -1,4 +1,4 @@
-query listDirectMessages(
+query listDirectMessageConversations(
 	$beforeTimestamp: BigInt
 	$limit: Int
 	$query: String

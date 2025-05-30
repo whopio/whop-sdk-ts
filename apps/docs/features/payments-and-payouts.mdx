@@ -78,6 +78,7 @@ export default function PaymentButton({ userId, experienceId }: {
 
       // 2. Open payment modal
       const res = await iframeSdk.inAppPurchase({
+		  planId: data.planId,
         id: data.id,
       });
 
@@ -158,7 +159,7 @@ async function sendPayout(
   const companyId = experience.experience.company.id;
   const ledgerAccount = await whopApi.getCompanyLedgerAccount({ companyId });
 
-  // 2. Transfer funds to the recipient
+  // 2. Pay the recipient
   await whopApi.payUser({
     input: {
       amount: amount,

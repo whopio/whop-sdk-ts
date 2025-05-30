@@ -20,6 +20,7 @@ const idPrefixes = {
 	appId: "app",
 	feedId: "feed",
 	ledgerAccountId: "ldgr",
+	chatExperienceId: "exp",
 };
 
 type PrimitiveKind =
