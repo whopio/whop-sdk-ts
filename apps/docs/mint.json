@@ -397,7 +397,7 @@
 						"sdk/api/payments/charge-user",
 						"sdk/api/payments/get-company-ledger-account",
 						"sdk/api/payments/get-user-ledger-account",
-						"sdk/api/payments/transfer-funds"
+						"sdk/api/payments/pay-user"
 					]
 				},
 				{
