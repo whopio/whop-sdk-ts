@@ -59,5 +59,5 @@ export async function purchaseListing({
 		},
 	});
 
-	return result.chargeUser?.checkoutSession;
+	return result.chargeUser?.inAppPurchase;
 }
