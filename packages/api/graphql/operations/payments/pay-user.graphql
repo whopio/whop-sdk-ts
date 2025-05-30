@@ -1,0 +1,3 @@
+mutation payUser($input: TransferFundsInput!) {
+	transferFunds(input: $input)
+}

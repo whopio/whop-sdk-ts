@@ -23,7 +23,7 @@ export async function SectionSendAMessage({
 			throw new Error("Chat message is required");
 		}
 
-		await whopApi.sendMessageToWhopChat({
+		await whopApi.sendMessageToChat({
 			experienceId: chatExperienceId,
 			message: `${
 				user.publicUser.name ?? user.publicUser.username
@@ -46,7 +46,7 @@ export async function SectionSendAMessage({
 		}
 
 		await whopApi.sendDirectMessageToUser({
-			toUserId: userToken.userId,
+			toUserIdOrUsername: userToken.userId,
 			message: `Hi, you just sent a message via the example app: '${message}'.`,
 		});
 	}

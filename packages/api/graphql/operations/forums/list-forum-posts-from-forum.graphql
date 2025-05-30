@@ -1,4 +1,4 @@
-query listForumPosts($experienceId: ID!) {
+query listForumPostsFromForum($experienceId: ID!) {
 	feedPosts(feedType: forum_feed, experienceId: $experienceId) {
 		posts {
 			...ForumPostFragment

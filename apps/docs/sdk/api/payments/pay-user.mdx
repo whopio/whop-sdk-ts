@@ -1,11 +1,11 @@
 ---
-title: Transfer Funds
+title: Pay User
 ---
 
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.transferFunds({
+const result = await whopApi.payUser({
 	input: {
 		// The amount to withdraw
 		amount: 10 /* Required! */,

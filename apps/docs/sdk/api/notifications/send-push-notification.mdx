@@ -1,11 +1,11 @@
 ---
-title: Send Notification
+title: Send Push Notification
 ---
 
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.sendNotification({
+const result = await whopApi.sendPushNotification({
 	input: {
 		// The ID of the company team to send the notification to
 		companyTeamId: "biz_XXXXXXXX",
