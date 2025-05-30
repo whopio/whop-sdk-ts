@@ -371,13 +371,16 @@
 				{
 					"group": "Direct Messages",
 					"pages": [
-						"sdk/api/direct-messages/list-direct-messages",
+						"sdk/api/direct-messages/list-direct-message-conversations",
 						"sdk/api/direct-messages/send-direct-message-to-user"
 					]
 				},
 				{
 					"group": "Experiences",
-					"pages": ["sdk/api/experiences/get-experience"]
+					"pages": [
+						"sdk/api/experiences/get-experience",
+						"sdk/api/experiences/list-users-for-experience"
+					]
 				},
 				{
 					"group": "Forums",

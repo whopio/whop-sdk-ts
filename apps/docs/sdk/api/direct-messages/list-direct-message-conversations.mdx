@@ -1,12 +1,12 @@
 ---
-title: List Direct Messages
+title: List Direct Message Conversations
 description: Fetch DM channels for the current user
 ---
 
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.listDirectMessages({
+const result = await whopApi.listDirectMessageConversations({
 	// Timestamp to fetch channels before
 	beforeTimestamp: "9999999",
 
