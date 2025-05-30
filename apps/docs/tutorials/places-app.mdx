@@ -1,5 +1,5 @@
 ---
-title: Complete Interactive Places Map with 3D Globe
+title: "Complete Interactive Places Map with 3D Globe"
 description: "Build a comprehensive Mapbox-powered places management app where creators can add locations and customers can explore them on a beautiful 3D globe. Learn Whop API integration, access control, and map interaction patterns."
 ---
 
@@ -8,6 +8,7 @@ description: "Build a comprehensive Mapbox-powered places management app where c
 ## What You'll Build
 
 You'll create a sophisticated places management application that combines:
+
 - **3D Globe Visualization**: Interactive Mapbox globe with custom pin markers
 - **Whop Integration**: User authentication and role-based access control
 - **Real-time Database**: PostgreSQL with Prisma ORM for place management
@@ -22,7 +23,7 @@ You'll create a sophisticated places management application that combines:
 ### Key Whop Concepts:
 
 1. **Experience**: A digital product/service that customers can purchase access to
-2. **Companies (Biz)**: Creator businesses that sell experiences  
+2. **Companies (Biz)**: Creator businesses that sell experiences
 3. **Access Levels**: Different permission levels for users:
    - `admin`: Full control (usually the creator)
    - `customer`: Paid access to view/use the experience
@@ -47,33 +48,41 @@ cd places-map-app
 Install dependencies:
 
 <CodeGroup>
+
 ```bash pnpm
 pnpm i
 ```
+
 
 ```bash npm
 npm i
 ```
 
+
 ```bash yarn
 yarn i
 ```
+
 </CodeGroup>
 
 Run the app locally:
 
 <CodeGroup>
+
 ```bash pnpm
 pnpm dev
 ```
+
 
 ```bash npm
 npm run dev
 ```
 
+
 ```bash yarn
 yarn dev
 ```
+
 </CodeGroup>
 
 Open http://localhost:3000 and follow the setup instructions.
@@ -84,8 +93,7 @@ Open http://localhost:3000 and follow the setup instructions.
 
 1. Go to [Whop Developer Dashboard](https://developers.whop.com)
 2. Create a new app
-3. Set the redirect URL to `http://localhost:3000/api/auth/callback/whop`
-4. Copy your App ID and API Key
+3. Copy your App ID and API Key & Agent User ID
 
 ### Environment Variables
 
@@ -108,7 +116,7 @@ NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-**Important**: Install your app into your Whop business and switch to localhost mode for development.
+**Important**: Install your app into your Whop and switch to localhost mode (port 3000) for development.
 
 ## 3. Database Setup with Prisma
 
@@ -122,20 +130,24 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### Install Prisma
 
 <CodeGroup>
+
 ```bash pnpm
 pnpm add prisma @prisma/client
 pnpm prisma init
 ```
+
 
 ```bash npm
 npm install prisma @prisma/client
 npx prisma init
 ```
 
+
 ```bash yarn
 yarn add prisma @prisma/client
 yarn prisma init
 ```
+
 </CodeGroup>
 
 ### Database Schema
@@ -242,20 +254,24 @@ Update your `package.json` scripts:
 Generate and push schema:
 
 <CodeGroup>
+
 ```bash pnpm
 pnpm prisma generate
 pnpm prisma db push
 ```
+
 
 ```bash npm
 npm run prisma:generate
 npm run prisma:db:push
 ```
 
+
 ```bash yarn
 yarn prisma:generate
 yarn prisma:db:push
 ```
+
 </CodeGroup>
 
 ## 4. Whop API Integration
@@ -2447,35 +2463,33 @@ DEFAULT_WEBHOOK_URL=https://your-webhook-endpoint.com
 ### Deployment Steps
 
 1. **Push to GitHub**:
+
    ```bash
    git add .
    git commit -m "Complete places map implementation"
    git push origin main
    ```
-
 2. **Deploy to Vercel**:
    - Connect your GitHub repository
    - Add all environment variables
    - Deploy
-
 3. **Update Whop App Settings**:
-   - Change redirect URL to your production domain
-   - Update any webhook URLs
+   - Change base URL to your production domain
+   - Keep the app path as is (/experiences/[experienceId])
    - Switch from localhost to production mode
 
 ### Performance Optimizations
 
 1. **Database Indexing**:
+
    ```sql
    CREATE INDEX idx_places_experience_id ON places(experienceId);
    CREATE INDEX idx_places_coordinates ON places(latitude, longitude);
    ```
-
 2. **Mapbox Optimization**:
    - Use vector tiles for better performance
    - Implement marker clustering for many places
    - Add map bounds restrictions if needed
-
 3. **Caching Strategy**:
    - Cache place data with Redis or similar
    - Implement incremental static regeneration
@@ -2487,7 +2501,7 @@ DEFAULT_WEBHOOK_URL=https://your-webhook-endpoint.com
 
 Every time an admin adds a new place, the system automatically creates a forum post in the "Places Forum" that includes:
 
-- **📍 Place name and details** 
+- **📍 Place name and details**
 - **🗺️ Direct link to view the place on the map**
 - **📸 Mapbox Static image URL** of the location with a pin marker
 - **🔔 Notification to all members**
@@ -2495,6 +2509,7 @@ Every time an admin adds a new place, the system automatically creates a forum p
 The forum posts are created in a dedicated "Places Forum" within the same experience as your places map. This keeps your community engaged and informed about new additions to your map.
 
 **How it works:**
+
 1. Admin adds a place through the control panel
 2. Place is saved to the database
 3. System generates a Mapbox Static image URL with a pin marker
@@ -2503,6 +2518,7 @@ The forum posts are created in a dedicated "Places Forum" within the same experi
 6. All members get notified about the new place (`isMention: true`)
 
 **Forum Post Example:**
+
 ```
 📍 New Place Added: SpaceX Headquarters
 
@@ -2518,40 +2534,12 @@ Click the link above to explore this location and all other places on our intera
 ```
 
 **Technical Implementation:**
-- Uses Whop's `CreateForum` API to create the "Places Forum" experience  
+
+- Uses Whop's `CreateForum` API to create the "Places Forum" experience
 - Creates rich forum posts with `CreateForumPost` API with correct parameters
 - Includes direct links to map view and location images
 - Handles errors gracefully with fallback logging and webhook notifications
 - Notifies all community members when new places are added
-
-## Summary
-
-You've built a comprehensive places management application that demonstrates:
-
-### Technical Achievements
-- **3D Globe Visualization**: Beautiful Mapbox integration with custom markers
-- **Role-Based Access Control**: Secure admin/customer permissions via Whop API
-- **Real-time Database**: PostgreSQL with Prisma for reliable data management
-- **Geocoding Integration**: Address-to-coordinates conversion
-- **Responsive Design**: Works across all devices and screen sizes
-- **Forum Integration**: Automatic community notifications for new places
-- **Client-side Optimization**: Fast image uploads and forum post creation
-
-### Business Value
-- **Creator Monetization**: Sell access to curated place collections
-- **Customer Engagement**: Interactive exploration experiences
-- **Community Building**: Automatic forum posts keep users engaged
-- **Scalable Architecture**: Easy to extend with new features
-- **Professional Polish**: Production-ready with proper error handling
-
-### Next Steps
-1. **Add Analytics**: Track user engagement and popular places
-2. **Implement Categories**: Better organization and filtering
-3. **Add Media Upload**: Photos and videos for places
-4. **Social Features**: Comments, ratings, and sharing
-5. **Mobile App**: React Native version using same backend
-
-Your places map application is now ready to launch and start generating revenue for creators on the Whop platform!
 
 ## 19. Complete Map Components
 
@@ -3802,9 +3790,34 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 ```
 
+## Summary
+
+You've built a comprehensive places management application that demonstrates:
+
+### Technical Achievements
+
+- **3D Globe Visualization**: Beautiful Mapbox integration with custom markers
+- **Role-Based Access Control**: Secure admin/customer permissions via Whop API
+- **Real-time Database**: PostgreSQL with Prisma for reliable data management
+- **Geocoding Integration**: Address-to-coordinates conversion
+- **Responsive Design**: Works across all devices and screen sizes
+- **Forum Integration**: Automatic community notifications for new places
+- **Client-side Optimization**: Fast image uploads and forum post creation
+
+### Business Value
+
+- **Creator Monetization**: Sell access to curated place collections
+- **Customer Engagement**: Interactive exploration experiences
+- **Community Building**: Automatic forum posts keep users engaged
+- **Scalable Architecture**: Easy to extend with new features
+- **Professional Polish**: Production-ready with proper error handling
+
+Your places map application is now ready to launch and start generating revenue for creators on the Whop platform\!
+
 ## Need Help?
+
 - Join the [Developer Whop](https://whop.com/whop-devs)
 - View the template [here](https://github.com/whopio/whop-nextjs-app-template)
-- View the source code of Whop Map [here](https://github.com/0ni-x4/whop-map)
+- View the source code of this app [here](https://github.com/0ni-x4/whop-map)
 - Visit our [SDK GitHub repository](https://github.com/whopio/whop-sdk-ts)
 - DM @0ni_x4 on Discord
