@@ -18,12 +18,10 @@ export function SectionRequestAPayment({
 		<div>
 			<form
 				action={async (data) => {
-					const planId = await requestPayment(data);
+					const payment = await requestPayment(data);
 
-					if (planId) {
-						const res = await iframeSdk.inAppPurchase({
-							plan_id: planId,
-						});
+					if (payment) {
+						const res = await iframeSdk.inAppPurchase(payment);
 
 						if (res.status === "ok") {
 							setReceiptId(res.data.receipt_id);

@@ -13,9 +13,9 @@
 	},
 	"dependencies": {
 		"@vercel/functions": "^2.0.3",
-		"@whop-apps/dev-proxy": "0.0.1-canary.114",
-		"@whop-apps/iframe": "0.0.1-canary.114",
-		"@whop-apps/theme": "0.0.1-canary.114",
+		"@whop-apps/dev-proxy": "0.0.1-canary.115",
+		"@whop-apps/iframe": "0.0.1-canary.115",
+		"@whop-apps/theme": "0.0.1-canary.115",
 		"@whop/api": "workspace:*",
 		"next": "15.3.2",
 		"react": "^19.0.0",
@@ -28,7 +28,7 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"dotenv-cli": "^8.0.0",
-		"@whop-apps/dev-proxy": "0.0.1-canary.114",
+		"@whop-apps/dev-proxy": "0.0.1-canary.115",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}
