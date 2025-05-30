@@ -19,5 +19,5 @@ export async function requestTopup(experienceId: string) {
 		},
 	});
 
-	return result.chargeUser?.checkoutSession;
+	return result.chargeUser?.inAppPurchase;
 }
