@@ -65,7 +65,7 @@
 		},
 		{
 			"group": "Tutorials",
-			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
+			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot", "tutorials/ai-support"]
 		},
 		{
 			"group": "Features",
