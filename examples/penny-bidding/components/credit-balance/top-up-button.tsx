@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 async function getCredits(experienceId: string) {
 	const checkoutSession = await requestTopup(experienceId);
 	if (!checkoutSession) return;
-	await whopIframe.inAppPurchase({ planId: checkoutSession.planId });
+	await whopIframe.inAppPurchase(checkoutSession);
 }
 
 export function TopUpButton({

@@ -49,15 +49,12 @@ async function handlePaymentWebhook(
 	amount: number,
 	currency: string,
 	amount_after_fees: number | string | null | undefined,
-	metadata: PaymentMetadata,
+	metadata: PaymentMetadata | null,
 ) {
-	if (!userId) return;
-	if (currency.toLowerCase() !== "usd") return;
-	if (amount_after_fees === null || amount_after_fees === undefined) return;
 	const amountAfterFees =
 		typeof amount_after_fees === "string"
 			? amount_after_fees
-			: amount_after_fees.toFixed(2);
+			: amount_after_fees?.toFixed(2);
 
 	console.log("handlePaymentWebhook", {
 		receiptId,
@@ -68,6 +65,16 @@ async function handlePaymentWebhook(
 		metadata,
 		amountAfterFees,
 	});
+
+	if (!userId) return;
+	if (currency.toLowerCase() !== "usd") return;
+	if (
+		amount_after_fees === null ||
+		amount_after_fees === undefined ||
+		!amountAfterFees
+	)
+		return;
+	if (!metadata) return;
 
 	await db.transaction(async (tx) => {
 		const existingTransaction = await tx
