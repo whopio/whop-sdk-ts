@@ -1,3 +1,0 @@
-mutation sendMessageToWhopChat($experienceId: String!, $message: String!) {
-	sendMessage(input: { message: $message, experienceId: $experienceId })
-}

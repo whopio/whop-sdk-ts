@@ -52,5 +52,5 @@ export async function requestPayment(formData: FormData) {
 		},
 	});
 
-	return response.chargeUser?.checkoutSession?.planId;
+	return response.chargeUser?.inAppPurchase;
 }

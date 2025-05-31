@@ -1,0 +1,7 @@
+query listMessagesFromChat($chatExperienceId: ID) {
+	feedPosts(feedType: chat_feed, experienceId: $chatExperienceId) {
+		posts {
+			...Message
+		}
+	}
+}

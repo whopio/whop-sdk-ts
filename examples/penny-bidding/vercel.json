@@ -1,4 +1,10 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"installCommand": "pnpm i && bash ../../scripts/pull_protos.sh"
+	"installCommand": "pnpm i && bash ../../scripts/pull_protos.sh",
+	"crons": [
+		{
+			"path": "/api/cron",
+			"schedule": "* * * * *"
+		}
+	]
 }

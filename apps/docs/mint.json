@@ -61,7 +61,7 @@
 	"navigation": [
 		{
 			"group": "Getting Started",
-			"pages": ["introduction", "tutorials", "get-api-key"]
+			"pages": ["introduction", "getting-started", "tutorials", "get-api-key"]
 		},
 		{
 			"group": "Tutorials",
@@ -361,22 +361,38 @@
 					]
 				},
 				{
-					"group": "Engagement",
+					"group": "Chats",
 					"pages": [
-						"sdk/api/engagement/create-forum-post",
-						"sdk/api/engagement/find-or-create-chat",
-						"sdk/api/engagement/find-or-create-forum",
-						"sdk/api/engagement/list-forum-posts",
-						"sdk/api/engagement/list-messages",
-						"sdk/api/engagement/send-direct-message-to-user",
-						"sdk/api/engagement/send-message-to-chat-feed",
-						"sdk/api/engagement/send-message-to-whop-chat",
-						"sdk/api/engagement/send-notification"
+						"sdk/api/chats/find-or-create-chat",
+						"sdk/api/chats/list-messages-from-chat",
+						"sdk/api/chats/send-message-to-chat"
+					]
+				},
+				{
+					"group": "Direct Messages",
+					"pages": [
+						"sdk/api/direct-messages/list-direct-message-conversations",
+						"sdk/api/direct-messages/send-direct-message-to-user"
 					]
 				},
 				{
 					"group": "Experiences",
-					"pages": ["sdk/api/experiences/get-experience"]
+					"pages": [
+						"sdk/api/experiences/get-experience",
+						"sdk/api/experiences/list-users-for-experience"
+					]
+				},
+				{
+					"group": "Forums",
+					"pages": [
+						"sdk/api/forums/create-forum-post",
+						"sdk/api/forums/find-or-create-forum",
+						"sdk/api/forums/list-forum-posts-from-forum"
+					]
+				},
+				{
+					"group": "Notifications",
+					"pages": ["sdk/api/notifications/send-push-notification"]
 				},
 				{
 					"group": "Payments",
@@ -384,7 +400,7 @@
 						"sdk/api/payments/charge-user",
 						"sdk/api/payments/get-company-ledger-account",
 						"sdk/api/payments/get-user-ledger-account",
-						"sdk/api/payments/transfer-funds"
+						"sdk/api/payments/pay-user"
 					]
 				},
 				{

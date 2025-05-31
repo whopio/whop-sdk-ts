@@ -1,0 +1,3 @@
+mutation sendMessageToChat($experienceId: ID!, $message: String!) {
+	sendMessage(input: { message: $message, experienceId: $experienceId })
+}

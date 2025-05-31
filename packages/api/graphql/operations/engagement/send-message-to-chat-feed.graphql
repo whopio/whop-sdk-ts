@@ -1,9 +1,0 @@
-mutation sendMessageToChatFeed(
-	$feedId: String!
-	$feedType: FeedTypes!
-	$message: String!
-) {
-	sendMessage(
-		input: { message: $message, feedId: $feedId, feedType: $feedType }
-	)
-}

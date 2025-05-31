@@ -1,0 +1,3 @@
+mutation sendDirectMessageToUser($toUserIdOrUsername: ID!, $message: String!) {
+	sendMessage(input: { message: $message, toUserId: $toUserIdOrUsername })
+}

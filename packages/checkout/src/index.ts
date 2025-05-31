@@ -51,6 +51,11 @@ function mount(node: HTMLElement) {
 		iframeUrl.searchParams.set("theme", theme);
 	}
 
+	const session = node.dataset.whopCheckoutSession;
+	if (session) {
+		iframeUrl.searchParams.set("session", session);
+	}
+
 	const windowOrigin = new URL(window.location.href).origin;
 	iframeUrl.searchParams.set("h", windowOrigin);
 
