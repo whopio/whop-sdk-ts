@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.21-canary.9
+
+### Patch Changes
+
+- ebded51: chore(deps): update dependency mintlify to v4.0.562
+
 ## 0.0.21-canary.8
 
 ### Patch Changes
