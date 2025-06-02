@@ -1,0 +1,42 @@
+{
+	"name": "@whop/iframe",
+	"version": "0.0.1",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./host": {
+			"import": "./dist/host.mjs",
+			"require": "./dist/host.js",
+			"types": "./dist/host.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"check-types": "tsc --noEmit",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"dependencies": {
+		"zod": "3.22.1"
+	},
+	"devDependencies": {
+		"@types/node": "latest",
+		"tsup": "8.5.0",
+		"typescript": "latest"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"engines": {
+		"node": "22.x",
+		"pnpm": "9.15.9"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

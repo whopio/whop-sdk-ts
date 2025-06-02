@@ -11,8 +11,8 @@
 	},
 	"dependencies": {
 		"@vercel/functions": "^2.0.3",
-		"@whop-apps/sdk": "0.0.1-canary.116",
 		"@whop/api": "workspace:*",
+		"@whop/react": "workspace:*",
 		"next": "15.3.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
