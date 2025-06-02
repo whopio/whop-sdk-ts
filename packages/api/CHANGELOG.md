@@ -1,5 +1,15 @@
 # @whop/api
 
+## 0.0.21
+
+### Patch Changes
+
+- cb2da90: fix(deps): update dependency js-md5 to v0.8.3
+- 116374a: chore(deps): update dependency yaml to v2.8.0
+- ebded51: chore(deps): update dependency mintlify to v4.0.562
+- 6330be2: release initial checkout package
+- b406605: remove purchaseUrl from chargerUser because it should not be used
+
 ## 0.0.21-canary.8
 
 ### Patch Changes
