@@ -44,7 +44,7 @@ export function createSdk({
 
 	if (!appId) {
 		throw new Error(
-			"[createAppIframeSDK]: appId is required. Please provide an appId or set the NEXT_PUBLIC_WHOP_APP_ID environment variable.",
+			"[createSdk]: appId is required. Please provide an appId or set the NEXT_PUBLIC_WHOP_APP_ID environment variable.",
 		);
 	}
 
