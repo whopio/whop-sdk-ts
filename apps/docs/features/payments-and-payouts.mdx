@@ -110,6 +110,8 @@ export default function PaymentButton({
 ```
 
 ```tsx Vanilla JS
+import { iframeSdk } from "@/lib/iframe-sdk";
+
 const paymentButton = document.querySelector("button#payment-button");
 const receiptElement = document.querySelector("span#receiptContainer");
 const errorElement = document.querySelector("span#errorContainer");
