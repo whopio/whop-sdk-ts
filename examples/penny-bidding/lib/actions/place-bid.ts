@@ -13,6 +13,9 @@ import { and, eq, gt, sql } from "drizzle-orm";
 import { whopApi } from "../whop-api";
 import { sendListing, sendWebsocketMessage } from "./send-websocket-message";
 
+// Ensure that after a bid is placed, the listing will not expire for at least 20 seconds.
+const MIN_EXPIRES_IN_DURATION_AFTER_BID = 20 * 1000;
+
 export async function placeBid({ listingId }: { listingId: string }) {
 	// Get the listing
 	const listing = await db.query.listingsTable.findFirst({
@@ -70,6 +73,13 @@ export async function placeBid({ listingId }: { listingId: string }) {
 
 		if (bid.length === 0) throw new Error("Failed to create bid");
 
+		const newBiddingEndsAt = new Date(
+			Math.max(
+				new Date(listing.biddingEndsAt).getTime(),
+				Date.now() + MIN_EXPIRES_IN_DURATION_AFTER_BID,
+			),
+		);
+
 		// Update the listing with the new bid
 		const results = await db
 			.update(listingsTable)
@@ -77,6 +87,7 @@ export async function placeBid({ listingId }: { listingId: string }) {
 				currentPrice: nextBidAmount,
 				numBids: sql`num_bids + 1`,
 				lastBidderUserId: userId,
+				biddingEndsAt: newBiddingEndsAt.toISOString(),
 			})
 			.where(
 				and(

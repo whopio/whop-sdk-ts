@@ -27,7 +27,6 @@ export async function relistListing(listingId: string) {
 		durationAsMilliseconds:
 			new Date(listing.biddingEndsAt).getTime() -
 			new Date(listing.createdAt).getTime(),
-		initialPriceAsNumber: Number.parseFloat(listing.initialPrice),
 		fulfillmentQuestion: listing.fulfillmentQuestion,
 	});
 }

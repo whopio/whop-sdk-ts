@@ -23,15 +23,6 @@ export async function createListing(formData: FormData) {
 	const description = formData.get("description")?.toString();
 	const durationMinutes = formData.get("durationMinutes")?.toString() ?? "60";
 	const durationAsMilliseconds = Number.parseInt(durationMinutes) * 60 * 1000;
-	const initialPrice = formData.get("initialPrice")?.toString();
-	const initialPriceAsNumber = initialPrice
-		? Number.parseFloat(initialPrice)
-		: undefined;
-	if (
-		Number.isNaN(initialPriceAsNumber) ||
-		(initialPriceAsNumber && initialPriceAsNumber < 1)
-	)
-		throw new Error("Invalid initial price. Must be at least $1");
 
 	const fulfillmentQuestion = formData.get("fulfillmentQuestion")?.toString();
 	if (fulfillmentQuestion && typeof fulfillmentQuestion !== "string")
@@ -43,7 +34,6 @@ export async function createListing(formData: FormData) {
 		title,
 		description,
 		durationAsMilliseconds,
-		initialPriceAsNumber,
 		fulfillmentQuestion,
 	});
 
@@ -56,7 +46,6 @@ export async function createListingWithData({
 	title,
 	description,
 	durationAsMilliseconds,
-	initialPriceAsNumber,
 	fulfillmentQuestion,
 }: {
 	experienceId: string;
@@ -64,7 +53,6 @@ export async function createListingWithData({
 	title: string;
 	description?: string | null;
 	durationAsMilliseconds?: number;
-	initialPriceAsNumber?: number;
 	fulfillmentQuestion?: string | null;
 }) {
 	const [listing] = await db
@@ -77,8 +65,7 @@ export async function createListingWithData({
 			biddingEndsAt: new Date(
 				Date.now() + (durationAsMilliseconds ?? 60 * 60 * 1000),
 			).toISOString(),
-			initialPrice: initialPriceAsNumber?.toFixed(2) ?? "1.00",
-			currentPrice: initialPriceAsNumber?.toFixed(2) ?? "1.00",
+			currentPrice: "0.00",
 			increment: INCREMENT,
 			fulfillmentQuestion,
 		})

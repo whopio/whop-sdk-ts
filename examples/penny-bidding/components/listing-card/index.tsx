@@ -15,6 +15,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { claimFunds } from "@/lib/actions/claim-funds";
 import { markAsFulfilled } from "@/lib/actions/mark-as-fulfilled";
 import { placeBid } from "@/lib/actions/place-bid";
 import { purchaseListing } from "@/lib/actions/purchase-listing";
@@ -38,6 +39,7 @@ type ListingStatus =
 	| "waiting_for_purchase"
 	| "mark_as_fulfilled"
 	| "relist"
+	| "claim_funds"
 	| "nobody_won";
 
 export function ListingCard({
@@ -120,6 +122,10 @@ function ListingCta({
 					listingQuestion={listing.fulfillmentQuestion}
 				/>
 			);
+		case "claim_funds":
+			return (
+				<ClaimFundsButton listingId={listing.id} numBids={listing.numBids} />
+			);
 		default:
 			return <DisabledCta status={status} />;
 	}
@@ -166,6 +172,7 @@ function getListingStatus(
 	const isWinner = listing.lastBidderUserId === currentUserId;
 	const hasPurchased = listing.fulfillmentReceiptId !== null;
 	const isFulfilled = listing.fulfilledAt !== null;
+	const hasClaimedFunds = listing.claimedFundsAt !== null;
 
 	if (isActive) {
 		return isWinner ? "already_bid" : "bid";
@@ -181,14 +188,15 @@ function getListingStatus(
 
 	if (isAdmin) {
 		if (!hasPurchased) return "waiting_for_purchase";
-		if (isFulfilled) return "relist";
-		return "mark_as_fulfilled";
+		if (!isFulfilled) return "mark_as_fulfilled";
+		if (!hasClaimedFunds) return "claim_funds";
+		return "relist";
 	}
 
 	return "message_winner";
 }
 
-function listingCtaText(status: ListingStatus) {
+function listingCtaText(status: ListingStatus): string {
 	switch (status) {
 		case "bid":
 			return "Place bid";
@@ -210,6 +218,8 @@ function listingCtaText(status: ListingStatus) {
 			return "Message winner";
 		case "nobody_won":
 			return "Nobody won";
+		case "claim_funds":
+			return "Claim funds";
 	}
 }
 
@@ -245,6 +255,26 @@ function RelistButton({ listingId }: { listingId: string }) {
 			onClick={() => mutate()}
 		>
 			{isPending ? "Relisting..." : "Relist"}
+		</Button>
+	);
+}
+function ClaimFundsButton({
+	listingId,
+	numBids,
+}: { listingId: string; numBids: number }) {
+	const { mutate, isPending } = useMutation({
+		mutationKey: ["claim-funds", listingId],
+		mutationFn: () => claimFunds(listingId),
+	});
+
+	return (
+		<Button
+			type="button"
+			className="w-full"
+			disabled={isPending}
+			onClick={() => mutate()}
+		>
+			{isPending ? "Claiming..." : `Claim funds ($${numBids})`}
 		</Button>
 	);
 }
