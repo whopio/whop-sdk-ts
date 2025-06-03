@@ -1,4 +1,8 @@
-import { WhopThemeProvider } from "@whop-apps/theme";
+import {
+	WhopIframeSdkProvider,
+	type WhopIframeSdkProviderOptions,
+	WhopThemeScript,
+} from "@whop/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -18,17 +22,26 @@ export const metadata: Metadata = {
 	description: "My Whop App",
 };
 
+const iframeSdkOptions: WhopIframeSdkProviderOptions = {
+	appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "app_xxx",
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
+			<head>
+				<WhopThemeScript />
+			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<WhopThemeProvider>{children}</WhopThemeProvider>
+				<WhopIframeSdkProvider options={iframeSdkOptions}>
+					{children}
+				</WhopIframeSdkProvider>
 			</body>
 		</html>
 	);

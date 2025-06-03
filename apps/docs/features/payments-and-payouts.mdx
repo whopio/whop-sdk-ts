@@ -6,137 +6,170 @@ description: "Use the API to collect payment from users or payout users."
 ## Collecting Payments
 
 First, create the charge on the server using the Whop API. Then you can either:
+
 1. Open a modal in your app using the iframe SDK (recommended)
 2. Redirect the user to Whop's checkout page
 
-### Server-Side: Create the Charge
+### 1. Create the charge on the server
 
-```typescript
-// app/api/charge/route.ts
+> This step will create a charge on the server and return the inAppPurchase object required for the next step.
+
+On the server, use the [chargeUser](/sdk/api/payments/charge-user) method to create a charge:
+
+```typescript app/api/charge/route.ts
 import { whopApi } from "@/lib/whop-api";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const { userId, experienceId } = await request.json();
-    
-    const chargeUser = await whopApi.chargeUser({
+
+    const result = await whopApi.chargeUser({
       input: {
         amount: 100,
         currency: "usd",
         userId: userId,
-		  // metadata is information that you'd like to receive later about the payment.
+        // metadata is information that you'd like to receive later about the payment.
         metadata: {
           creditsToPurchase: 1,
           experienceId: experienceId,
         },
-        redirectUrl: `https://whop.com/experiences/${experienceId}`
       },
     });
 
-    return NextResponse.json({
-      checkoutUrl: chargeUser?.chargeUser?.checkoutSession?.purchaseUrl,
-      planId: chargeUser?.chargeUser?.checkoutSession?.planId
-    });
+    if (!result.chargeUser?.inAppPurchase) {
+      throw new Error("Failed to create charge");
+    }
+
+    return Response.json(result.chargeUser.inAppPurchase);
   } catch (error) {
     console.error("Error creating charge:", error);
-    return NextResponse.json({ error: "Failed to create charge" }, { status: 500 });
+    return Response.json({ error: "Failed to create charge" }, { status: 500 });
   }
 }
 ```
 
-### Client-Side: Handle Payment (Option 1 - Modal)
+### 2. Confirm the payment on the client
 
-Use the iframe SDK to open a payment modal (recommended for better UX):
+> In this step the user will be prompted to confirm the previously created charge in a modal.
 
-```typescript
+<Warning>
+  This function requires the iFrame SDK to be initialized. See [**iFrame
+  Overview**](/sdk/iframe-setup) for more information.
+</Warning>
+
+Use the iframe SDK to open a payment modal:
+
+<CodeGroup>
+```tsx React
 "use client";
+import { useIframeSdk } from "@whop/react";
 
-import { useIframeSdk } from "@whop/sdk";
-
-export default function PaymentButton({ userId, experienceId }: { 
+export default function PaymentButton({
+  userId,
+  experienceId,
+}: {
   userId: string;
   experienceId: string;
 }) {
   const iframeSdk = useIframeSdk();
+  
   const [receiptId, setReceiptId] = useState<string>();
   const [error, setError] = useState<string>();
-
-  const handlePurchase = async () => {
+  
+  async function handlePurchase() {
     try {
       // 1. Create charge on server
       const response = await fetch("/api/charge", {
         method: "POST",
-        body: JSON.stringify({ userId, experienceId })
+        body: JSON.stringify({ userId, experienceId }),
       });
-      const data = await response.json();
       
-      if (!data.planId) {
-        throw new Error("No plan ID returned");
-      }
-
-      // 2. Open payment modal
-      const res = await iframeSdk.inAppPurchase({
-        plan_id: data.planId,
-      });
-
-      if (res.status === "ok") {
-        setReceiptId(res.data.receipt_id);
-        setError(undefined);
+      if (response.ok) {
+        const inAppPurchase = await response.json();
+        // 2. Open payment modal
+        const res = await iframeSdk.inAppPurchase(inAppPurchase);
+        
+        if (res.status === "ok") {
+          setReceiptId(res.data.receipt_id);
+          setError(undefined);
+        } else {
+          setReceiptId(undefined);
+          setError(res.error);
+        }
       } else {
-        setReceiptId(undefined);
-        setError(res.error);
+        throw new Error("Failed to create charge");
       }
     } catch (error) {
       console.error("Purchase failed:", error);
       setError("Purchase failed");
     }
-  };
-
-  return (
-    <button onClick={handlePurchase}>
-      Purchase Plan
-    </button>
-  );
+  }
+  
+  return <button onClick={handlePurchase}>Purchase Plan</button>;
 }
 ```
 
-### Client-Side: Handle Payment (Option 2 - Redirect)
+```tsx Vanilla JS
+import { iframeSdk } from "@/lib/iframe-sdk";
 
-Alternatively, redirect the user to Whop's checkout page:
+const paymentButton = document.querySelector("button#payment-button");
+const receiptElement = document.querySelector("span#receiptContainer");
+const errorElement = document.querySelector("span#errorContainer");
 
-```typescript
-"use client";
+function setError(error?: string) {
+  if (errorElement instanceof HTMLSpanElement) {
+    errorElement.textContent = error ?? "";
+  }
+}
 
-export default function PaymentButton({ userId, experienceId }: {
-  userId: string;
-  experienceId: string;
-}) {
-  const handlePurchase = async () => {
-    try {
-      const response = await fetch("/api/charge", {
-        method: "POST",
-        body: JSON.stringify({ userId, experienceId })
-      });
-      const data = await response.json();
-      
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-      } else {
-        throw new Error("No checkout URL returned");
+function setReceiptId(receiptId?: string) {
+  if (receiptElement instanceof HTMLSpanElement) {
+    receiptElement.textContent = receiptId ?? "";
+  }
+}
+
+if (paymentButton instanceof HTMLButtonElement) {
+  paymentButton.addEventListener(
+    "click",
+    async function onPaymentButtonClick() {
+      const userId = this.dataset.userId;
+      const experienceId = this.dataset.experienceId;
+      if (!userId || !experienceId) {
+        throw new Error("Missing userId or experienceId");
       }
-    } catch (error) {
-      console.error("Purchase failed:", error);
-    }
-  };
 
-  return (
-    <button onClick={handlePurchase}>
-      Purchase Plan
-    </button>
+      try {
+        // 1. Create charge on server
+        const response = await fetch("/api/charge", {
+          method: "POST",
+          body: JSON.stringify({ userId, experienceId }),
+        });
+
+        if (response.ok) {
+          const inAppPurchase = await response.json();
+          // 2. Open payment modal
+          const res = await iframeSdk.inAppPurchase(inAppPurchase);
+
+          if (res.status === "ok") {
+            setReceiptId(res.data.receipt_id);
+            setError(undefined);
+          } else {
+            setReceiptId(undefined);
+            setError(res.error);
+          }
+        } else {
+          throw new Error("Failed to create charge");
+        }
+      } catch (error) {
+        console.error("Purchase failed:", error);
+        setError("Purchase failed");
+      }
+    }
   );
 }
 ```
+
+</CodeGroup>
 
 ## Sending Payouts
 
@@ -148,8 +181,8 @@ You can send payouts to any user using their Whop username. The funds will be tr
 import { whopApi } from "@/lib/whop-api";
 
 async function sendPayout(
-  companyId: string, 
-  recipientUsername: string, 
+  companyId: string,
+  recipientUsername: string,
   amount: number
 ) {
   // 1. Get your company's ledger account
@@ -157,18 +190,18 @@ async function sendPayout(
   const companyId = experience.experience.company.id;
   const ledgerAccount = await whopApi.getCompanyLedgerAccount({ companyId });
 
-  // 2. Transfer funds to the recipient
-  await whopApi.transferFunds({
+  // 2. Pay the recipient
+  await whopApi.payUser({
     input: {
       amount: amount,
       currency: "usd",
-      // Username of the recipient
+      // Username or ID or ledger account ID of the recipient user
       destinationId: recipientUsername,
-      // Your company's ledger account ID
+      // Your company's ledger account ID that can be retrieve from whopApi.getCompanyLedgerAccount()
       ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
       // Optional transfer fee in percentage
-      transferFee: ledgerAccount.company?.ledgerAccount.transferFee
-    }
+      transferFee: ledgerAccount.company?.ledgerAccount.transferFee,
+    },
   });
 }
 ```

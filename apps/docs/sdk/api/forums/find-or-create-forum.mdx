@@ -1,0 +1,70 @@
+---
+title: Find Or Create Forum
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.findOrCreateForum({
+	input: {
+		// The ID of the access pass (whop) to attach the experience to. It looks like prod_xxxx.
+		accessPassId: "prod_XXXXXXXX",
+
+		// The ID of an existing experience. If supplied, this new forum experience will
+		// be attached to the first access pass (whop) of this experience. It looks like exp_xxxx.
+		experienceId: "exp_XXXXXXXX",
+
+		// The expiration date of the experience to be created. After this timestamp, the experience is deleted.
+		expiresAt: 1716931200,
+
+		// The name of the forum experience to be created, shown to the user on the UI.
+		name: "some string" /* Required! */,
+
+		// The upsell plan details to add for the forum experience. This allows you to
+		// require paid access for the forum within the whop.
+		price: {
+			// The base currency of the upsell.
+			baseCurrency:
+				"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+			// An array of custom field objects.
+			customFields: [
+				{
+					// The type of the custom field.
+					fieldType: "text" /* Valid values: text */ /* Required! */,
+
+					// The ID of the custom field (if being updated)
+					id: "xxxxxxxxxxx",
+
+					// The name of the custom field.
+					name: "some string" /* Required! */,
+
+					// The order of the field.
+					order: 10,
+
+					// The placeholder value of the field.
+					placeholder: "some string",
+
+					// Whether or not the field is required.
+					required: true,
+				},
+			],
+
+			// The interval at which the plan charges (expiration plans).
+			expirationDays: 10,
+
+			// The price of the upsell.
+			initialPrice: 10,
+
+			// The method of release for the upsell.
+			releaseMethod: "buy_now" /* Valid values: buy_now | raffle | waitlist */,
+		},
+
+		// This is who is allowed to create posts inside the forum. Select 'admin' if you
+		// only want the team members to post, or select 'everyone' if any member of the
+		// whop can post. Default value is 'admins'.
+		whoCanPost: "admins" /* Valid values: admins | everyone */,
+	},
+});
+
+```

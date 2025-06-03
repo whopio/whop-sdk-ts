@@ -1,0 +1,14 @@
+---
+title: List Forum Posts From Forum
+description: Fetch feed posts for the current user
+---
+
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.listForumPostsFromForum({
+	// The ID of the experience to fetch posts from
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+});
+
+```

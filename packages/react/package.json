@@ -1,0 +1,68 @@
+{
+	"name": "@whop/react",
+	"description": "React SDK for building embedded apps on Whop",
+	"version": "0.0.2",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/react"
+	},
+	"keywords": ["whop", "react", "sdk", "embedded", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/*.mjs",
+			"require": "./dist/*.js",
+			"types": "./dist/*.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "pnpm run clean && concurrently \"pnpm run build:swc\" \"pnpm run build:tsc\"",
+		"build:swc": "concurrently \"pnpm run build:swc:esm\" \"pnpm run build:swc:cjs\"",
+		"build:swc:cjs": "swc src -d dist --strip-leading-paths --out-file-extension cjs -C module.type=commonjs",
+		"build:swc:esm": "swc src -d dist --strip-leading-paths --out-file-extension mjs -C module.type=es6",
+		"build:tsc": "tsc --emitDeclarationOnly",
+		"clean": "rm -rf dist",
+		"dev": "concurrently \"pnpm run dev:swc\" \"pnpm run dev:tsc\"",
+		"dev:swc": "concurrently \"pnpm run dev:swc:esm\" \"pnpm run dev:swc:cjs\"",
+		"dev:swc:cjs": "swc src -d dist --strip-leading-paths --out-file-extension cjs -C module.type=commonjs --watch",
+		"dev:swc:esm": "swc src -d dist --strip-leading-paths --out-file-extension mjs -C module.type=es6 --watch",
+		"dev:tsc": "tsc --emitDeclarationOnly --watch",
+		"check-types": "tsc --noEmit",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"dependencies": {
+		"@whop/iframe": "workspace:^"
+	},
+	"devDependencies": {
+		"@swc/cli": "^0.7.7",
+		"@swc/core": "1.11.29",
+		"@types/node": "latest",
+		"@types/react": "19.1.5",
+		"concurrently": "9.1.2",
+		"react": "^19.0.0",
+		"typescript": "latest"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"engines": {
+		"node": "22.x",
+		"pnpm": "9.15.9"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0"
+	}
+}

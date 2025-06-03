@@ -1,12 +1,12 @@
 {
 	"name": "@local/docs",
 	"private": true,
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"scripts": {
 		"dev": "mintlify dev"
 	},
 	"packageManager": "pnpm@9.15.9",
 	"devDependencies": {
-		"mintlify": "4.0.560"
+		"mintlify": "4.0.563"
 	}
 }

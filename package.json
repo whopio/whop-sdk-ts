@@ -1,6 +1,7 @@
 {
 	"name": "whop-sdk-ts",
 	"private": true,
+	"license": "MIT",
 	"scripts": {
 		"build": "turbo build",
 		"check-types": "turbo run check-types",

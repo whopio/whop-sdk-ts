@@ -1,4 +1,4 @@
-import type { getSdk } from "@/codegen/graphql";
+import type { getSdk } from "@/codegen/graphql/client";
 import { analyzeAttachment as analyzeAttachmentFn } from "./analyze";
 import { prepareAttachmentForUpload as prepareAttachmentForUploadFn } from "./prepare";
 
