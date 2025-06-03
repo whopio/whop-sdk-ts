@@ -1,5 +1,5 @@
 ---
-"@whop/api": minor
+"@whop/api": patch
 ---
 
-Adds pendingBalance field where balanceCaches are fetched
+Add `balanceCaches.nodes.pendingBalance` field to `BaseLedgerAccount` fragment
