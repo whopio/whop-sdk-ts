@@ -15,4 +15,7 @@ fragment BasePublicProfileUser on PublicProfileUser {
 	profilePicture {
 		sourceUrl
 	}
+	phoneVerified
+	city
+	country
 }

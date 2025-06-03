@@ -1,0 +1,22 @@
+---
+title: Get Waitlist Entries For Company
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.getWaitlistEntriesForCompany({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+});
+
+```
