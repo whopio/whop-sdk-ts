@@ -1,45 +1,122 @@
 ---
-title: Anonymous Ask Me Anything (AMA) App
+title: Anonymous Ask Me Anything App
 description: "Build an anonymous Q&A app where Whop creators can receive anonymous questions from their community members."
 ---
 
-## 1. Set up your Next.js project
+Learn how to set up & deploy a full-featured Anonymous Ask Me Anything (AMA) app that integrates seamlessly with the Whop ecosystem. Users can submit anonymous questions and admins can answer them, automatically creating forum posts for community discussion.
 
-Clone our Next.js app template:
+**🎮 [Test Live App in your whop](https://whop.com/apps/app_lAgURr4dDAesot/install/)** | **📦 [GitHub Repository](https://github.com/your-username/ama-whop-app)**
+
+## 🎯 What You'll Build
+
+- 🕵️ **Anonymous Question Submission** - Users can ask questions without revealing their identity
+- 👑 **Admin Panel** - Experience admins can view, answer, and manage questions
+- 📝 **Forum Integration** - Answered questions become forum posts for community engagement
+- 🏠 **Clean UI** - Modern, responsive design with Tailwind CSS and Shadcn UI
+- 🔐 **Whop Authentication** - Seamless integration with Whop's user system
+- 📊 **Admin Dashboard** - Stats and content management for admins
+
+## 📋 Prerequisites
+
+- Node.js 18+ installed
+- pnpm installed (`npm install -g pnpm`)
+- A Whop developer account
+- Basic knowledge of React, TypeScript, and Next.js
+
+## 🚀 Quick Start
+
+### Step 1: Clone the Repository
 
 ```bash
-npx create-next-app@latest ama-whop-app -e https://github.com/whopio/whop-nextjs-app-template
-```
-
-Enter the project directory:
-
-```bash
+git clone https://github.com/your-username/ama-whop-app.git
 cd ama-whop-app
 ```
 
-Install dependencies:
+### Step 2: Install Dependencies
 
 <CodeGroup>
+```bash
+pnpm install
+```
+</CodeGroup>
 
-```bash pnpm
-pnpm i
+### Step 3: Set up Supabase Database
+
+1. Go to [https://supabase.com](https://supabase.com)
+2. Click **Start your project**
+3. Sign in or create an account
+4. Click **New project**
+5. Choose your organization
+6. Enter a **Database Name** (e.g., "ama-whop-app")
+7. Enter a **Database Password** (save this!)
+8. Select a **Region** close to your users
+9. Click **Create new project**
+
+Once your project is created:
+1. Go to **Settings** → **Database**
+2. Scroll down to **Connection string**
+3. Copy the **URI** format for `DATABASE_URL`
+4. Copy the **Direct connection** for `DIRECT_URL`
+
+<Frame>
+  <img
+    src="/how-to-videos/prisma-setup.gif"
+    alt="How to setup Prisma with Supabase"
+  />
+</Frame>
+
+### Step 4: Get Your Whop Credentials
+
+1. Navigate to the [Whop Developer Dashboard](https://whop.com/dashboard)
+2. Click on Developer Tab
+3. Create a new app or select an existing one
+4. Go to the "API Keys" section to obtain your `WHOP_API_KEY` and `WHOP_APP_ID`
+5. Create an agent user for your app and use their ID for `WHOP_AGENT_USER_ID`
+
+### Step 5: Configure Environment Variables
+
+```bash
+cp .env.development .env.local
+```
+
+Open `.env.local` in your text editor and fill in these required fields:
+
+```env
+# Database Configuration (Required)
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:5432/postgres"
+
+# Whop Integration (Required)
+WHOP_API_KEY="your_whop_app_api_key_here"
+WHOP_AGENT_USER_ID="your_bot_user_id_here"
+WHOP_APP_ID="your_whop_app_id_here"
+```
+
+### Step 6: Initialize Database
+<CodeGroup>
+```bash
+pnpm prisma:generate
+pnpm prisma:db:push
 ```
 
 ```bash npm
-npm i
+npm run prisma:generate
+npm run prisma:db push
 ```
 
 ```bash yarn
-yarn i
+yarn prisma:generate
+yarn prisma:db:push
 ```
-
 </CodeGroup>
 
-Run the app locally:
+
+This will create the initial migration files and set up your database schema.
+
+### Step 7: Start Development Server
 
 <CodeGroup>
-
-```bash pnpm
+```bash
 pnpm dev
 ```
 
@@ -50,14 +127,12 @@ npm run dev
 ```bash yarn
 yarn dev
 ```
-
 </CodeGroup>
 
-Now open http://localhost:3000 and follow the directions on the page.
 
-## 2. Start developing your app
+Your app will be available at `http://localhost:3000` and follow the directions on the page.
 
-After following the instructions on the page, you'll be able to start developing your app. You should have:
+After following the instructions on the page, you'll be able to start developing your app. 
 
 - Created your app
 - Set up your `.env.local` file
@@ -72,891 +147,79 @@ Ensure you're developing in `localhost` mode. See example:
   />
 </Frame>
 
-## 3. Set up your database
+## 🏗️ How It Works
 
-### Create a Supabase database
+### Whop SDK Integration
 
-Go to [Supabase](https://supabase.com) and create a new account if you don't have one
+**Authentication & Authorization**
+- Uses `verifyUserToken` for secure request validation
+- Leverages `checkIfUserHasAccessToExperience` for admin verification
 
-Create a new project and copy your database password
+**Forum Management**
+- Utilizes `findOrCreateForum` for automatic forum setup
+- Implements `createForumPost` for question-to-discussion conversion
+- Configurable forum permissions (`whoCanPost: "admins"`)
 
-### Set up Prisma
+### Core Features
 
-Now, let's set up Prisma in your project:
+**Anonymous Questions**
+- 100 character limit for quality control
+- Stored with only experience context (no user identification)
+- Real-time validation and feedback
 
-<CodeGroup>
+**Admin Panel**
+- View pending questions chronologically
+- Answer questions with text
+- Delete inappropriate content
+- Automatic forum post creation
 
-```bash pnpm
-pnpm add prisma @prisma/client
-pnpm prisma init
-```
+**Database Schema**
+- Simple Question model with status tracking (PENDING/APPROVED)
+- Timestamps for simple analytics
 
-```bash npm
-npm install prisma @prisma/client
-npx prisma init
-```
+## 🚀 Deployment
 
-```bash yarn
-yarn add prisma @prisma/client
-yarn prisma init
-```
+### Vercel (Recommended)
 
-</CodeGroup>
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
 
-The `prisma init` command will create a new `prisma` directory with a `schema.prisma` file
+2. **Deploy on Vercel**
+   - Visit [vercel.com](https://vercel.com) and import your repository
+   - Add your environment variables in Settings → Environment Variables
+   - Deploy!
 
-Now, go copy your database connection strings from Supabase for Prisma to use. Then paste the values in your `.env.local` file.
+### Alternative Platforms
+- **Railway** - Full-stack apps with managed PostgreSQL
+- **Netlify** - Static deployments with serverless functions
 
-Replace your password with `[YOUR-PASSWORD]`
+## 🔧 Customization
 
-<Frame>
-  <img
-    src="/how-to-videos/prisma-setup.gif"
-    alt="How to setup Prisma with Supabase"
-  />
-</Frame>
+**UI & Styling**
+- Edit colors and styles in `app/globals.css`
+- Customize components in `components/` directory
+- Update question categories and icons
 
-Replace the contents of `prisma/schema.prisma` with:
+**Settings**
+- Adjust character limits in question form
+- Modify forum post templates
+- Configure admin panel options
 
-```prisma prisma/schema.prisma
-generator client {
-  provider = "prisma-client-js"
-}
+Be creative and customize to your liking!
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
+## 🔍 Troubleshooting
 
-model Question {
-  id           String        @id @default(cuid())
-  experienceId String
-  question     String
-  status       QuestionStatus @default(PENDING)
-  createdAt    DateTime      @default(now())
-  pushedToForum Boolean      @default(false)
-}
+**Common Issues:**
+- **Database connection fails** → Check Supabase connection strings
+- **Whop auth errors** → Verify API keys in Whop dashboard
+- **Forum creation fails** → Ensure agent user has experience permissions
 
-enum QuestionStatus {
-  PENDING
-  APPROVED
-}
-```
-
-Now generate your database and Prisma client:
-
-<CodeGroup>
-
-```bash pnpm
-pnpm prisma:generate
-pnpm prisma:db:push
-```
-
-```bash npm
-npm run prisma:generate
-npm run prisma:db push
-```
-
-```bash yarn
-yarn prisma:generate
-yarn prisma:db:push
-```
-
-</CodeGroup>
-
-## 4. Install additional dependencies
-
-### Add the required packages
-
-<CodeGroup>
-
-```bash pnpm
-pnpm add lucide-react sonner date-fns
-```
-
-```bash npm
-npm install lucide-react sonner date-fns
-```
-
-```bash yarn
-yarn add lucide-react sonner date-fns
-```
-
-</CodeGroup>
-
-### Install Shadcn components
-
-<CodeGroup>
-```bash pnpm
-pnpm dlx shadcn@latest add button textarea tabs alert-dialog scroll-area
-```
-
-```bash npm
-npx shadcn@latest add button textarea tabs alert-dialog scroll-area
-```
-
-```bash yarn
-yarn shadcn@latest add button textarea tabs alert-dialog scroll-area
-```
-
-</CodeGroup>
-
-### Add environment variables
-
-Add to your `.env.local`:
-
-```env .env.local
-# Whop Agent User ID for creating forum posts
-WHOP_AGENT_USER_ID=your_agent_user_id_here
-```
-
-## 5. Create core components
-
-### `<QuestionForm>`
-
-This component handles anonymous question submission.
-
-```typescript components/question-form.tsx
-"use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { Send, Shield } from "lucide-react";
-
-export default function QuestionForm({
-  experienceId,
-}: { experienceId: string }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [charCount, setCharCount] = useState(0);
-  const MAX_CHARS = 100;
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setIsSubmitting(true);
-    
-    const res = await fetch("/api/questions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        action: "submit", 
-        experienceId, 
-        question 
-      }),
-    });
-    
-    const result = await res.json();
-    if (result?.error) {
-      toast(`Oops! ${result.error}`);
-    } else {
-      toast("Anonymous question sent! 🕵️");
-      setQuestion("");
-      setCharCount(0);
-    }
-    setIsSubmitting(false);
-  }
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = e.target.value;
-    if (text.length <= MAX_CHARS) {
-      setQuestion(text);
-      setCharCount(text.length);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Textarea
-          value={question}
-          onChange={handleTextChange}
-          placeholder="Ask anything..."
-          required
-          className="min-h-[80px] resize-none"
-        />
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <Shield className="h-3 w-3" />
-            <span>Completely anonymous</span>
-          </div>
-          <span className={`text-xs ${
-            charCount > MAX_CHARS * 0.8 ? "text-orange-500" : "text-gray-400"
-          }`}>
-            {charCount}/{MAX_CHARS}
-          </span>
-        </div>
-      </div>
-
-      <Button
-        type="submit"
-        disabled={isSubmitting || question.trim() === ""}
-        className="w-full"
-      >
-        {isSubmitting ? (
-          "Sending anonymously..."
-        ) : (
-          <>
-            <Send className="h-3 w-3 mr-2" />
-            Send Anonymous Question
-          </>
-        )}
-      </Button>
-    </form>
-  );
-}
-```
-
-### `<AdminDashboard>`
-
-This component allows creators to manage received questions.
-
-```typescript components/admin-dashboard.tsx
-"use client";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "sonner";
-import { Check, Trash2, MessageSquare } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-
-interface Question {
-  id: string;
-  question: string;
-  createdAt: string;
-  pushedToForum: boolean;
-}
-
-export default function AdminDashboard({ 
-  experienceId 
-}: { 
-  experienceId: string 
-}) {
-  const [pendingQuestions, setPendingQuestions] = useState<Question[]>([]);
-  const [approvedQuestions, setApprovedQuestions] = useState<Question[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchQuestions = async () => {
-    try {
-      const [pendingRes, approvedRes] = await Promise.all([
-        fetch(`/api/questions?experienceId=${experienceId}&status=PENDING`),
-        fetch(`/api/questions?experienceId=${experienceId}&status=APPROVED`)
-      ]);
-      
-      const pending = await pendingRes.json();
-      const approved = await approvedRes.json();
-      
-      setPendingQuestions(pending);
-      setApprovedQuestions(approved);
-    } catch (error) {
-      toast("Failed to load questions");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuestions();
-  }, [experienceId]);
-
-  const handleAction = async (action: string, id: string, questionText?: string) => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, id, questionText }),
-      });
-
-      if (res.ok) {
-        toast(`Question ${action}d successfully!`);
-        fetchQuestions();
-      } else {
-        toast("Action failed");
-      }
-    } catch (error) {
-      toast("Something went wrong");
-    }
-  };
-
-  const QuestionCard = ({ 
-    question, 
-    showApproveButton = false 
-  }: { 
-    question: Question; 
-    showApproveButton?: boolean 
-  }) => (
-    <div className="p-4 border rounded-lg space-y-3">
-      <p className="text-sm">{question.question}</p>
-      <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-500">
-          {formatDistanceToNow(new Date(question.createdAt), { addSuffix: true })}
-        </span>
-        <div className="flex gap-2">
-          {showApproveButton && (
-            <Button
-              size="sm"
-              onClick={() => handleAction("approve", question.id)}
-            >
-              <Check className="h-3 w-3 mr-1" />
-              Approve
-            </Button>
-          )}
-          {!showApproveButton && !question.pushedToForum && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleAction("pushToForums", question.id, question.question)}
-            >
-              <MessageSquare className="h-3 w-3 mr-1" />
-              Post to Forum
-            </Button>
-          )}
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => handleAction("delete", question.id)}
-          >
-            <Trash2 className="h-3 w-3" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-
-  if (isLoading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
-  }
-
-  return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Question Management</h1>
-      
-      <Tabs defaultValue="pending">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="pending">
-            Pending ({pendingQuestions.length})
-          </TabsTrigger>
-          <TabsTrigger value="approved">
-            Approved ({approvedQuestions.length})
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="pending">
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-4">
-              {pendingQuestions.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">
-                  No pending questions
-                </p>
-              ) : (
-                pendingQuestions.map((question) => (
-                  <QuestionCard
-                    key={question.id}
-                    question={question}
-                    showApproveButton
-                  />
-                ))
-              )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-        
-        <TabsContent value="approved">
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-4">
-              {approvedQuestions.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">
-                  No approved questions
-                </p>
-              ) : (
-                approvedQuestions.map((question) => (
-                  <QuestionCard
-                    key={question.id}
-                    question={question}
-                  />
-                ))
-              )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-}
-```
-
-### `<AdBanner>`
-
-This component provides a monetization opportunity by displaying sponsored content.
-
-```typescript components/ad-banner.tsx
-"use client";
-
-import { useState } from "react";
-import { X } from "lucide-react";
-
-export default function AdBanner() {
-  const [isVisible, setIsVisible] = useState(true);
-  
-  if (!isVisible) return null;
-  
-  return (
-    <div className="flex items-center gap-3 bg-orange-50 border border-orange-200 rounded-lg px-3 py-1 max-w-xs relative">
-      <div className="w-7 h-7 bg-orange-200 rounded-full flex items-center justify-center font-bold text-orange-600 text-sm">
-        AD
-      </div>
-      <div className="flex flex-col justify-center">
-        <span className="text-xs font-semibold text-orange-700 leading-tight">
-          Anonymous AMA App
-        </span>
-        <span className="text-[10px] text-gray-500 leading-tight">
-          Get anonymous questions from your community
-        </span>
-      </div>
-      <button
-        type="button"
-        className="ml-2 px-2 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 text-xs font-medium whitespace-nowrap"
-        onClick={() => window.open('https://whop.com/apps/app_lAgURr4dDAesot/install/', '_blank')}
-      >
-        Install Now
-      </button>
-      <button
-        type="button"
-        aria-label="Close ad"
-        className="absolute top-1 right-1 p-1 rounded hover:bg-orange-100 text-gray-400 hover:text-gray-600"
-        onClick={() => setIsVisible(false)}
-      >
-        <X className="h-3 w-3" />
-      </button>
-    </div>
-  );
-}
-```
-
-## 6. Create pages
-
-### `app/experiences/[experienceId]/page.tsx`
-
-This is the main page where users can submit anonymous questions.
-
-```typescript app/experiences/[experienceId]/page.tsx
-import { whopApi } from "@/lib/whop-api";
-import { verifyUserToken } from "@whop/api";
-import { headers } from "next/headers";
-import QuestionForm from "@/components/question-form";
-import AdBanner from "@/components/ad-banner";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Shield, MessageCircle, Heart, Brain } from "lucide-react";
-
-export default async function ExperiencePage({
-  params,
-}: {
-  params: Promise<{ experienceId: string }>;
-}) {
-  const headersList = await headers();
-  const { experienceId } = await params;
-  const { userId } = await verifyUserToken(headersList);
-  
-  const result = await whopApi.checkIfUserHasAccessToExperience({
-    userId,
-    experienceId,
-  });
-  
-  const { accessLevel } = result.hasAccessToExperience;
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
-      {/* Admin Panel */}
-      {accessLevel === "admin" && (
-        <div className="bg-white border-b border-orange-100">
-          <div className="max-w-2xl mx-auto px-4 py-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">
-                Admin Panel
-              </span>
-              <Link href={`/experiences/${experienceId}/admin`}>
-                <Button size="sm" className="text-xs">
-                  <Shield className="h-3 w-3 mr-1" />
-                  View Questions
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Ask Me Anything
-          </h1>
-          <p className="text-sm text-gray-600">
-            100% anonymous. Ask what you really want to know.
-          </p>
-        </div>
-
-        {/* Categories */}
-        <div className="bg-white rounded-lg border border-orange-100 mb-6">
-          <div className="p-4">
-            <div className="grid gap-3 grid-cols-2">
-              <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
-                <MessageCircle className="h-4 w-4 text-orange-500" />
-                <div>
-                  <h3 className="text-xs font-semibold">Personal Advice</h3>
-                  <p className="text-[10px] text-gray-500">
-                    Life, career, relationships
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
-                <Brain className="h-4 w-4 text-orange-500" />
-                <div>
-                  <h3 className="text-xs font-semibold">Hot Takes</h3>
-                  <p className="text-[10px] text-gray-500">
-                    Controversial opinions
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
-                <Heart className="h-4 w-4 text-orange-500" />
-                <div>
-                  <h3 className="text-xs font-semibold">Vulnerable</h3>
-                  <p className="text-[10px] text-gray-500">
-                    Mental health, fears
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
-                <Shield className="h-4 w-4 text-orange-500" />
-                <div>
-                  <h3 className="text-xs font-semibold">Honest Feedback</h3>
-                  <p className="text-[10px] text-gray-500">
-                    Critique my work/decisions
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Question Form */}
-        <div className="bg-white rounded-lg border border-orange-100 mb-6">
-          <div className="p-4">
-            <QuestionForm experienceId={experienceId} />
-          </div>
-        </div>
-
-        {/* Ad Banner for Monetization */}
-        <div className="flex justify-center">
-          <AdBanner />
-        </div>
-      </div>
-    </div>
-  );
-}
-```
-
-### `app/experiences/[experienceId]/admin/page.tsx`
-
-This page shows the admin dashboard for managing questions.
-
-```typescript app/experiences/[experienceId]/admin/page.tsx
-import AdminDashboard from "@/components/admin-dashboard";
-import { whopApi } from "@/lib/whop-api";
-import { verifyUserToken } from "@whop/api";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-
-export default async function AdminPage({
-  params,
-}: {
-  params: Promise<{ experienceId: string }>;
-}) {
-  const headersList = await headers();
-  const { experienceId } = await params;
-  const { userId } = await verifyUserToken(headersList);
-  
-  const result = await whopApi.checkIfUserHasAccessToExperience({
-    userId,
-    experienceId,
-  });
-  
-  if (result.hasAccessToExperience.accessLevel !== "admin") {
-    redirect(`/experiences/${experienceId}`);
-  }
-
-  return <AdminDashboard experienceId={experienceId} />;
-}
-```
-
-## 7. Create the API routes
-
-### `app/api/questions/route.ts`
-
-This API route handles all question-related operations.
-
-```typescript app/api/questions/route.ts
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { verifyUserToken } from "@/lib/whop-api";
-import { whopApi } from "@/lib/whop-api";
-
-export async function POST(req: NextRequest) {
-  const agentUserId = process.env.WHOP_AGENT_USER_ID;
-  if (!agentUserId) throw new Error("WHOP_AGENT_USER_ID missing");
-
-  const { action, experienceId, id, question, questionText } = await req.json();
-  
-  try {
-    const headersList = req.headers;
-    const userToken = await verifyUserToken(headersList);
-    if (!userToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    if (action === "submit") {
-      if (!question || question.length > 100) {
-        return NextResponse.json(
-          { error: "Invalid question" },
-          { status: 400 }
-        );
-      }
-      
-      const created = await prisma.question.create({
-        data: { experienceId, question, status: "PENDING" },
-      });
-      
-      return NextResponse.json(created);
-    }
-
-    if (action === "approve") {
-      const questionObj = await prisma.question.findUnique({ where: { id } });
-      if (!questionObj) {
-        return NextResponse.json(
-          { error: "Question not found" },
-          { status: 404 }
-        );
-      }
-
-      const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
-        userId: userToken.userId,
-        experienceId: questionObj.experienceId,
-      });
-      
-      if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
-        return NextResponse.json({ error: "Not authorized" }, { status: 403 });
-      }
-
-      const approved = await prisma.question.update({
-        where: { id },
-        data: { status: "APPROVED" },
-      });
-      
-      return NextResponse.json(approved);
-    }
-
-    if (action === "delete") {
-      const questionObj = await prisma.question.findUnique({ where: { id } });
-      if (!questionObj) {
-        return NextResponse.json(
-          { error: "Question not found" },
-          { status: 404 }
-        );
-      }
-
-      const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
-        userId: userToken.userId,
-        experienceId: questionObj.experienceId,
-      });
-      
-      if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
-        return NextResponse.json({ error: "Not authorized" }, { status: 403 });
-      }
-
-      await prisma.question.delete({ where: { id } });
-      return NextResponse.json({ success: true });
-    }
-
-    if (action === "pushToForums") {
-      const questionObj = await prisma.question.findUnique({ where: { id } });
-      if (!questionObj) {
-        return NextResponse.json(
-          { error: "Question not found" },
-          { status: 404 }
-        );
-      }
-
-      const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
-        userId: userToken.userId,
-        experienceId: questionObj.experienceId,
-      });
-      
-      if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
-        return NextResponse.json({ error: "Not authorized" }, { status: 403 });
-      }
-
-      const forum = await whopApi.withUser(agentUserId).findOrCreateForum({
-        input: {
-          experienceId: questionObj.experienceId,
-          name: "AMA Forum",
-          whoCanPost: "admins",
-        },
-      });
-
-      const forumId = forum.createForum?.id;
-      if (!forumId) {
-        return NextResponse.json(
-          { error: "Could not create or find forum" },
-          { status: 500 }
-        );
-      }
-
-      await whopApi.withUser(agentUserId).createForumPost({
-        input: {
-          forumExperienceId: forumId,
-          title: "Somebody asked:",
-          content: `"${questionText}"`,
-          isMention: true,
-        },
-      });
-
-      await prisma.question.update({
-        where: { id },
-        data: { pushedToForum: true },
-      });
-
-      return NextResponse.json({ success: true });
-    }
-
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 }
-    );
-  }
-}
-
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const experienceId = searchParams.get("experienceId");
-  const status = searchParams.get("status");
-
-  try {
-    const headersList = req.headers;
-    const userToken = await verifyUserToken(headersList);
-    if (!userToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    if (!experienceId) {
-      return NextResponse.json(
-        { error: "Missing experienceId" },
-        { status: 400 }
-      );
-    }
-
-    const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
-      userId: userToken.userId,
-      experienceId,
-    });
-    
-    if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
-      return NextResponse.json({ error: "Not authorized" }, { status: 403 });
-    }
-
-    const questions = await prisma.question.findMany({
-      where: { status: status as "PENDING" | "APPROVED", experienceId },
-      orderBy: { createdAt: "desc" },
-    });
-
-    return NextResponse.json(questions);
-  } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 }
-    );
-  }
-}
-```
-
-### `lib/db.ts`
-
-Create a database utility file:
-
-```typescript lib/db.ts
-import { PrismaClient } from "@prisma/client";
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-```
-
-## 8. Deploy to Vercel
-
-1. Add this script to the `scripts` section of your `package.json` to generate the Prisma client:
-
-```json package.json
-"scripts": {
-  "postinstall": "prisma generate"
-}
-```
-
-2. Push your code to GitHub
-3. Create a new project on [Vercel](https://vercel.com)
-4. Import your GitHub repository
-5. Add all environment variables including `WHOP_AGENT_USER_ID`
-6. Deploy and copy your Vercel URL
-7. Update your Whop app settings with the new URL in the "Base URL" field
-
-## Key Features
-
-Your AMA app now includes:
-
-- **Anonymous Question Submission**: Users can ask questions without revealing their identity
-- **Admin Dashboard**: Creators can review, approve, and manage questions
-- **Forum Integration**: Approved questions can be posted to the community forum
-- **Real-time Updates**: Questions update dynamically in the admin panel
-- **Character Limits**: Keeps questions concise with a 100-character limit
-- **Beautiful UI**: Modern design with orange theming and responsive layout
-- **Monetization Ready**: Built-in ad banner component for sponsored content
-
-## Monetization Strategy
-
-The included `AdBanner` component provides several monetization opportunities:
-
-- **Sponsored Content**: Display ads from brands relevant to your audience
-- **Affiliate Marketing**: Promote products with affiliate links
-- **Self-Promotion**: Advertise your own products or services
-- **Brand Partnerships**: Collaborate with companies for sponsored placements
-
-You can customize the ad banner to your like. Be creative!
-
-## Privacy & Security
-
-- No user identification is stored with questions
-- Only experience owners can access the admin dashboard
-- Questions require approval before being shared publicly
-- Secure authentication through Whop's API
-
-## Need Help?
-
-- Join the [Developer Whop](https://whop.com/whop-devs)
-- View the template for the above [here](https://github.com/whopio/whop-nextjs-app-template)
-- Visit our [SDK GitHub repository](https://github.com/whopio/whop-sdk-ts)
-
-## Try the Fully Functional App
-
-Want to see this AMA app in action? Check out the [fully functional Anonymous AMA app](https://whop.com/apps/app_lAgURr4dDAesot/install/) on Whop! Install it to see all the features working together and get inspired for your own implementation. 
+## 📚 Resources
+- [Whop Developer Documentation](https://dev.whop.com)
+- [Whop SDK Reference](https://github.com/whopio/whop-sdk-ts)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
