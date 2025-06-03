@@ -21,8 +21,8 @@ import { placeBid } from "@/lib/actions/place-bid";
 import { purchaseListing } from "@/lib/actions/purchase-listing";
 import { relistListing } from "@/lib/actions/relist";
 import type { Listing } from "@/lib/db/schema";
-import { whopIframe } from "@/lib/iframe";
 import { useMutation } from "@tanstack/react-query";
+import { useIframeSdk } from "@whop/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
@@ -307,6 +307,8 @@ function PurchaseButton({
 	listingId: string;
 	listingQuestion?: string | null;
 }) {
+	const whopIframe = useIframeSdk();
+
 	const { mutateAsync, isPending, error, reset } = useMutation({
 		mutationKey: ["purchase-listing", listingId],
 		mutationFn: async (formData: FormData) => {
