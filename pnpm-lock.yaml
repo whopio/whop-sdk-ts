@@ -334,8 +334,8 @@ importers:
         specifier: 16.5.0
         version: 16.5.0
       ts-proto:
-        specifier: 2.7.0
-        version: 2.7.0
+        specifier: 2.7.1
+        version: 2.7.1
       tsup:
         specifier: 8.5.0
         version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.4)(typescript@5.8.3)(yaml@2.8.0)
@@ -361,8 +361,8 @@ importers:
         specifier: 14.2.4
         version: 14.2.4
       ts-proto:
-        specifier: 2.7.0
-        version: 2.7.0
+        specifier: 2.7.1
+        version: 2.7.1
       tsup:
         specifier: 8.5.0
         version: 8.5.0(@swc/core@1.11.29)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.4)(typescript@5.8.3)(yaml@2.8.0)
@@ -6620,14 +6620,14 @@ packages:
   ts-log@2.2.7:
     resolution: {integrity: sha512-320x5Ggei84AxzlXp91QkIGSw5wgaLT6GeAH0KsqDmRZdVWW2OiSeVvElVoatk3f7nicwXlElXsoFkARiGE2yg==}
 
-  ts-poet@6.11.0:
-    resolution: {integrity: sha512-r5AGF8vvb+GjBsnqiTqbLhN1/U2FJt6BI+k0dfCrkKzWvUhNlwMmq9nDHuucHs45LomgHjZPvYj96dD3JawjJA==}
+  ts-poet@6.12.0:
+    resolution: {integrity: sha512-xo+iRNMWqyvXpFTaOAvLPA5QAWO6TZrSUs5s4Odaya3epqofBu/fMLHEWl8jPmjhA0s9sgj9sNvF1BmaQlmQkA==}
 
   ts-proto-descriptors@2.0.0:
     resolution: {integrity: sha512-wHcTH3xIv11jxgkX5OyCSFfw27agpInAd6yh89hKG6zqIXnjW9SYqSER2CVQxdPj4czeOhGagNvZBEbJPy7qkw==}
 
-  ts-proto@2.7.0:
-    resolution: {integrity: sha512-BGHjse2wTOeswOqnnPKinpxmbaRd882so/e1En6ww59YMG7AO9Kg4vPpJcbVfrpBixPRDqHafXD/RDyd2T99GA==}
+  ts-proto@2.7.1:
+    resolution: {integrity: sha512-Ifih7nTnI+N6PtloK8rPmSfHQcTjFeKLIh84jSdWIwA3KCWKcx8pLlR3jZvTgO1Fe0r76nowQ98I4mRSjuQHYw==}
     hasBin: true
 
   tslib@1.14.1:
@@ -14359,7 +14359,7 @@ snapshots:
 
   ts-log@2.2.7: {}
 
-  ts-poet@6.11.0:
+  ts-poet@6.12.0:
     dependencies:
       dprint-node: 1.0.8
 
@@ -14367,11 +14367,11 @@ snapshots:
     dependencies:
       '@bufbuild/protobuf': 2.4.0
 
-  ts-proto@2.7.0:
+  ts-proto@2.7.1:
     dependencies:
       '@bufbuild/protobuf': 2.4.0
       case-anything: 2.1.13
-      ts-poet: 6.11.0
+      ts-poet: 6.12.0
       ts-proto-descriptors: 2.0.0
 
   tslib@1.14.1: {}
