@@ -411,7 +411,7 @@
 		},
 		{
 			"group": "iFrame",
-			"pages": ["sdk/iframe-setup", "sdk/external-url", "sdk/redirect-url"]
+			"pages": ["sdk/iframe-setup", "sdk/external-url"]
 		},
 		{
 			"group": "API Documentation",

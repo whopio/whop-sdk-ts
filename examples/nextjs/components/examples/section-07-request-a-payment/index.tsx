@@ -1,7 +1,7 @@
 "use client";
 
 import { requestPayment } from "@/lib/actions/request-payment";
-import { iframeSdk } from "@/lib/iframe-sdk";
+import { useIframeSdk } from "@whop/react";
 import { use, useState } from "react";
 import { SubmitButton } from "./submit-button";
 
@@ -13,6 +13,7 @@ export function SectionRequestAPayment({
 	const { experienceId } = use(params);
 	const [receiptId, setReceiptId] = useState<string>();
 	const [error, setError] = useState<string>();
+	const iframeSdk = useIframeSdk();
 
 	return (
 		<div>
