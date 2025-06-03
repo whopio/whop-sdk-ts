@@ -74,14 +74,14 @@
 		{
 			"group": "Features",
 			"pages": [
-				"features/webhooks",
-				"features/oauth-guide",
 				"features/checkout-embed",
 				"features/websocket-guide",
 				"features/payments-and-payouts",
 				"features/send-push-notification",
 				"features/post-to-feed",
-				"features/upload-media"
+				"features/upload-media",
+				"features/webhooks",
+				"features/oauth-guide"
 			]
 		},
 		{
