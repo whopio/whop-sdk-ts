@@ -1,13 +1,13 @@
 {
-	"name": "@whop/checkout",
-	"description": "Embed Whop checkout on any website",
-	"version": "0.0.22",
+	"name": "@whop/iframe",
+	"description": "Powers communication between Whop and your embedded app",
+	"version": "0.0.2",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
-		"directory": "packages/checkout"
+		"directory": "packages/iframe"
 	},
-	"keywords": ["whop", "checkout", "embedded", "payments"],
+	"keywords": ["whop", "iframe", "sdk", "embedded", "apps", "payments"],
 	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
 	"homepage": "https://whop.com/developers/",
 	"license": "MIT",
@@ -15,21 +15,29 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./host": {
+			"import": "./dist/host.mjs",
+			"require": "./dist/host.js",
+			"types": "./dist/host.d.ts"
+		}
+	},
 	"scripts": {
 		"build": "tsup",
-		"dev": "concurrently \"pnpm run dev:tsup\" \"pnpm run dev:serve\"",
-		"dev:tsup": "tsup --watch",
-		"dev:serve": "serve ./dist",
+		"dev": "tsup --watch",
 		"check-types": "tsc --noEmit",
 		"lint:fix": "biome check --write --unsafe"
 	},
+	"dependencies": {
+		"zod": "3.22.3"
+	},
 	"devDependencies": {
-		"@swc/core": "1.11.29",
 		"@types/node": "latest",
-		"concurrently": "9.1.2",
-		"dotenv": "16.5.0",
-		"serve": "14.2.4",
-		"ts-proto": "2.7.0",
 		"tsup": "8.5.0",
 		"typescript": "latest"
 	},

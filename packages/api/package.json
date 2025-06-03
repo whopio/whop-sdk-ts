@@ -1,6 +1,20 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.21",
+	"version": "0.0.22",
+	"description": "Whop API client",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/api"
+	},
+	"keywords": ["whop", "api", "sdk", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": ["dist"],
 	"exports": {
 		".": {
 			"node": {
@@ -33,10 +47,6 @@
 			}
 		}
 	},
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
-	"files": ["dist"],
 	"scripts": {
 		"build": "tsup",
 		"build:proto": "bash ./scripts/generate-protos.sh",
