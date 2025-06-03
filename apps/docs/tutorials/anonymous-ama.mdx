@@ -54,21 +54,17 @@ yarn install
     9. Click **Create new project**
   </Step>
   <Step title="Get Database Connection Strings">
-    Once your project is created:
-    1. Go to **Settings** → **Database**
-    2. Scroll down to **Connection string**
-    3. Copy the **URI** format for `DATABASE_URL`
-    4. Copy the **Direct connection** for `DIRECT_URL`
+	<Frame>
+	<img
+		src="/how-to-videos/prisma-setup.gif"
+		alt="How to setup Prisma with Supabase"
+	/>
+	</Frame>
     <Note>Ensure you replace placeholder `[YOUR-PASSWORD]` with your saved database password.</Note>
   </Step>
 </Steps>
 
-<Frame>
-  <img
-    src="/how-to-videos/prisma-setup.gif"
-    alt="How to setup Prisma with Supabase"
-  />
-</Frame>
+
 
 ### Step 3: Get Your Whop API Credentials
 
@@ -95,7 +91,7 @@ yarn install
   <Step title="Create local environment file">
     Duplicate the `.env.example` file and rename it to `.env.local`, or create `.env.local` from scratch:
     ```bash
-    cp .env.example .env.local
+    cp .env.development .env.local
     # OR
     touch .env.local
     ```
