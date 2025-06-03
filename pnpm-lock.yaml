@@ -193,15 +193,15 @@ importers:
       '@vercel/functions':
         specifier: ^2.0.3
         version: 2.1.0
-      '@whop-apps/iframe':
-        specifier: 0.0.1-canary.116
-        version: 0.0.1-canary.116
-      '@whop-apps/theme':
-        specifier: 0.0.1-canary.116
-        version: 0.0.1-canary.116(react@19.1.0)
       '@whop/api':
         specifier: workspace:*
         version: link:../../packages/api
+      '@whop/iframe':
+        specifier: workspace:*
+        version: link:../../packages/iframe
+      '@whop/react':
+        specifier: workspace:*
+        version: link:../../packages/react
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

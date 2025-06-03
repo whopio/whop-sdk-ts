@@ -27,65 +27,6 @@ export const fetchListings = cache(
 	},
 );
 
-// const fetchMyWonListings = cache(async (experienceId: string) => {
-// 	const { userId, accessLevel } = await verifyUser("customer", {
-// 		experienceId,
-// 	});
-
-// 	const now = new Date();
-// 	const listings = await db.query.listingsTable.findMany({
-// 		where: and(
-// 			eq(listingsTable.experienceId, experienceId),
-// 			lt(listingsTable.biddingEndsAt, now.toISOString()),
-// 			eq(listingsTable.lastBidderUserId, userId),
-// 		),
-// 		orderBy: [desc(listingsTable.createdAt)],
-// 		limit: 100,
-// 	});
-
-// 	return listings.map((listing) =>
-// 		redactListing(listing, userId, accessLevel === "admin"),
-// 	);
-// });
-
-// const fetchActiveBiddingListings = cache(async (experienceId: string) => {
-// 	const { userId, accessLevel } = await verifyUser("customer", {
-// 		experienceId,
-// 	});
-
-// 	const listings = await db.query.listingsTable.findMany({
-// 		where: and(
-// 			eq(listingsTable.experienceId, experienceId),
-// 			lt(listingsTable.biddingEndsAt, new Date().toISOString()),
-// 		),
-// 		orderBy: [desc(listingsTable.createdAt)],
-// 		limit: 100,
-// 	});
-
-// 	return listings.map((listing) =>
-// 		redactListing(listing, userId, accessLevel === "admin"),
-// 	);
-// });
-
-// const fetchExpiredListings = cache(async (experienceId: string) => {
-// 	const { userId, accessLevel } = await verifyUser("customer", {
-// 		experienceId,
-// 	});
-
-// 	const listings = await db.query.listingsTable.findMany({
-// 		where: and(
-// 			eq(listingsTable.experienceId, experienceId),
-// 			gt(listingsTable.biddingEndsAt, new Date().toISOString()),
-// 		),
-// 		orderBy: [desc(listingsTable.createdAt)],
-// 		limit: 100,
-// 	});
-
-// 	return listings.map((listing) =>
-// 		redactListing(listing, userId, accessLevel === "admin"),
-// 	);
-// });
-
 function redactListing(
 	listing: Listing,
 	currentUserId: string,
