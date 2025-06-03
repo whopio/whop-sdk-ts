@@ -1,4 +1,4 @@
-import type { AttachableRecords, Sdk } from "@/codegen/graphql";
+import type { AttachableRecords, Sdk } from "@/codegen/graphql/client";
 
 import { MULTIPART_UPLOAD_CHUNK_SIZE } from "@/attachments/common";
 import { b64 } from "@/utils/b64";

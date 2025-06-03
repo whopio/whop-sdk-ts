@@ -1,5 +1,5 @@
 export type { UploadAttachmentResponse } from "@/attachments/upload";
-export type * from "@/codegen/graphql";
+export type * from "@/codegen/graphql/server";
 export * as proto from "@/codegen/proto";
 export {
 	getUserToken,

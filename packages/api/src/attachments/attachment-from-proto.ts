@@ -1,4 +1,4 @@
-import type { AttachmentFragment } from "@/codegen/graphql";
+import type { AttachmentFragment } from "@/codegen/graphql/client";
 import type { FileAttachment } from "@/codegen/proto/common/attachment";
 
 /**

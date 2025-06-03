@@ -4,7 +4,7 @@ import type {
 	AttachmentFragment,
 	Media,
 	getSdk,
-} from "@/codegen/graphql";
+} from "@/codegen/graphql/client";
 
 import { uploadParts } from "@/attachments/upload-parts";
 import { sum } from "@/utils/sum";

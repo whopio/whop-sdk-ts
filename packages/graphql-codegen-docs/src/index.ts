@@ -56,7 +56,6 @@ function writeOperation(
 	schema: GraphQLSchema,
 	groupedOperations: Record<string, string[]>,
 ) {
-	const doc = formatOperation(value, biome, schema);
 	const existingFileName = value.loc?.source.name;
 	const operationName = value.name?.value;
 	if (!operationName) throw Error("Operation name missing");
@@ -66,7 +65,20 @@ function writeOperation(
 
 	const pathBits = inner.split("/").filter((s) => s.length > 0);
 
-	const fileNameWithoutExtension = pathBits.at(-1)?.split(".").at(0);
+	const fileNameOnly = pathBits.at(-1);
+	if (!fileNameOnly) throw Error("File name missing");
+
+	const [fileNameWithoutExtension, mode, extension] = fileNameOnly.split(".");
+	if (!fileNameWithoutExtension) throw Error("File name missing");
+	if (!mode) throw Error("Mode missing");
+	if (extension !== "graphql") throw Error("Extension should be .graphql");
+
+	if (!["server", "shared", "client"].includes(mode)) {
+		throw Error(
+			`Mode should be one of: server, shared, client. Current mode: ${mode}`,
+		);
+	}
+
 	if (fileNameWithoutExtension !== camelCaseToKebabCase(operationName)) {
 		throw Error(
 			`Operation name mismatch: ${fileNameWithoutExtension} != ${camelCaseToKebabCase(operationName)}`,
@@ -89,6 +101,12 @@ function writeOperation(
 	const outputPathBits = path.split("/");
 	const folder = outputPathBits.slice(0, -1).join("/");
 	mkdirSync(folder, { recursive: true });
+
+	const doc = formatOperation(value, biome, schema, {
+		client: mode === "client" || mode === "shared",
+		server: mode === "server" || mode === "shared",
+	});
+
 	writeFileSync(path, doc, {
 		encoding: "utf-8",
 	});
@@ -98,6 +116,7 @@ function formatOperation(
 	value: OperationDefinitionNode,
 	biome: Biome,
 	schema: GraphQLSchema,
+	availability: { client: boolean; server: boolean },
 ) {
 	const inputCode = value.variableDefinitions
 		? generateExampleInput(schema, value)
@@ -113,10 +132,15 @@ function formatOperation(
 
 	const formatted = formatCode(codeExample, biome);
 
+	const availabilityNotice =
+		!availability.client || !availability.server
+			? `<Note>This operation is only available on the ${availability.server ? "server" : "client"}.</Note>`
+			: "";
+
 	const file = `---
 title: ${camelCaseToTitleCase(value.name?.value ?? "")}${description}
 ---
-
+${availabilityNotice}
 \`\`\`typescript
 ${formatted}
 \`\`\`
