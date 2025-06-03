@@ -1,5 +1,5 @@
 query getWaitlistEntriesForCompany(
-	$companyId: String
+	$companyId: ID!
 	$after: String
 	$before: String
 	$first: Int
