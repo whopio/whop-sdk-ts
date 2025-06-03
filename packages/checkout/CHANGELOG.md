@@ -1,5 +1,13 @@
 # @whop/checkout
 
+## 0.0.23
+
+### Patch Changes
+
+- 9d57bfe: chore(deps): update dependency ts-proto to v2.7.1
+- a2809a2: chore(deps): update dependency turbo to v2.5.4
+- f8627a6: chore(deps): update dependency mintlify to v4.0.563
+
 ## 0.0.22
 
 ### Patch Changes

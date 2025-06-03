@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.0.3
+
+### Patch Changes
+
+- d18861f: chore(deps): pin dependency @types/react to 19.1.5
+
 ## 0.0.2
 
 ### Patch Changes
