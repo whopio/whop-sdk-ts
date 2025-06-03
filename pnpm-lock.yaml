@@ -439,7 +439,7 @@ importers:
         specifier: latest
         version: 22.15.29
       '@types/react':
-        specifier: ^19
+        specifier: 19.1.5
         version: 19.1.5
       concurrently:
         specifier: 9.1.2
