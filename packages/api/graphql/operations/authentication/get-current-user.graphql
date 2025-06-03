@@ -13,6 +13,7 @@ query getCurrentUser {
 				balanceCaches {
 					nodes {
 						balance
+						pendingBalance
 						currency
 					}
 				}
