@@ -44,6 +44,20 @@ export const purchaseListing = wrapServerAction(
 			await sendListing(updated);
 		}
 
+		// Allow people to purchase listings for free if they are below $1
+		if (Number.parseFloat(listing.currentPrice) < 1) {
+			const [updated] = await db
+				.update(listingsTable)
+				.set({
+					fulfilledAt: new Date().toISOString(),
+				})
+				.where(eq(listingsTable.id, listingId))
+				.returning();
+			if (!updated) throw new SafeError("Failed to update listing");
+			await sendListing(updated);
+			return;
+		}
+
 		const metadata: PaymentMetadata = {
 			type: "listing",
 			listingId,

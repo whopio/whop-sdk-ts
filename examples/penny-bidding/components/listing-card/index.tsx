@@ -121,6 +121,7 @@ function ListingCta({
 				<PurchaseButton
 					listingId={listing.id}
 					listingQuestion={listing.fulfillmentQuestion}
+					price={Number.parseFloat(listing.currentPrice)}
 				/>
 			);
 		case "claim_funds":
@@ -326,9 +327,11 @@ function DisabledCta({ status }: { status: ListingStatus }) {
 function PurchaseButton({
 	listingId,
 	listingQuestion,
+	price,
 }: {
 	listingId: string;
 	listingQuestion?: string | null;
+	price: number;
 }) {
 	const whopIframe = useIframeSdk();
 
