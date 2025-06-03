@@ -4,7 +4,7 @@ fragment BaseUser on User {
 	name
 	username
 	profilePicture {
-		sourceUrl
+		url: optimizedUrl
 	}
 }
 
@@ -13,7 +13,7 @@ fragment BasePublicProfileUser on PublicProfileUser {
 	name
 	username
 	profilePicture {
-		sourceUrl
+		url: optimizedUrl
 	}
 	phoneVerified
 	city

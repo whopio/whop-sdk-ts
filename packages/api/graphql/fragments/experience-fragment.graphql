@@ -3,13 +3,13 @@ fragment ExperienceFragment on ExperienceInterface {
 	name
 	description
 	logo: imageSrcset(style: s80) {
-		sourceUrl: original
+		url: original
 	}
 	app {
 		id
 		name
 		icon {
-			sourceUrl
+			url: optimizedUrl
 		}
 	}
 }
@@ -19,13 +19,13 @@ fragment PublicExperienceFragment on PublicExperience {
 	name
 	description
 	logo {
-		sourceUrl
+		url: optimizedUrl
 	}
 	app {
 		id
 		name
 		icon {
-			sourceUrl
+			url: optimizedUrl
 		}
 	}
 	company {

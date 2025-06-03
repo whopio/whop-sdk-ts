@@ -8,7 +8,7 @@ fragment Message on DmsPost {
 	attachments {
 		id
 		contentType
-		sourceUrl
+		url: optimizedUrl
 	}
 	isEdited
 	isPinned

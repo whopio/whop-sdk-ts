@@ -4,7 +4,7 @@ query getUser($userId: ID!) {
 		bio
 		phoneVerified
 		banner {
-			sourceUrl
+			url: optimizedUrl
 		}
 		createdAt
 	}
