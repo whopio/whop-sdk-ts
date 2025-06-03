@@ -2,12 +2,12 @@
 title: List Experiences
 description: Fetch a company
 ---
-
+<Note>This operation is only available on the server.</Note>
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.listExperiences({
-	after: "pageCursor.endCursor",
+	after: "pageInfo.endCursor",
 
 	first: 10,
 

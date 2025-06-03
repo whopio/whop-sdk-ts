@@ -65,19 +65,23 @@
 		},
 		{
 			"group": "Tutorials",
-			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
+			"pages": [
+				"tutorials/ai-car-customizer",
+				"tutorials/chat-bot",
+				"tutorials/ai-image-generator"
+			]
 		},
 		{
 			"group": "Features",
 			"pages": [
-				"features/webhooks",
-				"features/oauth-guide",
 				"features/checkout-embed",
 				"features/websocket-guide",
 				"features/payments-and-payouts",
 				"features/send-push-notification",
 				"features/post-to-feed",
-				"features/upload-media"
+				"features/upload-media",
+				"features/webhooks",
+				"features/oauth-guide"
 			]
 		},
 		{
@@ -361,22 +365,38 @@
 					]
 				},
 				{
-					"group": "Engagement",
+					"group": "Chats",
 					"pages": [
-						"sdk/api/engagement/create-forum-post",
-						"sdk/api/engagement/find-or-create-chat",
-						"sdk/api/engagement/find-or-create-forum",
-						"sdk/api/engagement/list-forum-posts",
-						"sdk/api/engagement/list-messages",
-						"sdk/api/engagement/send-direct-message-to-user",
-						"sdk/api/engagement/send-message-to-chat-feed",
-						"sdk/api/engagement/send-message-to-whop-chat",
-						"sdk/api/engagement/send-notification"
+						"sdk/api/chats/find-or-create-chat",
+						"sdk/api/chats/list-messages-from-chat",
+						"sdk/api/chats/send-message-to-chat"
+					]
+				},
+				{
+					"group": "Direct Messages",
+					"pages": [
+						"sdk/api/direct-messages/list-direct-message-conversations",
+						"sdk/api/direct-messages/send-direct-message-to-user"
 					]
 				},
 				{
 					"group": "Experiences",
-					"pages": ["sdk/api/experiences/get-experience"]
+					"pages": [
+						"sdk/api/experiences/get-experience",
+						"sdk/api/experiences/list-users-for-experience"
+					]
+				},
+				{
+					"group": "Forums",
+					"pages": [
+						"sdk/api/forums/create-forum-post",
+						"sdk/api/forums/find-or-create-forum",
+						"sdk/api/forums/list-forum-posts-from-forum"
+					]
+				},
+				{
+					"group": "Notifications",
+					"pages": ["sdk/api/notifications/send-push-notification"]
 				},
 				{
 					"group": "Payments",
@@ -384,7 +404,7 @@
 						"sdk/api/payments/charge-user",
 						"sdk/api/payments/get-company-ledger-account",
 						"sdk/api/payments/get-user-ledger-account",
-						"sdk/api/payments/transfer-funds"
+						"sdk/api/payments/pay-user"
 					]
 				},
 				{
@@ -395,7 +415,7 @@
 		},
 		{
 			"group": "iFrame",
-			"pages": ["sdk/iframe-setup", "sdk/external-url", "sdk/redirect-url"]
+			"pages": ["sdk/iframe-setup", "sdk/external-url"]
 		},
 		{
 			"group": "API Documentation",

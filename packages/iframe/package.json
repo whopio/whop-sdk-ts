@@ -1,0 +1,52 @@
+{
+	"name": "@whop/iframe",
+	"description": "Powers communication between Whop and your embedded app",
+	"version": "0.0.2",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/iframe"
+	},
+	"keywords": ["whop", "iframe", "sdk", "embedded", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./host": {
+			"import": "./dist/host.mjs",
+			"require": "./dist/host.js",
+			"types": "./dist/host.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"check-types": "tsc --noEmit",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"dependencies": {
+		"zod": "3.22.3"
+	},
+	"devDependencies": {
+		"@types/node": "latest",
+		"tsup": "8.5.0",
+		"typescript": "latest"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"engines": {
+		"node": "22.x",
+		"pnpm": "9.15.9"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

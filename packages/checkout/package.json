@@ -1,6 +1,16 @@
 {
 	"name": "@whop/checkout",
-	"version": "0.0.21-canary.8",
+	"description": "Embed Whop checkout on any website",
+	"version": "0.0.22",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/checkout"
+	},
+	"keywords": ["whop", "checkout", "embedded", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",

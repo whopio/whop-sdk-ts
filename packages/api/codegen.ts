@@ -19,6 +19,27 @@ const schemaUrl = new URL(
 
 console.debug("CURRENT SCHEMA URL", schemaUrl.href);
 
+const graphqlCodegenConfig = {
+	constEnums: true,
+	enumsAsTypes: true,
+	enumsAsConst: true,
+	onlyOperationTypes: true,
+	strictScalars: true,
+	preResolveTypes: true,
+	declarationKind: "interface",
+	scalars: {
+		BigInt: "string",
+		File: "string",
+		JSON: "{ [key: string]: any }",
+		Number: "number",
+		Timestamp: "number",
+		SanitizedString: "string",
+		UrlString: "string",
+		StringFloat: "string | number",
+		Requirements: "Record<string, unknown>",
+	},
+};
+
 const config: CodegenConfig = {
 	schema: {
 		[schemaUrl.href]: {
@@ -27,34 +48,33 @@ const config: CodegenConfig = {
 			},
 		},
 	},
-	documents: "./graphql/**/*.graphql",
+	// documents: "./graphql/**/*.graphql",
 	generates: {
-		"src/codegen/graphql/index.ts": {
+		"src/codegen/graphql/client.ts": {
+			documents: [
+				"./graphql/operations/**/*.shared.graphql",
+				"./graphql/operations/**/*.client.graphql",
+				"./graphql/fragments/**/*.graphql",
+			],
 			plugins: [
 				"typescript",
 				"typescript-operations",
 				"typescript-generic-sdk",
 			],
-			config: {
-				constEnums: true,
-				enumsAsTypes: true,
-				enumsAsConst: true,
-				onlyOperationTypes: true,
-				strictScalars: true,
-				preResolveTypes: true,
-				declarationKind: "interface",
-				scalars: {
-					BigInt: "string",
-					File: "string",
-					JSON: "{ [key: string]: any }",
-					Number: "number",
-					Timestamp: "number",
-					SanitizedString: "string",
-					UrlString: "string",
-					StringFloat: "string | number",
-					Requirements: "Record<string, unknown>",
-				},
-			},
+			config: graphqlCodegenConfig,
+		},
+		"src/codegen/graphql/server.ts": {
+			documents: [
+				"./graphql/operations/**/*.shared.graphql",
+				"./graphql/operations/**/*.server.graphql",
+				"./graphql/fragments/**/*.graphql",
+			],
+			plugins: [
+				"typescript",
+				"typescript-operations",
+				"typescript-generic-sdk",
+			],
+			config: graphqlCodegenConfig,
 		},
 	},
 	hooks: {
