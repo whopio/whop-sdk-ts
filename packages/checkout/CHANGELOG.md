@@ -1,5 +1,14 @@
 # @whop/checkout
 
+## 0.0.22
+
+### Patch Changes
+
+- 482a7fa: add description and keywords
+- 72f93fd: add repository field to package.json
+- 7f33380: add bugs and homepage to package.json
+- a97d6fa: add MIT license
+
 ## 0.0.21
 
 ### Patch Changes
