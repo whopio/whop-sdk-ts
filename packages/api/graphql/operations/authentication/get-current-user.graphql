@@ -10,12 +10,7 @@ query getCurrentUser {
 			dateOfBirthMonth
 			dateOfBirthYear
 			ledgerAccount {
-				balanceCaches {
-					nodes {
-						balance
-						currency
-					}
-				}
+				...BaseLedgerAccount
 			}
 		}
 	}

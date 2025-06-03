@@ -4,6 +4,7 @@ fragment BaseLedgerAccount on LedgerAccount {
 	balanceCaches {
 		nodes {
 			balance
+			pendingBalance
 			currency
 		}
 	}
