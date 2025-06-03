@@ -410,8 +410,8 @@ importers:
   packages/iframe:
     dependencies:
       zod:
-        specifier: 3.22.1
-        version: 3.22.1
+        specifier: 3.22.3
+        version: 3.22.3
     devDependencies:
       '@types/node':
         specifier: latest
@@ -7083,8 +7083,8 @@ packages:
     peerDependencies:
       zod: ^3.24.1
 
-  zod@3.22.1:
-    resolution: {integrity: sha512-+qUhAMl414+Elh+fRNtpU+byrwjDFOS1N7NioLY+tSlcADTx4TkCUua/hxJvxwDXcV4397/nZ420jy4n4+3WUg==}
+  zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
@@ -14862,7 +14862,7 @@ snapshots:
     dependencies:
       zod: 3.25.36
 
-  zod@3.22.1: {}
+  zod@3.22.3: {}
 
   zod@3.23.8: {}
 
