@@ -1,11 +1,13 @@
 {
 	"name": "@whop/iframe",
+	"description": "Powers communication between Whop and your embedded app",
 	"version": "0.0.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
 		"directory": "packages/iframe"
 	},
+	"keywords": ["whop", "iframe", "sdk", "embedded", "apps", "payments"],
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
