@@ -1,0 +1,33 @@
+query getWaitlistEntries(
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+) {
+	viewer {
+		company {
+			creatorDashboardTable(tableFilters: {}) {
+				entries(after: $after, before: $before, first: $first, last: $last) {
+					nodes {
+						status
+						name
+						customFieldResponses {
+							question
+							answer
+						}
+						plan {
+							id
+						}
+						user {
+							id
+							username
+							profilePicture {
+								sourceUrl
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
