@@ -1,0 +1,14 @@
+graphql
+node_modules
+codegen.ts
+tsconfig.json
+turbo.json
+src
+.gitignore
+.turbo
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+scripts
