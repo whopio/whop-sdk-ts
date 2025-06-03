@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [{ hostname: "**" }],
 	},
+	experimental: {
+		serverActions: {
+			allowedOrigins: ["*.apps.whop.com"],
+		},
+	},
 };
 
 export default nextConfig;

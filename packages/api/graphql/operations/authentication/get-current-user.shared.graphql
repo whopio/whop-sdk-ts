@@ -1,0 +1,17 @@
+query getCurrentUser {
+	viewer {
+		user {
+			...BaseUser
+			bio
+			phoneVerified
+			bannerImage
+			createdAt
+			dateOfBirthDay
+			dateOfBirthMonth
+			dateOfBirthYear
+			ledgerAccount {
+				...BaseLedgerAccount
+			}
+		}
+	}
+}

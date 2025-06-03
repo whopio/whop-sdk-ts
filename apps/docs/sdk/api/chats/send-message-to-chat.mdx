@@ -1,12 +1,12 @@
 ---
 title: Send Message To Chat
 ---
-
+<Note>This operation is only available on the server.</Note>
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
 const result = await whopApi.sendMessageToChat({
-	experienceId: "some string" /* Required! */,
+	experienceId: "exp_XXXXXXXX" /* Required! */,
 
 	message: "some string" /* Required! */,
 });
