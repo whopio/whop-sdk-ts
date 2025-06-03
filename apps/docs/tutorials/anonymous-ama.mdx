@@ -17,31 +17,15 @@ This tutorial guides you through setting up and deploying a full-featured Anonym
 
 **🎮 [Test Live App in your whop](https://whop.com/apps/app_lAgURr4dDAesot/install/)** | **📦 [GitHub Repository](https://github.com/Yohanan-Negash/ama-whop-app)**
 
-## What You'll Build
 
-- 🕵️ **Anonymous Question Submission**: Users can ask questions without revealing their identity.
-- 👑 **Admin Panel**: Experience admins can view, answer, and manage questions.
-- 📝 **Forum Integration**: Answered questions become forum posts for community engagement.
-- 🏠 **Clean UI**: Modern, responsive design with Tailwind CSS and Shadcn UI.
-- 🔐 **Whop Authentication**: Seamless integration with Whop's user system.
-- 📊 **Admin Dashboard**: Stats and content management for admins.
-
-## 📋 Prerequisites
-
-- Node.js 18+ installed
-- A Whop developer account
-- Basic knowledge of React, TypeScript, and Next.js
-
-## 🚀 Quick Start
-
-### Step 1: Clone the Repository
+### Step 1: Setup Your Next.js project
 
 ```bash
 git clone https://github.com/Yohanan-Negash/ama-whop-app
 cd ama-whop-app
 ```
 
-### Step 2: Install Dependencies
+Install Dependencies:
 
 <CodeGroup>
 ```bash pnpm
@@ -55,7 +39,7 @@ yarn install
 ```
 </CodeGroup>
 
-### Step 3: Set up Supabase Database
+### Step 2: Set up Supabase Database
 
 <Steps>
   <Step title="Navigate to Supabase and Create Project">
@@ -86,7 +70,7 @@ yarn install
   />
 </Frame>
 
-### Step 4: Get Your Whop Credentials
+### Step 3: Get Your Whop API Credentials
 
 <Steps>
   <Step title="Create a Whop App">
@@ -105,7 +89,7 @@ yarn install
   </Step>
 </Steps>
 
-### Step 5: Configure Environment Variables
+### Step 4: Configure Environment Variables
 
 <Steps>
   <Step title="Create local environment file">
@@ -131,7 +115,7 @@ yarn install
   </Step>
 </Steps>
 
-### Step 6: Initialize Database
+### Step 5: Initialize Database
 
 Run the following commands to set up your database schema with Prisma:
 <CodeGroup>
@@ -150,7 +134,7 @@ yarn prisma:db:push
 </CodeGroup>
 <Note>This will apply the schema defined in `prisma/schema.prisma` to your Supabase database.</Note>
 
-### Step 7: Start Development Server
+### Step 6: Start Development Server
 
 <CodeGroup>
 ```bash pnpm
@@ -178,26 +162,10 @@ Your app should now be running at `http://localhost:3000`.
   />
 </Frame>
 
-## 🏗️ How It Works
-
-This section outlines the core mechanics of the AMA app.
-
-### Whop SDK Integration
-
-- **Authentication & Authorization**: Uses `verifyUserToken` from the Whop SDK for secure server-side request validation. Admin-specific actions leverage `checkIfUserHasAccessToExperience` to ensure proper permissions.
-- **Forum Management**: Utilizes `findOrCreateForum` for automatically setting up a dedicated forum within the experience if one doesn't exist. New answers trigger `createForumPost` to share the Q&A with the community. Forum permissions can be configured (e.g., `whoCanPost: "admins"`).
-
-### Core Features
-
-- **Anonymous Questions**: Submitted questions are limited to 100 characters. They are stored with `experienceId` but without any user-identifying information to maintain anonymity.
-- **Admin Panel**: Admins have a dedicated interface to view pending questions (sorted by newest first), answer them using a rich text editor, or delete inappropriate submissions.
-- **Database Schema**: A `Question` model tracks the question, answer, status (`PENDING`/`APPROVED`), associated `experienceId`, `forumPostId` (once answered), and timestamps.
-
-## 🚀 Deployment
+###  Step 7: Deploy to vercel
 
 Deploy your AMA app to make it accessible to your community members. Vercel is recommended for Next.js applications.
 
-### Vercel (Recommended)
 
 <Steps>
   <Step title="Push to GitHub">
@@ -224,19 +192,32 @@ Deploy your AMA app to make it accessible to your community members. Vercel is r
   </Step>
 </Steps>
 
-### Alternative Platforms
+## How It Works
 
-- **Railway**: Good for full-stack apps, offers managed PostgreSQL.
-- **Netlify**: Suitable for static deployments and serverless functions.
+This section outlines the core mechanics of the AMA app.
 
-## 🔧 Customization
+### Whop SDK Integration
+
+- **Authentication & Authorization**: Uses `verifyUserToken` from the Whop SDK for secure server-side request validation. Admin-specific actions leverage `checkIfUserHasAccessToExperience` to ensure proper permissions.
+- **Forum Management**: Utilizes `findOrCreateForum` for automatically setting up a dedicated forum within the experience if one doesn't exist. New answers trigger `createForumPost` to share the Q&A with the community. Forum permissions can be configured (e.g., `whoCanPost: "admins"`).
+
+### Core Features
+
+- **Anonymous Questions**: Submitted questions are limited to 100 characters. They are stored with `experienceId` but without any user-identifying information to maintain anonymity.
+- **Admin Panel**: Admins have a dedicated interface to view pending questions (sorted by newest first), answer them using the input field, or delete inappropriate submissions.
+- **Database Schema**: A `Question` model tracks the question, answer, status (`PENDING`/`APPROVED`), associated `experienceId`, `forumPostId` (once answered), and timestamps.
+
+
+### Customization
 
 Feel free to adapt the app to your specific needs.
 
 - **UI & Styling**: Modify Tailwind CSS styles in `app/globals.css`. Customize or create new React components in the `components/` directory.
 - **Functionality**: Adjust character limits for questions in the submission form. Modify forum post templates or content. Extend admin panel capabilities.
 
-## 🔍 Troubleshooting
+Be creative and customize to your liking!
+
+## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Database connection fails">
@@ -257,7 +238,13 @@ Feel free to adapt the app to your specific needs.
   </Accordion>
 </AccordionGroup>
 
-## 📚 Resources
+## Need Help?
+
+- Join the [Developer Whop](https://whop.com/developers)
+- View the source code of this app [here](https://github.com/Yohanan-Negash/ama-whop-app)
+- DM [@Yoni on Whop](https://whop.com/@toni21jr)
+
+## Resources used
 
 - [Whop Developer Documentation](https://dev.whop.com)
 - [Whop SDK Reference](https://github.com/whopio/whop-sdk-ts)
@@ -267,8 +254,3 @@ Feel free to adapt the app to your specific needs.
 - [Shadcn UI](https://ui.shadcn.com/)
 
 ---
-## Need Help?
-
-- Join the [Developer Whop](https://whop.com/developers)
-- View the source code of this app [here](https://github.com/Yohanan-Negash/ama-whop-app)
-- DM [@Yoni on Whop](https://whop.com/@toni21jr)
