@@ -10,6 +10,7 @@
 	"keywords": ["whop", "checkout", "embedded", "payments"],
 	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
 	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
