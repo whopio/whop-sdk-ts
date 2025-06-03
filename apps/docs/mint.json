@@ -64,11 +64,11 @@
 			"pages": ["introduction", "getting-started", "tutorials", "get-api-key"]
 		},
 		{
-			"group": "Community Tutorials",
+			"group": "Tutorials",
 			"pages": [
 				"tutorials/ai-image-generator",
-				"community-tutorials/car-modification-ai",
-				"community-tutorials/chat-bot"
+				"tutorials/ai-car-customizer",
+				"tutorials/ai-support-chat-bot"
 			]
 		},
 		{
