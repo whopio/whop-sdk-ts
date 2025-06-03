@@ -64,8 +64,12 @@
 			"pages": ["introduction", "getting-started", "tutorials", "get-api-key"]
 		},
 		{
-			"group": "Tutorials",
-			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
+			"group": "Community Tutorials",
+			"pages": [
+				"tutorials/ai-image-generator",
+				"community-tutorials/car-modification-ai",
+				"community-tutorials/chat-bot"
+			]
 		},
 		{
 			"group": "Features",
