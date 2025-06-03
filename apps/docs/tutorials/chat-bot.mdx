@@ -1,167 +1,347 @@
 ---
-title: Chat bot
-description: "Build a chat bot on Whop that can participate in chats and forums."
+title: "Chat bot"
+description: "Build a production-ready AI support bot that intelligently answers questions in whop communities."
 ---
 
----
+<Tip>
+  This tutorial was submitted by [@script](https://whop.com/@script), a member
+  of the Whop Developers community. [Submit your own
+  tutorial](https://whop.com/developer) and get paid real $!
+</Tip>
 
-## Building a chat bot
+## Summary
 
-We'll build an agentic Whop application that plugs into the API in order to manage a user's DMs. At the end of this tutorial, you'll have a good idea of how to interact with the DM API.
+This tutorial will guide you through building a chat bot that can answer questions in whop communities. View the final product
+[here](https://whop.com/apps/app_3rqpGo1tsmPDHg/install/) by installing the app to your whop.
 
-You can use this application to either manage the agent's own DMs, or to manage your own DMs on your behalf.
+## 1. Set up your Next.js project
 
-I'll be using Python for these examples, but you can use any language you want.
-
----
-
-### **Step 1: Get your API key**
-
-Before we get started, you'll need to get an API key for your Whop. If you do not have a Whop already, create one [here](https://whop.com/new/).
-
-Then get the API key for your agent. Instructions available [here](/instructions/get-api-key).
-
----
-
-### **Step 2: Receive live DMs**
-
-Set the headers for the request to include your API key.
-
-```python
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {WHOP_APP_API_KEY}",
-    "x-on-behalf-of": WHOP_AGENT_USER_ID
-}
-```
-
-If you want to read your DMs instead of the agent's, you can switch the `x-on-behalf-of` header to your own user ID.
-
-Now, let's set up a basic websocket listener in order to receive these DMs.
-
-Let's install the required packages: `pip install websockets`
-
-Then, let's connect and fetch loop:
-
-```python
-import asyncio
-import websockets
-import json
-
-async def connect_to_websocket():
-    uri = "wss://ws-prod.whop.com/ws/developer"
-    try:
-        async with websockets.connect(uri, additional_headers=headers) as websocket:
-            print(f"Successfully connected to {uri}")
-
-            # Keep the connection alive and listen for messages
-            while True:
-                try:
-                    message = await websocket.recv()
-                    formatted_message = json.loads(message)
-                    print(f"Received: {formatted_message}")
-                except websockets.exceptions.ConnectionClosed:
-                    print("Connection closed")
-                    break
-    except Exception as e:
-        print(f"Failed to connect or error during communication: {e}")
-
-if __name__ == "__main__":
-    asyncio.run(connect_to_websocket())
-```
-
-This will connect to the websocket and print out any messages it receives.
-
-You will get all messages specific to your account, including DMs and direct messages. You can include your own logic by intercepting the message and processing it as you see fit.
-
-To filter down to DMs, you can check like so:
-
-```python
-if "feedEntity" in msg:
-    feed_entity = msg["feedEntity"]
-    if "dmsPost" in feed_entity:
-        dms_post = feed_entity["dmsPost"]
-        print(f"DM Post: {dms_post}")
-        message_content = dms_post["message"]
-```
-
-And you'll get all the info about the DM in the json object. You can extract the feed_id, sender, content, attachments, and more.
-
-**Note:** you'll receive websocket messages even for messages you send. So filter in the processing based off the user ID.
-
----
-
-### **Step 3: Generate a response**
-
-Now that we're receiving DMs, let's generate a response using an LLM. In this example, we'll use the `openai` library.
+Clone the AI Support Bot repository:
 
 ```bash
-pip install openai
+git clone https://github.com/VortexxJS/whop-ai-support (not available yet)
+cd whop-ai-bot
 ```
+
+Install dependencies:
+
+<CodeGroup>
+
+```bash npm
+ npm install
+```
+
+```bash pnpm
+pnpm install
+```
+
+```bash yarn
+yarn instal
+```
+
+</CodeGroup>
+
+## 2. Get your Whop API credentials
+
+<Steps>
+<Step title="Create a Whop App">
+  1. Go to [https://whop.com/dashboard/developer](https://whop.com/dashboard/developer)
+  2. Navigate to **Developer**
+  3. Click the **Create App** button
+  4. Give your app a name like "AI Support Bot"
+  5. Click **Create**
+</Step>
+
+<Step title="Get your API Key, Agent User ID, and App ID">
+  After creating your app:
+  1. Copy the **App API Key** - you'll need this for `WHOP_API_KEY`
+  2. Copy the **Agent User ID** - you'll need this for `WHOP_AGENT_USER_ID`
+  3. Copy the **App ID** - you'll need this for `WHOP_APP_ID`
+
+{" "}
+
+<Note>
+  The Agent User ID is what allows your bot to send messages on behalf of your
+  app.
+</Note>
+
+</Step>
+</Steps>
+
+## 3. Set up Supabase Database
+
+<Steps>
+<Step title="Create a Supabase Project">
+  1. Go to [https://supabase.com](https://supabase.com)
+  2. Click **Start your project**
+  3. Sign in or create an account
+  4. Click **New project**
+  5. Choose your organization
+  6. Enter a **Database Name** (e.g., "ai-support-bot")
+  7. Enter a **Database Password** (save this!)
+  8. Select a **Region** close to your users
+  9. Click **Create new project**
+</Step>
+
+<Step title="Get Database Connection Strings">
+  Once your project is created:
+  1. Go to **Settings** → **Database**
+  2. Scroll down to **Connection string**
+  3. Copy the **URI** format for `DATABASE_URL`
+  4. Copy the **Direct connection** for `DIRECT_URL`
+
+{" "}
+
+<Warning>
+  Replace `[YOUR-PASSWORD]` in both URLs with the database password you created.
+</Warning>
+
+</Step>
+</Steps>
+
+## 4. Get OpenRouter AI API Key
+
+<Steps>
+<Step title="Create OpenRouter Account">
+  1. Go to [https://openrouter.ai](https://openrouter.ai)
+  2. Click **Sign In** or **Sign Up**
+  3. Complete the registration process
+</Step>
+
+<Step title="Get API Key">
+  1. Go to **Keys** in the dashboard
+  2. Click **Create Key**
+  3. Give it a name like "AI Support Bot"
+  4. Copy the API key - you'll need this for `OPENROUTER_API_KEY`
+
+{" "}
+
+<Info>
+  OpenRouter gives you $1 free credit when you sign up, which is more than
+  enough for testing with Gemini 2.0 Flash!
+</Info>
+
+</Step>
+</Steps>
+
+## 5. Configure Environment Variables
+
+<Steps>
+<Step title="Copy Environment Template">
+  ```bash
+  cp env.example .env
+  ```
+</Step>
+
+<Step title="Fill in Required Variables">
+  Open `.env` in your text editor and fill in these required fields:
+
+```env
+# Database Configuration (Required)
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:5432/postgres"
+
+# AI Service Configuration (Required)
+OPENROUTER_API_KEY="your_openrouter_api_key_here"
+OPENROUTER_MODEL="google/gemini-2.0-flash-001"
+
+# Whop Integration (Required)
+WHOP_API_KEY="your_whop_app_api_key_here"
+WHOP_AGENT_USER_ID="your_bot_user_id_here"
+WHOP_APP_ID="your_whop_app_id_here"
+```
+
+{" "}
+
+<Info>All other variables are optional and have sensible defaults.</Info>
+
+</Step>
+</Steps>
+
+## 6. Set up the Database
+
+Push the database schema to Supabase:
 
 ```bash
-export OPENAI_API_KEY="sk-proj-..."
+npm run db:push
 ```
 
-```python
-from openai import OpenAI
-client = OpenAI()
+This will create the necessary tables:
 
-completion = client.chat.completions.create(
-    model="gpt-4.1",
-    messages=[
-        {
-            "role": "user",
-            "content": message_content
-        }
-    ]
-)
+- `companies` - Store bot settings for each Whop company
+- `experience_mappings` - Map Whop experiences to companies
 
-response = completion.choices[0].message.content
-print(response)
-```
+## 7. Install Whop Dev Proxy
 
-Great! Now we know what to say. Let's send it back to the user.
-
----
-
-### **Step 4: Sending the response back to Whop**
+For Whop integration to work in development, you need to install the Whop dev proxy globally:
 
 ```bash
-pip install requests
+npm install @whop-apps/dev-proxy -g
 ```
 
-```python
-full_query = """mutation sendMessage($input: SendMessageInput!) {
-	sendMessage(input: $input)
-}"""
+<Note>
+  The Whop dev proxy is required for the iframe integration to work properly
+  during development.
+</Note>
 
-payload = {
-    "query": full_query,
-    "variables": {
-        "input": {
-            "feedId": feed_id,
-            "feedType": "dms_feed",
-            "message": response
-        }
-    },
-}
+## 8. Run the Application
 
-response = requests.post(
-    "https://api.whop.com/public-graphql",
-    headers=headers,    # use the same headers as before
-    json=payload
-)
-```
+<Steps>
+  <Step title="Start the Web Server with Whop Proxy">
+    Run this command to start both the Whop proxy and Next.js development server:
 
-And we're done! You should see your response in the DM feed.
+    ```bash
+    whop-proxy --command 'npx next dev --turbopack'
+    ```
+
+    You should see output indicating both the proxy and Next.js are running. The web app will be available at [http://localhost:3000](http://localhost:3000)
+
+    <Warning>
+      Do NOT use `npm run dev` alone - it won't include the Whop proxy and the iframe integration won't work!
+    </Warning>
+
+  </Step>
+
+  <Step title="Start the AI Bot (New Terminal)">
+    In a new terminal window:
+
+    ```bash
+    npm run bot
+    ```
+
+    You should see:
+    ```
+    🚀 Starting Whop AI Bot...
+
+    Features:
+      • Smart AI question detection
+      • Admin-only configuration
+      • Real-time responses
+      • Rate limiting & caching
+
+    ✅ Bot connected to Whop
+    🤖 Listening for messages and commands...
+    ```
+
+  </Step>
+</Steps>
+
+## 9. Configure App Settings in Whop
+
+**Important**: You must configure these settings BEFORE installing the app to your community.
+
+<Steps>
+  <Step title="Set Base URL and App Path">
+    1. Go to your Whop app dashboard → **Developer** → Your App
+    2. In the **Hosting** section, configure:
+       - **Base URL**: `http://localhost:3000/`
+       - **App path**: `/company/[companyId]`
+    3. Click **Save** to update the settings
+
+    <Warning>
+      If you skip this step, the app installation and iframe integration won't work properly!
+    </Warning>
+
+  </Step>
+</Steps>
+
+## 10. Install to Your Whop Community
+
+    1. Go to your Whop company dashboard
+     2. Navigate to **Settings** → **API
+    keys**
+     3. Click on your AI Support Bot app
+      4. Find and copy the **Installation Link**
+     5. Visit the installation link and grant the necessary
+    permissions
+
+## 11. Configure Your Bot
+
+<Steps>
+  <Step title="Access Bot Settings via Whop iframe">
+    1. After installing the app, click **Open Whop** in the top right
+    2. When redirected to Whop, click the **Settings** button
+    3. Change the dropdown from **Production** to **Localhost**
+    4. Choose your port (usually **3000**)
+    5. You'll now see the bot configuration dashboard
+
+    <Note>
+      Only company admins can access the bot settings page.
+    </Note>
+
+  </Step>
+
+  <Step title="Set Up Your Bot">
+    Configure these settings:
+
+    - **Enable Bot**: Turn on the AI responses
+    - **Knowledge Base**: Add information about your community
+    - **Response Style**: Choose professional, friendly, casual, or technical
+    - **Preset Q&A**: Add common questions with instant answers
+    - **Custom Instructions**: Fine-tune the AI's behavior
+
+  </Step>
+</Steps>
+
+## 12. Test Your Bot
+
+    1. Go to your Whop community chat
+     2. Ask a question like "How do I join?"
+     3. The bot should respond within a few seconds
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Bot not responding to messages">
+    1. Check that both the web server and bot are running
+    2. Verify your environment variables are correct
+    3. Look for errors in the bot console output
+    4. Make sure the bot is enabled in the settings dashboard
+  </Accordion>
+
+    <Accordion title="Database connection errors">
+     1. Verify your Supabase database URLs are correct
+     2. Make sure you replaced
+    `[YOUR-PASSWORD]` with your actual password
+     3. Check that your Supabase
+    project is active
+     4. Try running `npm run db:push` again
+    </Accordion>
+
+    <Accordion title="AI responses not working">
+    1. Verify your OpenRouter API key is correct
+     2. Make sure the bot is enabled
+    3. Verify the knowledge base is not empty
+     4. Check the bot console for any
+    AI-related errors
+    </Accordion>
+
+  <Accordion title="Can't access bot settings">
+    1. Make sure you're using the Whop iframe method
+    2. Ensure you've set the environment to localhost with correct port
+    3. Verify you're a company admin in Whop
+    4. Check that your Whop App API key is correct
+  </Accordion>
+</AccordionGroup>
+
+## What's Next?
+
+Your AI Support Bot is now ready! Here are some next steps:
+
+- **Customize responses**: Add more preset Q&A pairs for instant answers
+- **Train the AI**: Update the knowledge base with community-specific information
+- **Monitor usage**: Check the bot console for statistics and performance
+- **Scale up**: Deploy to production using Vercel, Railway, or your preferred platform
+
+<Note>
+  The bot saves 80-90% on AI costs through smart question detection and caching.
+  Perfect for high-volume communities!
+</Note>
+
+## Need Help?
+
+- Join the [Developer Whop](https://whop.com/developer)
+- View the source code of this app [here](https://github.com/AbdullahZHD/car-modification-ai-whop)
+- DM [@script on Whop](https://whop.com/@script)
 
 ---
-
-## Next Steps
-
-Now that we have this basic functionality, you can build on top of it.
-
-To make it fully agentic, we would want to store the conversation history, and use it to generate more informed responses.
-
-Another great way to make the bot more capable is to give it tools. You can write code that the agent can then use. You can plug into more GraphQL endpoints, in just the same way that we did for the sending of messages. Check out the [schema](/api-reference/graphql/schema) for all the possibilities.
