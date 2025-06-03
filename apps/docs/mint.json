@@ -373,6 +373,10 @@
 					]
 				},
 				{
+					"group": "Companies",
+					"pages": ["sdk/api/companies/get-waitlist-entries-for-company"]
+				},
+				{
 					"group": "Direct Messages",
 					"pages": [
 						"sdk/api/direct-messages/list-direct-message-conversations",
