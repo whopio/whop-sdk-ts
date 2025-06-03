@@ -15,13 +15,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { claimFunds } from "@/lib/actions/claim-funds";
 import { markAsFulfilled } from "@/lib/actions/mark-as-fulfilled";
 import { placeBid } from "@/lib/actions/place-bid";
 import { purchaseListing } from "@/lib/actions/purchase-listing";
 import { relistListing } from "@/lib/actions/relist";
 import type { Listing } from "@/lib/db/schema";
-import { whopIframe } from "@/lib/iframe";
+import { unwrapServerAction } from "@/lib/server-action-errors";
 import { useMutation } from "@tanstack/react-query";
+import { useIframeSdk } from "@whop/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
@@ -38,6 +40,7 @@ type ListingStatus =
 	| "waiting_for_purchase"
 	| "mark_as_fulfilled"
 	| "relist"
+	| "claim_funds"
 	| "nobody_won";
 
 export function ListingCard({
@@ -118,7 +121,12 @@ function ListingCta({
 				<PurchaseButton
 					listingId={listing.id}
 					listingQuestion={listing.fulfillmentQuestion}
+					price={Number.parseFloat(listing.currentPrice)}
 				/>
+			);
+		case "claim_funds":
+			return (
+				<ClaimFundsButton listingId={listing.id} numBids={listing.numBids} />
 			);
 		default:
 			return <DisabledCta status={status} />;
@@ -166,6 +174,7 @@ function getListingStatus(
 	const isWinner = listing.lastBidderUserId === currentUserId;
 	const hasPurchased = listing.fulfillmentReceiptId !== null;
 	const isFulfilled = listing.fulfilledAt !== null;
+	const hasClaimedFunds = listing.claimedFundsAt !== null;
 
 	if (isActive) {
 		return isWinner ? "already_bid" : "bid";
@@ -181,14 +190,15 @@ function getListingStatus(
 
 	if (isAdmin) {
 		if (!hasPurchased) return "waiting_for_purchase";
-		if (isFulfilled) return "relist";
-		return "mark_as_fulfilled";
+		if (!isFulfilled) return "mark_as_fulfilled";
+		if (!hasClaimedFunds) return "claim_funds";
+		return "relist";
 	}
 
 	return "message_winner";
 }
 
-function listingCtaText(status: ListingStatus) {
+function listingCtaText(status: ListingStatus): string {
 	switch (status) {
 		case "bid":
 			return "Place bid";
@@ -210,42 +220,86 @@ function listingCtaText(status: ListingStatus) {
 			return "Message winner";
 		case "nobody_won":
 			return "Nobody won";
+		case "claim_funds":
+			return "Claim funds";
 	}
 }
 
 function MarkAsFulfilledButton({ listingId }: { listingId: string }) {
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["mark-as-fulfilled", listingId],
-		mutationFn: () => markAsFulfilled(listingId),
+		mutationFn: async () =>
+			unwrapServerAction(await markAsFulfilled(listingId)),
 	});
 
 	return (
-		<Button
-			type="button"
-			className="w-full"
-			disabled={isPending}
-			onClick={() => mutate()}
-		>
-			{isPending ? "Marking as fulfilled..." : "Mark as fulfilled"}
-		</Button>
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Marking as fulfilled..." : "Mark as fulfilled"}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
 	);
 }
 
 function RelistButton({ listingId }: { listingId: string }) {
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["relist", listingId],
-		mutationFn: () => relistListing(listingId),
+		mutationFn: async () => unwrapServerAction(await relistListing(listingId)),
 	});
 
 	return (
-		<Button
-			type="button"
-			className="w-full"
-			disabled={isPending}
-			onClick={() => mutate()}
-		>
-			{isPending ? "Relisting..." : "Relist"}
-		</Button>
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Relisting..." : "Relist"}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
+	);
+}
+function ClaimFundsButton({
+	listingId,
+	numBids,
+}: { listingId: string; numBids: number }) {
+	const { mutate, isPending, error } = useMutation({
+		mutationKey: ["claim-funds", listingId],
+		mutationFn: async () => unwrapServerAction(await claimFunds(listingId)),
+	});
+
+	return (
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Claiming..." : `Claim funds ($${numBids})`}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
 	);
 }
 
@@ -273,32 +327,32 @@ function DisabledCta({ status }: { status: ListingStatus }) {
 function PurchaseButton({
 	listingId,
 	listingQuestion,
+	price,
 }: {
 	listingId: string;
 	listingQuestion?: string | null;
+	price: number;
 }) {
-	const { mutateAsync, isPending, error, reset } = useMutation({
+	const whopIframe = useIframeSdk();
+
+	const { mutate, isPending, error, reset } = useMutation({
 		mutationKey: ["purchase-listing", listingId],
 		mutationFn: async (formData: FormData) => {
 			const listingAnswer = formData.get("listingAnswer");
 			if (listingAnswer && typeof listingAnswer !== "string")
 				throw new Error("Listing answer is required");
-			const checkoutSession = await purchaseListing({
-				listingId,
-				listingAnswer,
-			});
+			const checkoutSession = unwrapServerAction(
+				await purchaseListing({
+					listingId,
+					listingAnswer,
+				}),
+			);
 			console.log("GOT CHECKOUT SESSION", checkoutSession);
 			if (!checkoutSession) throw new Error("Failed to purchase listing");
 			const response = await whopIframe.inAppPurchase(checkoutSession);
 			if (response.status === "error") throw new Error(response.error);
 		},
 	});
-
-	function mutateAsyncWithoutThrowing(formData: FormData) {
-		mutateAsync(formData).catch((error) => {
-			console.error(error);
-		});
-	}
 
 	return (
 		<Dialog
@@ -319,7 +373,7 @@ function PurchaseButton({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form action={mutateAsyncWithoutThrowing}>
+				<form action={mutate}>
 					{listingQuestion && (
 						<div className="space-y-2 pb-3">
 							<p className="text-sm text-muted-foreground">{listingQuestion}</p>
@@ -353,9 +407,9 @@ function BidButton({
 }: {
 	listingId: string;
 }) {
-	const { mutate, isPending, error, reset } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["place-bid", listingId],
-		mutationFn: () => placeBid({ listingId }),
+		mutationFn: async () => unwrapServerAction(await placeBid({ listingId })),
 	});
 
 	return (

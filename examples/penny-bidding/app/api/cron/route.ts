@@ -1,9 +1,13 @@
+import { sendListing } from "@/lib/actions/send-websocket-message";
 import { db } from "@/lib/db";
 import { type Listing, listingsTable } from "@/lib/db/schema";
 import { whopApi } from "@/lib/whop-api";
-import { and, gt, inArray, lt } from "drizzle-orm";
+import { and, gt, inArray, isNull, lt, or, sql } from "drizzle-orm";
 
 export async function GET() {
+	// Push back ends at time for listings BEFORE sending "about to finish" notifications.
+	await updateExpiredAtForMinSellPriceListings();
+
 	// Send notifications for listing that are about to expire in the next 2 minutes.
 	const aboutToFinishListings = await db.query.listingsTable.findMany({
 		where: and(
@@ -15,9 +19,12 @@ export async function GET() {
 			gt(listingsTable.biddingEndsAt, new Date(Date.now()).toISOString()),
 
 			// Make sure we haven't sent a notification for that listing in the last 5 minutes.
-			lt(
-				listingsTable.lastNotificationSentAt,
-				new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+			or(
+				lt(
+					listingsTable.lastNotificationSentAt,
+					new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+				),
+				isNull(listingsTable.lastNotificationSentAt),
 			),
 		),
 	});
@@ -33,6 +40,30 @@ export async function GET() {
 
 	await Promise.all(aboutToFinishListings.map(sendAboutToFinishNotification));
 	await Promise.all(justFinishedListings.map(sendJustFinishedNotification));
+}
+
+async function updateExpiredAtForMinSellPriceListings() {
+	// All listings with a min sell price that have not reached the min sell price will be extended by 30 minutes.
+	const updatedListings = await db
+		.update(listingsTable)
+		.set({
+			biddingEndsAt: sql`${listingsTable.biddingEndsAt} + INTERVAL '30 minutes'`,
+		})
+		.where(
+			and(
+				gt(listingsTable.minSellPrice, 0),
+				lt(listingsTable.numBids, listingsTable.minSellPrice),
+				gt(listingsTable.biddingEndsAt, new Date(Date.now()).toISOString()),
+				lt(
+					listingsTable.biddingEndsAt,
+					new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+				),
+			),
+		)
+		.returning();
+
+	// Send websocket events
+	await Promise.all(updatedListings.map(sendListing));
 }
 
 async function sendAboutToFinishNotification(listing: Listing) {

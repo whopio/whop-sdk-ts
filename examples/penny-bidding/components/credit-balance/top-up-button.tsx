@@ -1,25 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { createFreeCredits } from "@/lib/actions/get-free-credits";
 import { requestTopup } from "@/lib/actions/request-topup";
-import { whopIframe } from "@/lib/iframe";
 import { useMutation } from "@tanstack/react-query";
+import { useIframeSdk } from "@whop/react";
 
-async function getCredits(experienceId: string) {
-	const checkoutSession = await requestTopup(experienceId);
-	if (!checkoutSession) return;
-	await whopIframe.inAppPurchase(checkoutSession);
-}
-
-export function TopUpButton({
-	mode,
-	experienceId,
-}: { mode: "real" | "fake"; experienceId: string }) {
+export function TopUpButton({ experienceId }: { experienceId: string }) {
+	const whopIframe = useIframeSdk();
 	const { mutate, isPending } = useMutation({
 		mutationKey: ["top-up"],
-		mutationFn: () =>
-			mode === "real" ? getCredits(experienceId) : createFreeCredits(),
+		mutationFn: async () => {
+			const checkoutSession = await requestTopup(experienceId);
+			if (!checkoutSession) return;
+			await whopIframe.inAppPurchase(checkoutSession);
+		},
 	});
 
 	return (
@@ -29,11 +23,7 @@ export function TopUpButton({
 			disabled={isPending}
 			className="h-8"
 		>
-			{isPending
-				? "Topping Up..."
-				: mode === "real"
-					? "Top Up"
-					: "Get Free Credits"}
+			{isPending ? "Topping Up..." : "Top Up"}
 		</Button>
 	);
 }

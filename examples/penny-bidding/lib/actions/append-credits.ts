@@ -1,6 +1,9 @@
+"use server";
+
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { userCreditsTable } from "../db/schema";
+import { SafeError } from "../server-action-errors";
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -24,7 +27,7 @@ export async function appendCredits(
 				.where(eq(userCreditsTable.userId, userId))
 				.returning();
 
-			if (!updatedCredits) throw new Error("Failed to update credits");
+			if (!updatedCredits) throw new SafeError("Failed to update credits");
 			return updatedCredits;
 		}
 		const [newCredits] = await tx
@@ -34,7 +37,7 @@ export async function appendCredits(
 				credits: creditsToAdd,
 			})
 			.returning();
-		if (!newCredits) throw new Error("Failed to create credits");
+		if (!newCredits) throw new SafeError("Failed to create credits");
 		return newCredits;
 	});
 	return credits;

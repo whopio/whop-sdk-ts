@@ -14,6 +14,7 @@ const timestamps = {
 		.notNull()
 		.defaultNow(),
 	updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true })
+		.$onUpdate(() => new Date().toISOString())
 		.notNull()
 		.defaultNow(),
 };
@@ -41,10 +42,6 @@ export const listingsTable = pgTable(
 		biddingEndsAt: timestamp("bidding_ends_at", {
 			mode: "string",
 			withTimezone: true,
-		}).notNull(),
-		initialPrice: decimal("initial_price", {
-			precision: 10,
-			scale: 2,
 		}).notNull(),
 		currentPrice: decimal("current_price", {
 			precision: 10,
@@ -77,6 +74,12 @@ export const listingsTable = pgTable(
 		numBids: integer("num_bids").notNull().default(0),
 		minimumBidsCount: integer("minimum_bids_count").notNull().default(1),
 		lastNotificationSentAt: timestamp("last_notification_sent_at", {
+			mode: "string",
+			withTimezone: true,
+		}),
+
+		minSellPrice: integer("min_sell_price"),
+		claimedFundsAt: timestamp("claimed_funds_at", {
 			mode: "string",
 			withTimezone: true,
 		}),

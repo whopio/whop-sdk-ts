@@ -61,20 +61,6 @@ export default async function CreateListingPage({
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="initialPrice">Initial Price</Label>
-							<Input
-								id="initialPrice"
-								name="initialPrice"
-								required
-								type="number"
-								min={1}
-								placeholder="Enter initial price in dollars"
-								step={0.01}
-								defaultValue={1}
-							/>
-						</div>
-
-						<div className="space-y-2">
 							<Label htmlFor="fulfillmentQuestion">
 								Optional Fulfillment Question
 							</Label>

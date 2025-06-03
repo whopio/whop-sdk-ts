@@ -123,7 +123,6 @@ async function handlePaymentWebhook(
 				.update(listingsTable)
 				.set({
 					fulfillmentReceiptId: receiptId,
-					updatedAt: new Date().toISOString(),
 				})
 				.where(eq(listingsTable.id, metadata.listingId));
 

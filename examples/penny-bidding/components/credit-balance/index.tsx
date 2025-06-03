@@ -24,7 +24,7 @@ export function UserCreditBalance({ experienceId }: { experienceId: string }) {
 					{credits.credits} CR
 				</span>
 			</div>
-			<TopUpButton mode="real" experienceId={experienceId} />
+			<TopUpButton experienceId={experienceId} />
 		</div>
 	);
 }
