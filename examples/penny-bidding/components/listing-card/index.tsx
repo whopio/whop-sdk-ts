@@ -21,6 +21,7 @@ import { placeBid } from "@/lib/actions/place-bid";
 import { purchaseListing } from "@/lib/actions/purchase-listing";
 import { relistListing } from "@/lib/actions/relist";
 import type { Listing } from "@/lib/db/schema";
+import { unwrapServerAction } from "@/lib/server-action-errors";
 import { useMutation } from "@tanstack/react-query";
 import { useIframeSdk } from "@whop/react";
 import Link from "next/link";
@@ -224,58 +225,80 @@ function listingCtaText(status: ListingStatus): string {
 }
 
 function MarkAsFulfilledButton({ listingId }: { listingId: string }) {
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["mark-as-fulfilled", listingId],
-		mutationFn: () => markAsFulfilled(listingId),
+		mutationFn: async () =>
+			unwrapServerAction(await markAsFulfilled(listingId)),
 	});
 
 	return (
-		<Button
-			type="button"
-			className="w-full"
-			disabled={isPending}
-			onClick={() => mutate()}
-		>
-			{isPending ? "Marking as fulfilled..." : "Mark as fulfilled"}
-		</Button>
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Marking as fulfilled..." : "Mark as fulfilled"}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
 	);
 }
 
 function RelistButton({ listingId }: { listingId: string }) {
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["relist", listingId],
-		mutationFn: () => relistListing(listingId),
+		mutationFn: async () => unwrapServerAction(await relistListing(listingId)),
 	});
 
 	return (
-		<Button
-			type="button"
-			className="w-full"
-			disabled={isPending}
-			onClick={() => mutate()}
-		>
-			{isPending ? "Relisting..." : "Relist"}
-		</Button>
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Relisting..." : "Relist"}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
 	);
 }
 function ClaimFundsButton({
 	listingId,
 	numBids,
 }: { listingId: string; numBids: number }) {
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["claim-funds", listingId],
-		mutationFn: () => claimFunds(listingId),
+		mutationFn: async () => unwrapServerAction(await claimFunds(listingId)),
 	});
 
 	return (
-		<Button
-			type="button"
-			className="w-full"
-			disabled={isPending}
-			onClick={() => mutate()}
-		>
-			{isPending ? "Claiming..." : `Claim funds ($${numBids})`}
-		</Button>
+		<>
+			<Button
+				type="button"
+				className="w-full"
+				disabled={isPending}
+				onClick={() => mutate()}
+			>
+				{isPending ? "Claiming..." : `Claim funds ($${numBids})`}
+			</Button>
+			{error && (
+				<p className="text-sm text-destructive pt-2 text-center">
+					{error.message}
+				</p>
+			)}
+		</>
 	);
 }
 
@@ -309,28 +332,24 @@ function PurchaseButton({
 }) {
 	const whopIframe = useIframeSdk();
 
-	const { mutateAsync, isPending, error, reset } = useMutation({
+	const { mutate, isPending, error, reset } = useMutation({
 		mutationKey: ["purchase-listing", listingId],
 		mutationFn: async (formData: FormData) => {
 			const listingAnswer = formData.get("listingAnswer");
 			if (listingAnswer && typeof listingAnswer !== "string")
 				throw new Error("Listing answer is required");
-			const checkoutSession = await purchaseListing({
-				listingId,
-				listingAnswer,
-			});
+			const checkoutSession = unwrapServerAction(
+				await purchaseListing({
+					listingId,
+					listingAnswer,
+				}),
+			);
 			console.log("GOT CHECKOUT SESSION", checkoutSession);
 			if (!checkoutSession) throw new Error("Failed to purchase listing");
 			const response = await whopIframe.inAppPurchase(checkoutSession);
 			if (response.status === "error") throw new Error(response.error);
 		},
 	});
-
-	function mutateAsyncWithoutThrowing(formData: FormData) {
-		mutateAsync(formData).catch((error) => {
-			console.error(error);
-		});
-	}
 
 	return (
 		<Dialog
@@ -351,7 +370,7 @@ function PurchaseButton({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form action={mutateAsyncWithoutThrowing}>
+				<form action={mutate}>
 					{listingQuestion && (
 						<div className="space-y-2 pb-3">
 							<p className="text-sm text-muted-foreground">{listingQuestion}</p>
@@ -385,9 +404,9 @@ function BidButton({
 }: {
 	listingId: string;
 }) {
-	const { mutate, isPending, error, reset } = useMutation({
+	const { mutate, isPending, error } = useMutation({
 		mutationKey: ["place-bid", listingId],
-		mutationFn: () => placeBid({ listingId }),
+		mutationFn: async () => unwrapServerAction(await placeBid({ listingId })),
 	});
 
 	return (

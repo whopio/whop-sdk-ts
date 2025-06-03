@@ -9,7 +9,7 @@ import { sendWebsocketMessage } from "./send-websocket-message";
 export async function createFreeCredits() {
 	const { userId } = await verifyUserToken(await headers());
 
-	// if (userId !== "user_v9KUoZvTGp6ID") return;
+	if (userId !== "user_v9KUoZvTGp6ID") return;
 
 	const credits = await db.transaction((tx) => appendCredits(userId, 10, tx));
 

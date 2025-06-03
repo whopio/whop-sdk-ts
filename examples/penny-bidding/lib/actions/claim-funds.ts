@@ -3,21 +3,22 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { listingsTable } from "../db/schema";
+import { SafeError, wrapServerAction } from "../server-action-errors";
 import { verifyUser } from "../verify-user";
 import { whopApi } from "../whop-api";
 import { sendListing } from "./send-websocket-message";
 
-export async function claimFunds(listingId: string) {
+export const claimFunds = wrapServerAction(async (listingId: string) => {
 	const listing = await db.query.listingsTable.findFirst({
 		where: eq(listingsTable.id, listingId),
 	});
 
 	if (!listing) {
-		throw new Error("Listing not found");
+		throw new SafeError("Listing not found");
 	}
 
 	if (listing.claimedFundsAt) {
-		throw new Error("Funds already claimed");
+		throw new SafeError("Funds already claimed");
 	}
 
 	await verifyUser("admin", {
@@ -35,11 +36,11 @@ export async function claimFunds(listingId: string) {
 			?.balance ?? 0;
 
 	if (!ledgerAccount) {
-		throw new Error("App company ledger account not found");
+		throw new SafeError("App company ledger account not found");
 	}
 
 	if (ledgerAccountBalance < listing.numBids) {
-		throw new Error(
+		throw new SafeError(
 			"Insufficient funds - please wait a few days for all payments to settle.",
 		);
 	}
@@ -73,9 +74,9 @@ export async function claimFunds(listingId: string) {
 		.returning();
 
 	if (!updatedListing) {
-		throw new Error("Failed to update listing");
+		throw new SafeError("Failed to update listing");
 	}
 
 	// Update the clients with the new listing data
 	await sendListing(updatedListing);
-}
+});

@@ -3,16 +3,17 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { listingsTable } from "../db/schema";
+import { SafeError, wrapServerAction } from "../server-action-errors";
 import { verifyUser } from "../verify-user";
 import { createListingWithData } from "./create-listing";
 
-export async function relistListing(listingId: string) {
+export const relistListing = wrapServerAction(async (listingId: string) => {
 	const listing = await db.query.listingsTable.findFirst({
 		where: eq(listingsTable.id, listingId),
 	});
 
 	if (!listing) {
-		throw new Error("Listing not found");
+		throw new SafeError("Listing not found");
 	}
 
 	await verifyUser("admin", {
@@ -29,4 +30,4 @@ export async function relistListing(listingId: string) {
 			new Date(listing.createdAt).getTime(),
 		fulfillmentQuestion: listing.fulfillmentQuestion,
 	});
-}
+});
