@@ -26,6 +26,13 @@ query getWaitlistEntriesForCompany(
 						}
 					}
 				}
+				pageInfo {
+					hasNextPage
+					hasPreviousPage
+					startCursor
+					endCursor
+				}
+				totalCount
 			}
 		}
 	}
