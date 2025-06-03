@@ -8,6 +8,8 @@
 		"directory": "packages/api"
 	},
 	"keywords": ["whop", "api", "sdk", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
