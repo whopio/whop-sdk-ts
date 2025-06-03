@@ -217,7 +217,6 @@ Deploy your AMA app to make it accessible to your community members. Vercel is r
     1. Visit [vercel.com](https://vercel.com).
     2. Create a new project and import your app's GitHub repository.
     3. Configure Environment Variables: In your Vercel project settings, add all the variables from your `.env.local` file (DATABASE_URL, DIRECT_URL, WHOP_API_KEY, etc.).
-       <Warning>Ensure `NEXTAUTH_URL` is updated to your production Vercel URL (e.g., `https://your-app-name.vercel.app`).</Warning>
     4. Click **Deploy**.
   </Step>
   <Step title="Update Whop App Settings">
@@ -248,7 +247,6 @@ Feel free to adapt the app to your specific needs.
   <Accordion title="Database connection fails">
     - Double-check your `DATABASE_URL` and `DIRECT_URL` in your environment variables.
     - Ensure your Supabase project is running and accessible.
-    - Verify that the IP address from which you are connecting is whitelisted in Supabase if you have IP restrictions enabled.
   </Accordion>
   <Accordion title="Whop authentication errors">
     - Confirm your `WHOP_API_KEY`, `WHOP_AGENT_USER_ID`, and `WHOP_APP_ID` are correct in your environment variables and match those in your Whop Developer Dashboard.
