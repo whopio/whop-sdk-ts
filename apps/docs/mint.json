@@ -66,9 +66,9 @@
 		{
 			"group": "Tutorials",
 			"pages": [
-				"tutorials/ai-image-generator",
 				"tutorials/ai-car-customizer",
-				"tutorials/chat-bot"
+				"tutorials/chat-bot",
+				"tutorials/ai-image-generator"
 			]
 		},
 		{
