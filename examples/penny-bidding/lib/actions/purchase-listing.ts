@@ -49,7 +49,7 @@ export const purchaseListing = wrapServerAction(
 			const [updated] = await db
 				.update(listingsTable)
 				.set({
-					fulfilledAt: new Date().toISOString(),
+					fulfillmentReceiptId: "free",
 				})
 				.where(eq(listingsTable.id, listingId))
 				.returning();
