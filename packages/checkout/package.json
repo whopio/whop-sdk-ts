@@ -1,11 +1,13 @@
 {
 	"name": "@whop/checkout",
+	"description": "Embed Whop checkout on any website",
 	"version": "0.0.21",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
 		"directory": "packages/checkout"
 	},
+	"keywords": ["whop", "checkout", "embedded", "payments"],
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
