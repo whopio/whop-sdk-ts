@@ -65,7 +65,11 @@
 		},
 		{
 			"group": "Tutorials",
-			"pages": ["tutorials/ai-image-generator", "tutorials/chat-bot"]
+			"pages": [
+				"tutorials/ai-car-customizer",
+				"tutorials/chat-bot",
+				"tutorials/ai-image-generator"
+			]
 		},
 		{
 			"group": "Features",
