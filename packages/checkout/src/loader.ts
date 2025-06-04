@@ -15,6 +15,7 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 		return {
 			injected: true,
 			listening: false,
+			frames: new Map(),
 		};
 	})();
 }
