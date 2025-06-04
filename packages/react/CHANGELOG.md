@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.0.5
+
+### Patch Changes
+
+- f52af84: fix esm build output
+
 ## 0.0.4
 
 ### Patch Changes
