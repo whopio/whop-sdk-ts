@@ -1,7 +1,9 @@
 graphql
 node_modules
 codegen.ts
+.swcrc
 tsconfig.json
+tsup.config.ts
 turbo.json
 src
 .gitignore

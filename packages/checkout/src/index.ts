@@ -1,7 +1,11 @@
-interface WhopCheckoutMessage {
-	event: "resize";
-	height: number;
-}
+type WhopCheckoutMessage =
+	| {
+			event: "resize";
+			height: number;
+	  }
+	| {
+			event: "center";
+	  };
 
 function isWhopCheckoutMessage(
 	event: MessageEvent<unknown>,
@@ -10,27 +14,33 @@ function isWhopCheckoutMessage(
 		typeof event.data === "object" &&
 		event.data !== null &&
 		"event" in event.data &&
-		event.data.event === "resize"
+		(event.data.event === "resize" || event.data.event === "center")
 	);
 }
 
 function listen(iframe: HTMLIFrameElement) {
-	window.addEventListener(
-		"message",
-		(event: MessageEvent<WhopCheckoutMessage | unknown>) => {
-			if (event.source !== iframe.contentWindow) {
-				return;
-			}
+	function handleMessage(event: MessageEvent<WhopCheckoutMessage | unknown>) {
+		if (event.source !== iframe.contentWindow) {
+			return;
+		}
 
-			if (!isWhopCheckoutMessage(event)) {
-				return;
-			}
+		if (!isWhopCheckoutMessage(event)) {
+			return;
+		}
 
-			if (event.data.event === "resize") {
-				iframe.style.height = `${event.data.height}px`;
-			}
-		},
-	);
+		if (event.data.event === "resize") {
+			iframe.style.height = `${event.data.height}px`;
+		}
+
+		if (event.data.event === "center") {
+			iframe.scrollIntoView({ block: "center", inline: "center" });
+		}
+	}
+	window.addEventListener("message", handleMessage);
+
+	window.wco?.frames.set(iframe, () => {
+		window.removeEventListener("message", handleMessage);
+	});
 }
 
 function mount(node: HTMLElement) {
@@ -90,7 +100,7 @@ function mount(node: HTMLElement) {
 	// append iframe to the node
 	node.appendChild(iframe);
 
-	// listen for height changes
+	// listen for iframe events
 	listen(iframe);
 }
 
@@ -103,12 +113,14 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 					mount(node);
 				}
 			}
+			const removedNodes = Array.from(mutation.removedNodes);
+			for (const [iframe, cleanup] of window.wco?.frames ?? []) {
+				if (removedNodes.includes(iframe)) {
+					cleanup();
+					window.wco?.frames.delete(iframe);
+				}
+			}
 		}
-	});
-
-	observer.observe(document.body, {
-		childList: true,
-		subtree: true,
 	});
 
 	for (const el of document.querySelectorAll("[data-whop-checkout-plan-id]")) {
@@ -116,6 +128,11 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 			mount(el);
 		}
 	}
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+	});
 
 	window.wco.listening = true;
 }

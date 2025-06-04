@@ -3,6 +3,7 @@ declare global {
 		wco?: {
 			injected: true;
 			listening: boolean;
+			frames: Map<HTMLIFrameElement, () => void>;
 		};
 	}
 }
