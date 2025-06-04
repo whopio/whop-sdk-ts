@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.0.4
+
+### Patch Changes
+
+- 1cd7d96: update .npmignore to include build configs
+- Updated dependencies [1cd7d96]
+  - @whop/iframe@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes
