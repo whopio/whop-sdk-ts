@@ -10,7 +10,7 @@ To embed checkout, you need to add the following script tag into the `<head>` of
 <script
   async
   defer
-  src="https://cdn.jsdelivr.net/npm/@whop/checkout@0.0.21-canary.8/dist/loader.js"
+  src="https://cdn.jsdelivr.net/npm/@whop/checkout/dist/loader.js"
 ></script>
 ```
 
