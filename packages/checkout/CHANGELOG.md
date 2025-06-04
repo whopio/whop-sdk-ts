@@ -1,5 +1,12 @@
 # @whop/checkout
 
+## 0.0.24
+
+### Patch Changes
+
+- 1cd7d96: support `center` event and handle event listener cleanup
+- 1cd7d96: update .npmignore to include build configs
+
 ## 0.0.23
 
 ### Patch Changes
