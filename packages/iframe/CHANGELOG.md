@@ -1,5 +1,11 @@
 # @whop/iframe
 
+## 0.0.3
+
+### Patch Changes
+
+- 1cd7d96: update .npmignore to include build configs
+
 ## 0.0.2
 
 ### Patch Changes
