@@ -6,7 +6,7 @@
 		"directory": "./dist"
 	},
 	"observability": {
-		"enabled": true
+		"enabled": false
 	},
 	"build": {
 		"watch_dir": ["./src", "./public", "./tsup.config.ts"],
