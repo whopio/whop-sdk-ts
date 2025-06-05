@@ -34,6 +34,7 @@
 		"build": "tsup",
 		"check-types": "tsc --noEmit",
 		"deploy": "wrangler deploy",
+		"deploy:canary": "wrangler versions upload",
 		"dev": "wrangler dev --port 8000",
 		"lint:fix": "biome check --write --unsafe"
 	},
