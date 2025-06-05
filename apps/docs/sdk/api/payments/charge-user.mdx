@@ -21,7 +21,7 @@ const result = await whopApi.chargeUser({
 		description: "some string",
 
 		// Additional metadata for the charge
-		metadata: "Error(Unknown scalar type: JSON)",
+		metadata: { any: "json" },
 
 		// The URL to redirect the user to after the checkout session is created
 		redirectUrl: "some string",
@@ -30,5 +30,27 @@ const result = await whopApi.chargeUser({
 		userId: "user_XXXXXXXX" /* Required! */,
 	},
 });
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// Charges a user for a specified amount
+	chargeUser: {
+		// The status of the charge attempt
+		status: "needs_action" /* Valid values: needs_action | success */,
+
+		// The checkout session if additional action is needed
+		inAppPurchase: {
+			// The ID of the checkout session
+			id: "xxxxxxxxxxx",
+
+			// The ID of the plan to use for the checkout session
+			planId: "xxxxxxxxxxx",
+		},
+	},
+};
 
 ```

@@ -2,13 +2,14 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { Biome, Distribution } from "@biomejs/js-api";
 import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import {
+	type FragmentDefinitionNode,
 	type GraphQLSchema,
 	Kind,
 	type OperationDefinitionNode,
 	concatAST,
 	visit,
 } from "graphql";
-import { generateExampleInput } from "./input";
+import { generateExampleInput, generateExampleOutput } from "./input";
 
 const BASE_OUTPUT_PATH = "../../apps/docs/sdk/api";
 
@@ -28,10 +29,14 @@ export const plugin: PluginFunction<object, Types.ComplexPluginOutput> = async (
 	);
 
 	const operations: OperationDefinitionNode[] = [];
+	const fragments: FragmentDefinitionNode[] = [];
 
 	visit(allAst, {
 		OperationDefinition: (node) => {
 			operations.push(node);
+		},
+		FragmentDefinition: (node) => {
+			fragments.push(node);
 		},
 	});
 
@@ -40,7 +45,7 @@ export const plugin: PluginFunction<object, Types.ComplexPluginOutput> = async (
 	const groupedOperations: Record<string, string[]> = {};
 
 	for (const operation of operations) {
-		writeOperation(operation, biome, schema, groupedOperations);
+		writeOperation(operation, biome, schema, groupedOperations, fragments);
 	}
 
 	updateMintJson(groupedOperations, biome);
@@ -55,6 +60,7 @@ function writeOperation(
 	biome: Biome,
 	schema: GraphQLSchema,
 	groupedOperations: Record<string, string[]>,
+	fragments: FragmentDefinitionNode[],
 ) {
 	const existingFileName = value.loc?.source.name;
 	const operationName = value.name?.value;
@@ -102,10 +108,16 @@ function writeOperation(
 	const folder = outputPathBits.slice(0, -1).join("/");
 	mkdirSync(folder, { recursive: true });
 
-	const doc = formatOperation(value, biome, schema, {
-		client: mode === "client" || mode === "shared",
-		server: mode === "server" || mode === "shared",
-	});
+	const doc = formatOperation(
+		value,
+		biome,
+		schema,
+		{
+			client: mode === "client" || mode === "shared",
+			server: mode === "server" || mode === "shared",
+		},
+		fragments,
+	);
 
 	writeFileSync(path, doc, {
 		encoding: "utf-8",
@@ -117,6 +129,7 @@ function formatOperation(
 	biome: Biome,
 	schema: GraphQLSchema,
 	availability: { client: boolean; server: boolean },
+	fragments: FragmentDefinitionNode[],
 ) {
 	const inputCode = value.variableDefinitions
 		? generateExampleInput(schema, value)
@@ -137,12 +150,21 @@ function formatOperation(
 			? `<Note>This operation is only available on the ${availability.server ? "server" : "client"}.</Note>`
 			: "";
 
+	const exampleOutputCode = `const response = ${generateExampleOutput(schema, value, fragments)}`;
+	const exampleOutput = formatCode(exampleOutputCode, biome);
+
 	const file = `---
 title: ${camelCaseToTitleCase(value.name?.value ?? "")}${description}
 ---
 ${availabilityNotice}
 \`\`\`typescript
 ${formatted}
+\`\`\`
+
+Example output:
+
+\`\`\`typescript
+${exampleOutput}
 \`\`\`
 `;
 
