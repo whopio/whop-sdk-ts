@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.25
+
+### Patch Changes
+
+- 1eb9852: serve checkout script from js.whop.com
+
 ## 0.0.24
 
 ### Patch Changes
