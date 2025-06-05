@@ -2,6 +2,8 @@
 
 Embedded checkout allows you to embed Whop's checkout flow on your own website in two easy steps. This allows you to offer your users a seamless checkout experience without leaving your website.
 
+React users should use the `@whop/react` package which includes a version of this feature optimized for react.
+
 ## Step 1: Add the script tag
 
 To embed checkout, you need to add the following script tag into the `<head>` of your page:
