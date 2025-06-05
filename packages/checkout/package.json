@@ -19,7 +19,7 @@
 		"build": "tsup",
 		"dev": "concurrently \"pnpm run dev:tsup\" \"pnpm run dev:serve\"",
 		"dev:tsup": "tsup --watch",
-		"dev:serve": "serve ./dist",
+		"dev:serve": "serve -l 8000 ./dist",
 		"check-types": "tsc --noEmit",
 		"lint:fix": "biome check --write --unsafe"
 	},

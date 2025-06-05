@@ -15,5 +15,5 @@ src
 .env.production.local
 scripts
 
-dist/index.html
+dist/*.html
 public

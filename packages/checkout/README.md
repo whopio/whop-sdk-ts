@@ -65,7 +65,7 @@ This can be used to attach metadata to a checkout by first creating a session th
 		<script 
 			async 
 			defer 
-			src="https://cdn.jsdelivr.net/npm/@whop/checkout@0.0.21-canary.8/dist/loader.js"
+			src="https://cdn.jsdelivr.net/npm/@whop/checkout/dist/loader.js"
 		></script>
 		<title>Whop embedded checkout example</title>
 		<style>
@@ -80,7 +80,7 @@ This can be used to attach metadata to a checkout by first creating a session th
 	<body>
 		<div
 			data-whop-checkout-plan-id="plan_XXXXXXXXX"
-			data-whop-checkout-session-id="ch_XXXXXXXXX" 
+			data-whop-checkout-session-id="ch_XXXXXXXXX"
 			data-whop-checkout-theme="light"
 			style="height: fit-content; overflow: hidden; max-width: 50%;"
 		></div>
