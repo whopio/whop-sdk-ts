@@ -85,6 +85,10 @@
 			]
 		},
 		{
+			"group": "Build with AI",
+			"pages": ["ai-docs", "mcp"]
+		},
+		{
 			"group": "GraphQL API",
 			"pages": [
 				"api-reference/graphql/authentication",
