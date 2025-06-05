@@ -1,10 +1,24 @@
 import {
 	type EnumTypeDefinitionNode,
+	type FieldNode,
+	type FragmentDefinitionNode,
+	GraphQLEnumType,
+	type GraphQLField,
+	type GraphQLFieldMap,
+	GraphQLInterfaceType,
+	GraphQLList,
+	GraphQLNonNull,
+	GraphQLObjectType,
+	type GraphQLOutputType,
+	GraphQLScalarType,
 	type GraphQLSchema,
 	type InputObjectTypeDefinitionNode,
 	Kind,
 	type OperationDefinitionNode,
+	OperationTypeNode,
 	type ScalarTypeDefinitionNode,
+	type SelectionNode,
+	type SelectionSetNode,
 	type TypeNode,
 } from "graphql";
 
@@ -94,7 +108,7 @@ class ObjectField extends BaseType {
 	}
 
 	get shouldRender(): boolean {
-		if (this.name === "clientMutationId") {
+		if (["clientMutationId", "__typename"].includes(this.name)) {
 			return false;
 		}
 
@@ -186,6 +200,213 @@ class ObjectType extends BaseType {
 		output += "}";
 		return output;
 	}
+}
+
+export function generateExampleOutput(
+	schema: GraphQLSchema,
+	operation: OperationDefinitionNode,
+	fragments: FragmentDefinitionNode[],
+): string {
+	const baseObjectType =
+		operation.operation === OperationTypeNode.MUTATION
+			? schema.getMutationType()
+			: operation.operation === OperationTypeNode.QUERY
+				? schema.getQueryType()
+				: schema.getSubscriptionType();
+
+	if (!baseObjectType) {
+		throw new Error("No query type found");
+	}
+
+	return parseSelectionSet(
+		schema,
+		operation.selectionSet,
+		baseObjectType.getFields(),
+		fragments,
+	).toCode();
+}
+
+function parseField(
+	schema: GraphQLSchema,
+	field: FieldNode,
+	// biome-ignore lint/suspicious/noExplicitAny: allow for generics
+	graphqlType: GraphQLField<any, any>,
+	fragments: readonly FragmentDefinitionNode[],
+): ObjectField {
+	const fieldType = graphqlType.type;
+	const name = field.alias?.value ?? field.name.value;
+	const type = parseGraphqlOutputType(
+		schema,
+		fieldType,
+		fragments,
+		field.selectionSet,
+	);
+
+	return new ObjectField({ name, type });
+}
+
+function parseGraphqlOutputType(
+	schema: GraphQLSchema,
+	type: GraphQLOutputType,
+	fragments: readonly FragmentDefinitionNode[],
+	selectionSet?: SelectionSetNode,
+): BaseType {
+	if (type instanceof GraphQLEnumType) {
+		if (!type.astNode) {
+			return new ErrorType("No ast node found for enum type");
+		}
+		return parseEnumTypeDefinition(type.astNode);
+	}
+
+	if (type instanceof GraphQLScalarType) {
+		const literal = parsePrimitiveType(type.name, null);
+		if (literal) {
+			return literal;
+		}
+		if (!type.astNode) {
+			return new ErrorType("No ast node found for scalar type");
+		}
+		return parseScalarTypeDefinition(type.astNode);
+	}
+
+	if (type instanceof GraphQLObjectType) {
+		if (!selectionSet) {
+			return new ErrorType("No selection set passed for input object type");
+		}
+		return parseSelectionSet(schema, selectionSet, type.getFields(), fragments);
+	}
+
+	if (type instanceof GraphQLNonNull) {
+		return parseGraphqlOutputType(schema, type.ofType, fragments, selectionSet);
+	}
+
+	if (type instanceof GraphQLList) {
+		const ofType = parseGraphqlOutputType(
+			schema,
+			type.ofType,
+			fragments,
+			selectionSet,
+		);
+		return new ArrayType(ofType);
+	}
+
+	if (type instanceof GraphQLInterfaceType) {
+		if (!selectionSet) {
+			return new ErrorType("No selection set passed for input object type");
+		}
+		const fields = type.getFields();
+
+		return parseSelectionSet(schema, selectionSet, fields, fragments);
+	}
+
+	return new ErrorType(`Unknown type: ${type.toString()}`);
+}
+
+function parseSelectionSet(
+	schema: GraphQLSchema,
+	selectionSet: SelectionSetNode,
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	fieldTypes: GraphQLFieldMap<any, any>,
+	fragments: readonly FragmentDefinitionNode[],
+): ObjectType {
+	const object = new ObjectType([]);
+
+	const flatFields = flattenSelectionSet(
+		schema,
+		fragments,
+		selectionSet.selections,
+	);
+
+	function getFieldType(field: FieldNodeWithTypeName) {
+		const inTypesAlready = fieldTypes[field.name.value];
+		if (inTypesAlready) return inTypesAlready;
+
+		if (field.typeName) {
+			const type = schema.getType(field.typeName);
+			if (!type) {
+				throw new Error(`Type ${field.typeName} not found`);
+			}
+
+			if (
+				type instanceof GraphQLObjectType ||
+				type instanceof GraphQLInterfaceType
+			) {
+				return type.getFields()[field.name.value];
+			}
+		}
+	}
+
+	for (const field of flatFields) {
+		const fieldType = getFieldType(field);
+		if (!fieldType) {
+			object.addField(
+				new ObjectField({
+					name: field.name.value,
+					type: new ErrorType("Missing"),
+				}),
+			);
+			continue;
+		}
+		const type = parseField(schema, field, fieldType, fragments);
+		type.description = fieldType.description ?? undefined;
+		object.addField(type);
+	}
+
+	return object;
+}
+
+interface FieldNodeWithTypeName extends FieldNode {
+	typeName?: string;
+}
+
+function flattenSelectionSet(
+	schema: GraphQLSchema,
+	fragments: readonly FragmentDefinitionNode[],
+	selectionNodes: readonly SelectionNode[],
+): FieldNodeWithTypeName[] {
+	const flatFields: FieldNodeWithTypeName[] = [];
+
+	for (const selection of selectionNodes) {
+		if (selection.kind === Kind.FIELD) {
+			flatFields.push(selection);
+		}
+
+		if (selection.kind === Kind.FRAGMENT_SPREAD) {
+			const fragmentDef = fragments.find(
+				(f) => f.name.value === selection.name.value,
+			);
+
+			if (!fragmentDef) {
+				throw new Error(`Fragment ${selection.name.value} not found`);
+			}
+
+			flatFields.push(
+				...flattenSelectionSet(
+					schema,
+					fragments,
+					fragmentDef.selectionSet.selections,
+				).map((f) => ({
+					...f,
+					typeName: f.typeName ?? fragmentDef.typeCondition.name.value,
+				})),
+			);
+		}
+
+		if (selection.kind === Kind.INLINE_FRAGMENT) {
+			flatFields.push(
+				...flattenSelectionSet(
+					schema,
+					fragments,
+					selection.selectionSet.selections,
+				).map((f) => ({
+					...f,
+					typeName: selection.typeCondition?.name.value,
+				})),
+			);
+		}
+	}
+
+	return flatFields;
 }
 
 export function generateExampleInput(
@@ -340,8 +561,15 @@ function parseScalarTypeDefinition(node: ScalarTypeDefinitionNode): BaseType {
 			return new PrimitiveType("timestamp");
 		case "BigInt":
 			return new PrimitiveType("bigint");
-		default:
+		case "File":
+			return new PrimitiveType("string");
+		default: {
+			const regularScalar = parsePrimitiveType(node.name.value, null);
+			if (regularScalar) {
+				return regularScalar;
+			}
 			return new ErrorType(`Unknown scalar type: ${node.name.value}`);
+		}
 	}
 }
 
