@@ -98,3 +98,38 @@ export default function RootLayout({
 ```
 
 > Note that if you are storing your app ID in `NEXT_PUBLIC_WHOP_APP_ID` you do not need to provide any options to the `WhopIframeSdkProvider`
+
+### WhopCheckoutEmbed
+
+This component can be used to embed whop checkout in your react app:
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/react/checkout";
+
+export default function Home() {
+  return (
+    <WhopCheckoutEmbed
+		/**
+		 * **Required** - The plan id you want to checkout.
+		 */
+		planId="plan_XXXXXXXXX"
+		/**
+		 * **Optional** - The theme you want to use for the checkout.
+		 *
+		 * Possible values are `light`, `dark` or `system`.
+		 */
+      theme="light"
+		/**
+		 * **Optional** - The session id to use for the checkout.
+		 *
+		 * This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
+		 */
+      sessionId="ch_XXXXXXXXX"
+		/**
+		 * **Optional** - The fallback content to show while the checkout is loading.
+		 */
+      fallback={<>loading...</>}
+    />
+  );
+}
+```
