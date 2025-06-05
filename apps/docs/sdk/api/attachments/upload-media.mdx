@@ -23,7 +23,7 @@ const result = await whopApi.uploadMedia({
 		filename: "some string" /* Required! */,
 
 		// The metadata of the file
-		metadata: "Error(Unknown scalar type: JSON)",
+		metadata: { any: "json" },
 
 		// Whether or not to use multipart upload. The file must be larger than 5MB
 		multipart: true,
@@ -33,5 +33,38 @@ const result = await whopApi.uploadMedia({
 			"abuse_report" /* Valid values: abuse_report | access_pass | app | automated_messages_config | bot | bounty | bounty_submission | competition_prize | content_reward_campaign | content_reward_submission | dispute | dms_post | experience | forum_post | resolution_event_upload | review | review_report | user */ /* Required! */,
 	},
 });
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// Directly upload a file to the platform
+	mediaDirectUpload: {
+		// The signed ID of the blob
+		id: "xxxxxxxxxxx",
+
+		// The headers for the upload
+		headers: { any: "json" },
+
+		// The URL to upload the blob
+		uploadUrl: "some string",
+
+		// The multipart upload ID
+		multipartUploadId: "some string",
+
+		// The URLs for the parts of the multipart upload
+		multipartUploadUrls: [
+			{
+				// The part number of the part
+				partNumber: 10,
+
+				// The url to upload the part
+				url: "some string",
+			},
+		],
+	},
+};
 
 ```
