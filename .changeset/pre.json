@@ -12,5 +12,5 @@
 		"@whop/iframe": "0.0.3",
 		"@whop/react": "0.0.5"
 	},
-	"changesets": []
+	"changesets": ["beige-flies-begin", "loud-peas-shout"]
 }
