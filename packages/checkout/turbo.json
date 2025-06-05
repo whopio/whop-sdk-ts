@@ -8,6 +8,9 @@
 			"inputs": ["src/**"],
 			"dependsOn": ["^build"]
 		},
+		"deploy": {
+			"dependsOn": ["build"]
+		},
 		"dev": {
 			"cache": false,
 			"persistent": true
