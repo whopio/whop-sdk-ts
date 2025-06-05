@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "whop-checkout-static",
+	"compatibility_date": "2025-06-05",
+	"assets": {
+		"directory": "./dist"
+	},
+	"observability": {
+		"enabled": false
+	},
+	"build": {
+		"watch_dir": ["./src", "./public", "./tsup.config.ts"],
+		"command": "pnpm turbo build"
+	},
+	"routes": [
+		{
+			"pattern": "https://js.whop.com/static/checkout/*",
+			"zone_name": "whop.com"
+		}
+	]
+}
