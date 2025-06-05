@@ -68,3 +68,20 @@ const result = await whopApi.findOrCreateForum({
 });
 
 ```
+
+Example output:
+
+```typescript
+const response = {
+	// Creates a new forum experience. If an existing forum experience with the same
+	// name on the whop already exists, it will be returned instead.
+	createForum: {
+		// The unique ID representing this experience
+		id: "xxxxxxxxxxx",
+
+		// Use this link to directly take users to the experience
+		link: "some string",
+	},
+};
+
+```

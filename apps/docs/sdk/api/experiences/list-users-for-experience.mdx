@@ -20,3 +20,51 @@ const result = await whopApi.listUsersForExperience({
 });
 
 ```
+
+Example output:
+
+```typescript
+const response = {
+	// Fetch an experience.
+	publicExperience: {
+		// The users that have access to this experience. This field will return nil if
+		// you aren't authorized to view this experience's users. You must have a
+		// membership or be a team member for the experience to view the user list.
+		users: {
+			// A list of nodes.
+			nodes: [
+				{
+					// The internal ID of the user.
+					id: "xxxxxxxxxxx",
+
+					// The username of the user from their Whop account.
+					username: "some string",
+
+					// The user's profile picture
+					profilePicture: {
+						// The original URL of the attachment, such as a direct link to S3. This should
+						// never be displayed on the client and always passed to an Imgproxy transformer.
+						sourceUrl: "some string",
+					},
+				},
+			],
+
+			// Information to aid in pagination.
+			pageInfo: {
+				// When paginating forwards, the cursor to continue.
+				endCursor: "some string",
+
+				// When paginating forwards, are there more items?
+				hasNextPage: true,
+
+				// When paginating backwards, are there more items?
+				hasPreviousPage: true,
+			},
+
+			// The total number of items in this connection.
+			totalCount: 10,
+		},
+	},
+};
+
+```
