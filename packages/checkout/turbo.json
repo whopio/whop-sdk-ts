@@ -9,7 +9,8 @@
 			"dependsOn": ["^build"]
 		},
 		"deploy": {
-			"dependsOn": ["build"]
+			"dependsOn": ["build"],
+			"passThroughEnv": ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID"]
 		},
 		"dev": {
 			"cache": false,
