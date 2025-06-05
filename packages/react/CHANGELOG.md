@@ -1,5 +1,16 @@
 # @whop/react
 
+## 0.1.0
+
+### Minor Changes
+
+- f523af4: add `WhopCheckoutEmbed`
+
+### Patch Changes
+
+- Updated dependencies [f523af4]
+  - @whop/checkout@0.0.26
+
 ## 0.1.0-canary.0
 
 ### Minor Changes
