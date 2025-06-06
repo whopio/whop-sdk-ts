@@ -14,7 +14,7 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
-	"files": ["dist", "styles.css"],
+	"files": ["dist", "scripts/postinstall.mjs"],
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
