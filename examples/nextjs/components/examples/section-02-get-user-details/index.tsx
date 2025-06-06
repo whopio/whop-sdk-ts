@@ -1,6 +1,7 @@
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
 import { headers } from "next/headers";
 import Image from "next/image";
+import { OpenWhopUserProfile } from "./index.client";
 
 export async function SectionGetUserDetails() {
 	const requestHeaders = await headers();
@@ -90,6 +91,8 @@ function ProfileDisplay({
 					<p>User ID: {user.id}</p>
 					{user.email && <p>Email: {user.email}</p>}
 				</div>
+
+				<OpenWhopUserProfile username={user.username} />
 			</div>
 		</div>
 	);
