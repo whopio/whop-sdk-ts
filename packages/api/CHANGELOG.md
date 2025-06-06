@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.25
+
+### Patch Changes
+
+- 72caed1: Switched the SDK to use persisted graphql queries by operation id. Improves performance security and reduces network traffic.
+
 ## 0.0.24
 
 ### Patch Changes
