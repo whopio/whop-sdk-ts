@@ -1,46 +1,26 @@
-type WhopCheckoutMessage =
-	| {
-			event: "resize";
-			height: number;
-	  }
-	| {
-			event: "center";
-	  };
-
-function isWhopCheckoutMessage(
-	event: MessageEvent<unknown>,
-): event is MessageEvent<WhopCheckoutMessage> {
-	return (
-		typeof event.data === "object" &&
-		event.data !== null &&
-		"event" in event.data &&
-		(event.data.event === "resize" || event.data.event === "center")
-	);
-}
+import {
+	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
+	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	getEmbeddedCheckoutIframeUrl,
+	onWhopCheckoutMessage,
+} from "./util";
 
 function listen(iframe: HTMLIFrameElement) {
-	function handleMessage(event: MessageEvent<WhopCheckoutMessage | unknown>) {
-		if (event.source !== iframe.contentWindow) {
-			return;
-		}
-
-		if (!isWhopCheckoutMessage(event)) {
-			return;
-		}
-
-		if (event.data.event === "resize") {
-			iframe.style.height = `${event.data.height}px`;
-		}
-
-		if (event.data.event === "center") {
-			iframe.scrollIntoView({ block: "center", inline: "center" });
-		}
-	}
-	window.addEventListener("message", handleMessage);
-
-	window.wco?.frames.set(iframe, () => {
-		window.removeEventListener("message", handleMessage);
-	});
+	window.wco?.frames.set(
+		iframe,
+		onWhopCheckoutMessage(iframe, function handleWhopCheckoutMessage(message) {
+			switch (message.event) {
+				case "resize": {
+					iframe.style.height = `${message.height}px`;
+					break;
+				}
+				case "center": {
+					iframe.scrollIntoView({ block: "center", inline: "center" });
+					break;
+				}
+			}
+		}),
+	);
 }
 
 function mount(node: HTMLElement) {
@@ -53,47 +33,25 @@ function mount(node: HTMLElement) {
 		return;
 	}
 
-	const origin = node.dataset.whopCheckoutOrigin ?? "https://whop.com/";
-	const iframeUrl = new URL(`/embedded/checkout/${planId}/`, origin);
-
-	const theme = node.dataset.whopCheckoutTheme;
-	if (theme) {
-		iframeUrl.searchParams.set("theme", theme);
-	}
-
-	const session = node.dataset.whopCheckoutSession;
-	if (session) {
-		iframeUrl.searchParams.set("session", session);
-	}
-
-	const windowOrigin = new URL(window.location.href).origin;
-	iframeUrl.searchParams.set("h", windowOrigin);
+	const iframeUrl = getEmbeddedCheckoutIframeUrl(
+		planId,
+		node.dataset.whopCheckoutTheme as "light" | "dark" | "system" | undefined,
+		node.dataset.whopCheckoutSession,
+		node.dataset.whopCheckoutOrigin,
+	);
 
 	const iframe = document.createElement("iframe");
 
-	iframe.src = iframeUrl.toString();
+	iframe.src = iframeUrl;
 
 	iframe.style.width = "100%";
 	iframe.style.height = "480px";
 	iframe.style.border = "none";
 	iframe.style.overflow = "hidden";
 
-	iframe.sandbox.add(
-		"allow-forms",
-		"allow-modals",
-		"allow-orientation-lock",
-		"allow-pointer-lock",
-		"allow-popups",
-		"allow-presentation",
-		"allow-same-origin",
-		"allow-scripts",
-		"allow-top-navigation",
-		"allow-top-navigation-by-user-activation",
-		"allow-downloads",
-	);
+	iframe.sandbox.add(...EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST);
 
-	iframe.allow =
-		"document-domain; execution-while-not-rendered; execution-while-out-of-viewport; payment; paymentRequest; sync-script;";
+	iframe.allow = EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING;
 
 	node.dataset.whopCheckoutMounted = "true";
 

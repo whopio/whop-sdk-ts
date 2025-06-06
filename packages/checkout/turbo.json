@@ -5,10 +5,14 @@
 		"build": {
 			"cache": true,
 			"outputs": ["dist/**"],
-			"inputs": ["src/**"],
+			"inputs": ["src/**", "tsup.config.ts"],
 			"dependsOn": ["^build"]
 		},
 		"deploy": {
+			"dependsOn": ["build"],
+			"passThroughEnv": ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID"]
+		},
+		"deploy:canary": {
 			"dependsOn": ["build"],
 			"passThroughEnv": ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID"]
 		},

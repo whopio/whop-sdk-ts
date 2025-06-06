@@ -1,7 +1,7 @@
 {
 	"name": "@whop/checkout",
 	"description": "Embed Whop checkout on any website",
-	"version": "0.0.25",
+	"version": "0.0.26",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
@@ -16,13 +16,25 @@
 	"types": "./dist/index.d.ts",
 	"files": ["dist"],
 	"exports": {
-		".": "./dist/static/checkout/index.js",
-		"./loader": "./dist/static/checkout/loader.js"
+		".": {
+			"import": "./dist/static/checkout/index.mjs",
+			"require": "./dist/static/checkout/index.cjs",
+			"types": "./dist/static/checkout/index.d.ts",
+			"default": "./dist/static/checkout/index.js"
+		},
+		"./loader": "./dist/static/checkout/loader.js",
+		"./util": {
+			"import": "./dist/static/checkout/util.mjs",
+			"require": "./dist/static/checkout/util.cjs",
+			"types": "./dist/static/checkout/util.d.ts",
+			"default": "./dist/static/checkout/util.js"
+		}
 	},
 	"scripts": {
 		"build": "tsup",
 		"check-types": "tsc --noEmit",
 		"deploy": "wrangler deploy",
+		"deploy:canary": "wrangler versions upload",
 		"dev": "wrangler dev --port 8000",
 		"lint:fix": "biome check --write --unsafe"
 	},
