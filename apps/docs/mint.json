@@ -92,6 +92,7 @@
 			"group": "GraphQL API",
 			"pages": [
 				"api-reference/graphql/authentication",
+				"api-reference/graphql/scopes",
 				"api-reference/graphql/schema",
 				"api-reference/graphql/examples",
 				"api-reference/graphql/rate-limits"
