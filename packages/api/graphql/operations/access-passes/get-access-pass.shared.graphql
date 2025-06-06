@@ -2,7 +2,7 @@ query getAccessPass($accessPassId: ID!) {
 	accessPass: publicAccessPass(id: $accessPassId) {
 		...AccessPassFragment
 		bannerImage {
-			sourceUrl
+			url: optimizedUrl
 		}
 		headline
 		company {

@@ -34,10 +34,10 @@ function ProfileDisplay({
 }: {
 	user: {
 		banner?: {
-			sourceUrl?: string | null;
+			url?: string | null;
 		} | null;
 		profilePicture?: {
-			sourceUrl?: string | null;
+			url?: string | null;
 		} | null;
 		name?: string | null;
 		username: string;
@@ -50,10 +50,10 @@ function ProfileDisplay({
 	return (
 		<div className="bg-white rounded-xl shadow-lg overflow-hidden">
 			{/* Banner Image */}
-			{user.banner?.sourceUrl && (
+			{user.banner?.url && (
 				<div className="relative h-32 w-full">
 					<Image
-						src={user.banner.sourceUrl}
+						src={user.banner.url}
 						alt="User banner"
 						fill
 						className="object-cover"
@@ -64,10 +64,10 @@ function ProfileDisplay({
 			<div className="p-4">
 				{/* Profile Picture and Name */}
 				<div className="flex items-center space-x-4">
-					{user.profilePicture?.sourceUrl && (
+					{user.profilePicture?.url && (
 						<div className="relative h-16 w-16 rounded-full overflow-hidden">
 							<Image
-								src={user.profilePicture.sourceUrl}
+								src={user.profilePicture.url}
 								alt={user.name ?? ""}
 								fill
 								className="object-cover"
