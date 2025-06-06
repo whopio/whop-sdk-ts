@@ -3,18 +3,48 @@ title: Payments and payouts
 description: "Use the API to collect payment from users or payout users."
 ---
 
+## How to Monetize
+
+To make money off of your application, you can either charge the end-users in the whop or you can charge the creator who installed your app. Some examples include:
+
+1. Having users purchase game credits directly from you (ex. $3 per play).
+2. Selling a one time license to a creator (ex. $250 to install your app into their whop)
+3. Bill the creator at the end of the month by the number of customers that used your app (ex. Make the creator pay $655.00 at end of month for 655 users accessing the app)
+
+Using the `whopApi.checkIfUserHasAccessToExperience` SDK method, you can check to see if the current user in the context is the whop's creator or if they are a consumer in the whop.
+
+See [Validating Access](/sdk/validate-access) for more details.
+
+In your own database, you should store the payments that each `userId` has made to your app, along with the `experienceId`, `companyId`, and any other relevant custom metadata.
+
+Then, based on how much they have paid, when they last paid, etc, you can:
+1. Grant them access to your app
+2. Show the user a locked state
+3. Prompt the user to pay.
+
+## Flow of Funds
+
+In all scenarios, a `User` will make a purchase to your `App`. Your `Company`'s account balance will receive the funds directly. Then, at your discretion, you can redistribute the funds out to other parties.
+
+Some re-distribution examples include:
+
+1. Paying a creator a revenue share of your profits for using your app in their whop.
+2. Paying a user who won a trivia game inside of a whop.
+3. Distributing tournament winnings to multiple players based on their ranking.
+4. Paying out marketplace sellers for their sold items after deducting platform fees.
+
 ## Collecting Payments
 
-First, create the charge on the server using the Whop API. Then you can either:
+First, initiate the payment attempt on your server using the Whop API. Then you can either:
 
 1. Open a modal in your app using the iframe SDK (recommended)
 2. Redirect the user to Whop's checkout page
 
-### 1. Create the charge on the server
+### 1. Create the payment attempt on the server
 
 > This step will create a charge on the server and return the inAppPurchase object required for the next step.
 
-On the server, use the [chargeUser](/sdk/api/payments/charge-user) method to create a charge:
+On the server, use the [chargeUser](/sdk/api/payments/charge-user) method to initiate a charge:
 
 ```typescript app/api/charge/route.ts
 import { whopApi } from "@/lib/whop-api";
@@ -170,6 +200,126 @@ if (paymentButton instanceof HTMLButtonElement) {
 ```
 
 </CodeGroup>
+
+### 3. Handle payment success or failure
+
+> You can listen for payment events using webhooks. This is useful for updating your application's state when payments succeed or fail.
+
+See the [Webhooks guide](/features/webhooks) to understand how to configure webhooks with proper security
+
+### Setting Up Webhook Endpoint
+
+Create an API endpoint to handle incoming webhooks:
+
+```typescript app/api/webhooks/route.ts
+import { whopApi } from "@/lib/whop-api";
+import { makeWebhookValidator } from "@whop/api";
+import type { NextRequest } from "next/server";
+
+// Create a webhook validator with your webhook secret
+const validateWebhook = makeWebhookValidator({
+  webhookSecret: process.env.WHOP_WEBHOOK_SECRET ?? "fallback",
+});
+
+export async function POST(request: NextRequest): Promise<Response> {
+  try {
+    // Validate the webhook to ensure it's from Whop
+    const webhookData = await validateWebhook(request);
+
+    // Handle different webhook events
+    switch (webhookData.action) {
+      case "payment.succeeded":
+        const payment = webhookData.data;
+        
+        // Check if we've already processed this payment
+        const existingPayment = await db
+          .select()
+          .from(paymentsTable)
+          .where(eq(paymentsTable.receiptId, payment.id));
+
+        if (existingPayment.length > 0) {
+          console.log(`Payment ${payment.id} already processed`);
+          return;
+        }
+
+        // Record the payment
+        await db.insert(paymentsTable).values({
+          userId: payment.user_id,
+          receiptId: payment.id,
+          amount: payment.final_amount.toFixed(2),
+          currency: payment.currency,
+          amountAfterFees: payment.amount_after_fees?.toString(),
+          creditsToPurchase: payment.metadata?.creditsToPurchase,
+          experienceId: payment.metadata?.experienceId,
+        });
+        
+        // Example: Update user's credits based on metadata
+        if (payment.metadata?.creditsToPurchase) {
+          await updateUserCredits(
+            payment.user_id,
+            payment.metadata.creditsToPurchase
+          );
+        }
+        break;
+        
+      case "payment.failed":
+        // Handle failed payment
+        break;
+        
+      // Handle other webhook events...
+    }
+
+    // Make sure to return a 2xx status code quickly. Otherwise the webhook will be retried.
+    return new Response("OK", { status: 200 });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return new Response("Webhook handler failed", { status: 500 });
+  }
+}
+```
+
+### Webhook Payload Example
+
+Here's an example of a `payment.succeeded` webhook payload:
+
+```json
+{
+  "data": {
+    "id": "pay_0WkyrLVxkOCvaT",
+    "membership_id": "mem_H6SrFcPOXuSmCD",
+    "product_id": "prod_Yd0BMpMYg5RNK",
+    "user_id": "user_4naexFKzzGPmK",
+    "plan_id": "plan_QnbKDNAbfcXr8",
+    "company_id": "biz_0CxmmX98GF60ko",
+    "line_item_id": null,
+    "created_at": 1749046613,
+    "paid_at": 1749046614,
+    "refunded_at": null,
+    "last_payment_attempt": null,
+    "next_payment_attempt": null,
+    "status": "paid",
+    "subtotal": 1,
+    "final_amount": 1.19,
+    "amount_after_fees": "0.53",
+    "currency": "usd",
+    "refunded_amount": 0,
+    "payments_failed": 0,
+    "checkout_id": "3dASl3nWYVQyJcyEp-XNSC-I0pa-QAvi-tPSF2GgDkMTP",
+    "card_brand": "visa",
+    "card_last_4": "7258",
+    "funding_method": "credit",
+    "wallet_type": null,
+    "calculated_statement_descriptor": "ARIES",
+    "issuer_identification_number": "415423",
+    "billing_usage_ids": [],
+    "company_buyer_id": null,
+    "payment_method_type": "card",
+    "metadata": { "experienceId": "exp_123", "creditsToPurchase": 1 }
+  },
+  "api_version": "v5",
+  "action": "payment.succeeded"
+}
+```
 
 ## Sending Payouts
 
