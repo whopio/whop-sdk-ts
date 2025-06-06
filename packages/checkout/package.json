@@ -1,7 +1,7 @@
 {
 	"name": "@whop/checkout",
 	"description": "Embed Whop checkout on any website",
-	"version": "0.0.24",
+	"version": "0.0.26",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
@@ -15,23 +15,35 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/static/checkout/index.mjs",
+			"require": "./dist/static/checkout/index.cjs",
+			"types": "./dist/static/checkout/index.d.ts",
+			"default": "./dist/static/checkout/index.js"
+		},
+		"./loader": "./dist/static/checkout/loader.js",
+		"./util": {
+			"import": "./dist/static/checkout/util.mjs",
+			"require": "./dist/static/checkout/util.cjs",
+			"types": "./dist/static/checkout/util.d.ts",
+			"default": "./dist/static/checkout/util.js"
+		}
+	},
 	"scripts": {
 		"build": "tsup",
-		"dev": "concurrently \"pnpm run dev:tsup\" \"pnpm run dev:serve\"",
-		"dev:tsup": "tsup --watch",
-		"dev:serve": "serve -l 8000 ./dist",
 		"check-types": "tsc --noEmit",
+		"deploy": "wrangler deploy",
+		"deploy:canary": "wrangler versions upload",
+		"dev": "wrangler dev --port 8000",
 		"lint:fix": "biome check --write --unsafe"
 	},
 	"devDependencies": {
 		"@swc/core": "1.11.29",
 		"@types/node": "latest",
-		"concurrently": "9.1.2",
-		"dotenv": "16.5.0",
-		"serve": "14.2.4",
-		"ts-proto": "2.7.1",
 		"tsup": "8.5.0",
-		"typescript": "latest"
+		"typescript": "latest",
+		"wrangler": "^4.19.1"
 	},
 	"packageManager": "pnpm@9.15.9",
 	"engines": {

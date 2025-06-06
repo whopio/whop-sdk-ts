@@ -1,7 +1,7 @@
 {
 	"name": "@whop/react",
 	"description": "React SDK for building embedded apps on Whop",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
@@ -22,9 +22,9 @@
 			"types": "./dist/index.d.ts"
 		},
 		"./*": {
-			"import": "./dist/*.mjs",
-			"require": "./dist/*.js",
-			"types": "./dist/*.d.ts"
+			"import": ["./dist/*.mjs", "./dist/*/index.mjs"],
+			"require": ["./dist/*.js", "./dist/*/index.js"],
+			"types": ["./dist/*.d.ts", "./dist/*/index.d.ts"]
 		}
 	},
 	"scripts": {
@@ -43,13 +43,16 @@
 		"lint:fix": "biome check --write --unsafe"
 	},
 	"dependencies": {
-		"@whop/iframe": "workspace:^"
+		"@whop/checkout": "workspace:^",
+		"@whop/iframe": "workspace:^",
+		"use-sync-external-store": "^1.5.0"
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.7.7",
 		"@swc/core": "1.11.29",
 		"@types/node": "latest",
 		"@types/react": "19.1.5",
+		"@types/use-sync-external-store": "^1.5.0",
 		"concurrently": "9.1.2",
 		"react": "^19.0.0",
 		"typescript": "latest"

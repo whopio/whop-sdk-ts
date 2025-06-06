@@ -2,6 +2,8 @@
 
 Embedded checkout allows you to embed Whop's checkout flow on your own website in two easy steps. This allows you to offer your users a seamless checkout experience without leaving your website.
 
+React users should use the `@whop/react` package which includes a version of this feature optimized for react.
+
 ## Step 1: Add the script tag
 
 To embed checkout, you need to add the following script tag into the `<head>` of your page:
@@ -10,7 +12,7 @@ To embed checkout, you need to add the following script tag into the `<head>` of
 <script
   async
   defer
-  src="https://cdn.jsdelivr.net/npm/@whop/checkout/dist/loader.js"
+  src="https://js.whop.com/static/checkout/loader.js"
 ></script>
 ```
 
@@ -65,7 +67,7 @@ This can be used to attach metadata to a checkout by first creating a session th
 		<script 
 			async 
 			defer 
-			src="https://cdn.jsdelivr.net/npm/@whop/checkout/dist/loader.js"
+  			src="https://js.whop.com/static/checkout/loader.js"
 		></script>
 		<title>Whop embedded checkout example</title>
 		<style>

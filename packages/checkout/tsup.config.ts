@@ -16,16 +16,15 @@ const extensions = {
 } as const;
 
 export default defineConfig({
-	entry: ["src/index.ts", "src/loader.ts"],
+	entry: ["src/index.ts", "src/loader.ts", "src/util.ts"],
 	sourcemap: false,
 	clean: true,
 	dts: true,
 	bundle: true,
 	shims: true,
-	format: ["cjs", "esm", "iife"],
+	format: ["iife", "cjs", "esm"],
 	target: "es5",
-	outDir: "dist",
+	outDir: "dist/static/checkout",
 	minify: true,
 	outExtension: ({ format }) => extensions[format],
-	publicDir: "./public",
 });
