@@ -1,0 +1,31 @@
+name: Sync GraphQL Operations
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-operations:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.15.9
+          
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Run sync operations
+        run: pnpm --filter @whop/api sync-operations
+        env:
+          GRAPHQL_SYNC_OPERATIONS_SECRET: ${{ secrets.GRAPHQL_SYNC_OPERATIONS_SECRET }}
+          GRAPHQL_SYNC_OPERATIONS_URL: ${{ secrets.GRAPHQL_SYNC_OPERATIONS_URL }}

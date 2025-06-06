@@ -1,8 +1,12 @@
+import crypto from "node:crypto";
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 import { config as dotenvConfig } from "dotenv";
 
 import { Biome, Distribution } from "@biomejs/js-api";
+
+import { sync } from "graphql-ruby-client";
+import type { ClientOperation } from "graphql-ruby-client/sync/generateClient";
 
 dotenvConfig({
 	path: [".env.local", ".env.development"],
@@ -56,11 +60,7 @@ const config: CodegenConfig = {
 				"./graphql/operations/**/*.client.graphql",
 				"./graphql/fragments/**/*.graphql",
 			],
-			plugins: [
-				"typescript",
-				"typescript-operations",
-				"typescript-generic-sdk",
-			],
+			plugins: ["typescript", "typescript-operations"],
 			config: graphqlCodegenConfig,
 		},
 		"src/codegen/graphql/server.ts": {
@@ -69,11 +69,7 @@ const config: CodegenConfig = {
 				"./graphql/operations/**/*.server.graphql",
 				"./graphql/fragments/**/*.graphql",
 			],
-			plugins: [
-				"typescript",
-				"typescript-operations",
-				"typescript-generic-sdk",
-			],
+			plugins: ["typescript", "typescript-operations"],
 			config: graphqlCodegenConfig,
 		},
 	},
@@ -82,7 +78,15 @@ const config: CodegenConfig = {
 			const biome = await Biome.create({
 				distribution: Distribution.NODE,
 			});
-			const formatted = biome.formatContent(content, {
+
+			const mode = filePath.split("/").pop()?.split(".")[0];
+			let sdkCode = "";
+			if (mode === "server" || mode === "client") {
+				sdkCode = await makeSdk(mode);
+			}
+			const contentWithSdk = content + sdkCode;
+
+			const formatted = biome.formatContent(contentWithSdk, {
 				filePath,
 			});
 
@@ -95,5 +99,74 @@ const config: CodegenConfig = {
 		},
 	},
 };
+
+async function makeSdk(mode: "server" | "client") {
+	// 1. Generate the operations JSON
+	const clientName = `whop-sdk-ts-${mode}`;
+	const operations = await sync({
+		client: clientName,
+		outfile: "/dev/null",
+		addTypename: true,
+		hash: hashFunction,
+		path: `{./graphql/operations/**/*.shared.graphql,./graphql/operations/**/*.${mode}.graphql,./graphql/fragments/**/*.graphql}`,
+	});
+
+	const sdkCode = generateSdk(operations.operations, clientName);
+
+	return sdkCode;
+}
+
+function generateSdk(operations: ClientOperation[], clientName: string) {
+	const functions = operations.map((operation) =>
+		generateSingleFunction(operation, clientName),
+	);
+
+	const requesterType = `
+	export type Requester<C = {}> = <R, V>(
+		operationId: string,
+		vars?: V,
+		options?: C,
+	) => Promise<R>;`;
+
+	const getSdkFunction = `export function getSdk<C>(requester: Requester<C>) {
+		return {
+			${functions.join(",\n\t")}
+		}
+	}`;
+
+	const sdkType = "export type Sdk = ReturnType<typeof getSdk>";
+
+	const code = `${requesterType}\n\n${getSdkFunction}\n\n${sdkType}`;
+	return code;
+}
+
+function generateSingleFunction(
+	operation: ClientOperation,
+	clientName: string,
+) {
+	const { name, alias: operationId, body } = operation;
+	if (!name || !operationId || !body) {
+		throw new Error(`Invalid operation: ${JSON.stringify(operation)}`);
+	}
+	const isMutation = body.includes(`mutation ${name}(`);
+	const operationType = isMutation ? "Mutation" : "Query";
+	const hasInputs = !body.includes(`${operationType.toLowerCase()} ${name} {`);
+	const hasInputsQuestionMark = hasInputs ? "" : "?";
+	const inputType = `${capitalize(name)}${operationType}Variables`;
+	const outputType = `${capitalize(name)}${operationType}`;
+	const functionArgs = `variables${hasInputsQuestionMark}: ${inputType}, options?: C`;
+	const functionBody = `return requester<${outputType}, ${inputType}>("${clientName}/${operationId}", variables, options);`;
+	const code = `${name}(${functionArgs}): Promise<${outputType}> { ${functionBody} }`;
+	return code;
+}
+
+function capitalize(str: string) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function hashFunction(str: string) {
+	const hashed = crypto.createHash("sha256").update(str).digest("hex");
+	return `sha256:${hashed}`;
+}
 
 export default config;

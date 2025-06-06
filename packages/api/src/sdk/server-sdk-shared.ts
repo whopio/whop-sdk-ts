@@ -1,11 +1,9 @@
 import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
 import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/graphql/server";
-import { DEFAULT_API_ORIGIN, wrappedFetch } from "@/sdk/sdk-common";
+import { DEFAULT_API_ORIGIN, graphqlFetch } from "@/sdk/sdk-common";
 import { makeConnectToWebsocketFunction } from "@/websockets/client.server";
 import { sendWebsocketMessageFunction } from "@/websockets/server";
-import type { DocumentNode } from "graphql";
-import { GraphQLClient, type Variables } from "graphql-request";
 
 /**
  * SDK options for server side use
@@ -68,15 +66,19 @@ export type WhopServerSdk = ReturnType<typeof BaseWhopServerSdk> & {
 function makeRequester(
 	apiOptions: WhopServerSdkOptions,
 ): Requester<RequestInit> {
-	const client = makeClient(apiOptions);
+	const endpoint = getEndpoint(apiOptions);
+	const headers = getHeaders(apiOptions);
 	return async function fetcher<R, V>(
-		doc: DocumentNode,
+		operationId: string,
 		vars?: V,
 		options?: RequestInit,
 	): Promise<R> {
-		const headers = new Headers(options?.headers);
-		const result = await client.request(doc, vars as Variables, headers);
-		return result as R;
+		const customHeaders = new Headers(options?.headers);
+		const actualHeaders = new Headers(headers);
+		for (const [key, value] of customHeaders.entries()) {
+			actualHeaders.set(key, value);
+		}
+		return await graphqlFetch<R, V>(endpoint, operationId, vars, actualHeaders);
 	};
 }
 
@@ -86,26 +88,6 @@ function getEndpoint(apiOptions: WhopServerSdkOptions) {
 		apiOptions.apiOrigin ?? DEFAULT_API_ORIGIN,
 	);
 	return url.href;
-}
-
-export function makeClient(apiOptions: WhopServerSdkOptions) {
-	return new GraphQLClient(getEndpoint(apiOptions), {
-		headers: getHeaders(apiOptions),
-		fetch: wrappedFetch,
-		requestMiddleware: (req) => {
-			// Attach the operation name to the pathname.
-			const newUrl = new URL(req.url);
-			if (req.operationName) {
-				if (newUrl.pathname.endsWith("/")) {
-					newUrl.pathname = `${newUrl.pathname}${req.operationName}/`;
-				} else {
-					newUrl.pathname = `${newUrl.pathname}/${req.operationName}`;
-				}
-			}
-			req.url = newUrl.href;
-			return req;
-		},
-	});
 }
 
 export function getHeaders(options: WhopServerSdkOptions) {
