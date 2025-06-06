@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.0
+
+### Minor Changes
+
+- ce78b89: add `@whop/react/components`
+
 ## 0.1.0
 
 ### Minor Changes
