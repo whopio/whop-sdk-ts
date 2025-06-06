@@ -4,3 +4,4 @@ dist
 .env*.local
 *.tsbuildinfo
 next-env.d.ts
+styles.css
