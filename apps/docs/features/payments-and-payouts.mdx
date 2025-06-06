@@ -211,7 +211,7 @@ See the [Webhooks guide](/features/webhooks) to understand how to configure webh
 
 Create an API endpoint to handle incoming webhooks:
 
-```typescript app/api/webhooks/route.ts
+```typescript app/api/webhooks/route.ts [expandable]
 import { whopApi } from "@/lib/whop-api";
 import { makeWebhookValidator } from "@whop/api";
 import type { NextRequest } from "next/server";
@@ -282,7 +282,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
 Here's an example of a `payment.succeeded` webhook payload:
 
-```json
+```json [expandable]
 {
   "data": {
     "id": "pay_0WkyrLVxkOCvaT",
