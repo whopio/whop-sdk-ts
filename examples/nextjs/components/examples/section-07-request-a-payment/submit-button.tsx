@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@whop/react/components";
 import { useFormStatus } from "react-dom";
 
 export function SubmitButton({
@@ -9,10 +10,12 @@ export function SubmitButton({
 }) {
 	const { pending } = useFormStatus();
 	return (
-		<button
-			className="shrink-0 bg-blue-500 text-white rounded-md p-2"
+		<Button
+			className="shrink-0"
+			color="blue"
+			variant="solid"
 			type="submit"
-			disabled={pending}
+			loading={pending}
 		>
 			{pending ? (
 				<div className="flex items-center w-full justify-center gap-3">
@@ -22,6 +25,6 @@ export function SubmitButton({
 			) : (
 				children
 			)}
-		</button>
+		</Button>
 	);
 }
