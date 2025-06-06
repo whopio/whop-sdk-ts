@@ -150,9 +150,11 @@ function generateSingleFunction(
 	}
 	const isMutation = body.includes(`mutation ${name}(`);
 	const operationType = isMutation ? "Mutation" : "Query";
+	const hasInputs = !body.includes(`${operationType.toLowerCase()} ${name} {`);
+	const hasInputsQuestionMark = hasInputs ? "" : "?";
 	const inputType = `${capitalize(name)}${operationType}Variables`;
 	const outputType = `${capitalize(name)}${operationType}`;
-	const functionArgs = `variables: ${inputType}, options?: C`;
+	const functionArgs = `variables${hasInputsQuestionMark}: ${inputType}, options?: C`;
 	const functionBody = `return requester<${outputType}, ${inputType}>("${clientName}/${operationId}", variables, options);`;
 	const code = `${name}(${functionArgs}): Promise<${outputType}> { ${functionBody} }`;
 	return code;
