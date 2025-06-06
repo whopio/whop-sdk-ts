@@ -1,10 +1,8 @@
 import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
 import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/graphql/client";
-import { wrappedFetch } from "@/sdk/sdk-common";
+import { graphqlFetch } from "@/sdk/sdk-common";
 import { makeConnectToWebsocketFunction } from "@/websockets/client.browser";
-import type { DocumentNode } from "graphql";
-import { GraphQLClient, type Variables } from "graphql-request";
 
 /**
  * SDK options for client side use
@@ -46,15 +44,14 @@ export type WhopClientSdk = ReturnType<ReturnType<typeof makeWhopClientSdk>>;
 function makeRequester(
 	apiOptions: WhopClientSdkOptions,
 ): Requester<RequestInit> {
-	const client = makeClient(apiOptions);
+	const endpoint = getEndpoint(apiOptions);
 	return async function fetcher<R, V>(
-		doc: DocumentNode,
+		operationId: string,
 		vars?: V,
 		options?: RequestInit,
 	): Promise<R> {
 		const headers = new Headers(options?.headers);
-		const result = await client.request(doc, vars as Variables, headers);
-		return result as R;
+		return await graphqlFetch<R, V>(endpoint, operationId, vars, headers);
 	};
 }
 
@@ -69,23 +66,4 @@ function getEndpoint(apiOptions: WhopClientSdkOptions) {
 	);
 
 	return url.href;
-}
-
-function makeClient(apiOptions: WhopClientSdkOptions) {
-	return new GraphQLClient(getEndpoint(apiOptions), {
-		fetch: wrappedFetch,
-		requestMiddleware: (req) => {
-			// Attach the operation name to the pathname.
-			const newUrl = new URL(req.url);
-			if (req.operationName) {
-				if (newUrl.pathname.endsWith("/")) {
-					newUrl.pathname = `${newUrl.pathname}${req.operationName}/`;
-				} else {
-					newUrl.pathname = `${newUrl.pathname}/${req.operationName}`;
-				}
-			}
-			req.url = newUrl.href;
-			return req;
-		},
-	});
 }
