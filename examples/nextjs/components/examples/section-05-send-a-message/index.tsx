@@ -1,4 +1,5 @@
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { Button, TextField } from "@whop/react/components";
 import { headers } from "next/headers";
 
 export async function SectionSendAMessage({
@@ -53,27 +54,24 @@ export async function SectionSendAMessage({
 
 	return (
 		<div>
-			<form action={sendChatMessage} className="flex gap-2 items-center">
-				<input
-					className="w-full"
-					type="text"
-					name="message"
-					placeholder="Message"
-				/>
-				<button className="shrink-0" type="submit">
+			<form
+				action={sendChatMessage}
+				className="flex gap-2 items-center flex-col"
+			>
+				<TextField.Root className="w-full">
+					<TextField.Input type="text" name="message" placeholder="Message" />
+				</TextField.Root>
+				<Button variant="solid" className="w-full" type="submit">
 					Send Chat Message
-				</button>
+				</Button>
 			</form>
-			<form action={sendDmMessage} className="flex gap-2 items-center">
-				<input
-					className="w-full"
-					type="text"
-					name="message"
-					placeholder="Message"
-				/>
-				<button className="shrink-0" type="submit">
-					Send DM Message
-				</button>
+			<form action={sendDmMessage} className="flex gap-2 items-center flex-col">
+				<TextField.Root className="w-full">
+					<TextField.Input type="text" name="message" placeholder="Message" />
+				</TextField.Root>
+				<Button variant="solid" className="w-full" type="submit">
+					Send Chat Message
+				</Button>
 			</form>
 		</div>
 	);

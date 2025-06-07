@@ -1,4 +1,5 @@
 import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { Button, TextField } from "@whop/react/components";
 import { headers } from "next/headers";
 import { SectionConnectToTheWebsocketClient } from "./index.client";
 
@@ -42,23 +43,21 @@ export async function SectionConnectToTheWebsocket({
 
 	return (
 		<div className="space-y-6">
-			<div className="p-4 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+			<div className="p-4 border border-gray-a6 rounded-lg bg-panel-elevation-a2">
 				<h3 className="text-lg font-semibold mb-4 dark:text-gray-200">
 					Send a Message from the Server
 				</h3>
 				<form action={sendMessage} className="flex gap-2">
-					<input
-						type="text"
-						name="message"
-						placeholder="Type your message here..."
-						className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-500"
-					/>
-					<button
-						type="submit"
-						className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-600"
-					>
+					<TextField.Root>
+						<TextField.Input
+							type="text"
+							name="message"
+							placeholder="Type your message here..."
+						/>
+					</TextField.Root>
+					<Button type="submit" color="blue" variant="solid">
 						Send Message
-					</button>
+					</Button>
 				</form>
 			</div>
 			<SectionConnectToTheWebsocketClient experienceId={experienceId} />
