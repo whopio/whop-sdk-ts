@@ -9,8 +9,8 @@
 				"DATABASE_URL",
 				"DIRECT_URL",
 				"OPENAI_API_KEY",
-				"WHOP_AGENT_USER_ID",
-				"WHOP_APP_ID",
+				"NEXT_PUBLIC_WHOP_AGENT_USER_ID",
+				"NEXT_PUBLIC_WHOP_APP_ID",
 				"WHOP_API_KEY"
 			]
 		},
