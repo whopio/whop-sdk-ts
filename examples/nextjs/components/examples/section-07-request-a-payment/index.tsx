@@ -2,6 +2,7 @@
 
 import { requestPayment } from "@/lib/actions/request-payment";
 import { useIframeSdk } from "@whop/react";
+import { TextField } from "@whop/react/components";
 import { use, useState } from "react";
 import { SubmitButton } from "./submit-button";
 
@@ -37,22 +38,24 @@ export function SectionRequestAPayment({
 			>
 				<input type="hidden" name="experienceId" value={experienceId} />
 				<div className="flex gap-2 items-center">
-					<input
-						className="w-full border border-gray-300 rounded-md p-2"
-						type="number"
-						required
-						name="amount"
-						placeholder="Amount (in USD) to charge"
-					/>
+					<TextField.Root className="w-full">
+						<TextField.Input
+							type="number"
+							required
+							name="amount"
+							placeholder="Amount (in USD) to charge"
+						/>
+					</TextField.Root>
 				</div>
 				<div className="flex gap-2 items-center">
-					<input
-						className="w-full border border-gray-300 rounded-md p-2"
-						type="text"
-						required
-						name="description"
-						placeholder="Payment Description"
-					/>
+					<TextField.Root className="w-full">
+						<TextField.Input
+							type="text"
+							required
+							name="description"
+							placeholder="Payment Description"
+						/>
+					</TextField.Root>
 				</div>
 				<SubmitButton>Request Payment</SubmitButton>
 
