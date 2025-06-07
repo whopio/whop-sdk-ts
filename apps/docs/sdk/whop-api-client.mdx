@@ -5,10 +5,7 @@ description: We provide a TS client that makes it super easy to use our API. We 
 
 Our SDK makes it simple to use our API. It's a wrapper around our GraphQL API with pre-built functions for all of our endpoints. The endpoints are outlined in the SDK reference section of our docs.
 
-
-
 ### Install
-
 
 <CodeGroup>
 
@@ -44,23 +41,23 @@ export const whopApi = WhopServerSdk({
   // This is optional, however most api requests need to be made on behalf of a user.
   // You can create an agent user for your app, and use their userId here.
   // You can also apply a different userId later with the `withUser` function.
-  onBehalfOfUserId: process.env.WHOP_AGENT_USER_ID,
+  onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
 
   // This is the companyId that will be used for the api requests.
   // When making api requests that query or mutate data about a company, you need to specify the companyId.
   // This is optional, however if not specified certain requests will fail.
   // This can also be applied later with the `withCompany` function.
-  companyId: undefined,
+  companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
 });
 
 export const verifyUserToken = makeUserTokenVerifier({
-  appId: process.env.WHOP_APP_ID ?? "fallback",
+  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
   dontThrow: true,
 });
-
 ```
 
 ### Example usage
+
 The rest of the examples in this section will use this client and import it from `lib/whop-api.ts`.
 
 Here is an example
@@ -70,4 +67,3 @@ import { whopApi } from "./lib/whop-api";
 
 const user = await whopApi.getCurrentUser();
 ```
-
