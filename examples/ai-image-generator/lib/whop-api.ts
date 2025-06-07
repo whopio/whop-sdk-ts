@@ -9,7 +9,7 @@ export const whopApi = WhopServerSdk({
 	// This is optional, however most api requests need to be made on behalf of a user.
 	// You can create an agent user for your app, and use their userId here.
 	// You can also apply a different userId later with the `withUser` function.
-	onBehalfOfUserId: process.env.WHOP_AGENT_USER_ID,
+	onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
 
 	// This is the companyId that will be used for the api requests.
 	// When making api requests that query or mutate data about a company, you need to specify the companyId.
@@ -19,6 +19,6 @@ export const whopApi = WhopServerSdk({
 });
 
 export const verifyUserToken = makeUserTokenVerifier({
-	appId: process.env.WHOP_APP_ID ?? "fallback",
+	appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
 	dontThrow: true,
 });

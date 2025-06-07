@@ -27,7 +27,7 @@ Use Whop OAuth to authenticate users in your web or iOS app.
    Keep in mind that the api key is a secret and should not be shared with anyone. The app id is public and can be shared with anyone.
 
    ```.env
-   WHOP_APP_ID=your-app-id
+   NEXT_PUBLIC_WHOP_APP_ID=your-app-id
    WHOP_API_KEY=your-api-key
    ```
 
@@ -45,7 +45,7 @@ export function GET(request: Request) {
   const oAuthUrl = `https://whop.com/oauth/`;
 
   // this is the app id you obtained in step 1.3
-  oAuthUrl.searchParams.set("client_id", process.env.WHOP_APP_ID);
+  oAuthUrl.searchParams.set("client_id", process.env.NEXT_PUBLIC_WHOP_APP_ID);
   // This has to be defined in the redirect uris outlined in step 1.2
   oAuthUrl.searchParams.set(
     "redirect_uri",
@@ -121,7 +121,7 @@ export function GET(request: Request) {
     method: "POST",
     body: JSON.stringify({
       code,
-      client_id: process.env.WHOP_APP_ID,
+      client_id: process.env.NEXT_PUBLIC_WHOP_APP_ID,
       client_secret: process.env.WHOP_API_KEY,
       grant_type: "authorization_code",
       redirect_uri: "http://localhost:3000/api/oauth/callback",
