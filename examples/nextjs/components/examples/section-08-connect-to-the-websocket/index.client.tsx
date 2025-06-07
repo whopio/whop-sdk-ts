@@ -1,6 +1,7 @@
 "use client";
 
 import type { proto } from "@whop/api";
+import { Button, TextField } from "@whop/react/components";
 import { useCallback, useState } from "react";
 import {
 	WhopWebsocketProvider,
@@ -31,7 +32,7 @@ export function SectionConnectToTheWebsocketClient({
 			onAppMessage={onAppMessage}
 		>
 			<ClientSendMessage experienceId={experienceId} />
-			<div className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+			<div className="p-4 border rounded-lg bg-panel-elevation-a2 border-gray-a6">
 				<WebsocketStatusDisplay />
 				<WebsocketMessageDisplay
 					message={message}
@@ -55,8 +56,8 @@ function WebsocketMessageDisplay({
 }) {
 	return (
 		<div className="flex flex-col gap-2">
-			<span className="font-semibold dark:text-gray-200">Message: </span>
-			<pre className="mt-1 p-2 bg-white border rounded dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200">
+			<span className="font-semibold">Message: </span>
+			<pre className="mt-1 p-2 bg-background border border-gray-a6 rounded">
 				{message}
 			</pre>
 			<div className="flex gap-2">
@@ -86,14 +87,14 @@ function WebsocketStatusDisplay() {
 	const status = useWebsocketStatus();
 	return (
 		<div className="mb-4">
-			<span className="font-semibold dark:text-gray-200">Status: </span>
+			<span className="font-semibold">Status: </span>
 			<span
 				className={`px-2 py-1 rounded text-sm ${
 					status === "connected"
-						? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+						? "bg-success-1 text-success-12"
 						: status === "connecting"
-							? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-							: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+							? "bg-warning-1 text-warning-12"
+							: "bg-danger-1 text-danger-12"
 				}`}
 			>
 				{status}
@@ -131,25 +132,23 @@ function ClientSendMessage({
 	);
 
 	return (
-		<div className="p-4 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+		<div className="p-4 border rounded-lg bg-panel-elevation-a2 border-gray-a6">
 			<h3 className="text-lg font-semibold mb-4 dark:text-gray-200">
 				Send a Message from the Client
 			</h3>
 			<form onSubmit={onSubmit} className="flex gap-2">
-				<input
-					type="text"
-					name="message"
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-					placeholder="Type your message here..."
-					className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-500"
-				/>
-				<button
-					type="submit"
-					className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-600"
-				>
+				<TextField.Root>
+					<TextField.Input
+						type="text"
+						name="message"
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+						placeholder="Type your message here..."
+					/>
+				</TextField.Root>
+				<Button type="submit" color="blue" variant="solid">
 					Send Message
-				</button>
+				</Button>
 			</form>
 		</div>
 	);

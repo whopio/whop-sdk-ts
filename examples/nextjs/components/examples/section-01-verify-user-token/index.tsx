@@ -6,7 +6,7 @@ export async function SectionVerifyUserToken() {
 	const userTokenData = await verifyUserToken(requestHeaders);
 
 	if (!userTokenData) {
-		return <div className="text-red-500">Invalid or missing user token</div>;
+		return <div className="text-danger-12">Invalid or missing user token</div>;
 	}
 
 	return (
