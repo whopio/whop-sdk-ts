@@ -4,6 +4,7 @@ query listUsersForExperience(
 	$before: String
 	$direction: Direction
 	$first: Int
+	$searchQuery: String
 ) {
 	publicExperience(id: $experienceId) {
 		users(
@@ -11,6 +12,7 @@ query listUsersForExperience(
 			before: $before
 			direction: $direction
 			first: $first
+			query: $searchQuery
 		) {
 			nodes {
 				id
