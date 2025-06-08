@@ -40,6 +40,8 @@ export async function GET() {
 
 	await Promise.all(aboutToFinishListings.map(sendAboutToFinishNotification));
 	await Promise.all(justFinishedListings.map(sendJustFinishedNotification));
+
+	return new Response("OK");
 }
 
 async function updateExpiredAtForMinSellPriceListings() {
