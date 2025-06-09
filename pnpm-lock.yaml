@@ -419,6 +419,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@whop/api':
+        specifier: workspace:^
+        version: link:../api
       '@whop/checkout':
         specifier: workspace:^
         version: link:../checkout

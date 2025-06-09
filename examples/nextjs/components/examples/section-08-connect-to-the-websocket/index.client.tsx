@@ -1,13 +1,13 @@
 "use client";
 
 import type { proto } from "@whop/api";
-import { Button, TextField } from "@whop/react/components";
-import { useCallback, useState } from "react";
 import {
 	WhopWebsocketProvider,
-	useWebsocket,
+	useBroadcastWebsocketMessage,
 	useWebsocketStatus,
-} from "./websocket-provider";
+} from "@whop/react";
+import { Button, TextField } from "@whop/react/components";
+import { useCallback, useState } from "react";
 
 export function SectionConnectToTheWebsocketClient({
 	experienceId,
@@ -112,23 +112,19 @@ function ClientSendMessage({
 	experienceId: string;
 }) {
 	const [message, setMessage] = useState("");
-	const websocket = useWebsocket();
+	const broadcastMessage = useBroadcastWebsocketMessage();
 
 	const onSubmit = useCallback(
 		(e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			if (!websocket) {
-				alert("Websocket not connected");
-				return;
-			}
-			websocket.broadcast({
+			broadcastMessage({
 				message,
 				target: {
 					experienceId,
 				},
 			});
 		},
-		[experienceId, websocket, message],
+		[experienceId, broadcastMessage, message],
 	);
 
 	return (
