@@ -102,7 +102,7 @@ Upon clicking the link the user will be redirected to the Whop OAuth page and is
 
 ### Step 3: Exchange the code for a token
 
-Upon successful authorization the user will be redirected to the redirect uri you specified in the query parameters with a `code` query parameter,
+Upon successful authorization the user will be redirected to the redirect uri you specified in the query parameters with `code` and `state` query parameters:
 
 ```ts /api/oauth/callback/route.ts
 import { WhopServerSdk } from "@whop/api";
