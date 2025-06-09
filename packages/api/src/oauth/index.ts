@@ -3,7 +3,7 @@ import type { AppValidScopes } from "@/codegen/graphql/server";
 /**
  * The authorization tokens returned from the Whop OAuth2 API.
  */
-export interface WhopOAuth2Tokens {
+export interface WhopOAuthTokens {
 	/**
 	 * The primary access token for the user.
 	 */
@@ -23,7 +23,7 @@ export interface WhopOAuth2Tokens {
  *
  * @see https://dev.whop.com/features/oauth-guide
  */
-export class WhopOAuth2 {
+export class WhopOAuth {
 	public static readonly OAUTH_URL = "https://whop.com/oauth/";
 
 	constructor(
@@ -51,7 +51,7 @@ export class WhopOAuth2 {
 	 * Get an authorization url to start the OAuth2 flow.
 	 *
 	 * ```ts
-	 * const { url, state } = whopOAuth2.getAuthorizationUrl({
+	 * const { url, state } = whopOAuth.getAuthorizationUrl({
 	 * 	redirectUri: "http://localhost:3000/api/oauth/callback",
 	 * 	scope: ["read_user"],
 	 * })
@@ -92,7 +92,7 @@ export class WhopOAuth2 {
 		 */
 		state: string;
 	} {
-		const oAuthUrl = new URL(WhopOAuth2.OAUTH_URL);
+		const oAuthUrl = new URL(WhopOAuth.OAUTH_URL);
 
 		oAuthUrl.searchParams.set("client_id", this.appId);
 		oAuthUrl.searchParams.set("response_type", "code");
@@ -114,7 +114,7 @@ export class WhopOAuth2 {
 	 * Exchange a code for a token.
 	 *
 	 * ```ts
-	 * const authResponse = await whopOAuth2.exchangeCode({
+	 * const authResponse = await whopOAuth.exchangeCode({
 	 * 	code: "1234",
 	 * 	redirectUri: "http://localhost:3000/api/oauth/callback",
 	 * })
@@ -146,7 +146,7 @@ export class WhopOAuth2 {
 				/**
 				 * The authorization token you received from the user to make request to the Whop API
 				 */
-				tokens: WhopOAuth2Tokens;
+				tokens: WhopOAuthTokens;
 		  }
 		| {
 				ok: false;

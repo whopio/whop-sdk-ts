@@ -1,7 +1,7 @@
 import { fileSdkExtensions } from "@/attachments/file-sdk-extensions";
 import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/graphql/server";
-import { WhopOAuth2 } from "@/oauth2";
+import { WhopOAuth } from "@/oauth";
 import { DEFAULT_API_ORIGIN, graphqlFetch } from "@/sdk/sdk-common";
 import { makeConnectToWebsocketFunction } from "@/websockets/client.server";
 import { sendWebsocketMessageFunction } from "@/websockets/server";
@@ -12,7 +12,7 @@ import { sendWebsocketMessageFunction } from "@/websockets/server";
 export interface WhopServerSdkOptions {
 	/** The API key to use for API calls */
 	appApiKey: string;
-	/** Required when using the oauth2 module. Defaults to `NEXT_PUBLIC_WHOP_APP_ID` */
+	/** Required when using the oauth module. Defaults to `NEXT_PUBLIC_WHOP_APP_ID` */
 	appId?: string;
 	/** Use this to make the API calls on behalf of a user */
 	onBehalfOfUserId?: string;
@@ -36,25 +36,25 @@ function BaseWhopServerSdk(
 	const websocketClient = makeConnectToWebsocketFunction(options);
 
 	const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
-	let oauth2: WhopOAuth2 | undefined;
+	let oauth: WhopOAuth | undefined;
 
 	return {
 		...baseSdk,
 		...fileSdk,
 		sendWebsocketMessage,
 		websocketClient,
-		// lazy initialize the oauth2 instance to avoid causing compatibility issues with the appId being undefined
-		get oauth2() {
-			if (!oauth2) {
+		// lazy initialize the WhopOAuth instance to avoid causing compatibility issues with the appId being undefined
+		get oauth() {
+			if (!oauth) {
 				const appId = options.appId ?? process.env.NEXT_PUBLIC_WHOP_APP_ID;
 				if (!appId) {
 					throw new Error(
 						"Could not resolve appId from environment variables. Please provide it in the options or set the `NEXT_PUBLIC_WHOP_APP_ID` environment variable.",
 					);
 				}
-				oauth2 = new WhopOAuth2(appId, options.appApiKey, options.apiOrigin);
+				oauth = new WhopOAuth(appId, options.appApiKey, options.apiOrigin);
 			}
-			return oauth2;
+			return oauth;
 		},
 	};
 }

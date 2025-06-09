@@ -67,7 +67,7 @@ export function GET(request: Request) {
   const url = new URL(request.url);
   const next = url.searchParams.get("next") ?? "/home";
 
-  const { url, state } = whopApi.oauth2.getAuthorizationUrl({
+  const { url, state } = whopApi.oauth.getAuthorizationUrl({
     // This has to be defined in the redirect uris outlined in step 1.2
     redirectUri: "http://localhost:3000/api/oauth/callback",
     // These are the authorization scopes you want to request from the user.
@@ -138,7 +138,7 @@ export function GET(request: Request) {
   }
 
   // exchange the code for a token
-  const authResponse = await whopApi.oauth2.exchangeCode({
+  const authResponse = await whopApi.oauth.exchangeCode({
     code,
     redirectUri: "http://localhost:3000/api/oauth/callback",
   });
