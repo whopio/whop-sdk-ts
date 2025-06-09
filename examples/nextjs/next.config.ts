@@ -8,6 +8,4 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default withWhopAppConfig(nextConfig, {
-	domainId: "nu01g614bry5v6sw6uko",
-});
+export default withWhopAppConfig(nextConfig);
