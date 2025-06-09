@@ -1,8 +1,7 @@
-import { WhopIframeSdkProvider, WhopThemeScript } from "@whop/react";
+import { WhopApp } from "@whop/react/components";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Theme } from "@whop/react/components";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -26,15 +25,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<head>
-				<WhopThemeScript />
-			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<Theme accentColor="blue">
-					<WhopIframeSdkProvider>{children}</WhopIframeSdkProvider>
-				</Theme>
+				<WhopApp accentColor="blue">{children}</WhopApp>
 			</body>
 		</html>
 	);
