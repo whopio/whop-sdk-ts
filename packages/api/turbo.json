@@ -16,7 +16,7 @@
 		"build:graphql": {
 			"cache": true,
 			"inputs": ["codegen.ts", "graphql/**"],
-			"outputs": ["src/codegen/**", "!src/codegen/proto/**"]
+			"outputs": ["src/codegen/graphql/**", "!src/codegen/proto/**"]
 		},
 		"lint:fix": {
 			"cache": false,
