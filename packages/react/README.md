@@ -133,3 +133,25 @@ export default function Home() {
 	);
 }
 ```
+
+## React frameworks
+
+### Next.js
+
+#### `withWhopAppConfig`
+
+This package exports a config wrapper for your `next.config.{js,mjs,ts}` file that handles setting up server action allowed origins as well as import optimizations for `@whop/react/components`
+
+```ts
+import type { NextConfig } from "next";
+import { withWhopAppConfig } from "@whop/react/next.config";
+
+const nextConfig: NextConfig = {
+	/* your config options here */
+	images: {
+		remotePatterns: [{ hostname: "**" }],
+	},
+};
+
+export default withWhopAppConfig(nextConfig);
+```
