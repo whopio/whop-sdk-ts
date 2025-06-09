@@ -14,7 +14,7 @@
 			"env": ["GITHUB_TOKEN"]
 		},
 		"build:graphql": {
-			"cache": false,
+			"cache": true,
 			"inputs": ["codegen.ts", "graphql/**"],
 			"outputs": ["src/codegen/**", "!src/codegen/proto/**"]
 		},
