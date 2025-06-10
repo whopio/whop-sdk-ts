@@ -6,7 +6,7 @@ import {
 	type WhopWebsocketClientBrowser,
 	type proto,
 } from "@whop/api";
-import {
+import React, {
 	type PropsWithChildren,
 	useEffect,
 	useMemo,
