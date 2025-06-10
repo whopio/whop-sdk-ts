@@ -23,15 +23,17 @@ import {
  */
 export interface WhopWebsocketProviderProps {
 	/**
-	 * The custom channels to join when connecting to the websocket.
+	 * **Optional** - The custom channels to join when connecting to the websocket.
 	 */
 	joinCustom?: string | string[];
 	/**
-	 * The experience channels to join when connecting to the websocket.
+	 * **Optional** - The experience channels to join when connecting to the websocket.
+	 *
+	 * @example exp_XXXX
 	 */
 	joinExperience?: string | string[];
 	/**
-	 * A callback that is called when an app message is received.
+	 * **Required** - A callback that is called when an app message is received.
 	 */
 	onAppMessage: (message: proto.common.AppMessage) => void;
 }
@@ -49,16 +51,16 @@ export function WhopWebsocketProvider({
 	const [connectionStatus, setConnectionStatus] =
 		useState<WebsocketStatus>("disconnected");
 
-	const apiRef = useRef<WhopClientSdk>(null);
+	const sdkRef = useRef<WhopClientSdk>(null);
 
 	useEffect(() => {
-		if (!apiRef.current) {
-			apiRef.current = WhopClientSdk();
+		if (!sdkRef.current) {
+			sdkRef.current = WhopClientSdk();
 		}
 
-		const whopApi = apiRef.current;
+		const whopSdk = sdkRef.current;
 
-		const websocket = whopApi.websocketClient({
+		const websocket = whopSdk.websocketClient({
 			joinCustom,
 			joinExperience,
 		});
