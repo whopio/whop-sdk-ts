@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { createListing } from "@/lib/actions/create-listing";
 import { verifyUser } from "@/lib/verify-user";
 import Link from "next/link";
-import { createListing } from "../../../../lib/actions/create-listing";
 import { SubmitButton } from "./page.client";
 
 export default async function CreateListingPage({
