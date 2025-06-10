@@ -429,8 +429,8 @@ importers:
         specifier: workspace:^
         version: link:../iframe
       frosted-ui:
-        specifier: 0.0.1-canary.73
-        version: 0.0.1-canary.73(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 0.0.1-canary.74
+        version: 0.0.1-canary.74(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       use-sync-external-store:
         specifier: ^1.5.0
         version: 1.5.0(react@19.1.0)
@@ -5407,13 +5407,13 @@ packages:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
-  frosted-ui@0.0.1-canary.73:
-    resolution: {integrity: sha512-Uol/dP7+vLAjiqSX4WdMltoD75jFiioLgD14YK2VzaDNlZnkHcgm3Ui+CDRVev6SXak2CSawSyEqX3/E0OUJOg==}
+  frosted-ui@0.0.1-canary.74:
+    resolution: {integrity: sha512-VCaFnITJktJ8U+v2OuOZ5wt9R4lVa6yYcknDOt3+1LshSn8+LlfgyNmt777Ck4qEobPrVFTNmtLqRFrSCHm/CQ==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -14280,7 +14280,7 @@ snapshots:
 
   fresh@0.5.2: {}
 
-  frosted-ui@0.0.1-canary.73(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  frosted-ui@0.0.1-canary.74(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@frosted-ui/colors': 0.0.1-canary.61
       '@internationalized/date': 3.8.2
