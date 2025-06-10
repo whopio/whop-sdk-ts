@@ -1,5 +1,12 @@
 # @whop/react
 
+## 0.2.2
+
+### Patch Changes
+
+- 32ba0ac: add `WhopWebsocketProvider`
+- f97d736: Update package `frosted-ui` to `0.0.1-canary.74`
+
 ## 0.2.1
 
 ### Patch Changes
