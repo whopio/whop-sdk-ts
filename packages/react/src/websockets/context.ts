@@ -1,3 +1,5 @@
+"use client";
+
 import type { WebsocketStatus, WhopWebsocketClientBrowser } from "@whop/api";
 import { createContext } from "react";
 

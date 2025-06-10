@@ -1,3 +1,5 @@
+"use client";
+
 import type { SendableWebsocketMessage } from "@whop/api";
 import { useEffect, useRef } from "react";
 import { useWebsocket } from "./use-websocket";
