@@ -2,4 +2,4 @@
 "@whop/react": patch
 ---
 
-Update frosted-ui to v74
+Update package `frosted-ui` to `0.0.1-canary.74`
