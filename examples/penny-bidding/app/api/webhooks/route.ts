@@ -67,7 +67,7 @@ async function handlePaymentWebhook(
 	});
 
 	if (!userId) return;
-	if (currency.toLowerCase() !== "usd") return;
+	if (!currency || currency.toLowerCase() !== "usd") return;
 	if (
 		amount_after_fees === null ||
 		amount_after_fees === undefined ||

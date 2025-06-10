@@ -8,8 +8,9 @@
 			"env": [
 				"WHOP_API_KEY",
 				"WHOP_WEBHOOK_SECRET",
-				"WHOP_AGENT_USER_ID",
-				"NEXT_PUBLIC_WHOP_APP_ID"
+				"NEXT_PUBLIC_WHOP_AGENT_USER_ID",
+				"NEXT_PUBLIC_WHOP_APP_ID",
+				"NEXT_PUBLIC_WHOP_COMPANY_ID"
 			]
 		},
 		"dev": {

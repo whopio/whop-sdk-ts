@@ -47,9 +47,13 @@ export default function Page() {
 						</p>
 						<div className="text-gray-600 ml-11">
 							<code>
-								WHOP_API_KEY= {process.env.WHOP_API_KEY} <br />
-								WHOP_AGENT_USER_ID= {process.env.WHOP_AGENT_USER_ID} <br />
-								WHOP_APP_ID= {process.env.NEXT_PUBLIC_WHOP_APP_ID}
+								WHOP_API_KEY={process.env.WHOP_API_KEY} <br />
+								NEXT_PUBLIC_WHOP_AGENT_USER_ID=
+								{process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID} <br />
+								NEXT_PUBLIC_WHOP_APP_ID={process.env.NEXT_PUBLIC_WHOP_APP_ID}
+								<br />
+								NEXT_PUBLIC_WHOP_COMPANY_ID=
+								{process.env.NEXT_PUBLIC_WHOP_COMPANY_ID}
 							</code>
 						</div>
 					</div>

@@ -1,5 +1,18 @@
 # @whop/api
 
+## 0.0.26
+
+### Patch Changes
+
+- f23cc24: add search query to the list users for experience endpoint
+- bc3353e: add `oauth2` module to simplify oauth implementations
+
+## 0.0.25
+
+### Patch Changes
+
+- 72caed1: Switched the SDK to use persisted graphql queries by operation id. Improves performance security and reduces network traffic.
+
 ## 0.0.24
 
 ### Patch Changes

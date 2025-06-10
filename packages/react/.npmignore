@@ -13,4 +13,8 @@ src
 .env.development.local
 .env.test.local
 .env.production.local
+
 scripts
+!scripts/postinstall.mjs
+
+styles.css

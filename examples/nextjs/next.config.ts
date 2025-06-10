@@ -1,3 +1,4 @@
+import { withWhopAppConfig } from "@whop/react/next.config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -5,11 +6,6 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [{ hostname: "**" }],
 	},
-	experimental: {
-		serverActions: {
-			allowedOrigins: ["nu01g614bry5v6sw6uko.apps.whop.com"],
-		},
-	},
 };
 
-export default nextConfig;
+export default withWhopAppConfig(nextConfig);

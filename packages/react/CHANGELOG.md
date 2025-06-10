@@ -1,5 +1,18 @@
 # @whop/react
 
+## 0.2.1
+
+### Patch Changes
+
+- b20a83e: add `WhopApp` wrapper component
+- f3e149b: add `withWhopAppConfig` wrapper for next
+
+## 0.2.0
+
+### Minor Changes
+
+- ce78b89: add `@whop/react/components`
+
 ## 0.1.0
 
 ### Minor Changes

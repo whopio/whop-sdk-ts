@@ -1,4 +1,5 @@
 import { whopApi } from "@/lib/whop-api";
+import { Button, Select, TextArea } from "@whop/react/components";
 
 export async function SectionMakeForumPost({
 	params,
@@ -48,25 +49,24 @@ export async function SectionMakeForumPost({
 
 	return (
 		<div>
-			<form action={makeForumPost} className="flex gap-2 items-center">
-				<select name="experienceId">
-					{forumExperiences.company?.experiencesV2.nodes
-						?.filter(notEmpty)
-						.map((experience) => (
-							<option key={experience.id} value={experience.id}>
-								{experience.name} - {experience.id}
-							</option>
-						))}
-				</select>
-				<input
-					className="w-full"
-					type="text"
-					name="content"
-					placeholder="Content"
-				/>
-				<button className="shrink-0" type="submit">
+			<form action={makeForumPost} className="flex gap-2 items-center flex-col">
+				<Select.Root>
+					<Select.Trigger className="w-full" name="experienceId" />
+					<Select.Content>
+						{forumExperiences.company?.experiencesV2.nodes
+							?.filter(notEmpty)
+							.map((experience) => (
+								<Select.Item key={experience.id} value={experience.id}>
+									{experience.name} - {experience.id}
+								</Select.Item>
+							))}
+					</Select.Content>
+				</Select.Root>
+				<TextArea name="content" className="w-full" placeholder="Content" />
+
+				<Button variant="solid" className="w-full" type="submit">
 					Make Forum Post
-				</button>
+				</Button>
 			</form>
 		</div>
 	);

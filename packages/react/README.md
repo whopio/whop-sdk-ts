@@ -4,10 +4,10 @@ Whop Apps react SDK helps you get started with Whop Apps and react. It offers ea
 
 ## Setup
 
-> Mount both the `WhopThemeScript` as well as the `WhopIframeSdkProvider` in your root layout
+> Mount the `WhopApp` provider at the highest possible level. The `WhopApp` provider handles mounting the `WhopThemeScript`, `WhopIframeSdkProvider` and `Theme` components.
 
 ```tsx app/layout.ts
-import { WhopThemeScript, WhopIframeSdkProvider } from "@whop/react";
+import { WhopApp } from "@whop/react";
 
 export default function RootLayout({
 	children,
@@ -16,11 +16,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<head>
-				<WhopThemeScript />
-			</head>
 			<body>
-				<WhopIframeSdkProvider>{children}</WhopIframeSdkProvider>
+				<WhopApp>{children}</WhopApp>
 			</body>
 		</html>
 	);
@@ -48,6 +45,28 @@ function ExampleComponent() {
 ```
 
 ## Components
+
+### WhopApp
+
+One-time setup for all providers and components to build whop apps. This component handles mounting the `WhopThemeScript`, `WhopIframeSdkProvider` and `Theme` components.
+
+```tsx app/layout.ts
+import { type WhopIframeSdkProviderOptions } from "@whop/react";
+import { WhopApp } from "@whop/react/components";
+
+const options: WhopIframeSdkProviderOptions = {
+	// your Whop App ID, defaults to process.env.NEXT_PUBLIC_WHOP_APP_ID
+	appId: process.env.WHOP_APP_ID,
+};
+
+export default function RootLayout() {
+	return (
+		<html>
+			<WhopApp sdkOptions={options}>{children}</WhopApp>
+		</html>
+	);
+}
+```
 
 ### WhopThemeScript
 
@@ -132,4 +151,26 @@ export default function Home() {
 		/>
 	);
 }
+```
+
+## React frameworks
+
+### Next.js
+
+#### `withWhopAppConfig`
+
+This package exports a config wrapper for your `next.config.{js,mjs,ts}` file that handles setting up server action allowed origins as well as import optimizations for `@whop/react/components`
+
+```ts
+import type { NextConfig } from "next";
+import { withWhopAppConfig } from "@whop/react/next.config";
+
+const nextConfig: NextConfig = {
+	/* your config options here */
+	images: {
+		remotePatterns: [{ hostname: "**" }],
+	},
+};
+
+export default withWhopAppConfig(nextConfig);
 ```
