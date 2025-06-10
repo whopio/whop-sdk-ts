@@ -13,7 +13,7 @@
 		"esModuleInterop": true,
 		"moduleResolution": "bundler",
 		"isolatedModules": true,
-		"jsx": "preserve",
+		"jsx": "react",
 		"strictNullChecks": true,
 		"verbatimModuleSyntax": true,
 		"outDir": "./dist"

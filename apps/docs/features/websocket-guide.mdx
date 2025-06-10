@@ -3,9 +3,72 @@ title: "Connect to websocket"
 description: "Learn how to implement real-time features using Whop's websocket API"
 ---
 
-
 You can connect to the websocket from your client side frontend code running in the iFrame.
 
+## Client Setup
+
+### React
+
+When using react, it is recommended to use the `WhopWebsocketProvider` provider from the `@whop/react` package to connect to the websocket.
+
+1. Mount the `WhopWebsocketProvider` provider:
+
+   ```tsx app/layout.tsx
+   import { WhopWebsocketProvider } from "@whop/react";
+   import { handleAppMessage } from "@/lib/handle-websocket-message";
+
+   export default function Layout({ children }: { children: React.ReactNode }) {
+     return (
+       <WhopWebsocketProvider
+         // optional, you can join a specific experience channel (ie, the one you are currently viewing).
+         joinExperience="exp_XXXX"
+         // optional, you can join a custom channel.
+         joinCustom="some_custom_channel"
+         // optional, a callback that is called when an app message is received. you can also use the `useOnWebsocketMessage` hook to handle messages.
+         onAppMessage={handleAppMessage}
+       >
+         {children}
+       </WhopWebsocketProvider>
+     );
+   }
+   ```
+
+2. Handle app messages:
+
+   ```tsx lib/handle-websocket-message.tsx
+   export function handleAppMessage(message: proto.common.AppMessage) {
+     console.log("Received app message:", message);
+
+     // message.isTrusted is true if and only if the message was sent from your server with your private app API key.
+
+     // message.json is the JSON string you sent from your server / client.
+
+     // if you sent the message from the client using websocket.broadcast,
+     // message.fromUserId will include the user id of the user who sent the message.
+   }
+
+   // You can also handle messages using the `useOnWebsocketMessage` hook.
+   export function MyNestedReactComponent() {
+     const [state, setState] = useState<string>("");
+     useOnWebsocketMessage((message) => {
+       setState(message.json);
+     });
+     return <div>{state}</div>;
+   }
+   ```
+
+3. Handle connection status changes:
+
+   ```tsx
+   import { useWebsocketStatus } from "@whop/react";
+
+   // inside of a component
+   const connectionStatus = useWebsocketStatus();
+   ```
+
+### Other frameworks
+
+Alternatively, you can create the websocket client using the `@whop/api` package in any framework.
 
 1. Create the websocket client:
 
@@ -65,20 +128,47 @@ You can connect to the websocket from your client side frontend code running in 
 
 ## Send messages from the client
 
-You can send messages from the client to the server by using the `websocket.broadcast` function.
+You can send messages from the client to the server by using the `websocket.broadcast` or `useBroadcastWebsocketMessage` function.
 
-1. Create a websocket client as above, and make sure you are connected by calling `websocket.connect()`.
+1.  Create a websocket client as above.
 
-2. Send a custom message via websocket.
+2.  Send a custom message via websocket.
 
-   ```typescript
-   websocket.broadcast({
-     message: JSON.stringify({ hello: "world" }),
-     target: "everyone",
-   });
-   ```
+   <CodeGroup>
 
-   The target field is the same as the one you would pass to `whopApi.sendWebsocketMessage` on the server.
+    ```tsx React
+    import { useBroadcastWebsocketMessage } from "@whop/react";
+
+    export function SendMessageExample() {
+      const broadcast = useBroadcastWebsocketMessage();
+
+      function sendMessage () {
+         broadcast({
+            message: JSON.stringify({ hello: "world" }),
+            target: "everyone",
+         });
+      }
+
+      return <button onClick={sendMessage}>Send Message</button>
+    }
+
+    ```
+
+    ```typescript Other frameworks
+    // make sure you are connected by calling `websocket.connect()`
+
+    websocket.broadcast({
+      message: JSON.stringify({ hello: "world" }),
+      target: "everyone",
+    });
+    ```
+
+   </CodeGroup>
+
+<Note>
+  The target field is the same as the one you would pass to
+  `whopApi.sendWebsocketMessage` on the server.
+</Note>
 
 ## Send messages from your server
 
@@ -200,142 +290,3 @@ You can use these events to build real-time apps such as chat bots and AI-agents
    ```typescript
    websocket.disconnect();
    ```
-
-## React Example
-
-You can use the `WhopWebsocketProvider` component to wrap your app and provide the websocket client and status to your components.
-
-```typescript my-app.tsx
-"use client";
-
-import type { proto } from "@whop/api";
-import { useCallback, useState } from "react";
-import {
-  WhopWebsocketProvider,
-  useWebsocket,
-  useWebsocketStatus,
-} from "./websocket-provider";
-
-export function MyApp({ experienceId }: { experienceId: string }) {
-  const [message, setMessage] = useState("");
-
-  const onAppMessage = useCallback((message: proto.common.AppMessage) => {
-    setMessage(message.json);
-  }, []);
-
-  return (
-    <WhopWebsocketProvider
-      joinExperience={experienceId}
-      onAppMessage={onAppMessage}
-    >
-      <div>{message}</div>
-      <ComponentThatSendsMessages />
-      <ComponentThatDisplaysConnectionStatus />
-    </WhopWebsocketProvider>
-  );
-}
-
-function ComponentThatSendsMessages() {
-  const websocket = useWebsocket();
-
-  function handleClick() {
-    websocket.broadcast({ message: "Hello, world!", target: "everyone" });
-  }
-
-  return (
-    <div>
-      <button type="button" onClick={handleClick}>
-        Send Message
-      </button>
-    </div>
-  );
-}
-
-function ComponentThatDisplaysConnectionStatus() {
-  const status = useWebsocketStatus();
-
-  return (
-    <div>
-      <p>Connection Status: {status}</p>
-    </div>
-  );
-}
-```
-
-```typescript websocket-provider.tsx
-"use client";
-
-import {
-  type WebsocketStatus,
-  WhopClientSdk,
-  type WhopWebsocketClientBrowser,
-  type proto,
-} from "@whop/api";
-import {
-  type PropsWithChildren,
-  createContext,
-  use,
-  useEffect,
-  useState,
-} from "react";
-
-const whopApi = WhopClientSdk();
-const WebsocketContext = createContext<WhopWebsocketClientBrowser>(
-  whopApi.websocketClient({})
-);
-const WebsocketStatusContext = createContext<WebsocketStatus>("disconnected");
-
-export function useWebsocket() {
-  return use(WebsocketContext);
-}
-
-export function useWebsocketStatus() {
-  const status = use(WebsocketStatusContext);
-  return status;
-}
-
-export function WhopWebsocketProvider({
-  children,
-  joinCustom,
-  joinExperience,
-  onAppMessage,
-}: PropsWithChildren<{
-  joinCustom?: string;
-  joinExperience?: string;
-  onAppMessage: (message: proto.common.AppMessage) => void;
-}>) {
-  const [websocket, setWebsocket] = useState<WhopWebsocketClientBrowser>(() =>
-    whopApi.websocketClient({})
-  );
-
-  const [connectionStatus, setConnectionStatus] =
-    useState<WebsocketStatus>("disconnected");
-
-  useEffect(() => {
-    const websocket = whopApi.websocketClient({
-      joinCustom,
-      joinExperience,
-    });
-    setWebsocket(websocket);
-    websocket.on("connectionStatus", setConnectionStatus);
-    return websocket.connect();
-  }, [joinExperience, joinCustom]);
-
-  useEffect(() => {
-    if (websocket) {
-      websocket.on("appMessage", onAppMessage);
-      return () => {
-        websocket.off("appMessage", onAppMessage);
-      };
-    }
-  }, [onAppMessage, websocket]);
-
-  return (
-    <WebsocketContext.Provider value={websocket}>
-      <WebsocketStatusContext.Provider value={connectionStatus}>
-        {children}
-      </WebsocketStatusContext.Provider>
-    </WebsocketContext.Provider>
-  );
-}
-```

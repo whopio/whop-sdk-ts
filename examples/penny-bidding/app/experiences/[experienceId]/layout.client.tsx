@@ -5,16 +5,8 @@ import { QUERY_KEY } from "@/lib/query-key";
 import type { WebsocketData } from "@/lib/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { proto } from "@whop/api";
-import dynamic from "next/dynamic";
+import { WhopWebsocketProvider } from "@whop/react";
 import { type PropsWithChildren, use } from "react";
-
-const WhopWebsocketProvider = dynamic(
-	() =>
-		import("@/components/websocket-provider").then(
-			(mod) => mod.WhopWebsocketProvider,
-		),
-	{ ssr: false },
-);
 
 const queryClient = new QueryClient();
 

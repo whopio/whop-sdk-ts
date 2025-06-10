@@ -45,6 +45,7 @@
 		"postinstall": "node ./scripts/postinstall.mjs"
 	},
 	"dependencies": {
+		"@whop/api": "workspace:^",
 		"@whop/checkout": "workspace:^",
 		"@whop/iframe": "workspace:^",
 		"frosted-ui": "0.0.1-canary.74",

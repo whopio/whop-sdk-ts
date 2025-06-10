@@ -1,13 +1,14 @@
 "use client";
 
 import type { proto } from "@whop/api";
-import { Button, TextField } from "@whop/react/components";
-import { useCallback, useState } from "react";
 import {
 	WhopWebsocketProvider,
-	useWebsocket,
+	useBroadcastWebsocketMessage,
+	useOnWebsocketMessage,
 	useWebsocketStatus,
-} from "./websocket-provider";
+} from "@whop/react";
+import { Button, TextField } from "@whop/react/components";
+import { useCallback, useState } from "react";
 
 export function SectionConnectToTheWebsocketClient({
 	experienceId,
@@ -39,6 +40,7 @@ export function SectionConnectToTheWebsocketClient({
 					isTrusted={isTrusted}
 					senderUserId={senderUserId}
 				/>
+				<InnerNestedMessageHandlerExample />
 			</div>
 		</WhopWebsocketProvider>
 	);
@@ -103,6 +105,23 @@ function WebsocketStatusDisplay() {
 	);
 }
 
+function InnerNestedMessageHandlerExample() {
+	const [state, setState] = useState<string>("");
+	useOnWebsocketMessage((message) => {
+		setState(message.json);
+	});
+	return (
+		<div className="p-4 border rounded-lg bg-panel-elevation-a2 border-gray-a6">
+			<h3 className="text-lg font-semibold mb-4 dark:text-gray-200">
+				Inner Nested Message Handler Example
+			</h3>
+			<pre>
+				<code>{state}</code>
+			</pre>
+		</div>
+	);
+}
+
 // This component allows the client to send a message to the websocket.
 // This means that the "sender id" will be included on the receiving side, and the message will not be trusted.
 // To send a trusted message, you can use the server-side send message function.
@@ -112,23 +131,19 @@ function ClientSendMessage({
 	experienceId: string;
 }) {
 	const [message, setMessage] = useState("");
-	const websocket = useWebsocket();
+	const broadcastMessage = useBroadcastWebsocketMessage();
 
 	const onSubmit = useCallback(
 		(e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			if (!websocket) {
-				alert("Websocket not connected");
-				return;
-			}
-			websocket.broadcast({
+			broadcastMessage({
 				message,
 				target: {
 					experienceId,
 				},
 			});
 		},
-		[experienceId, websocket, message],
+		[experienceId, broadcastMessage, message],
 	);
 
 	return (
