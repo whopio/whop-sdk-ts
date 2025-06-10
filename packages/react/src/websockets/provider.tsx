@@ -6,7 +6,7 @@ import {
 	type WhopWebsocketClientBrowser,
 	type proto,
 } from "@whop/api";
-import React, {
+import {
 	type PropsWithChildren,
 	useEffect,
 	useMemo,
@@ -33,9 +33,9 @@ export interface WhopWebsocketProviderProps {
 	 */
 	joinExperience?: string | string[];
 	/**
-	 * **Required** - A callback that is called when an app message is received.
+	 * A callback that is called when an app message is received.
 	 */
-	onAppMessage: (message: proto.common.AppMessage) => void;
+	onAppMessage?: ((message: proto.common.AppMessage) => void) | null;
 }
 
 /**
@@ -70,7 +70,7 @@ export function WhopWebsocketProvider({
 	}, [joinExperience, joinCustom]);
 
 	useEffect(() => {
-		if (websocket) {
+		if (websocket && onAppMessage) {
 			websocket.on("appMessage", onAppMessage);
 			return () => {
 				websocket.off("appMessage", onAppMessage);

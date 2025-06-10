@@ -24,7 +24,7 @@ When using react, it is recommended to use the `WhopWebsocketProvider` provider 
          joinExperience="exp_XXXX"
          // optional, you can join a custom channel.
          joinCustom="some_custom_channel"
-         // required, a callback that is called when an app message is received.
+         // optional, a callback that is called when an app message is received. you can also use the `useOnWebsocketMessage` hook to handle messages.
          onAppMessage={handleAppMessage}
        >
          {children}
@@ -35,7 +35,7 @@ When using react, it is recommended to use the `WhopWebsocketProvider` provider 
 
 2. Handle app messages:
 
-   ```tsx lib/handle-websocket-message.ts
+   ```tsx lib/handle-websocket-message.tsx
    export function handleAppMessage(message: proto.common.AppMessage) {
      console.log("Received app message:", message);
 
@@ -45,6 +45,15 @@ When using react, it is recommended to use the `WhopWebsocketProvider` provider 
 
      // if you sent the message from the client using websocket.broadcast,
      // message.fromUserId will include the user id of the user who sent the message.
+   }
+
+   // You can also handle messages using the `useOnWebsocketMessage` hook.
+   export function MyNestedReactComponent() {
+     const [state, setState] = useState<string>("");
+     useOnWebsocketMessage((message) => {
+       setState(message.json);
+     });
+     return <div>{state}</div>;
    }
    ```
 

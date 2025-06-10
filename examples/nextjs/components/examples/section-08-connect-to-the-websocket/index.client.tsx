@@ -4,6 +4,7 @@ import type { proto } from "@whop/api";
 import {
 	WhopWebsocketProvider,
 	useBroadcastWebsocketMessage,
+	useOnWebsocketMessage,
 	useWebsocketStatus,
 } from "@whop/react";
 import { Button, TextField } from "@whop/react/components";
@@ -39,6 +40,7 @@ export function SectionConnectToTheWebsocketClient({
 					isTrusted={isTrusted}
 					senderUserId={senderUserId}
 				/>
+				<InnerNestedMessageHandlerExample />
 			</div>
 		</WhopWebsocketProvider>
 	);
@@ -99,6 +101,23 @@ function WebsocketStatusDisplay() {
 			>
 				{status}
 			</span>
+		</div>
+	);
+}
+
+function InnerNestedMessageHandlerExample() {
+	const [state, setState] = useState<string>("");
+	useOnWebsocketMessage((message) => {
+		setState(message.json);
+	});
+	return (
+		<div className="p-4 border rounded-lg bg-panel-elevation-a2 border-gray-a6">
+			<h3 className="text-lg font-semibold mb-4 dark:text-gray-200">
+				Inner Nested Message Handler Example
+			</h3>
+			<pre>
+				<code>{state}</code>
+			</pre>
 		</div>
 	);
 }
