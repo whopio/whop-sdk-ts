@@ -9,10 +9,18 @@ export function useWarnOnIframeUrlChange(
 	planId: string,
 	theme?: "light" | "dark" | "system",
 	sessionId?: string,
+	hidePrice?: boolean,
 ) {
 	const updatedIframeUrl = useMemo(
-		() => getEmbeddedCheckoutIframeUrl(planId, theme, sessionId),
-		[planId, theme, sessionId],
+		() =>
+			getEmbeddedCheckoutIframeUrl(
+				planId,
+				theme,
+				sessionId,
+				undefined,
+				hidePrice,
+			),
+		[planId, theme, sessionId, hidePrice],
 	);
 
 	useEffect(() => {

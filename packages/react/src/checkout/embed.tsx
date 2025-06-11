@@ -25,6 +25,8 @@ export interface WhopCheckoutEmbedProps {
 	 * **Optional** - The theme you want to use for the checkout.
 	 *
 	 * Possible values are `light`, `dark` or `system`.
+	 *
+	 * @default "system"
 	 */
 	theme?: "light" | "dark" | "system";
 	/**
@@ -33,15 +35,28 @@ export interface WhopCheckoutEmbedProps {
 	 * This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
 	 */
 	sessionId?: string;
+	/**
+	 * **Optional** - Turn on to hide the price in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	hidePrice?: boolean;
 }
 
 function WhopCheckoutEmbedInner({
 	planId,
 	theme,
 	sessionId,
+	hidePrice = false,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
-		getEmbeddedCheckoutIframeUrl(planId, theme, sessionId),
+		getEmbeddedCheckoutIframeUrl(
+			planId,
+			theme,
+			sessionId,
+			undefined,
+			hidePrice,
+		),
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -68,7 +83,7 @@ function WhopCheckoutEmbedInner({
 		);
 	}, []);
 
-	useWarnOnIframeUrlChange(iframeUrl, planId, theme, sessionId);
+	useWarnOnIframeUrlChange(iframeUrl, planId, theme, sessionId, hidePrice);
 
 	return (
 		<iframe

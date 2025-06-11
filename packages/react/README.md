@@ -145,6 +145,12 @@ export default function Home() {
 			 */
 			sessionId="ch_XXXXXXXXX"
 			/**
+			 * **Optional** - Turn on to hide the price in the embedded checkout form.
+			 *
+			 * @default false
+			 */
+			hidePrice={false}
+			/**
 			 * **Optional** - The fallback content to show while the checkout is loading.
 			 */
 			fallback={<>loading...</>}

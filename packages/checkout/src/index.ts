@@ -38,6 +38,7 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutTheme as "light" | "dark" | "system" | undefined,
 		node.dataset.whopCheckoutSession,
 		node.dataset.whopCheckoutOrigin,
+		node.dataset.whopCheckoutHidePrice === "true",
 	);
 
 	const iframe = document.createElement("iframe");

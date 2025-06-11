@@ -46,6 +46,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	theme?: "light" | "dark" | "system",
 	sessionId?: string,
 	origin?: string,
+	hidePrice?: boolean,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -59,6 +60,9 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (sessionId) {
 		iframeUrl.searchParams.set("session", sessionId);
+	}
+	if (hidePrice) {
+		iframeUrl.searchParams.set("hide_price", "true");
 	}
 	return iframeUrl.toString();
 }

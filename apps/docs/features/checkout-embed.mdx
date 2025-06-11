@@ -45,6 +45,12 @@ Possible values are `light`, `dark` or `system`.
 
 This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
 
+#### **`hidePrice`**
+
+**Optional** - Turn on to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
 #### **`fallback`**
 
 **Optional** - The fallback content to show while the checkout is loading.
@@ -64,6 +70,7 @@ export default function Home() {
       fallback={<>loading...</>}
       planId="plan_XXXXXXXXX"
       theme="light"
+      hidePrice={false}
       sessionId="ch_XXXXXXXXX"
     />
   );
@@ -124,6 +131,16 @@ This can be used to attach metadata to a checkout by first creating a session th
 <div data-whop-checkout-session-id="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+#### **`data-whop-checkout-hide-price`**
+
+**Optional** - Set to `true` to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 ### Full example
 
 ```md
@@ -152,6 +169,7 @@ This can be used to attach metadata to a checkout by first creating a session th
 			data-whop-checkout-plan-id="plan_XXXXXXXXX"
 			data-whop-checkout-session-id="ch_XXXXXXXXX"
 			data-whop-checkout-theme="light"
+			data-whop-checkout-hide-price="false"
 			style="height: fit-content; overflow: hidden; max-width: 50%;"
 		></div>
 	</body>
