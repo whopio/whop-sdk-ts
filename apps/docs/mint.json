@@ -77,6 +77,7 @@
 				"features/checkout-embed",
 				"features/websocket-guide",
 				"features/payments-and-payouts",
+				"features/subscriptions",
 				"features/send-push-notification",
 				"features/post-to-feed",
 				"features/upload-media",
