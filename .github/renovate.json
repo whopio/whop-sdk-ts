@@ -24,6 +24,12 @@
 		},
 		{
 			"matchManagers": ["npm"],
+			"matchDepTypes": ["peerDependencies", "optionalDependencies"],
+			"rangeStrategy": "widen"
+		},
+		{
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["dependencies", "devDependencies"],
 			"rangeStrategy": "pin"
 		}
 	],
