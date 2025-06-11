@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.4
+
+### Patch Changes
+
+- 6836164: update `exports` field to allow for easier sub-package discovery in editors
+
 ## 0.2.4-canary.0
 
 ### Patch Changes
