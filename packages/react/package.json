@@ -21,6 +21,41 @@
 			"require": "./dist/index.cjs",
 			"types": "./dist/index.d.ts"
 		},
+		"./checkout": {
+			"import": "./dist/checkout/index.mjs",
+			"require": "./dist/checkout/index.cjs",
+			"types": "./dist/checkout/index.d.ts"
+		},
+		"./components": {
+			"import": "./dist/components/index.mjs",
+			"require": "./dist/components/index.cjs",
+			"types": "./dist/components/index.d.ts"
+		},
+		"./iframe": {
+			"import": "./dist/iframe/index.mjs",
+			"require": "./dist/iframe/index.cjs",
+			"types": "./dist/iframe/index.d.ts"
+		},
+		"./theme": {
+			"import": "./dist/theme/index.mjs",
+			"require": "./dist/theme/index.cjs",
+			"types": "./dist/theme/index.d.ts"
+		},
+		"./websockets": {
+			"import": "./dist/websockets/index.mjs",
+			"require": "./dist/websockets/index.cjs",
+			"types": "./dist/websockets/index.d.ts"
+		},
+		"./next.config": {
+			"import": "./dist/next.config.mjs",
+			"require": "./dist/next.config.cjs",
+			"types": "./dist/next.config.d.ts"
+		},
+		"./tailwind": {
+			"import": "./dist/tailwind.mjs",
+			"require": "./dist/tailwind.cjs",
+			"types": "./dist/tailwind.d.ts"
+		},
 		"./*": {
 			"import": ["./dist/*.mjs", "./dist/*/index.mjs"],
 			"require": ["./dist/*.cjs", "./dist/*/index.cjs"],
