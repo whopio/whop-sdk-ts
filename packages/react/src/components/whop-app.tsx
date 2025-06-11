@@ -1,6 +1,6 @@
 import type { ThemeProps } from "frosted-ui/theme";
 import React from "react";
-import { Theme } from "../components";
+import { Theme } from ".";
 import {
 	WhopIframeSdkProvider,
 	type WhopIframeSdkProviderOptions,
