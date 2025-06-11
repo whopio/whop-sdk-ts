@@ -12,9 +12,6 @@ jobs:
   sync-template:
     runs-on: ubuntu-latest
     steps:
-      # checkout this repo (to get the new version)
-      - uses: actions/checkout@v3
-
       # checkout template repo
       - name: Checkout template
         uses: actions/checkout@v3
