@@ -1,5 +1,5 @@
 {
-	"mode": "pre",
+	"mode": "exit",
 	"tag": "canary",
 	"initialVersions": {
 		"@local/docs": "1.0.4",
