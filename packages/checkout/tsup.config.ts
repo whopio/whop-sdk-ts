@@ -26,5 +26,6 @@ export default defineConfig({
 	target: "es5",
 	outDir: "dist/static/checkout",
 	minify: true,
+	publicDir: "public",
 	outExtension: ({ format }) => extensions[format],
 });

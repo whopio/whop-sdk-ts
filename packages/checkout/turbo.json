@@ -5,7 +5,7 @@
 		"build": {
 			"cache": true,
 			"outputs": ["dist/**"],
-			"inputs": ["src/**", "tsup.config.ts"],
+			"inputs": ["src/**", "tsup.config.ts", "public/**"],
 			"dependsOn": ["^build"]
 		},
 		"deploy": {
