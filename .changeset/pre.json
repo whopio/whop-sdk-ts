@@ -12,5 +12,5 @@
 		"@whop/iframe": "0.0.3",
 		"@whop/react": "0.2.3"
 	},
-	"changesets": []
+	"changesets": ["nice-teams-beg"]
 }
