@@ -33,7 +33,7 @@ jobs:
         working-directory: template
         run: |
           pnpm add @whop/api@latest @whop/react@latest
-          pnpm install
+          pnpm install --no-frozen-lockfile
 
       # commit & push back
       - name: Commit & Push
