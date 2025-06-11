@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: whopio/whop-nextjs-app-template
-          token: ${{ secrets.TEMPLATE_REPO_TOKEN }}
+          token: ${{ secrets.GH_WRITE_TOKEN }}
           path: template
 
       # install pnpm
