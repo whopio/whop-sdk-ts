@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.3-canary.0
+
+### Patch Changes
+
+- 06c85ff: Add `hidePrice` prop to @whop/checkout and @whop/react
+- Updated dependencies [06c85ff]
+  - @whop/checkout@0.0.27-canary.0
+
 ## 0.2.2
 
 ### Patch Changes
