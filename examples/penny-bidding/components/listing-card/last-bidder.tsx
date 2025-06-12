@@ -29,7 +29,7 @@ export function LastBidder({ userId }: { userId: string | null }) {
 		<div className="flex items-center gap-2">
 			<Avatar className="h-6 w-6">
 				<AvatarImage
-					src={user.profilePicture?.sourceUrl ?? ""}
+					src={user.profilePicture?.url ?? ""}
 					alt={user.username ?? ""}
 				/>
 				<AvatarFallback>

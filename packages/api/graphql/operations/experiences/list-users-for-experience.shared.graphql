@@ -18,7 +18,7 @@ query listUsersForExperience(
 				id
 				username
 				profilePicture {
-					sourceUrl
+					url: optimizedUrl
 				}
 			}
 			pageInfo {

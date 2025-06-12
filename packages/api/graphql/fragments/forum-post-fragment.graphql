@@ -8,7 +8,7 @@ fragment ForumPostFragment on ForumPost {
 	attachments {
 		id
 		contentType
-		sourceUrl
+		url: optimizedUrl
 	}
 	isEdited
 	isPinned: pinned
