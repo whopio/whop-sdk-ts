@@ -50,12 +50,16 @@ export class GQLError extends Error {
 export async function graphqlFetch<R, V>(
 	url: URL | string,
 	operationId: string,
+	operationName: string,
+	operationType: "query" | "mutation",
 	variables?: V,
 	headersInit: HeadersInit = {},
 ): Promise<R> {
 	try {
 		const body = {
 			operationId,
+			operationType,
+			operationName,
 			variables,
 		};
 
@@ -63,7 +67,16 @@ export async function graphqlFetch<R, V>(
 		headers.set("Content-Type", "application/json");
 		headers.set("Accept", "application/json");
 
-		const response = await fetch(url, {
+		const urlObject = addOperationNameToUrl(
+			url,
+			operationName,
+			operationId,
+			operationType,
+		);
+
+		console.log(urlObject.toString());
+
+		const response = await fetch(urlObject, {
 			method: "POST",
 			body: JSON.stringify(body),
 			headers,
@@ -83,4 +96,24 @@ export async function graphqlFetch<R, V>(
 	} catch (e) {
 		throw new GQLNetworkError(e);
 	}
+}
+
+function addOperationNameToUrl(
+	url: URL | string,
+	name: string,
+	operationId: string,
+	operationType: "query" | "mutation",
+): URL {
+	const urlObject = new URL(url);
+	let pathname = urlObject.pathname;
+	if (pathname.endsWith("/")) {
+		pathname = pathname.slice(0, -1);
+	}
+	pathname += `/${name}`;
+	urlObject.pathname = pathname;
+	const [clientName, opId] = operationId.split("/");
+	urlObject.searchParams.set("id", opId);
+	urlObject.searchParams.set("client", clientName);
+	urlObject.searchParams.set("type", operationType);
+	return urlObject;
 }
