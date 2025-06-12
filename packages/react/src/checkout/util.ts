@@ -10,6 +10,7 @@ export function useWarnOnIframeUrlChange(
 	theme?: "light" | "dark" | "system",
 	sessionId?: string,
 	hidePrice?: boolean,
+	skipRedirect?: boolean,
 ) {
 	const updatedIframeUrl = useMemo(
 		() =>
@@ -19,8 +20,9 @@ export function useWarnOnIframeUrlChange(
 				sessionId,
 				undefined,
 				hidePrice,
+				skipRedirect,
 			),
-		[planId, theme, sessionId, hidePrice],
+		[planId, theme, sessionId, hidePrice, skipRedirect],
 	);
 
 	useEffect(() => {

@@ -151,6 +151,12 @@ export default function Home() {
 			 */
 			hidePrice={false}
 			/**
+			* **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+			*
+			* @default false
+			*/
+			skipRedirect={false}
+			/**
 			 * **Optional** - The fallback content to show while the checkout is loading.
 			 */
 			fallback={<>loading...</>}
