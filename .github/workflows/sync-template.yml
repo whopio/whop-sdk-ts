@@ -1,0 +1,41 @@
+name: Sync template on release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  sync-template:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout template repo
+      - name: Checkout template
+        uses: actions/checkout@v3
+        with:
+          repository: whopio/whop-nextjs-app-template
+          token: ${{ secrets.GH_WRITE_TOKEN }}
+          path: template
+
+      # install pnpm
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.15.9
+
+      # bump in template
+      - name: Bump package in template
+        working-directory: template
+        run: |
+          pnpm add @whop/api@latest @whop/react@latest
+          pnpm install --no-frozen-lockfile
+
+      # commit & push back
+      - name: Commit & Push
+        working-directory: template
+        env:
+          GIT_AUTHOR_NAME: github-actions
+          GIT_AUTHOR_EMAIL: github-actions@users.noreply.github.com
+        run: |
+          git add package.json pnpm-lock.yaml
+          git diff --quiet || git commit -m "chore: bump @whop/api & @whop/react"
+          git push
