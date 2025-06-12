@@ -124,6 +124,8 @@ function generateSdk(operations: ClientOperation[], clientName: string) {
 	const requesterType = `
 	export type Requester<C = {}> = <R, V>(
 		operationId: string,
+		operationName: string,
+		operationType: "query" | "mutation",
 		vars?: V,
 		options?: C,
 	) => Promise<R>;`;
@@ -155,7 +157,7 @@ function generateSingleFunction(
 	const inputType = `${capitalize(name)}${operationType}Variables`;
 	const outputType = `${capitalize(name)}${operationType}`;
 	const functionArgs = `variables${hasInputsQuestionMark}: ${inputType}, options?: C`;
-	const functionBody = `return requester<${outputType}, ${inputType}>("${clientName}/${operationId}", variables, options);`;
+	const functionBody = `return requester<${outputType}, ${inputType}>("${clientName}/${operationId}", "${name}", "${operationType.toLowerCase()}", variables, options);`;
 	const code = `${name}(${functionArgs}): Promise<${outputType}> { ${functionBody} }`;
 	return code;
 }

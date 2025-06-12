@@ -47,11 +47,20 @@ function makeRequester(
 	const endpoint = getEndpoint(apiOptions);
 	return async function fetcher<R, V>(
 		operationId: string,
+		operationName: string,
+		operationType: "query" | "mutation",
 		vars?: V,
 		options?: RequestInit,
 	): Promise<R> {
 		const headers = new Headers(options?.headers);
-		return await graphqlFetch<R, V>(endpoint, operationId, vars, headers);
+		return graphqlFetch<R, V>(
+			endpoint,
+			operationId,
+			operationName,
+			operationType,
+			vars,
+			headers,
+		);
 	};
 }
 
