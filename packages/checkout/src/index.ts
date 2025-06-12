@@ -39,6 +39,7 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutSession,
 		node.dataset.whopCheckoutOrigin,
 		node.dataset.whopCheckoutHidePrice === "true",
+		node.dataset.whopCheckoutSkipRedirect === "true",
 	);
 
 	const iframe = document.createElement("iframe");

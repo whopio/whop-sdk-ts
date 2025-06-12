@@ -56,6 +56,27 @@ This can be used to attach metadata to a checkout by first creating a session th
 <div data-whop-checkout-session-id="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+### **`data-whop-checkout-hide-price`**
+
+**Optional** - Set to `true` to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+### **`data-whop-checkout-skip-redirect`**
+
+**Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-skip-redirect="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+
 ## Full example
 
 ```md
