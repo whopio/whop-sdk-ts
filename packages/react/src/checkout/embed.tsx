@@ -41,6 +41,12 @@ export interface WhopCheckoutEmbedProps {
 	 * @default false
 	 */
 	hidePrice?: boolean;
+	/**
+	 * **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+	 *
+	 * @default false
+	 */
+	skipRedirect?: boolean;
 }
 
 function WhopCheckoutEmbedInner({
@@ -48,6 +54,7 @@ function WhopCheckoutEmbedInner({
 	theme,
 	sessionId,
 	hidePrice = false,
+	skipRedirect = false,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
 		getEmbeddedCheckoutIframeUrl(
@@ -56,6 +63,7 @@ function WhopCheckoutEmbedInner({
 			sessionId,
 			undefined,
 			hidePrice,
+			skipRedirect,
 		),
 	);
 
@@ -83,7 +91,14 @@ function WhopCheckoutEmbedInner({
 		);
 	}, []);
 
-	useWarnOnIframeUrlChange(iframeUrl, planId, theme, sessionId, hidePrice);
+	useWarnOnIframeUrlChange(
+		iframeUrl,
+		planId,
+		theme,
+		sessionId,
+		hidePrice,
+		skipRedirect,
+	);
 
 	return (
 		<iframe
