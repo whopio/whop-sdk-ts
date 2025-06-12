@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.5
+
+### Patch Changes
+
+- 2e21c45: add `skipRedirect` option to checkout and react packages
+- Updated dependencies [2e21c45]
+  - @whop/checkout@0.0.28
+
 ## 0.2.4
 
 ### Patch Changes
