@@ -74,8 +74,6 @@ export async function graphqlFetch<R, V>(
 			operationType,
 		);
 
-		console.log(urlObject.toString());
-
 		const response = await fetch(urlObject, {
 			method: "POST",
 			body: JSON.stringify(body),
