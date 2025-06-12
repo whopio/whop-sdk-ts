@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.28
+
+### Patch Changes
+
+- 2e21c45: add `skipRedirect` option to checkout and react packages
+
 ## 0.0.27
 
 ### Patch Changes
