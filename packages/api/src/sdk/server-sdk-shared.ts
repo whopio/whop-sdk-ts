@@ -87,6 +87,8 @@ function makeRequester(
 	const headers = getHeaders(apiOptions);
 	return async function fetcher<R, V>(
 		operationId: string,
+		operationName: string,
+		operationType: "query" | "mutation",
 		vars?: V,
 		options?: RequestInit,
 	): Promise<R> {
@@ -95,7 +97,14 @@ function makeRequester(
 		for (const [key, value] of customHeaders.entries()) {
 			actualHeaders.set(key, value);
 		}
-		return await graphqlFetch<R, V>(endpoint, operationId, vars, actualHeaders);
+		return graphqlFetch<R, V>(
+			endpoint,
+			operationId,
+			operationName,
+			operationType,
+			vars,
+			actualHeaders,
+		);
 	};
 }
 
