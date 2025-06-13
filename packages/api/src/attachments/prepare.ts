@@ -16,44 +16,42 @@ export async function prepareAttachmentForUpload(
 	record: AttachableRecords,
 ) {
 	const isMultipart = data.size > MULTIPART_UPLOAD_CHUNK_SIZE;
-	const res = await this.uploadMedia({
-		input: {
-			byteSizeV2: data.size.toString(),
-			record,
-			filename: data instanceof File ? data.name : crypto.randomUUID(),
-			contentType: data.type,
-			checksum: await b64(md5(data.stream())),
-			multipart: isMultipart,
-		},
+	const mediaDirectUpload = await this.uploadMedia({
+		byteSizeV2: data.size.toString(),
+		record,
+		filename: data instanceof File ? data.name : crypto.randomUUID(),
+		contentType: data.type,
+		checksum: await b64(md5(data.stream())),
+		multipart: isMultipart,
 	});
 
 	if (isMultipart) {
 		if (
-			!res.mediaDirectUpload?.multipartUploadId ||
-			!res.mediaDirectUpload.multipartUploadUrls
+			!mediaDirectUpload?.multipartUploadId ||
+			!mediaDirectUpload.multipartUploadUrls
 		) {
 			throw new Error("Failed to prepare file");
 		}
 
 		return {
 			data,
-			id: res.mediaDirectUpload.id,
-			multipartUploadUrls: res.mediaDirectUpload.multipartUploadUrls,
-			multipartUploadId: res.mediaDirectUpload.multipartUploadId,
+			id: mediaDirectUpload.id,
+			multipartUploadUrls: mediaDirectUpload.multipartUploadUrls,
+			multipartUploadId: mediaDirectUpload.multipartUploadId,
 			record,
 			multipart: true as const,
 		};
 	}
 
-	if (!res.mediaDirectUpload?.id || !res.mediaDirectUpload.uploadUrl) {
+	if (!mediaDirectUpload?.id || !mediaDirectUpload.uploadUrl) {
 		throw new Error("Failed to prepare file");
 	}
 
 	return {
 		data,
-		id: res.mediaDirectUpload.id,
-		uploadUrl: res.mediaDirectUpload.uploadUrl,
-		headers: res.mediaDirectUpload.headers as Record<string, string>,
+		id: mediaDirectUpload.id,
+		uploadUrl: mediaDirectUpload.uploadUrl,
+		headers: mediaDirectUpload.headers as Record<string, string>,
 		record,
 		multipart: false as const,
 	};

@@ -155,19 +155,15 @@ export function makeUploadAttachmentFunction({
 		// request media processing
 		if (preparedAttachment.multipart) {
 			await this.processAttachment({
-				input: {
-					directUploadId: preparedAttachment.id,
-					mediaType,
-					multipartUploadId: preparedAttachment.multipartUploadId,
-					multipartParts: result,
-				},
+				directUploadId: preparedAttachment.id,
+				mediaType,
+				multipartUploadId: preparedAttachment.multipartUploadId,
+				multipartParts: result,
 			});
 		} else {
 			await this.processAttachment({
-				input: {
-					directUploadId: preparedAttachment.id,
-					mediaType,
-				},
+				directUploadId: preparedAttachment.id,
+				mediaType,
 			});
 		}
 
