@@ -37,13 +37,11 @@ export const markAsFulfilled = wrapServerAction(async (listingId: string) => {
 async function sendNotification(updatedListing: Listing) {
 	if (updatedListing.lastBidderUserId) {
 		await whopApi.sendPushNotification({
-			input: {
-				title: "Listing fulfilled",
-				content: `"${updatedListing.title} was fulfilled"`,
-				experienceId: updatedListing.experienceId,
-				isMention: true,
-				userIds: [updatedListing.lastBidderUserId ?? ""],
-			},
+			title: "Listing fulfilled",
+			content: `"${updatedListing.title} was fulfilled"`,
+			experienceId: updatedListing.experienceId,
+			isMention: true,
+			userIds: [updatedListing.lastBidderUserId ?? ""],
 		});
 	}
 }

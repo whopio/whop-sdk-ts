@@ -33,11 +33,9 @@ export async function verifyUser(
 
 const cachedHasAccessToExperience = cache(
 	async (userId: string, experienceId: string) => {
-		const { hasAccessToExperience: user } =
-			await whopApi.checkIfUserHasAccessToExperience({
-				userId,
-				experienceId,
-			});
-		return user;
+		return whopApi.checkIfUserHasAccessToExperience({
+			userId,
+			experienceId,
+		});
 	},
 );
