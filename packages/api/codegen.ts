@@ -199,7 +199,79 @@ async function makeSdk(
 	return sdkCode;
 }
 
+function getGroupingForOperation(
+	operation: ClientOperation,
+	operations: Record<string, OperationDefinitionNode>,
+) {
+	if (!operation.name) {
+		throw new Error(`Operation ${JSON.stringify(operation)} has no name`);
+	}
+	const operationDef = operations[operation.name];
+	if (!operationDef) {
+		throw new Error(`Operation ${operation.name} not found`);
+	}
+	const filename = operationDef.loc?.source.name;
+	if (!filename) {
+		throw new Error(`Operation ${operation.name} has no filename`);
+	}
+
+	const pathBits = filename.split("/");
+	pathBits.pop();
+	const group = pathBits.pop();
+	if (!group) {
+		throw new Error(`Operation ${operation.name} has no group`);
+	}
+	return kebabCaseToCamelCase(group);
+}
+
 function generateSdk(
+	clientOperations: ClientOperation[],
+	clientName: string,
+	schema: GraphQLSchema,
+	operations: Record<string, OperationDefinitionNode>,
+	fragments: Record<string, FragmentDefinitionNode>,
+) {
+	const groups: Record<string, ClientOperation[]> = {};
+	for (const operation of clientOperations) {
+		const grouping = getGroupingForOperation(operation, operations);
+		if (!groups[grouping]) {
+			groups[grouping] = [];
+		}
+		groups[grouping].push(operation);
+	}
+	const groupedSdkObjects = Object.entries(groups)
+		.map(([group, clientOperations]) => {
+			const sdkObject = generateFunctionGrouping(
+				clientOperations,
+				clientName,
+				schema,
+				operations,
+				fragments,
+			);
+			return `${group}: ${sdkObject},`;
+		})
+		.join("\n");
+
+	const requesterType = `
+	export type Requester<C = {}> = <R, V>(
+		operationId: string,
+		operationName: string,
+		operationType: "query" | "mutation",
+		vars?: V,
+		options?: C,
+	) => Promise<R>;`;
+
+	const getSdkFunction = `export function getSdk<C>(requester: Requester<C>) {
+		return { ${groupedSdkObjects} };
+	}`;
+
+	const sdkType = "export type Sdk = ReturnType<typeof getSdk>";
+
+	const code = `${requesterType}\n\n${getSdkFunction}\n\n${sdkType}`;
+	return code;
+}
+
+function generateFunctionGrouping(
 	clientOperations: ClientOperation[],
 	clientName: string,
 	schema: GraphQLSchema,
@@ -223,25 +295,9 @@ function generateSdk(
 		);
 	});
 
-	const requesterType = `
-	export type Requester<C = {}> = <R, V>(
-		operationId: string,
-		operationName: string,
-		operationType: "query" | "mutation",
-		vars?: V,
-		options?: C,
-	) => Promise<R>;`;
-
-	const getSdkFunction = `export function getSdk<C>(requester: Requester<C>) {
-		return {
+	return `{
 			${functions.join(",\n\t")}
-		}
-	}`;
-
-	const sdkType = "export type Sdk = ReturnType<typeof getSdk>";
-
-	const code = `${requesterType}\n\n${getSdkFunction}\n\n${sdkType}`;
-	return code;
+}`;
 }
 
 function generateSingleFunction(
@@ -317,6 +373,10 @@ function getSelectionName(
 
 function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 	return value !== null && value !== undefined;
+}
+
+function kebabCaseToCamelCase(str: string) {
+	return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 export default config;

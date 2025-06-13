@@ -5,7 +5,7 @@ title: Send Message To Chat
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.sendMessageToChat({
+const result = await whopApi.chats.sendMessageToChat({
 	experienceId: "exp_XXXXXXXX" /* Required! */,
 
 	message: "some string" /* Required! */,

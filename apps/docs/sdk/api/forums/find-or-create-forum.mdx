@@ -5,7 +5,7 @@ title: Find Or Create Forum
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.findOrCreateForum({
+const result = await whopApi.forums.findOrCreateForum({
 	// The ID of the access pass (whop) to attach the experience to. It looks like prod_xxxx.
 	accessPassId: "prod_XXXXXXXX",
 

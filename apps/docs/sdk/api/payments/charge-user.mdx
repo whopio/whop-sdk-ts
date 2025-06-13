@@ -5,7 +5,7 @@ title: Charge User
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.chargeUser({
+const result = await whopApi.payments.chargeUser({
 	// The affiliate code to use for the checkout session
 	affiliateCode: "some string",
 

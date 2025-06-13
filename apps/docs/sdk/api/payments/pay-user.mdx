@@ -5,7 +5,7 @@ title: Pay User
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.payUser({
+const result = await whopApi.payments.payUser({
 	// The amount to withdraw
 	amount: 10 /* Required! */,
 

@@ -6,7 +6,7 @@ description: Fetch a company
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.listExperiences({
+const result = await whopApi.experiences.listExperiences({
 	after: "pageInfo.endCursor",
 
 	first: 10,
