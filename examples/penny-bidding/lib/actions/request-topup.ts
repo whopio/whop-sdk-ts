@@ -10,14 +10,12 @@ export async function requestTopup(experienceId: string) {
 		experienceId,
 	};
 	const result = await whopApi.chargeUser({
-		input: {
-			amount: 22.99,
-			currency: "usd",
-			userId,
-			description: "Penny bidding credits",
-			metadata,
-		},
+		amount: 22.99,
+		currency: "usd",
+		userId,
+		description: "Penny bidding credits",
+		metadata,
 	});
 
-	return result.chargeUser?.inAppPurchase;
+	return result?.inAppPurchase;
 }

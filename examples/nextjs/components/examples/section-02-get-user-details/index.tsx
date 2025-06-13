@@ -11,13 +11,11 @@ export async function SectionGetUserDetails() {
 		return <div className="text-red-500">Invalid or missing user token</div>;
 	}
 
-	const user = (
-		await whopApi.getUser({
-			userId: userTokenData.userId,
-		})
-	).publicUser;
+	const user = await whopApi.getUser({
+		userId: userTokenData.userId,
+	});
 
-	const agentUser = (await whopApi.getCurrentUser()).viewer.user;
+	const agentUser = (await whopApi.getCurrentUser()).user;
 
 	return (
 		<div className="p-2 max-w-xl">

@@ -87,14 +87,12 @@ async function sendNotification({
 	userId,
 	experienceId,
 }: { title: string; userId: string; experienceId: string }) {
-	const { publicUser: user } = await whopApi.getUser({ userId });
+	const user = await whopApi.getUser({ userId });
 
 	await whopApi.sendPushNotification({
-		input: {
-			title: "New penny bidding listing",
-			content: `"${title}" was just listed by ${user.name ?? user.username}`,
-			experienceId: experienceId,
-			isMention: true,
-		},
+		title: "New penny bidding listing",
+		content: `"${title}" was just listed by ${user.name ?? user.username}`,
+		experienceId: experienceId,
+		isMention: true,
 	});
 }

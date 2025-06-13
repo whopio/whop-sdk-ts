@@ -25,7 +25,7 @@ export const claimFunds = wrapServerAction(async (listingId: string) => {
 		experienceId: listing.experienceId,
 	});
 
-	const { company } = await whopApi.getCompanyLedgerAccount({
+	const company = await whopApi.getCompanyLedgerAccount({
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID!,
 	});
@@ -45,7 +45,7 @@ export const claimFunds = wrapServerAction(async (listingId: string) => {
 		);
 	}
 
-	const { experience } = await whopApi.getExperience({
+	const experience = await whopApi.getExperience({
 		experienceId: listing.experienceId,
 	});
 
@@ -53,16 +53,14 @@ export const claimFunds = wrapServerAction(async (listingId: string) => {
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		.withCompany(process.env.NEXT_PUBLIC_WHOP_COMPANY_ID!)
 		.payUser({
-			input: {
-				ledgerAccountId: ledgerAccount.id,
-				destinationId: experience.company.id,
-				amount: listing.numBids,
-				currency: "usd",
-				// Use this idempotence key to prevent duplicate withdrawals for the same listing.
-				idempotenceKey: listing.id,
-				notes: `Claimed funds for listing: ${listing.title}`,
-				transferFee: ledgerAccount.transferFee,
-			},
+			ledgerAccountId: ledgerAccount.id,
+			destinationId: experience.company.id,
+			amount: listing.numBids,
+			currency: "usd",
+			// Use this idempotence key to prevent duplicate withdrawals for the same listing.
+			idempotenceKey: listing.id,
+			notes: `Claimed funds for listing: ${listing.title}`,
+			transferFee: ledgerAccount.transferFee,
 		});
 
 	const [updatedListing] = await db

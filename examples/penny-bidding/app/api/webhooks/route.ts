@@ -136,21 +136,19 @@ async function handlePaymentWebhook(
 
 async function sendNotification(updatedListing: Listing) {
 	// Get company id
-	const { experience } = await whopApi.getExperience({
+	const experience = await whopApi.getExperience({
 		experienceId: updatedListing.experienceId,
 	});
-	const { publicUser: bidderUser } = await whopApi.getUser({
+	const bidderUser = await whopApi.getUser({
 		userId: updatedListing.lastBidderUserId ?? "",
 	});
 
 	const name = bidderUser.name ?? bidderUser.username;
 
 	await whopApi.sendPushNotification({
-		input: {
-			title: `${name} just purchased an item!`,
-			content: `${name} just purchased ${updatedListing.title} for ${updatedListing.currentPrice}. You can now fulfill the order.`,
-			companyTeamId: experience.company.id,
-			isMention: true,
-		},
+		title: `${name} just purchased an item!`,
+		content: `${name} just purchased ${updatedListing.title} for ${updatedListing.currentPrice}. You can now fulfill the order.`,
+		companyTeamId: experience.company.id,
+		isMention: true,
 	});
 }

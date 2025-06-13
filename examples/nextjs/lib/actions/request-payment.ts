@@ -15,7 +15,7 @@ export async function requestPayment(formData: FormData) {
 	}
 
 	const experience = await whopApi.getExperience({ experienceId });
-	const companyId = experience.experience.company.id;
+	const companyId = experience.company.id;
 
 	if (
 		!userTokenData?.userId ||
@@ -40,17 +40,15 @@ export async function requestPayment(formData: FormData) {
 	});
 
 	const response = await whopApi.withCompany(companyId).chargeUser({
-		input: {
-			userId: userTokenData.userId,
-			amount: Number.parseInt(amount),
-			description,
-			currency: "usd",
-			metadata: {
-				creditsPurchased: "100",
-				tier: "bronze",
-			},
+		userId: userTokenData.userId,
+		amount: Number.parseInt(amount),
+		description,
+		currency: "usd",
+		metadata: {
+			creditsPurchased: "100",
+			tier: "bronze",
 		},
 	});
 
-	return response.chargeUser?.inAppPurchase;
+	return response?.inAppPurchase;
 }

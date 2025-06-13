@@ -29,7 +29,7 @@ export async function PUT(
 			userId: userToken.userId,
 			experienceId,
 		});
-		if (hasAccess.hasAccessToExperience.accessLevel !== "admin") {
+		if (hasAccess.accessLevel !== "admin") {
 			return NextResponse.json(
 				{ error: "Unauthorized, not admin" },
 				{ status: 401 },
@@ -46,11 +46,9 @@ export async function PUT(
 		});
 
 		await whopApi.sendPushNotification({
-			input: {
-				content: prompt,
-				experienceId,
-				title: "Prompt updated ✨",
-			},
+			content: prompt,
+			experienceId,
+			title: "Prompt updated ✨",
 		});
 
 		return NextResponse.json(updatedExperience);

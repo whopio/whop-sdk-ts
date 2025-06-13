@@ -43,7 +43,7 @@ export default async function ExperiencePage({
 		<div className="flex flex-col gap-4 p-4 h-screen items-center justify-center">
 			<ExperiencePrompt
 				prompt={experience.prompt}
-				accessLevel={hasAccess.hasAccessToExperience.accessLevel}
+				accessLevel={hasAccess.accessLevel}
 				experienceId={experienceId}
 			/>
 		</div>

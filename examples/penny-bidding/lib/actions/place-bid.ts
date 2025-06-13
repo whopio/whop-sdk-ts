@@ -120,20 +120,18 @@ export const placeBid = wrapServerAction(
 
 async function sendNotification(updatedListing: Listing, oldListing: Listing) {
 	if (oldListing.lastBidderUserId) {
-		const { publicUser: newUser } = await whopApi.getUser({
+		const newUser = await whopApi.getUser({
 			userId: updatedListing.lastBidderUserId ?? "",
 		});
 
 		const newUserName = newUser.name ?? newUser.username;
 
 		await whopApi.sendPushNotification({
-			input: {
-				title: `New bid from ${newUserName}`,
-				content: `"${newUserName} just bid ${updatedListing.currentPrice} for ${updatedListing.title}. You just lost the top spot!"`,
-				experienceId: updatedListing.experienceId,
-				isMention: true,
-				userIds: [oldListing.lastBidderUserId],
-			},
+			title: `New bid from ${newUserName}`,
+			content: `"${newUserName} just bid ${updatedListing.currentPrice} for ${updatedListing.title}. You just lost the top spot!"`,
+			experienceId: updatedListing.experienceId,
+			isMention: true,
+			userIds: [oldListing.lastBidderUserId],
 		});
 	}
 }

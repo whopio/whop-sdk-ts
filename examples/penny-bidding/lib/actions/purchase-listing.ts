@@ -65,15 +65,13 @@ export const purchaseListing = wrapServerAction(
 		};
 
 		const result = await whopApi.chargeUser({
-			input: {
-				amount: Number.parseFloat(listing.currentPrice),
-				currency: "usd",
-				userId,
-				description: `Penny bidding purchase for ${listing.title}`,
-				metadata,
-			},
+			amount: Number.parseFloat(listing.currentPrice),
+			currency: "usd",
+			userId,
+			description: `Penny bidding purchase for ${listing.title}`,
+			metadata,
 		});
 
-		return result.chargeUser?.inAppPurchase;
+		return result?.inAppPurchase;
 	},
 );

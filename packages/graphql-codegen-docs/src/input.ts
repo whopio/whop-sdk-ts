@@ -191,6 +191,22 @@ class ObjectType extends BaseType {
 		this.fields.push(field);
 	}
 
+	removeInputFieldIfPossible(): BaseType {
+		if (this.fields.length === 1 && this.fields[0].name === "input") {
+			return this.fields[0].type;
+		}
+
+		return this;
+	}
+
+	unnestSingleField(): BaseType {
+		if (this.fields.length === 1) {
+			return this.fields[0].type;
+		}
+
+		return this;
+	}
+
 	toCode(): string {
 		let output = "{";
 		for (const field of this.fields) {
@@ -218,12 +234,14 @@ export function generateExampleOutput(
 		throw new Error("No query type found");
 	}
 
-	return parseSelectionSet(
+	const outputType = parseSelectionSet(
 		schema,
 		operation.selectionSet,
 		baseObjectType.getFields(),
 		fragments,
-	).toCode();
+	);
+
+	return outputType.unnestSingleField().toCode();
 }
 
 function parseField(
@@ -451,7 +469,7 @@ export function generateExampleInput(
 		inputObject.addField(objectField);
 	}
 
-	const objectCode = inputObject.toCode();
+	const objectCode = inputObject.removeInputFieldIfPossible().toCode();
 
 	return objectCode;
 }

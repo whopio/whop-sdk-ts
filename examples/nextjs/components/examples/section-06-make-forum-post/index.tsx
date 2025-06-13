@@ -8,7 +8,7 @@ export async function SectionMakeForumPost({
 }) {
 	const { experienceId } = await params;
 	const experience = await whopApi.getExperience({ experienceId });
-	const companyId = experience.experience.company.id;
+	const companyId = experience.company.id;
 	// user user_v9KUoZvTGp6ID is an admin of the current company.
 	const forumExperiences = await whopApi
 		.withUser("user_v9KUoZvTGp6ID")
@@ -39,11 +39,9 @@ export async function SectionMakeForumPost({
 			.withUser("user_v9KUoZvTGp6ID")
 			.withCompany(companyId)
 			.createForumPost({
-				input: {
-					content,
-					forumExperienceId: experienceId,
-					title: "Created by the SDK",
-				},
+				content,
+				forumExperienceId: experienceId,
+				title: "Created by the SDK",
 			});
 	}
 
@@ -53,7 +51,7 @@ export async function SectionMakeForumPost({
 				<Select.Root>
 					<Select.Trigger className="w-full" name="experienceId" />
 					<Select.Content>
-						{forumExperiences.company?.experiencesV2.nodes
+						{forumExperiences?.experiencesV2.nodes
 							?.filter(notEmpty)
 							.map((experience) => (
 								<Select.Item key={experience.id} value={experience.id}>

@@ -71,17 +71,15 @@ async function updateExpiredAtForMinSellPriceListings() {
 async function sendAboutToFinishNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
 		await whopApi.sendPushNotification({
-			input: {
-				title: "⏰ Auction Ending Soon!",
-				content: `"${listing.title}" is about to finish and no bids have been placed yet. Will you be the first?`,
-				experienceId: listing.experienceId,
-				isMention: true,
-			},
+			title: "⏰ Auction Ending Soon!",
+			content: `"${listing.title}" is about to finish and no bids have been placed yet. Will you be the first?`,
+			experienceId: listing.experienceId,
+			isMention: true,
 		});
 		return;
 	}
 
-	const { publicUser: currentBidder } = await whopApi.getUser({
+	const currentBidder = await whopApi.getUser({
 		userId: listing.lastBidderUserId,
 	});
 
@@ -90,40 +88,34 @@ async function sendAboutToFinishNotification(listing: Listing) {
 	);
 
 	await whopApi.sendPushNotification({
-		input: {
-			title: "⏰ Auction Ending Soon!",
-			content: `${currentBidder.name ?? currentBidder.username} is currently winning "${listing.title}" at $${listing.currentPrice} with ${listing.numBids} bids! Only ${timeLeft} seconds left to place your bid!`,
-			experienceId: listing.experienceId,
-			isMention: true,
-		},
+		title: "⏰ Auction Ending Soon!",
+		content: `${currentBidder.name ?? currentBidder.username} is currently winning "${listing.title}" at $${listing.currentPrice} with ${listing.numBids} bids! Only ${timeLeft} seconds left to place your bid!`,
+		experienceId: listing.experienceId,
+		isMention: true,
 	});
 }
 
 async function sendJustFinishedNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
 		await whopApi.sendPushNotification({
-			input: {
-				title: "Auction Ended - No Winner",
-				content: `"${listing.title}" has ended with no bids. The item will be relisted soon!`,
-				experienceId: listing.experienceId,
-				isMention: true,
-			},
+			title: "Auction Ended - No Winner",
+			content: `"${listing.title}" has ended with no bids. The item will be relisted soon!`,
+			experienceId: listing.experienceId,
+			isMention: true,
 		});
 		return;
 	}
 
-	const { publicUser: winner } = await whopApi.getUser({
+	const winner = await whopApi.getUser({
 		userId: listing.lastBidderUserId,
 	});
 
 	await whopApi.sendPushNotification({
-		input: {
-			title: "🎉 Auction Winner!",
-			content: `${winner.name ?? winner.username} won "${listing.title}" for $${listing.currentPrice} after ${listing.numBids} bids! They can now purchase the item.`,
-			experienceId: listing.experienceId,
-			isMention: true,
-			userIds: [listing.lastBidderUserId],
-		},
+		title: "🎉 Auction Winner!",
+		content: `${winner.name ?? winner.username} won "${listing.title}" for $${listing.currentPrice} after ${listing.numBids} bids! They can now purchase the item.`,
+		experienceId: listing.experienceId,
+		isMention: true,
+		userIds: [listing.lastBidderUserId],
 	});
 }
 
