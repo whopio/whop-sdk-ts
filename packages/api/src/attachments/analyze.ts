@@ -18,11 +18,9 @@ export async function analyzeAttachment(
 		const attachment = await this.getAttachment(
 			{ id: signedId },
 			{ signal: opts?.signal },
-		)
-			.then((a) => a.attachment)
-			.catch(() => null);
+		).catch(() => null);
 
-		if (attachment?.analyzed) {
+		if (attachment) {
 			return attachment;
 		}
 	}
