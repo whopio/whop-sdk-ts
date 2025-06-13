@@ -27,7 +27,7 @@ export async function SectionSendAMessage({
 		await whopApi.sendMessageToChat({
 			experienceId: chatExperienceId,
 			message: `${
-				user.publicUser.name ?? user.publicUser.username
+				user.name ?? user.username
 			} just sent a message via the example app: '${message}'. Check it out here: https://whop.com/whop-devs/next-js-app-template-9Pk0xcYN09zkKU/app/`,
 		});
 	}

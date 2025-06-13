@@ -36,7 +36,7 @@ export async function POST(
 			experienceId,
 		});
 
-		if (!hasAccess.hasAccessToExperience.hasAccess) {
+		if (!hasAccess.hasAccess) {
 			return NextResponse.json(
 				{ error: "Unauthorized, no access" },
 				{ status: 401 },
@@ -112,32 +112,31 @@ export async function POST(
 		]);
 
 		const whopExperience = await whopApi.getExperience({ experienceId });
-		const companyId = whopExperience.experience.company.id;
+		const companyId = whopExperience.company.id;
 
 		const generatedAttachmentId = uploadResponse.directUploadId;
 		const originalAttachmentId = originalFileUploadResponse.directUploadId;
 
 		const forum = await whopApi.findOrCreateForum({
-			input: { experienceId: experience.id, name: "AI Uploads" },
+			experienceId: experience.id,
+			name: "AI Uploads",
 		});
 
-		const forumId = forum.createForum?.id;
+		const forumId = forum?.id;
 
 		const post = await whopApi.createForumPost({
-			input: {
-				forumExperienceId: forumId,
-				content: `@${publicUser.publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/hub/${companyId}/${experience.id}/app\n\nBefore vs After ⬇️`,
-				attachments: [
-					{ directUploadId: originalAttachmentId },
-					{ directUploadId: generatedAttachmentId },
-				],
-			},
+			forumExperienceId: forumId,
+			content: `@${publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/hub/${companyId}/${experience.id}/app\n\nBefore vs After ⬇️`,
+			attachments: [
+				{ directUploadId: originalAttachmentId },
+				{ directUploadId: generatedAttachmentId },
+			],
 		});
 
 		return NextResponse.json({
 			success: true,
 			imageUrl: uploadResponse.attachment.source.url,
-			postId: post.createForumPost?.id,
+			postId: post?.id,
 		});
 	} catch (error) {
 		console.error("Error generating image:", error);
