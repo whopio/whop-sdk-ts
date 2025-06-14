@@ -16,7 +16,7 @@ export async function prepareAttachmentForUpload(
 	record: AttachableRecords,
 ) {
 	const isMultipart = data.size > MULTIPART_UPLOAD_CHUNK_SIZE;
-	const mediaDirectUpload = await this.uploadMedia({
+	const mediaDirectUpload = await this.attachments.uploadMedia({
 		byteSizeV2: data.size.toString(),
 		record,
 		filename: data instanceof File ? data.name : crypto.randomUUID(),

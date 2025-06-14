@@ -1,15 +1,15 @@
 "use server";
 import { headers } from "next/headers";
 import type { PaymentMetadata } from "../types";
-import { verifyUserToken, whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 
 export async function requestTopup(experienceId: string) {
-	const { userId } = await verifyUserToken(await headers());
+	const { userId } = await whopSdk.verifyUserToken(await headers());
 	const metadata: PaymentMetadata = {
 		type: "credits",
 		experienceId,
 	};
-	const result = await whopApi.chargeUser({
+	const result = await whopSdk.payments.chargeUser({
 		amount: 22.99,
 		currency: "usd",
 		userId,

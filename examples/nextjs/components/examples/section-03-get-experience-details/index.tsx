@@ -1,4 +1,4 @@
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
 export async function SectionGetExperienceDetails({
 	params,
@@ -7,7 +7,7 @@ export async function SectionGetExperienceDetails({
 }) {
 	const { experienceId } = await params;
 
-	const thisExperience = await whopApi.getExperience({
+	const thisExperience = await whopSdk.experiences.getExperience({
 		experienceId: experienceId,
 	});
 

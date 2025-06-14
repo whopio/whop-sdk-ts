@@ -1,7 +1,7 @@
 import { sendListing } from "@/lib/actions/send-websocket-message";
 import { db } from "@/lib/db";
 import { type Listing, listingsTable } from "@/lib/db/schema";
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { and, gt, inArray, isNull, lt, or, sql } from "drizzle-orm";
 
 export async function GET() {
@@ -70,7 +70,7 @@ async function updateExpiredAtForMinSellPriceListings() {
 
 async function sendAboutToFinishNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
-		await whopApi.sendPushNotification({
+		await whopSdk.notifications.sendPushNotification({
 			title: "⏰ Auction Ending Soon!",
 			content: `"${listing.title}" is about to finish and no bids have been placed yet. Will you be the first?`,
 			experienceId: listing.experienceId,
@@ -79,7 +79,7 @@ async function sendAboutToFinishNotification(listing: Listing) {
 		return;
 	}
 
-	const currentBidder = await whopApi.getUser({
+	const currentBidder = await whopSdk.users.getUser({
 		userId: listing.lastBidderUserId,
 	});
 
@@ -87,7 +87,7 @@ async function sendAboutToFinishNotification(listing: Listing) {
 		(new Date(listing.biddingEndsAt).getTime() - Date.now()) / 1000,
 	);
 
-	await whopApi.sendPushNotification({
+	await whopSdk.notifications.sendPushNotification({
 		title: "⏰ Auction Ending Soon!",
 		content: `${currentBidder.name ?? currentBidder.username} is currently winning "${listing.title}" at $${listing.currentPrice} with ${listing.numBids} bids! Only ${timeLeft} seconds left to place your bid!`,
 		experienceId: listing.experienceId,
@@ -97,7 +97,7 @@ async function sendAboutToFinishNotification(listing: Listing) {
 
 async function sendJustFinishedNotification(listing: Listing) {
 	if (!listing.lastBidderUserId) {
-		await whopApi.sendPushNotification({
+		await whopSdk.notifications.sendPushNotification({
 			title: "Auction Ended - No Winner",
 			content: `"${listing.title}" has ended with no bids. The item will be relisted soon!`,
 			experienceId: listing.experienceId,
@@ -106,11 +106,11 @@ async function sendJustFinishedNotification(listing: Listing) {
 		return;
 	}
 
-	const winner = await whopApi.getUser({
+	const winner = await whopSdk.users.getUser({
 		userId: listing.lastBidderUserId,
 	});
 
-	await whopApi.sendPushNotification({
+	await whopSdk.notifications.sendPushNotification({
 		title: "🎉 Auction Winner!",
 		content: `${winner.name ?? winner.username} won "${listing.title}" for $${listing.currentPrice} after ${listing.numBids} bids! They can now purchase the item.`,
 		experienceId: listing.experienceId,

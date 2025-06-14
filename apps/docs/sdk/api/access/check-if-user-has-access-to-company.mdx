@@ -1,14 +1,14 @@
 ---
-title: Check If User Has Access To Access Pass
+title: Check If User Has Access To Company
 description: Check if the user has access to a Whop resource
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.checkIfUserHasAccessToAccessPass({
-	// The ID of the access pass
-	accessPassId: "prod_XXXXXXXX" /* Required! */,
+const result = await whopApi.access.checkIfUserHasAccessToCompany({
+	// The ID of the company
+	companyId: "biz_XXXXXXXX" /* Required! */,
 
 	// The ID of the user
 	userId: "user_XXXXXXXX",

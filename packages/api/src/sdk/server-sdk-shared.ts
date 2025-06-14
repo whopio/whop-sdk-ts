@@ -3,6 +3,7 @@ import type { makeUploadAttachmentFunction } from "@/attachments/upload";
 import { type Requester, getSdk } from "@/codegen/graphql/server";
 import { WhopOAuth } from "@/oauth";
 import { DEFAULT_API_ORIGIN, graphqlFetch } from "@/sdk/sdk-common";
+import { makeUserTokenVerifier } from "@/verify-user-token";
 import { makeConnectToWebsocketFunction } from "@/websockets/client.server";
 import { sendWebsocketMessageFunction } from "@/websockets/server";
 
@@ -13,7 +14,7 @@ export interface WhopServerSdkOptions {
 	/** The API key to use for API calls */
 	appApiKey: string;
 	/** Required when using the oauth module. Defaults to `NEXT_PUBLIC_WHOP_APP_ID` */
-	appId?: string;
+	appId: string;
 	/** Use this to make the API calls on behalf of a user */
 	onBehalfOfUserId?: string;
 	/** Use this to make the API calls on behalf of a company */
@@ -36,26 +37,28 @@ function BaseWhopServerSdk(
 	const websocketClient = makeConnectToWebsocketFunction(options);
 
 	const fileSdk = fileSdkExtensions(baseSdk, uploadFile);
-	let oauth: WhopOAuth | undefined;
+	const oauth = new WhopOAuth(
+		options.appId,
+		options.appApiKey,
+		options.apiOrigin,
+	);
+	const verifyUserToken = makeUserTokenVerifier({
+		appId: options.appId,
+		dontThrow: false,
+	});
 
 	return {
 		...baseSdk,
-		...fileSdk,
-		sendWebsocketMessage,
-		websocketClient,
-		// lazy initialize the WhopOAuth instance to avoid causing compatibility issues with the appId being undefined
-		get oauth() {
-			if (!oauth) {
-				const appId = options.appId ?? process.env.NEXT_PUBLIC_WHOP_APP_ID;
-				if (!appId) {
-					throw new Error(
-						"Could not resolve appId from environment variables. Please provide it in the options or set the `NEXT_PUBLIC_WHOP_APP_ID` environment variable.",
-					);
-				}
-				oauth = new WhopOAuth(appId, options.appApiKey, options.apiOrigin);
-			}
-			return oauth;
+		attachments: {
+			...baseSdk.attachments,
+			...fileSdk,
 		},
+		websockets: {
+			sendMessage: sendWebsocketMessage,
+			client: websocketClient,
+		},
+		oauth,
+		verifyUserToken,
 	};
 }
 

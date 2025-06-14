@@ -31,8 +31,13 @@ export function makeWhopClientSdk({
 
 		const sdk = {
 			...baseSdk,
-			websocketClient,
-			...fileSdk,
+			attachments: {
+				...baseSdk.attachments,
+				...fileSdk,
+			},
+			websockets: {
+				client: websocketClient,
+			},
 		};
 
 		return sdk;

@@ -1,4 +1,4 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -13,7 +13,7 @@ export async function PUT(
 		const { experienceId } = await params;
 		const { prompt } = await request.json();
 		const headersList = await headers();
-		const userToken = await verifyUserToken(headersList);
+		const userToken = await whopSdk.verifyUserToken(headersList);
 		if (!userToken) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
@@ -25,7 +25,7 @@ export async function PUT(
 			);
 		}
 
-		const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+		const hasAccess = await whopSdk.access.checkIfUserHasAccessToExperience({
 			userId: userToken.userId,
 			experienceId,
 		});
@@ -45,7 +45,7 @@ export async function PUT(
 			},
 		});
 
-		await whopApi.sendPushNotification({
+		await whopSdk.notifications.sendPushNotification({
 			content: prompt,
 			experienceId,
 			title: "Prompt updated ✨",

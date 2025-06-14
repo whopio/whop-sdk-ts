@@ -1,11 +1,11 @@
 "use server";
 
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 
 export async function requestPayment(formData: FormData) {
 	const requestHeaders = await headers();
-	const userTokenData = await verifyUserToken(requestHeaders);
+	const userTokenData = await whopSdk.verifyUserToken(requestHeaders);
 	const amount = formData.get("amount");
 	const description = formData.get("description");
 	const experienceId = formData.get("experienceId");
@@ -14,7 +14,7 @@ export async function requestPayment(formData: FormData) {
 		return undefined;
 	}
 
-	const experience = await whopApi.getExperience({ experienceId });
+	const experience = await whopSdk.experiences.getExperience({ experienceId });
 	const companyId = experience.company.id;
 
 	if (
@@ -39,7 +39,7 @@ export async function requestPayment(formData: FormData) {
 		},
 	});
 
-	const response = await whopApi.withCompany(companyId).chargeUser({
+	const response = await whopSdk.withCompany(companyId).payments.chargeUser({
 		userId: userTokenData.userId,
 		amount: Number.parseInt(amount),
 		description,

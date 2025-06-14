@@ -1,9 +1,9 @@
-import { verifyUserToken } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 
 export async function SectionVerifyUserToken() {
 	const requestHeaders = await headers();
-	const userTokenData = await verifyUserToken(requestHeaders);
+	const userTokenData = await whopSdk.verifyUserToken(requestHeaders);
 
 	if (!userTokenData) {
 		return <div className="text-danger-12">Invalid or missing user token</div>;

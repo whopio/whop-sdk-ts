@@ -5,7 +5,7 @@ import { listingsTable } from "@/lib/db/schema";
 import { verifyUser } from "@/lib/verify-user";
 import { waitUntil } from "@vercel/functions";
 import { redirect } from "next/navigation";
-import { whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 import { sendListing } from "./send-websocket-message";
 
 const INCREMENT = "0.01";
@@ -87,9 +87,9 @@ async function sendNotification({
 	userId,
 	experienceId,
 }: { title: string; userId: string; experienceId: string }) {
-	const user = await whopApi.getUser({ userId });
+	const user = await whopSdk.users.getUser({ userId });
 
-	await whopApi.sendPushNotification({
+	await whopSdk.notifications.sendPushNotification({
 		title: "New penny bidding listing",
 		content: `"${title}" was just listed by ${user.name ?? user.username}`,
 		experienceId: experienceId,
