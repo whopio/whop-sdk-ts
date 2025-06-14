@@ -1,0 +1,35 @@
+---
+title: Create Checkout Session
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopApi } from "@/lib/whop-api";
+
+const result = await whopApi.payments.createCheckoutSession({
+	// The affiliate code to use for the checkout session
+	affiliateCode: "some string",
+
+	// The metadata to use for the checkout session
+	metadata: { any: "json" },
+
+	// The ID of the plan to use for the checkout session
+	planId: "xxxxxxxxxxx" /* Required! */,
+
+	// The URL to redirect the user to after the checkout session is created
+	redirectUrl: "some string",
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The ID of the checkout session
+	id: "xxxxxxxxxxx",
+
+	// The ID of the plan to use for the checkout session
+	planId: "xxxxxxxxxxx",
+};
+
+```
