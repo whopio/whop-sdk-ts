@@ -28,9 +28,7 @@ function listen(iframe: HTMLIFrameElement) {
 									| undefined;
 							}
 						)[callbackTarget];
-						if (callback) {
-							callback(message.plan_id, message.receipt_id);
-						}
+						callback?.(message.plan_id, message.receipt_id);
 					}
 					break;
 				}
