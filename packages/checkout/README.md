@@ -72,8 +72,20 @@ Defaults to `false`
 
 Defaults to `false`
 
-```md
-<div data-whop-checkout-skip-redirect="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+### **`data-whop-checkout-on-complete`**
+
+**Optional** - The callback to call when the checkout succeed.
+
+**Note** - This option will set `data-whop-checkout-skip-redirect` to `true`
+
+```html
+<script>
+	window.onCheckoutComplete = (planId, receiptId) => {
+		console.log(planId, receiptId);
+	}
+</script>
+
+<div data-whop-checkout-on-complete="onCheckoutComplete" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
 

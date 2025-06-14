@@ -57,6 +57,21 @@ Defaults to `false`
 
 Defaults to `false`
 
+#### **`onComplete`**
+
+**Optional** - A callback function that will be called when the checkout is complete.
+
+<Note>This option will set `skipRedirect` to `true`</Note>
+
+```tsx
+<WhopCheckoutEmbed
+  onComplete={(planId, receiptId) => {
+    console.log(planId, receiptId);
+  }}
+  planId="plan_XXXXXXXXX"
+/>
+```
+
 #### **`fallback`**
 
 **Optional** - The fallback content to show while the checkout is loading.
@@ -155,6 +170,25 @@ Defaults to `false`
 
 ```md
 <div data-whop-checkout-skip-redirect="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-on-complete`**
+
+**Optional** - The callback to call when the checkout succeeds
+
+<Note>This option will set `data-whop-checkout-skip-redirect` to `true`</Note>
+
+```html
+<script>
+  window.onCheckoutComplete = (planId, receiptId) => {
+    console.log(planId, receiptId);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-complete="onCheckoutComplete"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
 ```
 
 ### Full example
