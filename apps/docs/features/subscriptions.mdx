@@ -27,7 +27,7 @@ NEXT_PUBLIC_PREMIUM_PLAN_ID="plan_XXXXXXXX"
 When a user makes a request to your app, you can easily check if they have access using the whop api.
 
 ```typescript
-const hasAccess = await whopApi.checkIfUserHasAccessToAccessPass({
+const hasAccess = await whopSdk.access.checkIfUserHasAccessToAccessPass({
   accessPassId: process.env.NEXT_PUBLIC_PREMIUM_ACCESS_PASS_ID, // from step 5 above.
   userId: userId,
 });

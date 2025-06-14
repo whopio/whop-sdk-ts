@@ -66,7 +66,7 @@ function ImageUploader() {
 Create an API route to handle the file upload using the Whop SDK:
 
 ```typescript
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -74,16 +74,16 @@ export async function POST(request: Request) {
   try {
     // Verify user authentication
     const headersList = await headers();
-    const userToken = await verifyUserToken(headersList);
+    const userToken = await whopSdk.verifyUserToken(headersList);
     if (!userToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get the file from the request
     const file = await request.blob();
-    
+
     // Upload to Whop
-    const response = await whopApi.uploadAttachment({
+    const response = await whopSdk.attachments.uploadAttachment({
       file: new File([file], `upload-${Date.now()}.png`, {
         type: "image/png",
       }),
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       attachmentId: response.directUploadId,
-      url: response.attachment.source.url
+      url: response.attachment.source.url,
     });
   } catch (error) {
     console.error("Error uploading file:", error);
@@ -112,23 +112,20 @@ After uploading, you can use the attachment ID in various Whop features. For exa
 
 ```typescript
 const createForumPost = async (attachmentId: string) => {
-  const post = await whopApi.createForumPost({
-    input: {
-      forumExperienceId: "your-forum-id",
-      content: "Check out this image!",
-      attachments: [
-        { directUploadId: attachmentId }
-      ]
-    }
+  const post = await whopSdk.forums.createForumPost({
+    forumExperienceId: "your-forum-id",
+    content: "Check out this image!",
+    attachments: [{ directUploadId: attachmentId }],
   });
 
   return post;
-}
+};
 ```
 
 ### Supported File Types
 
 The Whop API supports the following file types for upload:
+
 - Images: `.jpg`, `.jpeg`, `.png`, `.gif`
 - Videos: `.mp4`, `.mov`
 - Documents: `.pdf`
@@ -186,20 +183,20 @@ export default function MediaUploader() {
 
   const handleUpload = async () => {
     if (!image?.file) return;
-    
+
     setIsUploading(true);
     try {
       // Send to your API route
       const formData = new FormData();
       formData.append("file", image.file);
-      
+
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error);
       }
@@ -215,10 +212,17 @@ export default function MediaUploader() {
 
   return (
     <div className="space-y-4">
-      <div {...getRootProps()} className="border-2 border-dashed rounded-lg p-8">
+      <div
+        {...getRootProps()}
+        className="border-2 border-dashed rounded-lg p-8"
+      >
         <input {...getInputProps()} />
         {image?.preview ? (
-          <img src={image.preview} alt="Preview" className="max-w-full h-auto" />
+          <img
+            src={image.preview}
+            alt="Preview"
+            className="max-w-full h-auto"
+          />
         ) : (
           <p>Drag & drop an image here, or click to select</p>
         )}
@@ -239,6 +243,7 @@ export default function MediaUploader() {
 ```
 
 This implementation provides a complete media upload solution with:
+
 - Drag and drop interface
 - File preview
 - Upload handling

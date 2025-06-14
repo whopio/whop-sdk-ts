@@ -17,30 +17,28 @@ First, create the charge on the server using the Whop API. Then you can either:
 On the server, use the [chargeUser](/sdk/api/payments/charge-user) method to create a charge:
 
 ```typescript app/api/charge/route.ts
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
 export async function POST(request: Request) {
   try {
     const { userId, experienceId } = await request.json();
 
-    const result = await whopApi.chargeUser({
-      input: {
-        amount: 100,
-        currency: "usd",
-        userId: userId,
-        // metadata is information that you'd like to receive later about the payment.
-        metadata: {
-          creditsToPurchase: 1,
-          experienceId: experienceId,
-        },
+    const result = await whopSdk.payments.chargeUser({
+      amount: 100,
+      currency: "usd",
+      userId: userId,
+      // metadata is information that you'd like to receive later about the payment.
+      metadata: {
+        creditsToPurchase: 1,
+        experienceId: experienceId,
       },
     });
 
-    if (!result.chargeUser?.inAppPurchase) {
+    if (!result?.inAppPurchase) {
       throw new Error("Failed to create charge");
     }
 
-    return Response.json(result.chargeUser.inAppPurchase);
+    return Response.json(result.inAppPurchase);
   } catch (error) {
     console.error("Error creating charge:", error);
     return Response.json({ error: "Failed to create charge" }, { status: 500 });
@@ -178,7 +176,7 @@ You can send payouts to any user using their Whop username. The funds will be tr
 ### Transfer Funds
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
 async function sendPayout(
   companyId: string,
@@ -186,22 +184,22 @@ async function sendPayout(
   amount: number
 ) {
   // 1. Get your company's ledger account
-  const experience = await whopApi.getExperience({ experienceId });
-  const companyId = experience.experience.company.id;
-  const ledgerAccount = await whopApi.getCompanyLedgerAccount({ companyId });
+  const experience = await whopSdk.experiences.getExperience({ experienceId });
+  const companyId = experience.company.id;
+  const ledgerAccount = await whopSdk.companies.getCompanyLedgerAccount({
+    companyId,
+  });
 
   // 2. Pay the recipient
-  await whopApi.payUser({
-    input: {
-      amount: amount,
-      currency: "usd",
-      // Username or ID or ledger account ID of the recipient user
-      destinationId: recipientUsername,
-      // Your company's ledger account ID that can be retrieve from whopApi.getCompanyLedgerAccount()
-      ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
-      // Optional transfer fee in percentage
-      transferFee: ledgerAccount.company?.ledgerAccount.transferFee,
-    },
+  await whopSdk.payments.payUser({
+    amount: amount,
+    currency: "usd",
+    // Username or ID or ledger account ID of the recipient user
+    destinationId: recipientUsername,
+    // Your company's ledger account ID that can be retrieve from whopSdk.companies.getCompanyLedgerAccount()
+    ledgerAccountId: ledgerAccount.company?.ledgerAccount.id!,
+    // Optional transfer fee in percentage
+    transferFee: ledgerAccount.company?.ledgerAccount.transferFee,
   });
 }
 ```
