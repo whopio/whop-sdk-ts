@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.29
+
+### Patch Changes
+
+- c74b64a: add `onComplete` prop to `@whop/checkout` and `@whop/react`
+
 ## 0.0.28
 
 ### Patch Changes
