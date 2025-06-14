@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.7
+
+### Patch Changes
+
+- c74b64a: add `onComplete` prop to `@whop/checkout` and `@whop/react`
+- Updated dependencies [c74b64a]
+  - @whop/checkout@0.0.29
+
 ## 0.2.6
 
 ### Patch Changes
