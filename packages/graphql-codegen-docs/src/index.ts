@@ -117,6 +117,7 @@ function writeOperation(
 			server: mode === "server" || mode === "shared",
 		},
 		fragments,
+		kebabCaseToCamelCase(group),
 	);
 
 	writeFileSync(path, doc, {
@@ -130,6 +131,7 @@ function formatOperation(
 	schema: GraphQLSchema,
 	availability: { client: boolean; server: boolean },
 	fragments: FragmentDefinitionNode[],
+	group: string,
 ) {
 	const inputCode = value.variableDefinitions
 		? generateExampleInput(schema, value)
@@ -140,7 +142,7 @@ function formatOperation(
 	const codeExample = `
 	import { whopApi } from "@/lib/whop-api";
 
-	const result = await whopApi.${value.name?.value}(${inputCode ?? ""});
+	const result = await whopApi.${group}.${value.name?.value}(${inputCode ?? ""});
 	`;
 
 	const formatted = formatCode(codeExample, biome);
@@ -254,6 +256,10 @@ function kebabCaseToTitleCase(value: string) {
 	return value
 		.replace(/-/g, " ")
 		.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function kebabCaseToCamelCase(str: string) {
+	return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 function reformatMintJson(groupedOperations: Record<string, string[]>) {

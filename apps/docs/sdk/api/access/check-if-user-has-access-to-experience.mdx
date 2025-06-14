@@ -6,7 +6,7 @@ description: Check if the user has access to a Whop resource
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.checkIfUserHasAccessToExperience({
+const result = await whopApi.access.checkIfUserHasAccessToExperience({
 	// The ID of the experience
 	experienceId: "exp_XXXXXXXX" /* Required! */,
 

@@ -60,7 +60,7 @@ export function WhopWebsocketProvider({
 
 		const whopSdk = sdkRef.current;
 
-		const websocket = whopSdk.websocketClient({
+		const websocket = whopSdk.websockets.client({
 			joinCustom,
 			joinExperience,
 		});

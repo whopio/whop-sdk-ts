@@ -6,7 +6,7 @@ description: Fetch an experience.
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.listUsersForExperience({
+const result = await whopApi.experiences.listUsersForExperience({
 	// The ID of the experience
 	experienceId: "exp_XXXXXXXX" /* Required! */,
 

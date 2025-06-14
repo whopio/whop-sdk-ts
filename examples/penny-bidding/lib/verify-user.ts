@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { cache } from "react";
 import { SafeError } from "./server-action-errors";
-import { verifyUserToken, whopApi } from "./whop-api";
+import { whopSdk } from "./whop-sdk";
 
 type MaybePromise<T> = T | Promise<T>;
 
@@ -10,7 +10,7 @@ export async function verifyUser(
 	paramsPromise: MaybePromise<{ experienceId: string }>,
 ) {
 	const [headersList, params] = await Promise.all([headers(), paramsPromise]);
-	const { userId } = await verifyUserToken(headersList).catch(() => {
+	const { userId } = await whopSdk.verifyUserToken(headersList).catch(() => {
 		throw new SafeError("Failed to verify user token. Please refresh.");
 	});
 
@@ -33,7 +33,7 @@ export async function verifyUser(
 
 const cachedHasAccessToExperience = cache(
 	async (userId: string, experienceId: string) => {
-		return whopApi.checkIfUserHasAccessToExperience({
+		return whopSdk.access.checkIfUserHasAccessToExperience({
 			userId,
 			experienceId,
 		});

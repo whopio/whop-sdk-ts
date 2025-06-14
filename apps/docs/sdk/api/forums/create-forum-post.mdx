@@ -5,7 +5,7 @@ title: Create Forum Post
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.createForumPost({
+const result = await whopApi.forums.createForumPost({
 	// The access pass (whop) to create this post in (leave empty if providing a
 	// forum experience ID). This will look like prod_xxxx.
 	accessPassId: "prod_XXXXXXXX",

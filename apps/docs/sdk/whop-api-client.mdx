@@ -10,29 +10,33 @@ Our SDK makes it simple to use our API. It's a wrapper around our GraphQL API wi
 <CodeGroup>
 
 ```bash pnpm
-pnpm add @whop-apps/sdk
+pnpm add @whop/api
 ```
 
 ```bash npm
-npm install @whop-apps/sdk
+npm install @whop/api
 ```
 
 ```bash yarn
-yarn add @whop-apps/sdk
+yarn add @whop/api
 ```
 
 </CodeGroup>
 
 ### Setup your client
 
-Create a new file that instantiates the client and exports it. We recommend putting this file at `lib/whop-api.ts`.
+Create a new file that instantiates the client and exports it. We recommend putting this file at `lib/whop-sdk.ts`.
 
 This file reads your ENV keys, which can be found on your app developer page on the Whop dashboard.
 
 ```ts
 import { WhopServerSdk, makeUserTokenVerifier } from "@whop/api";
 
-export const whopApi = WhopServerSdk({
+export const whopSdk = WhopServerSdk({
+  // This is the appId of your app. You can find this in the "App Settings" section of your app's Whop dashboard.
+  // This is required.
+  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
+
   // Add your app api key here - this is required.
   // You can get this from the Whop dashboard after creating an app in the "API Keys" section.
   appApiKey: process.env.WHOP_API_KEY ?? "fallback",
@@ -49,21 +53,16 @@ export const whopApi = WhopServerSdk({
   // This can also be applied later with the `withCompany` function.
   companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
 });
-
-export const verifyUserToken = makeUserTokenVerifier({
-  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
-  dontThrow: true,
-});
 ```
 
 ### Example usage
 
-The rest of the examples in this section will use this client and import it from `lib/whop-api.ts`.
+The rest of the examples in this section will use this client and import it from `lib/whop-sdk.ts`.
 
 Here is an example
 
 ```ts
-import { whopApi } from "./lib/whop-api";
+import { whopSdk } from "./lib/whop-sdk";
 
-const user = await whopApi.getCurrentUser();
+const user = await whopSdk.users.getCurrentUser();
 ```

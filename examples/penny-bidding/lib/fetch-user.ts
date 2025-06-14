@@ -1,10 +1,10 @@
 "use server";
 
 import { cache } from "react";
-import { whopApi } from "./whop-api";
+import { whopSdk } from "./whop-sdk";
 
 export const fetchUser = cache(async (userId: string) => {
-	const publicUser = await whopApi.getUser(
+	const publicUser = await whopSdk.users.getUser(
 		{ userId },
 		{
 			next: { revalidate: 300 },

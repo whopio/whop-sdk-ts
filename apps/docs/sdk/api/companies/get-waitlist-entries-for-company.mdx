@@ -6,7 +6,7 @@ description: Fetch a company
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.getWaitlistEntriesForCompany({
+const result = await whopApi.companies.getWaitlistEntriesForCompany({
 	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
 	companyId: "biz_XXXXXXXX" /* Required! */,
 

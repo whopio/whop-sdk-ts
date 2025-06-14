@@ -5,7 +5,7 @@ title: Process Attachment
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.processAttachment({
+const result = await whopApi.attachments.processAttachment({
 	// The ID returned by the direct upload mutation
 	directUploadId: "some string" /* Required! */,
 

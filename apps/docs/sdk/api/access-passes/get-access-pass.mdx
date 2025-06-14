@@ -6,7 +6,7 @@ description: Fetches an access pass based on the ID or the route
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.getAccessPass({
+const result = await whopApi.accessPasses.getAccessPass({
 	// The ID or route of the access pass to fetch.
 	accessPassId: "prod_XXXXXXXX" /* Required! */,
 });

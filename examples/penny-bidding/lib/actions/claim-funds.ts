@@ -5,7 +5,7 @@ import { db } from "../db";
 import { listingsTable } from "../db/schema";
 import { SafeError, wrapServerAction } from "../server-action-errors";
 import { verifyUser } from "../verify-user";
-import { whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 import { sendListing } from "./send-websocket-message";
 
 export const claimFunds = wrapServerAction(async (listingId: string) => {
@@ -25,7 +25,7 @@ export const claimFunds = wrapServerAction(async (listingId: string) => {
 		experienceId: listing.experienceId,
 	});
 
-	const company = await whopApi.getCompanyLedgerAccount({
+	const company = await whopSdk.companies.getCompanyLedgerAccount({
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID!,
 	});
@@ -45,14 +45,14 @@ export const claimFunds = wrapServerAction(async (listingId: string) => {
 		);
 	}
 
-	const experience = await whopApi.getExperience({
+	const experience = await whopSdk.experiences.getExperience({
 		experienceId: listing.experienceId,
 	});
 
-	await whopApi
+	await whopSdk
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		.withCompany(process.env.NEXT_PUBLIC_WHOP_COMPANY_ID!)
-		.payUser({
+		.payments.payUser({
 			ledgerAccountId: ledgerAccount.id,
 			destinationId: experience.company.id,
 			amount: listing.numBids,

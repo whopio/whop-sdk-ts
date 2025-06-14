@@ -1,4 +1,4 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { Button, TextField } from "@whop/react/components";
 import { headers } from "next/headers";
 
@@ -12,19 +12,19 @@ export async function SectionSendAMessage({
 		const chatExperienceId = "exp_svE6Mi5TAy3u4S";
 		const message = formData.get("message");
 		const requestHeaders = await headers();
-		const userToken = await verifyUserToken(requestHeaders);
+		const userToken = await whopSdk.verifyUserToken(requestHeaders);
 
 		if (!userToken) {
 			throw new Error("User token is required");
 		}
 
-		const user = await whopApi.getUser({ userId: userToken.userId });
+		const user = await whopSdk.users.getUser({ userId: userToken.userId });
 
 		if (!message || typeof message !== "string") {
 			throw new Error("Chat message is required");
 		}
 
-		await whopApi.sendMessageToChat({
+		await whopSdk.messages.sendMessageToChat({
 			experienceId: chatExperienceId,
 			message: `${
 				user.name ?? user.username
@@ -36,7 +36,7 @@ export async function SectionSendAMessage({
 		"use server";
 		const message = formData.get("message");
 		const requestHeaders = await headers();
-		const userToken = await verifyUserToken(requestHeaders);
+		const userToken = await whopSdk.verifyUserToken(requestHeaders);
 
 		if (!userToken) {
 			throw new Error("User token is required");
@@ -46,7 +46,7 @@ export async function SectionSendAMessage({
 			throw new Error("Chat message is required");
 		}
 
-		await whopApi.sendDirectMessageToUser({
+		await whopSdk.messages.sendDirectMessageToUser({
 			toUserIdOrUsername: userToken.userId,
 			message: `Hi, you just sent a message via the example app: '${message}'.`,
 		});

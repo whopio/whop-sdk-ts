@@ -5,7 +5,7 @@ title: Send Push Notification
 ```typescript
 import { whopApi } from "@/lib/whop-api";
 
-const result = await whopApi.sendPushNotification({
+const result = await whopApi.notifications.sendPushNotification({
 	// The ID of the company team to send the notification to
 	companyTeamId: "biz_XXXXXXXX",
 

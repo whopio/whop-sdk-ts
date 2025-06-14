@@ -1,4 +1,4 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { Button, TextField } from "@whop/react/components";
 import { headers } from "next/headers";
 import { SectionConnectToTheWebsocketClient } from "./index.client";
@@ -9,11 +9,11 @@ export async function SectionConnectToTheWebsocket({
 	params: Promise<{ experienceId: string }>;
 }) {
 	const { experienceId } = await params;
-	const { userId } = await verifyUserToken(await headers(), {
+	const { userId } = await whopSdk.verifyUserToken(await headers(), {
 		dontThrow: false,
 	});
 
-	const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+	const hasAccess = await whopSdk.access.checkIfUserHasAccessToExperience({
 		experienceId,
 		userId,
 	});
@@ -35,7 +35,7 @@ export async function SectionConnectToTheWebsocket({
 			throw new Error("Message is required");
 		}
 
-		await whopApi.sendWebsocketMessage({
+		await whopSdk.websockets.sendMessage({
 			message: message,
 			target: { experience: experienceId },
 		});

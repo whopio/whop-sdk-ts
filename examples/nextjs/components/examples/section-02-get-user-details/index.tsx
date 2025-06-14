@@ -1,21 +1,21 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { OpenWhopUserProfile } from "./index.client";
 
 export async function SectionGetUserDetails() {
 	const requestHeaders = await headers();
-	const userTokenData = await verifyUserToken(requestHeaders);
+	const userTokenData = await whopSdk.verifyUserToken(requestHeaders);
 
 	if (!userTokenData) {
 		return <div className="text-red-500">Invalid or missing user token</div>;
 	}
 
-	const user = await whopApi.getUser({
+	const user = await whopSdk.users.getUser({
 		userId: userTokenData.userId,
 	});
 
-	const agentUser = (await whopApi.getCurrentUser()).user;
+	const agentUser = (await whopSdk.users.getCurrentUser()).user;
 
 	return (
 		<div className="p-2 max-w-xl">
