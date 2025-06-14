@@ -46,14 +46,14 @@ Possible values are `light`, `dark` or `system`.
 <div data-whop-checkout-theme="light" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
-### **`data-whop-checkout-session-id`**
+### **`data-whop-checkout-session`**
 
 **Optional** - The session id to use for the checkout.
 
 This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
 
 ```md
-<div data-whop-checkout-session-id="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+<div data-whop-checkout-session="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
 ### **`data-whop-checkout-hide-price`**
@@ -103,7 +103,7 @@ Defaults to `false`
 	<body>
 		<div
 			data-whop-checkout-plan-id="plan_XXXXXXXXX"
-			data-whop-checkout-session-id="ch_XXXXXXXXX"
+			data-whop-checkout-session="ch_XXXXXXXXX"
 			data-whop-checkout-theme="light"
 			style="height: fit-content; overflow: hidden; max-width: 50%;"
 		></div>
