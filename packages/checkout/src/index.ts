@@ -18,6 +18,22 @@ function listen(iframe: HTMLIFrameElement) {
 					iframe.scrollIntoView({ block: "center", inline: "center" });
 					break;
 				}
+				case "complete": {
+					const callbackTarget = iframe.dataset.whopCheckoutOnComplete;
+					if (callbackTarget) {
+						const callback = (
+							window as unknown as {
+								[key: typeof callbackTarget]:
+									| ((plan_id: string, receipt_id?: string) => void)
+									| undefined;
+							}
+						)[callbackTarget];
+						if (callback) {
+							callback(message.plan_id, message.receipt_id);
+						}
+					}
+					break;
+				}
 			}
 		}),
 	);
@@ -39,7 +55,8 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutSession,
 		node.dataset.whopCheckoutOrigin,
 		node.dataset.whopCheckoutHidePrice === "true",
-		node.dataset.whopCheckoutSkipRedirect === "true",
+		node.dataset.whopCheckoutSkipRedirect === "true" ||
+			!!node.dataset.whopCheckoutOnComplete,
 	);
 
 	const iframe = document.createElement("iframe");

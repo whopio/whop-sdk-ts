@@ -47,6 +47,15 @@ export interface WhopCheckoutEmbedProps {
 	 * @default false
 	 */
 	skipRedirect?: boolean;
+	/**
+	 * **Optional** - A callback function that will be called when the checkout is complete.
+	 */
+	onComplete?: (
+		/** The plan id of the plan that was purchased. */
+		plan_id: string,
+		/** The receipt id of the purchase. */
+		receipt_id?: string,
+	) => void;
 }
 
 function WhopCheckoutEmbedInner({
@@ -55,6 +64,7 @@ function WhopCheckoutEmbedInner({
 	sessionId,
 	hidePrice = false,
 	skipRedirect = false,
+	onComplete,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
 		getEmbeddedCheckoutIframeUrl(
@@ -63,7 +73,7 @@ function WhopCheckoutEmbedInner({
 			sessionId,
 			undefined,
 			hidePrice,
-			skipRedirect,
+			skipRedirect || !!onComplete,
 		),
 	);
 
@@ -86,10 +96,16 @@ function WhopCheckoutEmbedInner({
 						iframe.scrollIntoView({ block: "center", inline: "center" });
 						break;
 					}
+					case "complete": {
+						if (onComplete) {
+							onComplete(message.plan_id, message.receipt_id);
+						}
+						break;
+					}
 				}
 			},
 		);
-	}, []);
+	}, [onComplete]);
 
 	useWarnOnIframeUrlChange(
 		iframeUrl,
@@ -97,7 +113,7 @@ function WhopCheckoutEmbedInner({
 		theme,
 		sessionId,
 		hidePrice,
-		skipRedirect,
+		skipRedirect || !!onComplete,
 	);
 
 	return (

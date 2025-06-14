@@ -5,6 +5,11 @@ export type WhopCheckoutMessage =
 	  }
 	| {
 			event: "center";
+	  }
+	| {
+			event: "complete";
+			receipt_id?: string;
+			plan_id: string;
 	  };
 
 export function isWhopCheckoutMessage(
@@ -14,7 +19,9 @@ export function isWhopCheckoutMessage(
 		typeof event.data === "object" &&
 		event.data !== null &&
 		"event" in event.data &&
-		(event.data.event === "resize" || event.data.event === "center")
+		(event.data.event === "resize" ||
+			event.data.event === "center" ||
+			event.data.event === "complete")
 	);
 }
 

@@ -151,11 +151,20 @@ export default function Home() {
 			 */
 			hidePrice={false}
 			/**
-			* **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
-			*
-			* @default false
+			 * **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+			 *
+			 * @default false
 			*/
 			skipRedirect={false}
+			/**
+			 * **Optional** - A callback function that will be called when the checkout is complete.
+			 */
+			onComplete={(
+				/** The plan id of the plan that was purchased. */
+				plan_id: string,
+				/** The receipt id of the purchase. */
+				receipt_id?: string,
+			) => {}}
 			/**
 			 * **Optional** - The fallback content to show while the checkout is loading.
 			 */
