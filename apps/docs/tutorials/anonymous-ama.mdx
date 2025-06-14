@@ -1,0 +1,254 @@
+---
+title: Anonymous Ask Me Anything App
+description: "Build an anonymous Q&A app where Whop creators can receive anonymous questions from their community members."
+---
+
+<Tip>
+   This tutorial was submitted by
+  [@Yoni](https://whop.com/@toni21jr
+), a member of the Whop
+  Developers community. [Submit your own tutorial](https://whop.com/developer)
+  and get paid real $!
+</Tip>
+
+## Summary
+
+This tutorial guides you through setting up and deploying a full-featured Anonymous Ask Me Anything (AMA) app integrated with the Whop ecosystem. Users can submit anonymous questions, and admins can answer them, automatically creating forum posts.
+
+**🎮 [Test Live App in your whop](https://whop.com/apps/app_lAgURr4dDAesot/install/)** | **📦 [GitHub Repository](https://github.com/Yohanan-Negash/ama-whop-app)**
+
+
+### Step 1: Setup Your Next.js project
+
+```bash
+git clone https://github.com/Yohanan-Negash/ama-whop-app
+cd ama-whop-app
+```
+
+Install Dependencies:
+
+<CodeGroup>
+```bash pnpm
+pnpm install
+```
+```bash npm
+npm install
+```
+```bash yarn
+yarn install
+```
+</CodeGroup>
+
+### Step 2: Set up Supabase Database
+
+<Steps>
+  <Step title="Navigate to Supabase and Create Project">
+    1. Go to [https://supabase.com](https://supabase.com)
+    2. Click **Start your project**
+    3. Sign in or create an account
+    4. Click **New project**
+    5. Choose your organization
+    6. Enter a **Database Name** (e.g., "ama-whop-app")
+    7. Enter a **Database Password** (save this!)
+    8. Select a **Region** close to your users
+    9. Click **Create new project**
+  </Step>
+  <Step title="Get Database Connection Strings">
+	<Frame>
+	<img
+		src="/how-to-videos/prisma-setup.gif"
+		alt="How to setup Prisma with Supabase"
+	/>
+	</Frame>
+    <Note>Ensure you replace placeholder `[YOUR-PASSWORD]` with your saved database password.</Note>
+  </Step>
+</Steps>
+
+
+
+### Step 3: Get Your Whop API Credentials
+
+<Steps>
+  <Step title="Create a Whop App">
+    1. Go to [https://whop.com/dashboard](https://whop.com/dashboard)
+    2. Navigate to **Developer**
+    3. Click the **Create App** button
+    4. Give your app a name (e.g., "AMA Whop App")
+    5. Click **Create**
+  </Step>
+  <Step title="Get your API Key, Agent User ID, and App ID">
+    After creating your app:
+    1. Copy the **App API Key** - you'll need this for `WHOP_API_KEY`
+    2. Copy the **Agent User ID** - you'll need this for `WHOP_AGENT_USER_ID`
+    3. Copy the **App ID** - you'll need this for `WHOP_APP_ID`
+    <Note>The Agent User ID allows your app's agent to post messages in the forum (e.g., when an admin answers a question).</Note>
+  </Step>
+</Steps>
+
+### Step 4: Configure Environment Variables
+
+<Steps>
+  <Step title="Create local environment file">
+    Duplicate the `.env.example` file and rename it to `.env.local`, or create `.env.local` from scratch:
+    ```bash
+    cp .env.development .env.local
+    # OR
+    touch .env.local
+    ```
+  </Step>
+  <Step title="Fill in Required Variables">
+    Open `.env.local` in your text editor and fill in these required fields with the credentials you obtained:
+    ```env
+    # Database Configuration (Required from Supabase)
+    DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:6543/postgres?pgbouncer=true"
+    DIRECT_URL="postgresql://postgres:[YOUR-PASSWORD]@[HOST]:5432/postgres"
+
+    # Whop Integration (Required from Whop Developer Dashboard)
+    WHOP_API_KEY=your_whop_api_key_here
+    WHOP_AGENT_USER_ID=your_whop_agent_user_id_here
+    WHOP_APP_ID=your_whop_app_id_here
+	 ```
+  </Step>
+</Steps>
+
+### Step 5: Initialize Database
+
+Run the following commands to set up your database schema with Prisma:
+<CodeGroup>
+```bash pnpm
+pnpm prisma generate
+pnpm prisma db push
+```
+```bash npm
+npm run prisma:generate
+npm run prisma:db:push
+```
+```bash yarn
+yarn prisma:generate
+yarn prisma:db:push
+```
+</CodeGroup>
+<Note>This will apply the schema defined in `prisma/schema.prisma` to your Supabase database.</Note>
+
+>If you want to use the native prisma CLI, you'll need to move your `.env.local` to `.env` and run the commands manually
+
+### Step 6: Start Development Server
+
+<CodeGroup>
+```bash pnpm
+pnpm dev
+```
+```bash npm
+npm run dev
+```
+```bash yarn
+yarn dev
+```
+</CodeGroup>
+
+Your app should now be running at `http://localhost:3000`.
+
+<Warning>
+  Ensure you are viewing the app through the Whop Localhost proxy/iframe setup for correct integration.
+  After installing your app to a Whop, navigate to its settings within Whop and switch from "Production" to "Localhost", ensuring the port is 3000.
+</Warning>
+
+<Frame>
+  <img
+    src="/how-to-videos/change-to-localhost-mode.gif"
+    alt="How to change to localhost mode"
+  />
+</Frame>
+
+###  Step 7: Deploy to vercel
+
+Deploy your AMA app to make it accessible to your community members. Vercel is recommended for Next.js applications.
+
+
+<Steps>
+  <Step title="Push to GitHub">
+    Ensure all your latest changes are committed and pushed to your GitHub repository:
+    ```bash
+    git add .
+    git commit -m "Prepare for deployment"
+    git push origin main
+    ```
+  </Step>
+  <Step title="Deploy on Vercel">
+    1. Visit [vercel.com](https://vercel.com).
+    2. Create a new project and import your app's GitHub repository.
+    3. Configure Environment Variables: In your Vercel project settings, add all the variables from your `.env.local` file (DATABASE_URL, DIRECT_URL, WHOP_API_KEY, etc.).
+    4. Click **Deploy**.
+  </Step>
+  <Step title="Update Whop App Settings">
+    Once deployed, copy your production URL from Vercel.
+    1. Go to your Whop app dashboard → **Developer** → Your App.
+    2. In the **Hosting** section, update:
+       - **Base URL**: Your Vercel production URL.
+       - **App path**: `/experiences/[experienceId]` (or as configured).
+    3. Click **Save**.
+  </Step>
+</Steps>
+
+## How It Works
+
+This section outlines the core mechanics of the AMA app.
+
+### Whop SDK Integration
+
+- **Authentication & Authorization**: Uses `verifyUserToken` from the Whop SDK for secure server-side request validation. Admin-specific actions leverage `checkIfUserHasAccessToExperience` to ensure proper permissions.
+- **Forum Management**: Utilizes `findOrCreateForum` for automatically setting up a dedicated forum within the experience if one doesn't exist. New answers trigger `createForumPost` to share the Q&A with the community. Forum permissions can be configured (e.g., `whoCanPost: "admins"`).
+
+### Core Features
+
+- **Anonymous Questions**: Submitted questions are limited to 100 characters. They are stored with `experienceId` but without any user-identifying information to maintain anonymity.
+- **Admin Panel**: Admins have a dedicated interface to view pending questions (sorted by newest first), answer them using the input field, or delete inappropriate submissions.
+- **Database Schema**: A `Question` model tracks the question, answer, status (`PENDING`/`APPROVED`), associated `experienceId`, `forumPostId` (once answered), and timestamps.
+
+
+### Customization
+
+Feel free to adapt the app to your specific needs.
+
+- **UI & Styling**: Modify Tailwind CSS styles in `app/globals.css`. Customize or create new React components in the `components/` directory.
+- **Functionality**: Adjust character limits for questions in the submission form. Modify forum post templates or content. Extend admin panel capabilities.
+
+Be creative and customize to your liking!
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Database connection fails">
+    - Double-check your `DATABASE_URL` and `DIRECT_URL` in your environment variables.
+    - Ensure your Supabase project is running and accessible.
+  </Accordion>
+  <Accordion title="Whop authentication errors">
+    - Confirm your `WHOP_API_KEY`, `WHOP_AGENT_USER_ID`, and `WHOP_APP_ID` are correct in your environment variables and match those in your Whop Developer Dashboard.
+  </Accordion>
+  <Accordion title="Forum creation or posting fails">
+    - Verify the `WHOP_AGENT_USER_ID` has the necessary permissions for the target experience (usually admin access).
+    - Check for any errors returned by the Whop API in your server logs.
+  </Accordion>
+  <Accordion title="App not loading in Whop iframe (localhost)">
+    - Ensure the Whop dev proxy is running if you're using it.
+    - In Whop, under your app's settings for the installed experience, ensure you've switched from "Production" to "Localhost" and set the correct port (e.g., 3000).
+    - Check your browser's developer console for any errors.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+- Join the [Developer Whop](https://whop.com/developers)
+- View the source code of this app [here](https://github.com/Yohanan-Negash/ama-whop-app)
+- DM [@Yoni on Whop](https://whop.com/@toni21jr)
+
+## Resources used
+
+- [Whop Developer Documentation](https://dev.whop.com)
+- [Whop SDK Reference](https://github.com/whopio/whop-sdk-ts)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Shadcn UI](https://ui.shadcn.com/)
+
+---
