@@ -369,25 +369,10 @@
 					]
 				},
 				{
-					"group": "Chats",
-					"pages": [
-						"sdk/api/chats/find-or-create-chat",
-						"sdk/api/chats/list-messages-from-chat",
-						"sdk/api/chats/send-message-to-chat"
-					]
-				},
-				{
 					"group": "Companies",
 					"pages": [
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-waitlist-entries-for-company"
-					]
-				},
-				{
-					"group": "Direct Messages",
-					"pages": [
-						"sdk/api/direct-messages/list-direct-message-conversations",
-						"sdk/api/direct-messages/send-direct-message-to-user"
 					]
 				},
 				{
@@ -404,6 +389,16 @@
 						"sdk/api/forums/create-forum-post",
 						"sdk/api/forums/find-or-create-forum",
 						"sdk/api/forums/list-forum-posts-from-forum"
+					]
+				},
+				{
+					"group": "Messages",
+					"pages": [
+						"sdk/api/messages/find-or-create-chat",
+						"sdk/api/messages/list-direct-message-conversations",
+						"sdk/api/messages/list-messages-from-chat",
+						"sdk/api/messages/send-direct-message-to-user",
+						"sdk/api/messages/send-message-to-chat"
 					]
 				},
 				{
