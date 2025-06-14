@@ -6,7 +6,7 @@ import {
 import { db } from "@/lib/db";
 import { type Listing, listingsTable, paymentsTable } from "@/lib/db/schema";
 import type { PaymentMetadata } from "@/lib/types";
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { waitUntil } from "@vercel/functions";
 import { makeWebhookValidator } from "@whop/api";
 import { eq } from "drizzle-orm";
@@ -136,16 +136,16 @@ async function handlePaymentWebhook(
 
 async function sendNotification(updatedListing: Listing) {
 	// Get company id
-	const experience = await whopApi.getExperience({
+	const experience = await whopSdk.experiences.getExperience({
 		experienceId: updatedListing.experienceId,
 	});
-	const bidderUser = await whopApi.getUser({
+	const bidderUser = await whopSdk.users.getUser({
 		userId: updatedListing.lastBidderUserId ?? "",
 	});
 
 	const name = bidderUser.name ?? bidderUser.username;
 
-	await whopApi.sendPushNotification({
+	await whopSdk.notifications.sendPushNotification({
 		title: `${name} just purchased an item!`,
 		content: `${name} just purchased ${updatedListing.title} for ${updatedListing.currentPrice}. You can now fulfill the order.`,
 		companyTeamId: experience.company.id,

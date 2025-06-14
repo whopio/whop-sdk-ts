@@ -1,5 +1,5 @@
 import ExperiencePrompt from "@/components/experience-prompt";
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { PrismaClient } from "@prisma/client";
 import { verifyUserToken } from "@whop/api";
 import { headers } from "next/headers";
@@ -34,7 +34,7 @@ export default async function ExperiencePage({
 	const { experienceId } = await params;
 	const experience = await findOrCreateExperience(experienceId);
 
-	const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+	const hasAccess = await whopSdk.access.checkIfUserHasAccessToExperience({
 		userId,
 		experienceId,
 	});

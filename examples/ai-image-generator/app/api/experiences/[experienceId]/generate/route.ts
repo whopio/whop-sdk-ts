@@ -1,4 +1,4 @@
-import { verifyUserToken, whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { PrismaClient } from "@prisma/client";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -26,12 +26,12 @@ export async function POST(
 		}
 
 		const headersList = await headers();
-		const userToken = await verifyUserToken(headersList);
+		const userToken = await whopSdk.verifyUserToken(headersList);
 		if (!userToken) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
-		const hasAccess = await whopApi.checkIfUserHasAccessToExperience({
+		const hasAccess = await whopSdk.access.checkIfUserHasAccessToExperience({
 			userId: userToken.userId,
 			experienceId,
 		});
@@ -44,7 +44,7 @@ export async function POST(
 		}
 
 		const [publicUser, experience] = await Promise.all([
-			whopApi.getUser({
+			whopSdk.users.getUser({
 				userId: userToken.userId,
 			}),
 			prisma.experience.findUnique({
@@ -95,11 +95,11 @@ export async function POST(
 		const generationId = crypto.randomUUID();
 
 		const [originalFileUploadResponse, uploadResponse] = await Promise.all([
-			whopApi.uploadAttachment({
+			whopSdk.attachments.uploadAttachment({
 				file: originalFile,
 				record: "forum_post",
 			}),
-			whopApi.uploadAttachment({
+			whopSdk.attachments.uploadAttachment({
 				file: new File(
 					[generatedImageBuffer],
 					`${generationId}-generated.png`,
@@ -111,20 +111,22 @@ export async function POST(
 			}),
 		]);
 
-		const whopExperience = await whopApi.getExperience({ experienceId });
+		const whopExperience = await whopSdk.experiences.getExperience({
+			experienceId,
+		});
 		const companyId = whopExperience.company.id;
 
 		const generatedAttachmentId = uploadResponse.directUploadId;
 		const originalAttachmentId = originalFileUploadResponse.directUploadId;
 
-		const forum = await whopApi.findOrCreateForum({
+		const forum = await whopSdk.forums.findOrCreateForum({
 			experienceId: experience.id,
 			name: "AI Uploads",
 		});
 
 		const forumId = forum?.id;
 
-		const post = await whopApi.createForumPost({
+		const post = await whopSdk.forums.createForumPost({
 			forumExperienceId: forumId,
 			content: `@${publicUser?.username} generated this image with the prompt: "${experience.prompt}"\n\nTry it yourself here: https://whop.com/hub/${companyId}/${experience.id}/app\n\nBefore vs After ⬇️`,
 			attachments: [

@@ -1,7 +1,7 @@
 "use server";
 import type { Listing } from "../db/schema";
 import type { WebsocketData } from "../types";
-import { whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 
 export async function sendListing(listing: Listing) {
 	return await sendWebsocketMessage(
@@ -16,10 +16,10 @@ export async function sendListing(listing: Listing) {
 }
 
 export async function sendWebsocketMessage(
-	target: Parameters<typeof whopApi.sendWebsocketMessage>[0]["target"],
+	target: Parameters<typeof whopSdk.websockets.sendMessage>[0]["target"],
 	message: WebsocketData,
 ) {
-	return await whopApi.sendWebsocketMessage({
+	return await whopSdk.websockets.sendMessage({
 		message: JSON.stringify(message),
 		target,
 	});

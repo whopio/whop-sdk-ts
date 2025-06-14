@@ -5,7 +5,7 @@ import { db } from "../db";
 import { listingsTable } from "../db/schema";
 import { SafeError, wrapServerAction } from "../server-action-errors";
 import type { PaymentMetadata } from "../types";
-import { verifyUserToken, whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 import { sendListing } from "./send-websocket-message";
 
 export const purchaseListing = wrapServerAction(
@@ -16,7 +16,7 @@ export const purchaseListing = wrapServerAction(
 		listingId: string;
 		listingAnswer?: string | null;
 	}) => {
-		const { userId } = await verifyUserToken(await headers());
+		const { userId } = await whopSdk.verifyUserToken(await headers());
 
 		const listing = await db.query.listingsTable.findFirst({
 			where: eq(listingsTable.id, listingId),
@@ -64,7 +64,7 @@ export const purchaseListing = wrapServerAction(
 			experienceId: listing.experienceId,
 		};
 
-		const result = await whopApi.chargeUser({
+		const result = await whopSdk.payments.chargeUser({
 			amount: Number.parseFloat(listing.currentPrice),
 			currency: "usd",
 			userId,

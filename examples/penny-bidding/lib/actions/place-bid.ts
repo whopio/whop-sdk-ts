@@ -11,7 +11,7 @@ import { verifyUser } from "@/lib/verify-user";
 import { waitUntil } from "@vercel/functions";
 import { and, eq, gt, sql } from "drizzle-orm";
 import { SafeError, wrapServerAction } from "../server-action-errors";
-import { whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 import { sendListing, sendWebsocketMessage } from "./send-websocket-message";
 
 // Ensure that after a bid is placed, the listing will not expire for at least 20 seconds.
@@ -120,13 +120,13 @@ export const placeBid = wrapServerAction(
 
 async function sendNotification(updatedListing: Listing, oldListing: Listing) {
 	if (oldListing.lastBidderUserId) {
-		const newUser = await whopApi.getUser({
+		const newUser = await whopSdk.users.getUser({
 			userId: updatedListing.lastBidderUserId ?? "",
 		});
 
 		const newUserName = newUser.name ?? newUser.username;
 
-		await whopApi.sendPushNotification({
+		await whopSdk.notifications.sendPushNotification({
 			title: `New bid from ${newUserName}`,
 			content: `"${newUserName} just bid ${updatedListing.currentPrice} for ${updatedListing.title}. You just lost the top spot!"`,
 			experienceId: updatedListing.experienceId,

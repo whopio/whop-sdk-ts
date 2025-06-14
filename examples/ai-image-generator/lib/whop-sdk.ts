@@ -1,6 +1,8 @@
-import { WhopServerSdk, makeUserTokenVerifier } from "@whop/api";
+import { WhopServerSdk } from "@whop/api";
 
-export const whopApi = WhopServerSdk({
+export const whopSdk = WhopServerSdk({
+	appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
+
 	// Add your app api key here - this is required.
 	// You can get this from the Whop dashboard after creating an app in the "API Keys" section.
 	appApiKey: process.env.WHOP_API_KEY ?? "fallback",
@@ -15,9 +17,5 @@ export const whopApi = WhopServerSdk({
 	// When making api requests that query or mutate data about a company, you need to specify the companyId.
 	// This is optional, however if not specified certain requests will fail.
 	// This can also be applied later with the `withCompany` function.
-	companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
-});
-
-export const verifyUserToken = makeUserTokenVerifier({
-	appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
+	companyId: undefined,
 });

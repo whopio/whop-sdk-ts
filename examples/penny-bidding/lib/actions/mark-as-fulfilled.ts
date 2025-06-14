@@ -6,7 +6,7 @@ import { db } from "../db";
 import { type Listing, listingsTable } from "../db/schema";
 import { SafeError, wrapServerAction } from "../server-action-errors";
 import { verifyUser } from "../verify-user";
-import { whopApi } from "../whop-api";
+import { whopSdk } from "../whop-sdk";
 import { sendListing } from "./send-websocket-message";
 
 export const markAsFulfilled = wrapServerAction(async (listingId: string) => {
@@ -36,7 +36,7 @@ export const markAsFulfilled = wrapServerAction(async (listingId: string) => {
 
 async function sendNotification(updatedListing: Listing) {
 	if (updatedListing.lastBidderUserId) {
-		await whopApi.sendPushNotification({
+		await whopSdk.notifications.sendPushNotification({
 			title: "Listing fulfilled",
 			content: `"${updatedListing.title} was fulfilled"`,
 			experienceId: updatedListing.experienceId,
