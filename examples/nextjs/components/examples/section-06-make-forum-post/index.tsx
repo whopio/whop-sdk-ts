@@ -1,4 +1,4 @@
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 import { Button, Select, TextArea } from "@whop/react/components";
 
 export async function SectionMakeForumPost({
@@ -7,12 +7,12 @@ export async function SectionMakeForumPost({
 	params: Promise<{ experienceId: string }>;
 }) {
 	const { experienceId } = await params;
-	const experience = await whopApi.getExperience({ experienceId });
+	const experience = await whopSdk.experiences.getExperience({ experienceId });
 	const companyId = experience.company.id;
 	// user user_v9KUoZvTGp6ID is an admin of the current company.
-	const forumExperiences = await whopApi
+	const forumExperiences = await whopSdk
 		.withUser("user_v9KUoZvTGp6ID")
-		.listExperiences({
+		.experiences.listExperiences({
 			companyId,
 			appId: "app_dYfm2IdXhDMquv",
 			onAccessPass: true,
@@ -35,10 +35,10 @@ export async function SectionMakeForumPost({
 
 		console.log(experienceId, content);
 
-		await whopApi
+		await whopSdk
 			.withUser("user_v9KUoZvTGp6ID")
 			.withCompany(companyId)
-			.createForumPost({
+			.forums.createForumPost({
 				content,
 				forumExperienceId: experienceId,
 				title: "Created by the SDK",
