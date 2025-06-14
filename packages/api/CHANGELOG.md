@@ -1,5 +1,14 @@
 # @whop/api
 
+## 0.0.27
+
+### Patch Changes
+
+- b706f25: Added a create checkout session function to the payments methods to allow attaching metadata to plans for subscriptions.
+- ef9ca4e: Removes extra input and output objects from the generated code. This will require some code changes for old clients but should make the DX much better by being less verbose and annoying. For example getUser now returns the user object directly without being nested in a "publicUser" field
+- af9e71a: Organise all the api methods into groups for clarity and ease of use.
+- 081dbc7: Updated the SDK to send the graphql operation names in the pathname
+
 ## 0.0.26
 
 ### Patch Changes
