@@ -407,7 +407,11 @@
 				},
 				{
 					"group": "Payments",
-					"pages": ["sdk/api/payments/charge-user", "sdk/api/payments/pay-user"]
+					"pages": [
+						"sdk/api/payments/charge-user",
+						"sdk/api/payments/create-checkout-session",
+						"sdk/api/payments/pay-user"
+					]
 				},
 				{
 					"group": "Users",
