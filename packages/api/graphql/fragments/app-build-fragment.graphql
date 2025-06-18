@@ -1,0 +1,10 @@
+fragment BaseAppBuild on AppBuild {
+	id
+	createdAt
+	fileUrl
+	checksum
+	platform
+	reviewMessage
+	supportedAppViewTypes
+	status
+}

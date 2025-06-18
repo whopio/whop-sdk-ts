@@ -1,0 +1,5 @@
+mutation createAppBuild($input: CreateAppBuildInput!) {
+	createAppBuild(input: $input) {
+		...BaseAppBuild
+	}
+}
