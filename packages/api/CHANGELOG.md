@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.28
+
+### Patch Changes
+
+- afc4d5a: Added the ability to create app builds via the api
+
 ## 0.0.27
 
 ### Patch Changes

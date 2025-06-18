@@ -1,5 +1,12 @@
 # @whop/react
 
+## 0.2.8
+
+### Patch Changes
+
+- Updated dependencies [afc4d5a]
+  - @whop/api@0.0.28
+
 ## 0.2.7
 
 ### Patch Changes
