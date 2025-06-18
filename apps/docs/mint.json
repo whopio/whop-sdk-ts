@@ -361,6 +361,10 @@
 					]
 				},
 				{
+					"group": "Apps",
+					"pages": ["sdk/api/apps/create-app-build"]
+				},
+				{
 					"group": "Attachments",
 					"pages": [
 						"sdk/api/attachments/get-attachment",
