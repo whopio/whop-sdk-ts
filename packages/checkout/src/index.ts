@@ -37,6 +37,29 @@ function listen(iframe: HTMLIFrameElement) {
 	);
 }
 
+function getUtmFromCurrentUrl() {
+	const searchParams = new URLSearchParams(window.location.search);
+	const keys = Array.from(searchParams.keys());
+	return keys.reduce((acc: Record<string, string | string[]>, key) => {
+		if (!key.startsWith("utm_")) return acc;
+
+		const values = searchParams.getAll(key);
+		switch (values.length) {
+			case 0: {
+				return acc;
+			}
+			case 1: {
+				acc[key] = values[0];
+				break;
+			}
+			default: {
+				acc[key] = values;
+			}
+		}
+		return acc;
+	}, {});
+}
+
 function mount(node: HTMLElement) {
 	if (node.dataset.whopCheckoutMounted) {
 		return;
@@ -55,6 +78,9 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutHidePrice === "true",
 		node.dataset.whopCheckoutSkipRedirect === "true" ||
 			!!node.dataset.whopCheckoutOnComplete,
+		node.dataset.whopCheckoutSkipUtm === "true"
+			? undefined
+			: getUtmFromCurrentUrl(),
 	);
 
 	const iframe = document.createElement("iframe");

@@ -56,6 +56,12 @@ export interface WhopCheckoutEmbedProps {
 		/** The receipt id of the purchase. */
 		receipt_id?: string,
 	) => void;
+	/**
+	 * **Optional** - The UTM parameters to add to the checkout URL.
+	 *
+	 * **Note** - The keys must start with `utm_`
+	 */
+	utm?: Record<string, string | string[]>;
 }
 
 function WhopCheckoutEmbedInner({
@@ -65,6 +71,7 @@ function WhopCheckoutEmbedInner({
 	hidePrice = false,
 	skipRedirect = false,
 	onComplete,
+	utm,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
 		getEmbeddedCheckoutIframeUrl(
@@ -74,6 +81,7 @@ function WhopCheckoutEmbedInner({
 			undefined,
 			hidePrice,
 			skipRedirect || !!onComplete,
+			utm,
 		),
 	);
 

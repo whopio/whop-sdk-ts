@@ -88,6 +88,13 @@ Defaults to `false`
 <div data-whop-checkout-on-complete="onCheckoutComplete" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+### **`data-whop-checkout-skip-utm`**
+
+By default any utm params from the main page will be forwarded to the checkout embed.
+
+**Optional** - Set to `true` to prevent the automatic forwarding of utm parameters
+
+Defaults to `false`
 
 ## Full example
 

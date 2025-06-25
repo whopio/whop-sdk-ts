@@ -169,6 +169,12 @@ export default function Home() {
 			 * **Optional** - The fallback content to show while the checkout is loading.
 			 */
 			fallback={<>loading...</>}
+			/**
+			 * **Optional** - The UTM parameters to add to the checkout URL.
+			 *
+			 * **Note** - The keys must start with `utm_`
+			 */
+			utm={{ utm_campaign: "ad_XXXXXXX" }};
 		/>
 	);
 }
