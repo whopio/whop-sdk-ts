@@ -55,6 +55,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	origin?: string,
 	hidePrice?: boolean,
 	skipRedirect?: boolean,
+	utm?: Record<string, string | string[]>,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -74,6 +75,20 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (skipRedirect) {
 		iframeUrl.searchParams.set("skip_redirect", "true");
+	}
+	if (utm) {
+		for (const [key, value] of Object.entries(utm).sort((a, b) =>
+			a[0].localeCompare(b[0]),
+		)) {
+			if (!key.startsWith("utm_")) continue;
+			if (Array.isArray(value)) {
+				for (const v of value) {
+					iframeUrl.searchParams.append(key, v);
+				}
+			} else {
+				iframeUrl.searchParams.set(key, value);
+			}
+		}
 	}
 	return iframeUrl.toString();
 }

@@ -72,6 +72,19 @@ Defaults to `false`
 />
 ```
 
+#### **`utm`**
+
+**Optional** - The UTM parameters to add to the checkout URL.
+
+**Note** - The keys must start with `utm_`
+
+```tsx
+<WhopCheckoutEmbed
+  planId="plan_XXXXXXXXX"
+  utm={{ utm_campaign: "ad_XXXXXXX" }}
+/>
+```
+
 #### **`fallback`**
 
 **Optional** - The fallback content to show while the checkout is loading.
@@ -190,6 +203,14 @@ Defaults to `false`
   data-whop-checkout-plan-id="plan_XXXXXXXXX"
 ></div>
 ```
+
+#### **`data-whop-checkout-skip-utm`**
+
+By default any utm params from the main page will be forwarded to the checkout embed.
+
+**Optional** - Set to `true` to prevent the automatic forwarding of utm parameters
+
+Defaults to `false`
 
 ### Full example
 
