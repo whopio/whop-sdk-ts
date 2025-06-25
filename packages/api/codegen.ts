@@ -56,6 +56,7 @@ const graphqlCodegenConfig = {
 		UrlString: "string",
 		StringFloat: "string | number",
 		Requirements: "Record<string, unknown>",
+		Decimal: "string",
 	},
 };
 
