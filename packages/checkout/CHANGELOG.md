@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.30
+
+### Patch Changes
+
+- f3ed30f: add support for utm param forwarding
+
 ## 0.0.29
 
 ### Patch Changes

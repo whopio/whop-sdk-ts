@@ -1,5 +1,15 @@
 # @whop/react
 
+## 0.2.9
+
+### Patch Changes
+
+- f3ed30f: add support for utm param forwarding
+- Updated dependencies [f3ed30f]
+- Updated dependencies [551144b]
+  - @whop/checkout@0.0.30
+  - @whop/api@0.0.29
+
 ## 0.2.8
 
 ### Patch Changes

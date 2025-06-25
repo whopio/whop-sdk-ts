@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.29
+
+### Patch Changes
+
+- 551144b: add `Decimal` to gql scalar defs
+
 ## 0.0.28
 
 ### Patch Changes
