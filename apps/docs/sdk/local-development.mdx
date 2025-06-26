@@ -3,103 +3,92 @@ title: Local development
 description: Run your local setup inside of a Whop iFrame with the Whop proxy
 ---
 
-If you are building a Whop app inside of our website, you can use this proxy to run your local setup inside of a Whop iFrame. You can use this proxy with any application written in any language, not just javascript.
+If you are building a Whop app inside of our website, you can use this proxy to run your local setup inside of a Whop iFrame.
+You can use this proxy with any application written in any language and any framework.
 
+## NextJS / Javascript app
 
-### Install
-
+1. Add the proxy as a dev dependency.
 
 <CodeGroup>
 
 ```bash pnpm
-pnpm add @whop-apps/dev-proxy
+pnpm add -D @whop-apps/dev-proxy
 ```
 
 ```bash npm
-npm install @whop-apps/dev-proxy
+npm install -D @whop-apps/dev-proxy
 ```
 
 ```bash yarn
-yarn add @whop-apps/dev-proxy
+yarn add -D @whop-apps/dev-proxy
 ```
 
 </CodeGroup>
 
-### Run
+2. Update your `package.json` dev script to include the proxy.
 
+```json
+"scripts": {
+	"dev": "whop-proxy --command 'next dev --turbopack'",
+}
+```
 
+> You can update the dev command to match your framework requirements.
+> You can also other commands wrapped by the proxy in a similar way.
+
+3. Run the proxy.
 
 <CodeGroup>
 
 ```bash pnpm
-pnpm whop-proxy
+pnpm dev
 ```
 
 ```bash npm
-npm run whop-proxy
+npm run dev
 ```
 
 ```bash yarn
-yarn whop-proxy
+yarn dev
+```
+
+</CodeGroup>
+
+## Standalone mode (other frameworks)
+
+1. Run you app on your local machine on some port, for example 5000.
+
+2. Run the proxy in standalone mode.
+
+<CodeGroup>
+
+```bash pnpm
+pnpm dlx @whop-apps/dev-proxy --standalone --upstreamPort=5000 --proxyPort=3000
+```
+
+```bash npm
+npx @whop-apps/dev-proxy --standalone --upstreamPort=5000 --proxyPort=3000
+```
+
+```bash yarn
+yarn dlx @whop-apps/dev-proxy --standalone --upstreamPort=5000 --proxyPort=3000
 ```
 
 </CodeGroup>
 
 <Note>
-  If you are using **NPM**, you need to add ```"whop-proxy": "whop-proxy"``` to
-  the **scripts** section of your `package.json` file.
+  This will run the proxy as an independent process. It will start a server on
+  port 3000 and forward requests to port 5000 and append the user token in the
+  headers.
 </Note>
 
-### If you are running a running any app with a `pnpm dev` script:
-
-<Note>
-  If you are using **NPM**, you need to add ```"whop-proxy": "whop-proxy"``` to
-  the **scripts** section of your `package.json` file.
-</Note>
-
-<CodeGroup>
-
-```bash pnpm
-pnpm whop-proxy
-```
-
-```bash npm
-npm run whop-proxy
-```
-
-```bash yarn
-yarn whop-proxy
-```
-
-</CodeGroup>
-
-
-### If you are running an app that does not have a `pnpm dev` script, for example, a Ruby on Rails app on port 3001:
-
-
-<CodeGroup>
-
-```bash pnpm
-pnpm whop-proxy --proxyPort=3000 --upstreamPort=3001 --command="sleep 3d"
-```
-
-```bash npm
-npm whop-proxy --proxyPort=3000 --upstreamPort=3001 --command="sleep 3d"
-```
-
-```bash yarn
-yarn whop-proxy --proxyPort=3000 --upstreamPort=3001 --command="sleep 3"
-```
-
-
-</CodeGroup>
-
-### Configure
+## Proxy Command Options
 
 The proxy can be configured using the following command line options:
 
 ```bash
-Usage: pnpm whop-proxy [options]
+Usage: pnpm dlx @whop-apps/dev-proxy [options]
 
 Options:
 
@@ -107,4 +96,5 @@ Options:
 --upstreamPort <port>   The port the upstream server is listening on (set automatically by default)
 --npmCommand <command>  The npm command to run to start the upstream server (dev by default)
 --command <command>     The command to run to start the upstream server (npm run dev by default)
+--standalone            Run the proxy as an independent process proxying requests from one port to another port. Ignores the command / npmCommand options.
 ```
