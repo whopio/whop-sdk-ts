@@ -4,9 +4,9 @@ description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.experiences.listExperiences({
+const result = await whopSdk.experiences.listExperiences({
 	after: "pageInfo.endCursor",
 
 	first: 10,

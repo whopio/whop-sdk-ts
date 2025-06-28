@@ -4,9 +4,9 @@ description: Fetch direct message or group chats for the current user. Experimen
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.messages.listDirectMessageConversations({
+const result = await whopSdk.messages.listDirectMessageConversations({
 	// The `last_post_sent_at` timestamp to fetch channels before
 	beforeTimestamp: "9999999",
 

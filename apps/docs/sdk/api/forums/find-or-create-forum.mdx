@@ -3,9 +3,9 @@ title: Find Or Create Forum
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.forums.findOrCreateForum({
+const result = await whopSdk.forums.findOrCreateForum({
 	// The ID of the access pass (whop) to attach the experience to. It looks like prod_xxxx.
 	accessPassId: "prod_XXXXXXXX",
 

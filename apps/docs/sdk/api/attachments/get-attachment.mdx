@@ -4,9 +4,9 @@ description: Returns the attachment
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.attachments.getAttachment({
+const result = await whopSdk.attachments.getAttachment({
 	// The ID of the attachment
 	id: "xxxxxxxxxxx" /* Required! */,
 });

@@ -3,9 +3,9 @@ title: Charge User
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.payments.chargeUser({
+const result = await whopSdk.payments.chargeUser({
 	// The affiliate code to use for the checkout session
 	affiliateCode: "some string",
 

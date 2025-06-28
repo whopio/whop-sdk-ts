@@ -4,9 +4,9 @@ description: Fetch a specific user.
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.users.getUser({
+const result = await whopSdk.users.getUser({
 	// ID of the user by tag or the username.
 	userId: "user_XXXXXXXX" /* Required! */,
 });

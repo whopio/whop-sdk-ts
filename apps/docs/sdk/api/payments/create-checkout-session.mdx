@@ -3,9 +3,9 @@ title: Create Checkout Session
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.payments.createCheckoutSession({
+const result = await whopSdk.payments.createCheckoutSession({
 	// The affiliate code to use for the checkout session
 	affiliateCode: "some string",
 

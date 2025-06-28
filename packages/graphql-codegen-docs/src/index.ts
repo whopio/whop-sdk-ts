@@ -140,9 +140,9 @@ function formatOperation(
 	const description = getFieldDescription(schema, value) ?? "";
 
 	const codeExample = `
-	import { whopApi } from "@/lib/whop-api";
+	import { whopSdk } from "@/lib/whop-sdk";
 
-	const result = await whopApi.${group}.${value.name?.value}(${inputCode ?? ""});
+	const result = await whopSdk.${group}.${value.name?.value}(${inputCode ?? ""});
 	`;
 
 	const formatted = formatCode(codeExample, biome);
