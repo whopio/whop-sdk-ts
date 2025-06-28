@@ -4,9 +4,9 @@ description: Fetch feed posts for the current user
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.messages.listMessagesFromChat({
+const result = await whopSdk.messages.listMessagesFromChat({
 	// The ID of the experience to fetch posts from
 	chatExperienceId: "exp_XXXXXXXX",
 });

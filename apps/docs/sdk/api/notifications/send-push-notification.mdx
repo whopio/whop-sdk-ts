@@ -3,9 +3,9 @@ title: Send Push Notification
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.notifications.sendPushNotification({
+const result = await whopSdk.notifications.sendPushNotification({
 	// The ID of the company team to send the notification to
 	companyTeamId: "biz_XXXXXXXX",
 
@@ -21,8 +21,13 @@ const result = await whopApi.notifications.sendPushNotification({
 	// Whether the notification is a mention
 	isMention: true,
 
-	// The link to open when the notification is clicked
+	// The link to open when the notification is clicked. If you just want to append
+	// a rest path use the restPath parameter. You can link to any url here.
 	link: "some string",
+
+	// The rest path to append to the generated deep link that opens your app. Use
+	// [restPath] in your app path in the dashboard to read this parameter.
+	restPath: "some string",
 
 	// The ID of the user sending the notification
 	senderUserId: "user_XXXXXXXX",

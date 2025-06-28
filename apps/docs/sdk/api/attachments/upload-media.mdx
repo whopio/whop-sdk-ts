@@ -3,9 +3,9 @@ title: Upload Media
 ---
 
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.attachments.uploadMedia({
+const result = await whopSdk.attachments.uploadMedia({
 	// The size of the file in bytes
 	byteSize: 10,
 

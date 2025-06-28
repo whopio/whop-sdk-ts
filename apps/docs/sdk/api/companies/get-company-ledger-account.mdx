@@ -4,9 +4,9 @@ description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
 ```typescript
-import { whopApi } from "@/lib/whop-api";
+import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopApi.companies.getCompanyLedgerAccount({
+const result = await whopSdk.companies.getCompanyLedgerAccount({
 	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
 	companyId: "biz_XXXXXXXX" /* Required! */,
 });
