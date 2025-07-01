@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.11
+
+### Patch Changes
+
+- f2c9f08: fix framer checkout embed prop types
+
 ## 0.2.10
 
 ### Patch Changes
