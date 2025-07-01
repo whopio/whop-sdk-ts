@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.14
+
+### Patch Changes
+
+- 49b949c: export framer checkout embed from @whop/react/framer
+
 ## 0.2.13
 
 ### Patch Changes
