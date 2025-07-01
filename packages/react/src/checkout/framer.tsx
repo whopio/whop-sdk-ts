@@ -4,11 +4,11 @@ import { WhopCheckoutEmbed as WhopReactCheckoutEmbed } from ".";
 
 export default function WhopFramerCheckoutEmbed(props: {
 	planId: string;
-	theme: "light" | "dark" | "system" | "auto";
-	sessionId: string;
-	hidePrice: boolean;
-	skipRedirect: boolean;
-	onComplete: () => void;
+	theme?: "light" | "dark" | "system" | "auto";
+	sessionId?: string;
+	hidePrice?: boolean;
+	skipRedirect?: boolean;
+	onComplete?: () => void;
 }) {
 	return (
 		<WhopReactCheckoutEmbed
