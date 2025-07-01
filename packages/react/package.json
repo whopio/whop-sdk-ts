@@ -31,6 +31,11 @@
 			"require": "./dist/checkout/index.cjs",
 			"types": "./dist/checkout/index.d.ts"
 		},
+		"./framer": {
+			"import": "./dist/framer.mjs",
+			"require": "./dist/framer.cjs",
+			"types": "./dist/framer.d.ts"
+		},
 		"./components": {
 			"import": "./dist/components/index.mjs",
 			"require": "./dist/components/index.cjs",
