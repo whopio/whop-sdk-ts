@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.10
+
+### Patch Changes
+
+- 0db9f2a: Add framer code component to react sdk
+
 ## 0.2.9
 
 ### Patch Changes
