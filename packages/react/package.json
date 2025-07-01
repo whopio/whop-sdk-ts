@@ -21,15 +21,15 @@
 			"require": "./dist/index.cjs",
 			"types": "./dist/index.d.ts"
 		},
-		"./checkout": {
-			"import": "./dist/checkout/index.mjs",
-			"require": "./dist/checkout/index.cjs",
-			"types": "./dist/checkout/index.d.ts"
-		},
 		"./checkout/framer": {
 			"import": "./dist/checkout/framer.mjs",
 			"require": "./dist/checkout/framer.cjs",
 			"types": "./dist/checkout/framer.d.ts"
+		},
+		"./checkout": {
+			"import": "./dist/checkout/index.mjs",
+			"require": "./dist/checkout/index.cjs",
+			"types": "./dist/checkout/index.d.ts"
 		},
 		"./components": {
 			"import": "./dist/components/index.mjs",
