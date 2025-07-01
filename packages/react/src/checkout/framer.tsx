@@ -1,5 +1,6 @@
 import { ControlType, addPropertyControls } from "framer";
-import type React from "react";
+import React from "react";
+import type { ReactNode } from "react";
 import { WhopCheckoutEmbed as WhopReactCheckoutEmbed } from ".";
 
 export default function WhopFramerCheckoutEmbed(props: {
@@ -9,7 +10,7 @@ export default function WhopFramerCheckoutEmbed(props: {
 	hidePrice?: boolean;
 	skipRedirect?: boolean;
 	onComplete?: () => void;
-	fallback?: React.ReactNode;
+	fallback?: ReactNode;
 }) {
 	return (
 		<WhopReactCheckoutEmbed
