@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.12
+
+### Patch Changes
+
+- b27b9e4: add fallback prop to framer checkout embed
+
 ## 0.2.11
 
 ### Patch Changes
