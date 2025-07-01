@@ -1,5 +1,5 @@
 import { ControlType, addPropertyControls } from "framer";
-import React from "react";
+import type React from "react";
 import { WhopCheckoutEmbed as WhopReactCheckoutEmbed } from ".";
 
 export default function WhopFramerCheckoutEmbed(props: {
@@ -9,6 +9,7 @@ export default function WhopFramerCheckoutEmbed(props: {
 	hidePrice?: boolean;
 	skipRedirect?: boolean;
 	onComplete?: () => void;
+	fallback?: React.ReactNode;
 }) {
 	return (
 		<WhopReactCheckoutEmbed
@@ -17,6 +18,7 @@ export default function WhopFramerCheckoutEmbed(props: {
 			sessionId={props.sessionId}
 			hidePrice={props.hidePrice}
 			onComplete={props.onComplete}
+			fallback={props.fallback}
 		/>
 	);
 }
@@ -59,5 +61,9 @@ addPropertyControls(WhopFramerCheckoutEmbed, {
 		type: ControlType.EventHandler,
 		description:
 			"A callback function that will be called when the checkout is complete",
+	},
+	fallback: {
+		type: ControlType.ComponentInstance,
+		description: "The fallback content to show while the checkout is loading.",
 	},
 });
