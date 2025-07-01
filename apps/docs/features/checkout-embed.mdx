@@ -111,6 +111,29 @@ export default function Home() {
 }
 ```
 
+## Framer
+
+To embed Whop checkout in a Framer project, you can utilize Framer Code components with the Whop React SDK.
+
+### Step 1: Create a new Framer Code component
+
+Navigate to the **Assets** tab in your framer project, click the **+** button next to **Code** and select **New Code File**.
+
+### Step 2: Add the checkout embed code component
+
+<Note>
+  You do not have to install the package explicitly. Framer will automatically
+  detect and install the package for you.
+</Note>
+
+Paste the following code into the editor:
+
+```tsx
+export { default } from "@whop/react/checkout/framer";
+```
+
+You can now use the checkout embed component in your project and configure it through the framer interface.
+
 ## Other websites
 
 ### Step 1: Add the script tag
