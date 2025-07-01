@@ -43,7 +43,7 @@
 		"@types/node": "latest",
 		"tsup": "8.5.0",
 		"typescript": "latest",
-		"wrangler": "^4.19.1"
+		"wrangler": "4.19.1"
 	},
 	"packageManager": "pnpm@9.15.9",
 	"engines": {
