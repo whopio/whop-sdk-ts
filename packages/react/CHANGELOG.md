@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.13
+
+### Patch Changes
+
+- 428bf11: reorder package.json exports
+
 ## 0.2.12
 
 ### Patch Changes
