@@ -69,8 +69,13 @@ function getStylesFromNode(node: HTMLElement) {
 		if (attr.name.startsWith(WHOP_CHECKOUT_STYLE_PREFIX)) {
 			const key = attr.name.slice(WHOP_CHECKOUT_STYLE_PREFIX.length);
 			const value = attr.value;
-			const [componentName, styleAttribute] = key.split("-");
-			if (componentName && styleAttribute) {
+			const [componentName, ...styleAttributeParts] = key.split("-");
+			if (componentName && styleAttributeParts.length > 0) {
+				const styleAttribute = styleAttributeParts.reduce((acc, part, idx) => {
+					if (idx === 0) return part;
+					const [firstChar, ...rest] = acc;
+					return `${acc}${firstChar.toUpperCase()}${rest.join("")}`;
+				}, "");
 				styles[componentName] ??= {};
 				styles[componentName][styleAttribute] = value;
 			}
