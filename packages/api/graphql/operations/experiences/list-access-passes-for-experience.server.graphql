@@ -1,0 +1,8 @@
+query listAccessPassesForExperience($experienceId: ID!) {
+	experience: publicExperience(id: $experienceId) {
+		experienceId: id
+		accessPasses {
+			...AccessPassFragment
+		}
+	}
+}

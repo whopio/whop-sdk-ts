@@ -46,7 +46,7 @@ function ProfileDisplay({
 	};
 }) {
 	return (
-		<div className="bg-white rounded-xl shadow-lg overflow-hidden">
+		<div className="bg-gray-2 rounded-xl shadow-lg overflow-hidden">
 			{/* Banner Image */}
 			{user.banner?.sourceUrl && (
 				<div className="relative h-32 w-full">
