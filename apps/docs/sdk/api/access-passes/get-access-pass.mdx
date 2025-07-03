@@ -95,6 +95,62 @@ const response = {
 		// The country the user is from.
 		country: "some string",
 	},
+
+	// The attachments for the access pass.
+	galleryImages: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the attachment
+				id: "xxxxxxxxxxx",
+
+				// A signed ID of the attachment to directly query the attachment
+				signedId: "xxxxxxxxxxx",
+
+				// Whether the attachment has been analyzed
+				analyzed: true,
+
+				// The size of the file in bytes
+				byteSizeV2: "9999999",
+
+				// The name of the file
+				filename: "some string",
+
+				// The attachment's content type (e.g., image/jpg, video/mp4)
+				contentType: "some string",
+
+				// The source of the attachment
+				source: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The blurhash of the image
+				blurhash: "some string",
+
+				// The height of the video
+				height: 10,
+
+				// The width of the video
+				width: 10,
+
+				// The aspect ratio of the video
+				aspectRatio: 10,
+
+				// The preview of the video
+				preview: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The duration of the audio in seconds
+				duration: 10,
+
+				// The URL of the waveform for the audio
+				waveformUrl: "some string",
+			},
+		],
+	},
 };
 
 ```

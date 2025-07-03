@@ -13,5 +13,10 @@ query getAccessPass($accessPassId: ID!) {
 		ownerUser {
 			...BasePublicProfileUser
 		}
+		galleryImages: attachments(category: gallery_images) {
+			nodes {
+				...Attachment
+			}
+		}
 	}
 }
