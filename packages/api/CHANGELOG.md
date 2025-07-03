@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.31
+
+### Patch Changes
+
+- 7650fda: Added attachments to access pass
+
 ## 0.0.30
 
 ### Patch Changes
