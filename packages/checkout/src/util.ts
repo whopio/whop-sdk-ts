@@ -100,13 +100,18 @@ export function getEmbeddedCheckoutIframeUrl(
 		}
 	}
 	if (styles) {
-		for (const [key, value] of Object.entries(styles) as [
+		for (const [component, componentStyles] of Object.entries(styles) as [
 			string,
 			Record<string, string | number> | undefined,
 		][]) {
-			if (value) {
-				for (const [key1, value1] of Object.entries(value)) {
-					iframeUrl.searchParams.set(`style.${key}.${key1}`, value1.toString());
+			if (componentStyles) {
+				for (const [styleAttribute, styleValue] of Object.entries(
+					componentStyles,
+				)) {
+					iframeUrl.searchParams.set(
+						`style.${component}.${styleAttribute}`,
+						styleValue.toString(),
+					);
 				}
 			}
 		}
