@@ -383,6 +383,7 @@
 					"group": "Experiences",
 					"pages": [
 						"sdk/api/experiences/get-experience",
+						"sdk/api/experiences/list-access-passes-for-experience",
 						"sdk/api/experiences/list-experiences",
 						"sdk/api/experiences/list-users-for-experience"
 					]

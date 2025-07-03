@@ -7,14 +7,22 @@ export async function SectionGetExperienceDetails({
 }) {
 	const { experienceId } = await params;
 
+	// Get details about the experience itself.
 	const thisExperience = await whopSdk.experiences.getExperience({
 		experienceId: experienceId,
 	});
+
+	// Get all the access passes that will give a user access to this experience.
+	const { accessPasses } =
+		await whopSdk.experiences.listAccessPassesForExperience({
+			experienceId: experienceId,
+		});
 
 	return (
 		<div>
 			Experience ID: <code>{experienceId}</code>
 			<pre>{JSON.stringify(thisExperience, null, 2)}</pre>
+			<pre>{JSON.stringify(accessPasses, null, 2)}</pre>
 		</div>
 	);
 }
