@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.17
+
+### Patch Changes
+
+- ba90230: add styling api to embedded checkout
+- Updated dependencies [ba90230]
+  - @whop/checkout@0.0.31
+
 ## 0.2.16
 
 ### Patch Changes
