@@ -2,6 +2,7 @@
 
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
+	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
 } from "@whop/checkout/util";
@@ -62,6 +63,10 @@ export interface WhopCheckoutEmbedProps {
 	 * **Note** - The keys must start with `utm_`
 	 */
 	utm?: Record<string, string | string[]>;
+	/**
+	 * **Optional** - The styles to apply to the checkout embed.
+	 */
+	styles?: WhopEmbeddedCheckoutStyleOptions;
 }
 
 function WhopCheckoutEmbedInner({
@@ -72,6 +77,7 @@ function WhopCheckoutEmbedInner({
 	skipRedirect = false,
 	onComplete,
 	utm,
+	styles,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
 		getEmbeddedCheckoutIframeUrl(
@@ -82,6 +88,7 @@ function WhopCheckoutEmbedInner({
 			hidePrice,
 			skipRedirect || !!onComplete,
 			utm,
+			styles,
 		),
 	);
 
