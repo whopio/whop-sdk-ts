@@ -1,5 +1,6 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 } from "@whop/checkout/util";
 import { useEffect, useMemo } from "react";
@@ -12,6 +13,7 @@ export function useWarnOnIframeUrlChange(
 	hidePrice?: boolean,
 	skipRedirect?: boolean,
 	utm?: Record<string, string | string[]>,
+	styles?: WhopEmbeddedCheckoutStyleOptions,
 ) {
 	const updatedIframeUrl = useMemo(
 		() =>
@@ -23,8 +25,9 @@ export function useWarnOnIframeUrlChange(
 				hidePrice,
 				skipRedirect,
 				utm,
+				styles,
 			),
-		[planId, theme, sessionId, hidePrice, skipRedirect, utm],
+		[planId, theme, sessionId, hidePrice, skipRedirect, utm, styles],
 	);
 
 	useEffect(() => {

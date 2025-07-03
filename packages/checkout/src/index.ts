@@ -1,6 +1,7 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
 } from "./util";
@@ -60,6 +61,25 @@ function getUtmFromCurrentUrl() {
 	}, {});
 }
 
+const WHOP_CHECKOUT_STYLE_PREFIX = "data-whop-checkout-style-";
+
+function getStylesFromNode(node: HTMLElement) {
+	const styles: Record<string, Record<string, string | number>> = {};
+	for (const attr of node.attributes) {
+		if (attr.name.startsWith(WHOP_CHECKOUT_STYLE_PREFIX)) {
+			const key = attr.name.slice(WHOP_CHECKOUT_STYLE_PREFIX.length);
+			const value = attr.value;
+			const [componentName, styleAttribute] = key.split("-");
+			if (componentName && styleAttribute) {
+				styles[componentName] ??= {};
+				styles[componentName][styleAttribute] = value;
+			}
+		}
+	}
+
+	return styles as WhopEmbeddedCheckoutStyleOptions;
+}
+
 function mount(node: HTMLElement) {
 	if (node.dataset.whopCheckoutMounted) {
 		return;
@@ -81,6 +101,7 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutSkipUtm === "true"
 			? undefined
 			: getUtmFromCurrentUrl(),
+		getStylesFromNode(node),
 	);
 
 	const iframe = document.createElement("iframe");

@@ -48,6 +48,14 @@ export function onWhopCheckoutMessage(
 	};
 }
 
+export interface WhopEmbeddedCheckoutStyleOptions {
+	container?: {
+		paddingTop?: number | string;
+		paddingBottom?: number | string;
+		paddingY?: number | string;
+	};
+}
+
 export function getEmbeddedCheckoutIframeUrl(
 	planId: string,
 	theme?: "light" | "dark" | "system",
@@ -56,6 +64,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	hidePrice?: boolean,
 	skipRedirect?: boolean,
 	utm?: Record<string, string | string[]>,
+	styles?: WhopEmbeddedCheckoutStyleOptions,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -87,6 +96,18 @@ export function getEmbeddedCheckoutIframeUrl(
 				}
 			} else {
 				iframeUrl.searchParams.set(key, value);
+			}
+		}
+	}
+	if (styles) {
+		for (const [key, value] of Object.entries(styles) as [
+			string,
+			Record<string, string | number> | undefined,
+		][]) {
+			if (value) {
+				for (const [key1, value1] of Object.entries(value)) {
+					iframeUrl.searchParams.set(`style.${key}.${key1}`, value1.toString());
+				}
 			}
 		}
 	}
