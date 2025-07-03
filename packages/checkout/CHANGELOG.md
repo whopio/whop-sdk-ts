@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.31
+
+### Patch Changes
+
+- ba90230: add styling api to embedded checkout
+
 ## 0.0.30
 
 ### Patch Changes
