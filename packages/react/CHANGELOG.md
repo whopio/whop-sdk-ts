@@ -1,5 +1,12 @@
 # @whop/react
 
+## 0.2.15
+
+### Patch Changes
+
+- Updated dependencies [e41599c]
+  - @whop/api@0.0.30
+
 ## 0.2.14
 
 ### Patch Changes
