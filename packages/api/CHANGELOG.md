@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.30
+
+### Patch Changes
+
+- e41599c: Added list access passes for experience endpoint
+
 ## 0.0.29
 
 ### Patch Changes
