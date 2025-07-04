@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.32
+
+### Patch Changes
+
+- e99ce4c: fix malformed style attribute
+
 ## 0.0.31
 
 ### Patch Changes
