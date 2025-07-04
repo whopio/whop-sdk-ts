@@ -69,6 +69,8 @@ export interface WhopCheckoutEmbedProps {
 	styles?: WhopEmbeddedCheckoutStyleOptions;
 }
 
+export type { WhopEmbeddedCheckoutStyleOptions };
+
 function WhopCheckoutEmbedInner({
 	planId,
 	theme,

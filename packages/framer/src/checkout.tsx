@@ -1,7 +1,10 @@
+import {
+	type WhopEmbeddedCheckoutStyleOptions,
+	WhopCheckoutEmbed as WhopReactCheckoutEmbed,
+} from "@whop/react/checkout";
 import { ControlType, addPropertyControls } from "framer";
-import React from "react";
+import React, { useMemo } from "react";
 import type { ReactNode } from "react";
-import { WhopCheckoutEmbed as WhopReactCheckoutEmbed } from ".";
 
 export default function WhopFramerCheckoutEmbed(props: {
 	planId: string;
@@ -11,7 +14,23 @@ export default function WhopFramerCheckoutEmbed(props: {
 	skipRedirect?: boolean;
 	onComplete?: () => void;
 	fallback?: ReactNode;
+	containerPaddingTop?: number;
+	containerPaddingBottom?: number;
+	containerPaddingY?: number;
 }) {
+	const styles: WhopEmbeddedCheckoutStyleOptions = useMemo(() => {
+		return {
+			container: {
+				paddingBottom: props.containerPaddingBottom,
+				paddingTop: props.containerPaddingTop,
+				paddingY: props.containerPaddingY,
+			},
+		};
+	}, [
+		props.containerPaddingBottom,
+		props.containerPaddingTop,
+		props.containerPaddingY,
+	]);
 	return (
 		<WhopReactCheckoutEmbed
 			planId={props.planId}
@@ -20,6 +39,7 @@ export default function WhopFramerCheckoutEmbed(props: {
 			hidePrice={props.hidePrice}
 			onComplete={props.onComplete}
 			fallback={props.fallback}
+			styles={styles}
 		/>
 	);
 }
@@ -66,5 +86,17 @@ addPropertyControls(WhopFramerCheckoutEmbed, {
 	fallback: {
 		type: ControlType.ComponentInstance,
 		description: "The fallback content to show while the checkout is loading.",
+	},
+	containerPaddingTop: {
+		type: ControlType.Number,
+		description: "The top padding of the checkout embed container",
+	},
+	containerPaddingBottom: {
+		type: ControlType.Number,
+		description: "The bottom padding of the checkout embed container",
+	},
+	containerPaddingY: {
+		type: ControlType.Number,
+		description: "The vertical padding of the checkout embed container",
 	},
 });
