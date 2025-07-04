@@ -73,7 +73,7 @@ function getStylesFromNode(node: HTMLElement) {
 			if (componentName && styleAttributeParts.length > 0) {
 				const styleAttribute = styleAttributeParts.reduce((acc, part, idx) => {
 					if (idx === 0) return part;
-					const [firstChar, ...rest] = acc;
+					const [firstChar, ...rest] = part;
 					return `${acc}${firstChar.toUpperCase()}${rest.join("")}`;
 				}, "");
 				styles[componentName] ??= {};
