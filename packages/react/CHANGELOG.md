@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.19
+
+### Patch Changes
+
+- c256a64: extract framer checkout embed into its own package
+
 ## 0.2.18
 
 ### Patch Changes
