@@ -1,1 +1,2 @@
-export { default as WhopFramerCheckoutEmbed } from "./checkout";
+export * from "./checkout";
+export type * from "./checkout";
