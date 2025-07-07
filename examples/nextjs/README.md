@@ -9,6 +9,8 @@ To run this project:
 2. Create a Whop App on your [whop developer dashboard](https://whop.com/dashboard/developer/), then go to the "Hosting" section and:
 	- Ensure the "Base URL" is set to the domain you intend to deploy the site on.
 	- Ensure the "App path" is set to `/experiences/[experienceId]`
+	- Ensure the "Discover path" is set to `/discover` 
+
 
 3. Copy the environment variables from the `.env.development` into a `.env.local`. Ensure to use real values from the whop dashboard.
 
