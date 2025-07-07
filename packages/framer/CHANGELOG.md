@@ -1,5 +1,11 @@
 # @whop/framer
 
+## 0.0.2
+
+### Patch Changes
+
+- ff15406: update setup and guides for framer embedded checkout
+
 ## 0.0.1
 
 ### Patch Changes
