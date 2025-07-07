@@ -15,7 +15,21 @@ Navigate to the **Assets** tab in your framer project, click the **+** button ne
 Paste the following code into the editor:
 
 ```tsx
-export { default } from "@whop/framer/checkout";
+import {
+  WhopFramerCheckoutEmbed,
+  propertyControls,
+} from "@whop/framer/checkout";
+import { addPropertyControls } from "framer";
+
+/**
+ * @framerSupportedLayoutWidth auto
+ * @framerSupportedLayoutHeight auto
+ */
+export default function WhopCheckoutEmbed(props) {
+  return <WhopFramerCheckoutEmbed {...props} />;
+}
+
+addPropertyControls(WhopCheckoutEmbed, propertyControls);
 ```
 
 You can now use the checkout embed component in your project and configure it through the framer interface.
