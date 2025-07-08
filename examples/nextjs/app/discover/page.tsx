@@ -40,7 +40,7 @@ export default function DiscoverPage() {
 							Include Referral Links
 						</h3>
 						<p className="text-sm text-gray-600">
-							Add <code>?a=your_app_id</code> to Whop links to earn affiliate
+							Add <code>?app=your_app_id</code> to Whop links to earn affiliate
 							commissions.
 						</p>
 					</div>
