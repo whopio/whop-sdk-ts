@@ -83,7 +83,7 @@
 		"@whop/api": "workspace:^",
 		"@whop/checkout": "workspace:^",
 		"@whop/iframe": "workspace:^",
-		"frosted-ui": "0.0.1-canary.74",
+		"frosted-ui": "0.0.1-canary.77",
 		"use-sync-external-store": "^1.5.0"
 	},
 	"devDependencies": {
