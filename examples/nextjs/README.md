@@ -29,6 +29,4 @@ To run this project:
 ## Troubleshooting
 
 **App not loading properly?** Make sure to set the "App path" in your Whop developer dashboard. The placeholder text in the UI does not mean it's set - you must explicitly enter `/experiences/[experienceId]` (or your chosen path name)
-a
-
 **Make sure to add env.local** Make sure to get the real app environment vairables from your whop dashboard and set them in .env.local
