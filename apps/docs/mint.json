@@ -61,7 +61,13 @@
 	"navigation": [
 		{
 			"group": "Getting Started",
-			"pages": ["introduction", "getting-started", "tutorials", "get-api-key"]
+			"pages": [
+				"introduction",
+				"getting-started",
+				"building-apps",
+				"tutorials",
+				"get-api-key"
+			]
 		},
 		{
 			"group": "Tutorials",
