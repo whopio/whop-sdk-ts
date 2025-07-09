@@ -174,7 +174,7 @@ export default function Home() {
 			 *
 			 * **Note** - The keys must start with `utm_`
 			 */
-			utm={{ utm_campaign: "ad_XXXXXXX" }};
+			utm={{ utm_campaign: "ad_XXXXXXX" }}
 			/**
 			 * **Optional** - The styles to apply to the checkout embed.
 			 */
