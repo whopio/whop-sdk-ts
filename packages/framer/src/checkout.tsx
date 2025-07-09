@@ -1,5 +1,5 @@
-import type { WhopEmbeddedCheckoutPrefillOptions } from "@whop/checkout/util";
 import {
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	WhopCheckoutEmbed as WhopReactCheckoutEmbed,
 } from "@whop/react/checkout";

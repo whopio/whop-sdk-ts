@@ -77,7 +77,10 @@ export interface WhopCheckoutEmbedProps {
 	prefill?: WhopEmbeddedCheckoutPrefillOptions;
 }
 
-export type { WhopEmbeddedCheckoutStyleOptions };
+export type {
+	WhopEmbeddedCheckoutStyleOptions,
+	WhopEmbeddedCheckoutPrefillOptions,
+};
 
 function WhopCheckoutEmbedInner({
 	planId,
