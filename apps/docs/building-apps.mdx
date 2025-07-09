@@ -26,6 +26,19 @@ The **discover view** is a new public-facing view that helps potential users exp
 - **Access**: No authentication required
 - **Purpose**: Marketing and discovery, showcasing app value and success stories
 
+#### Affiliate Tracking & Showcasing Success
+
+To further promote your app and earn affiliate fees, consider linking to other Whops that use your app and have seen success. You can do this by adding links on your discover view to the Whop's discover page at `/discover/<accessPass_route>`, appending your app's ID as a query parameter: `?app=<your app id>`. For example:
+
+```
+/discover/<accessPass_route>?app=yourAppId
+```
+
+This not only helps potential users see real-world examples of your app in action, but also allows you to earn affiliate commissions for any referrals.
+
+> **How to get the access pass route:**
+> You can use the [Whop SDK](/sdk/api/experiences/list-access-passes-for-experience) to find the `accessPass_route` by experience ID. This will return the access passes for that experience, including the route you can use for linking.
+
 <Callout type="warning">
 When building discover views, include a **64px margin** on your top-level content to prevent it from being hidden by the iframe header.
 </Callout>
