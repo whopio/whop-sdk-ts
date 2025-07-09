@@ -1,5 +1,12 @@
 # @whop/checkout
 
+## 0.0.33
+
+### Patch Changes
+
+- eda990d: add option to prefill email in checkout embed
+- cf63220: fix onComplete callback
+
 ## 0.0.32
 
 ### Patch Changes
