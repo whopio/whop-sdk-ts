@@ -1,4 +1,5 @@
 import {
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	WhopCheckoutEmbed as WhopReactCheckoutEmbed,
 } from "@whop/react/checkout";
@@ -17,6 +18,7 @@ export interface WhopFramerCheckoutEmbedProps {
 	containerPaddingTop?: number;
 	containerPaddingBottom?: number;
 	containerPaddingY?: number;
+	prefillEmail?: string;
 }
 
 export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
@@ -33,6 +35,11 @@ export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
 		props.containerPaddingTop,
 		props.containerPaddingY,
 	]);
+	const prefill: WhopEmbeddedCheckoutPrefillOptions = useMemo(() => {
+		return {
+			email: props.prefillEmail,
+		};
+	}, [props.prefillEmail]);
 	return (
 		<WhopReactCheckoutEmbed
 			planId={props.planId}
@@ -42,6 +49,7 @@ export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
 			onComplete={props.onComplete}
 			fallback={props.fallback}
 			styles={styles}
+			prefill={prefill}
 		/>
 	);
 }
@@ -103,5 +111,9 @@ export const propertyControls: PropertyControls<WhopFramerCheckoutEmbedProps> =
 		containerPaddingY: {
 			type: ControlType.Number,
 			description: "The vertical padding of the checkout embed container",
+		},
+		prefillEmail: {
+			type: ControlType.String,
+			description: "The email to prefill in the checkout embed",
 		},
 	};

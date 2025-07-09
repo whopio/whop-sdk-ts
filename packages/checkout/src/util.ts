@@ -56,6 +56,10 @@ export interface WhopEmbeddedCheckoutStyleOptions {
 	};
 }
 
+export interface WhopEmbeddedCheckoutPrefillOptions {
+	email?: string;
+}
+
 export function getEmbeddedCheckoutIframeUrl(
 	planId: string,
 	theme?: "light" | "dark" | "system",
@@ -65,6 +69,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	skipRedirect?: boolean,
 	utm?: Record<string, string | string[]>,
 	styles?: WhopEmbeddedCheckoutStyleOptions,
+	prefill?: WhopEmbeddedCheckoutPrefillOptions,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -115,6 +120,9 @@ export function getEmbeddedCheckoutIframeUrl(
 				}
 			}
 		}
+	}
+	if (prefill?.email) {
+		iframeUrl.searchParams.set("email", prefill.email);
 	}
 	return iframeUrl.toString();
 }

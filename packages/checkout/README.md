@@ -96,6 +96,14 @@ By default any utm params from the main page will be forwarded to the checkout e
 
 Defaults to `false`
 
+### **`data-whop-checkout-prefill-email`**
+
+Used to prefill the email in the embedded checkout form. This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```md
+<div data-whop-checkout-prefill-email="example@domain.com" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 ## Full example
 
 ```md
