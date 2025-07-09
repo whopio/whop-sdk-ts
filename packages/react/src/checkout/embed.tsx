@@ -2,6 +2,7 @@
 
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
@@ -67,6 +68,13 @@ export interface WhopCheckoutEmbedProps {
 	 * **Optional** - The styles to apply to the checkout embed.
 	 */
 	styles?: WhopEmbeddedCheckoutStyleOptions;
+	/**
+	 * **Optional** - The prefill options to apply to the checkout embed.
+	 *
+	 * Used to prefill the email in the embedded checkout form.
+	 * This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+	 */
+	prefill?: WhopEmbeddedCheckoutPrefillOptions;
 }
 
 export type { WhopEmbeddedCheckoutStyleOptions };
@@ -80,6 +88,7 @@ function WhopCheckoutEmbedInner({
 	onComplete,
 	utm,
 	styles,
+	prefill,
 }: WhopCheckoutEmbedProps): React.ReactNode {
 	const { current: iframeUrl } = useLazyRef(() =>
 		getEmbeddedCheckoutIframeUrl(
@@ -91,6 +100,7 @@ function WhopCheckoutEmbedInner({
 			skipRedirect || !!onComplete,
 			utm,
 			styles,
+			prefill,
 		),
 	);
 

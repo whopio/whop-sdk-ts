@@ -1,6 +1,7 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
@@ -85,6 +86,14 @@ function getStylesFromNode(node: HTMLElement) {
 	return styles as WhopEmbeddedCheckoutStyleOptions;
 }
 
+function getPrefillFromNode(node: HTMLElement) {
+	const prefill: WhopEmbeddedCheckoutPrefillOptions = {};
+	if (node.dataset.whopCheckoutPrefillEmail) {
+		prefill.email = node.dataset.whopCheckoutPrefillEmail;
+	}
+	return prefill;
+}
+
 function mount(node: HTMLElement) {
 	if (node.dataset.whopCheckoutMounted) {
 		return;
@@ -107,6 +116,7 @@ function mount(node: HTMLElement) {
 			? undefined
 			: getUtmFromCurrentUrl(),
 		getStylesFromNode(node),
+		getPrefillFromNode(node),
 	);
 
 	const iframe = document.createElement("iframe");

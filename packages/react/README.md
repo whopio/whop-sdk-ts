@@ -175,6 +175,17 @@ export default function Home() {
 			 * **Note** - The keys must start with `utm_`
 			 */
 			utm={{ utm_campaign: "ad_XXXXXXX" }};
+			/**
+			 * **Optional** - The styles to apply to the checkout embed.
+			 */
+			styles={{ container: { paddingTop: 50 }}}
+			/**
+			 * **Optional** - The prefill options to apply to the checkout embed.
+			 * 
+			 * Used to prefill the email in the embedded checkout form. 
+			 * This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+			 */
+			prefill={{ email: "example@domain.com" }}
 		/>
 	);
 }
