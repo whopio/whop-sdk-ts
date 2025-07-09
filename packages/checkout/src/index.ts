@@ -6,7 +6,7 @@ import {
 	onWhopCheckoutMessage,
 } from "./util";
 
-function listen(iframe: HTMLIFrameElement) {
+function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
 	window.wco?.frames.set(
 		iframe,
 		onWhopCheckoutMessage(iframe, function handleWhopCheckoutMessage(message) {
@@ -20,7 +20,7 @@ function listen(iframe: HTMLIFrameElement) {
 					break;
 				}
 				case "complete": {
-					const callbackTarget = iframe.dataset.whopCheckoutOnComplete;
+					const callbackTarget = node.dataset.whopCheckoutOnComplete;
 					if (callbackTarget) {
 						const callback = (
 							window as unknown as {
@@ -128,7 +128,7 @@ function mount(node: HTMLElement) {
 	node.appendChild(iframe);
 
 	// listen for iframe events
-	listen(iframe);
+	listen(iframe, node);
 }
 
 if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
