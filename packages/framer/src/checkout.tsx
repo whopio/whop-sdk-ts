@@ -1,8 +1,13 @@
 import {
+	type WhopCheckoutEmbedThemeOptions,
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	WhopCheckoutEmbed as WhopReactCheckoutEmbed,
 } from "@whop/react/checkout";
+import {
+	type AccentColor,
+	accentColorValues,
+} from "@whop/react/checkout/colors";
 import { ControlType, type PropertyControls } from "framer";
 import React, { useMemo } from "react";
 import type { ReactNode } from "react";
@@ -19,6 +24,7 @@ export interface WhopFramerCheckoutEmbedProps {
 	containerPaddingBottom?: number;
 	containerPaddingY?: number;
 	prefillEmail?: string;
+	accentColor?: AccentColor | "default";
 }
 
 export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
@@ -40,6 +46,12 @@ export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
 			email: props.prefillEmail,
 		};
 	}, [props.prefillEmail]);
+	const themeOptions: WhopCheckoutEmbedThemeOptions = useMemo(() => {
+		return {
+			accentColor:
+				props.accentColor === "default" ? undefined : props.accentColor,
+		};
+	}, [props.accentColor]);
 	return (
 		<WhopReactCheckoutEmbed
 			planId={props.planId}
@@ -50,6 +62,7 @@ export function WhopFramerCheckoutEmbed(props: WhopFramerCheckoutEmbedProps) {
 			fallback={props.fallback}
 			styles={styles}
 			prefill={prefill}
+			themeOptions={themeOptions}
 		/>
 	);
 }
@@ -115,5 +128,20 @@ export const propertyControls: PropertyControls<WhopFramerCheckoutEmbedProps> =
 		prefillEmail: {
 			type: ControlType.String,
 			description: "The email to prefill in the checkout embed",
+		},
+		accentColor: {
+			type: ControlType.Enum,
+			displaySegmentedControl: true,
+			defaultValue: "default",
+			segmentedControlDirection: "vertical",
+			options: ["default", ...accentColorValues],
+			optionTitles: [
+				"Default",
+				...accentColorValues.map((color) => {
+					const [firstChar, ...rest] = color;
+					return `${firstChar.toUpperCase()}${rest.join("")}`;
+				}),
+			],
+			description: "The accent color you want to use in the embed",
 		},
 	};

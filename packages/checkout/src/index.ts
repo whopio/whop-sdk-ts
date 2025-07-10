@@ -3,6 +3,7 @@ import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
+	type WhopEmbeddedCheckoutThemeOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
 } from "./util";
@@ -86,6 +87,14 @@ function getStylesFromNode(node: HTMLElement) {
 	return styles as WhopEmbeddedCheckoutStyleOptions;
 }
 
+function getThemeOptionsFromNode(node: HTMLElement) {
+	const themeOptions: WhopEmbeddedCheckoutThemeOptions = {};
+	if (node.dataset.whopCheckoutThemeAccentColor) {
+		themeOptions.accentColor = node.dataset.whopCheckoutThemeAccentColor;
+	}
+	return themeOptions;
+}
+
 function getPrefillFromNode(node: HTMLElement) {
 	const prefill: WhopEmbeddedCheckoutPrefillOptions = {};
 	if (node.dataset.whopCheckoutPrefillEmail) {
@@ -117,6 +126,7 @@ function mount(node: HTMLElement) {
 			: getUtmFromCurrentUrl(),
 		getStylesFromNode(node),
 		getPrefillFromNode(node),
+		getThemeOptionsFromNode(node),
 	);
 
 	const iframe = document.createElement("iframe");

@@ -60,6 +60,10 @@ export interface WhopEmbeddedCheckoutPrefillOptions {
 	email?: string;
 }
 
+export interface WhopEmbeddedCheckoutThemeOptions {
+	accentColor?: string;
+}
+
 export function getEmbeddedCheckoutIframeUrl(
 	planId: string,
 	theme?: "light" | "dark" | "system",
@@ -70,6 +74,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	utm?: Record<string, string | string[]>,
 	styles?: WhopEmbeddedCheckoutStyleOptions,
 	prefill?: WhopEmbeddedCheckoutPrefillOptions,
+	themeOptions?: WhopEmbeddedCheckoutThemeOptions,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -123,6 +128,15 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (prefill?.email) {
 		iframeUrl.searchParams.set("email", prefill.email);
+	}
+	if (themeOptions) {
+		for (const [optionName, optionValue] of Object.entries(themeOptions) as [
+			string,
+			string | undefined,
+		][]) {
+			if (optionValue)
+				iframeUrl.searchParams.set(`theme.${optionName}`, optionValue);
+		}
 	}
 	return iframeUrl.toString();
 }
