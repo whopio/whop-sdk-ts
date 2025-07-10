@@ -1,0 +1,36 @@
+fragment BasicCourse on Course {
+	certificateAfterCompletionEnabled
+	chapters {
+		id
+		title
+		order
+		lessons {
+			id
+		}
+	}
+	coverImage
+	description
+	id
+	language
+	requireCompletingLessonsInOrder
+	tagline
+	title
+	videoProtectionEnabled
+}
+
+fragment BasicCourseChapter on Chapter {
+	id
+	title
+	order
+	lessons {
+		...BasicCourseLesson
+	}
+}
+
+fragment BasicCourseLesson on Lesson {
+	id
+	lessonType
+	title
+	order
+	daysFromCourseStartUntilUnlock
+}
