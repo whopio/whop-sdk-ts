@@ -46,6 +46,44 @@ Possible values are `light`, `dark` or `system`.
 <div data-whop-checkout-theme="light" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+### **`data-whop-checkout-theme-accent-color`**
+
+**Optional** - The accent color to apply to the checkout embed
+
+Possible values are
+- `tomato`
+- `red`
+- `ruby` 
+- `crimson`
+- `pink`
+- `plum`
+- `purple`
+- `violet`
+- `iris`
+- `cyan`
+- `teal`
+- `jade`
+- `green`
+- `grass`
+- `brown`
+- `blue`
+- `orange`
+- `indigo`
+- `sky`
+- `mint`
+- `yellow`
+- `amber`
+- `lime`
+- `lemon`
+- `magenta`
+- `gold`
+- `bronze`
+- `gray`
+
+```md
+<div data-whop-checkout-theme-accent-color="green" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 ### **`data-whop-checkout-session`**
 
 **Optional** - The session id to use for the checkout.
@@ -95,6 +133,14 @@ By default any utm params from the main page will be forwarded to the checkout e
 **Optional** - Set to `true` to prevent the automatic forwarding of utm parameters
 
 Defaults to `false`
+
+### **`data-whop-checkout-prefill-email`**
+
+Used to prefill the email in the embedded checkout form. This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```md
+<div data-whop-checkout-prefill-email="example@domain.com" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
 
 ## Full example
 

@@ -2,20 +2,35 @@
 
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
-	getEmbeddedCheckoutIframeUrl,
+	type WhopEmbeddedCheckoutThemeOptions,
 	onWhopCheckoutMessage,
 } from "@whop/checkout/util";
 
-// biome-ignore lint/style/useImportType: react is required for the module to work
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+	type ReactNode,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 
 import { useIsHydrated } from "../util/use-is-hydrated";
-import { useLazyRef } from "../util/use-lazy-ref";
+import { type AccentColor, isAccentColor } from "./colors";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_STRING,
-	useWarnOnIframeUrlChange,
+	useEmbeddedCheckoutIframeUrl,
 } from "./util";
+
+export interface WhopCheckoutEmbedThemeOptions {
+	/**
+	 * **Optional** - The accent color you want to use in the embed.
+	 *
+	 * defaults to `blue`
+	 */
+	accentColor?: AccentColor;
+}
 
 export interface WhopCheckoutEmbedProps {
 	/**
@@ -67,9 +82,23 @@ export interface WhopCheckoutEmbedProps {
 	 * **Optional** - The styles to apply to the checkout embed.
 	 */
 	styles?: WhopEmbeddedCheckoutStyleOptions;
+	/**
+	 * **Optional** - The prefill options to apply to the checkout embed.
+	 *
+	 * Used to prefill the email in the embedded checkout form.
+	 * This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+	 */
+	prefill?: WhopEmbeddedCheckoutPrefillOptions;
+	/**
+	 * **Optional** - The theme options to apply to the checkout embed.
+	 */
+	themeOptions?: WhopCheckoutEmbedThemeOptions;
 }
 
-export type { WhopEmbeddedCheckoutStyleOptions };
+export type {
+	WhopEmbeddedCheckoutStyleOptions,
+	WhopEmbeddedCheckoutPrefillOptions,
+};
 
 function WhopCheckoutEmbedInner({
 	planId,
@@ -80,18 +109,28 @@ function WhopCheckoutEmbedInner({
 	onComplete,
 	utm,
 	styles,
-}: WhopCheckoutEmbedProps): React.ReactNode {
-	const { current: iframeUrl } = useLazyRef(() =>
-		getEmbeddedCheckoutIframeUrl(
-			planId,
-			theme,
-			sessionId,
-			undefined,
-			hidePrice,
-			skipRedirect || !!onComplete,
-			utm,
-			styles,
-		),
+	prefill,
+	themeOptions,
+}: WhopCheckoutEmbedProps): ReactNode {
+	const resolvedThemeOptions: WhopEmbeddedCheckoutThemeOptions = useMemo(() => {
+		return {
+			accentColor: isAccentColor(themeOptions?.accentColor)
+				? themeOptions.accentColor
+				: undefined,
+		};
+	}, [themeOptions?.accentColor]);
+
+	const iframeUrl = useEmbeddedCheckoutIframeUrl(
+		planId,
+		theme,
+		sessionId,
+		undefined,
+		hidePrice,
+		skipRedirect || !!onComplete,
+		utm,
+		styles,
+		prefill,
+		resolvedThemeOptions,
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -123,15 +162,6 @@ function WhopCheckoutEmbedInner({
 			},
 		);
 	}, [onComplete]);
-
-	useWarnOnIframeUrlChange(
-		iframeUrl,
-		planId,
-		theme,
-		sessionId,
-		hidePrice,
-		skipRedirect || !!onComplete,
-	);
 
 	return (
 		<iframe
@@ -168,8 +198,8 @@ export function WhopCheckoutEmbed({
 	/**
 	 * **Optional** - The fallback content to show while the checkout is loading.
 	 */
-	fallback?: React.ReactNode;
-}): React.ReactNode {
+	fallback?: ReactNode;
+}): ReactNode {
 	const isHydrated = useIsHydrated();
 
 	// return the fallback while the component is not hydrated

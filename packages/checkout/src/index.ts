@@ -1,12 +1,14 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
+	type WhopEmbeddedCheckoutThemeOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
 } from "./util";
 
-function listen(iframe: HTMLIFrameElement) {
+function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
 	window.wco?.frames.set(
 		iframe,
 		onWhopCheckoutMessage(iframe, function handleWhopCheckoutMessage(message) {
@@ -20,7 +22,7 @@ function listen(iframe: HTMLIFrameElement) {
 					break;
 				}
 				case "complete": {
-					const callbackTarget = iframe.dataset.whopCheckoutOnComplete;
+					const callbackTarget = node.dataset.whopCheckoutOnComplete;
 					if (callbackTarget) {
 						const callback = (
 							window as unknown as {
@@ -85,6 +87,22 @@ function getStylesFromNode(node: HTMLElement) {
 	return styles as WhopEmbeddedCheckoutStyleOptions;
 }
 
+function getThemeOptionsFromNode(node: HTMLElement) {
+	const themeOptions: WhopEmbeddedCheckoutThemeOptions = {};
+	if (node.dataset.whopCheckoutThemeAccentColor) {
+		themeOptions.accentColor = node.dataset.whopCheckoutThemeAccentColor;
+	}
+	return themeOptions;
+}
+
+function getPrefillFromNode(node: HTMLElement) {
+	const prefill: WhopEmbeddedCheckoutPrefillOptions = {};
+	if (node.dataset.whopCheckoutPrefillEmail) {
+		prefill.email = node.dataset.whopCheckoutPrefillEmail;
+	}
+	return prefill;
+}
+
 function mount(node: HTMLElement) {
 	if (node.dataset.whopCheckoutMounted) {
 		return;
@@ -107,6 +125,8 @@ function mount(node: HTMLElement) {
 			? undefined
 			: getUtmFromCurrentUrl(),
 		getStylesFromNode(node),
+		getPrefillFromNode(node),
+		getThemeOptionsFromNode(node),
 	);
 
 	const iframe = document.createElement("iframe");
@@ -128,7 +148,7 @@ function mount(node: HTMLElement) {
 	node.appendChild(iframe);
 
 	// listen for iframe events
-	listen(iframe);
+	listen(iframe, node);
 }
 
 if (typeof window !== "undefined" && window.wco && !window.wco.listening) {

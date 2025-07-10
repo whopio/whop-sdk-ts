@@ -1,19 +1,40 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
-	type WhopEmbeddedCheckoutStyleOptions,
 	getEmbeddedCheckoutIframeUrl,
 } from "@whop/checkout/util";
 import { useEffect, useMemo } from "react";
+import { useLazyRef } from "../util/use-lazy-ref";
 
-export function useWarnOnIframeUrlChange(
+type GetEmbeddedCheckoutIframeUrlParams = Parameters<
+	typeof getEmbeddedCheckoutIframeUrl
+>;
+
+export function useEmbeddedCheckoutIframeUrl(
+	...params: GetEmbeddedCheckoutIframeUrlParams
+) {
+	const { current: iframeUrl } = useLazyRef(() =>
+		getEmbeddedCheckoutIframeUrl(...params),
+	);
+
+	useWarnOnIframeUrlChange(iframeUrl, ...params);
+
+	return iframeUrl;
+}
+
+function useWarnOnIframeUrlChange(
 	iframeUrl: string,
-	planId: string,
-	theme?: "light" | "dark" | "system",
-	sessionId?: string,
-	hidePrice?: boolean,
-	skipRedirect?: boolean,
-	utm?: Record<string, string | string[]>,
-	styles?: WhopEmbeddedCheckoutStyleOptions,
+	...[
+		planId,
+		theme,
+		sessionId,
+		_origin,
+		hidePrice,
+		skipRedirect,
+		utm,
+		styles,
+		prefill,
+		themeOptions,
+	]: GetEmbeddedCheckoutIframeUrlParams
 ) {
 	const updatedIframeUrl = useMemo(
 		() =>
@@ -26,8 +47,20 @@ export function useWarnOnIframeUrlChange(
 				skipRedirect,
 				utm,
 				styles,
+				prefill,
+				themeOptions,
 			),
-		[planId, theme, sessionId, hidePrice, skipRedirect, utm, styles],
+		[
+			planId,
+			theme,
+			sessionId,
+			hidePrice,
+			skipRedirect,
+			utm,
+			styles,
+			prefill,
+			themeOptions,
+		],
 	);
 
 	useEffect(() => {

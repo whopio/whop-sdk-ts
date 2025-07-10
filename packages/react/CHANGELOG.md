@@ -1,5 +1,23 @@
 # @whop/react
 
+## 0.2.21
+
+### Patch Changes
+
+- 9a6c80c: add option to change checkout embed accent color
+- Updated dependencies [9a6c80c]
+  - @whop/checkout@0.0.34
+
+## 0.2.20
+
+### Patch Changes
+
+- eda990d: add option to prefill email in checkout embed
+- f6b475f: Update frosted-ui to v77
+- Updated dependencies [eda990d]
+- Updated dependencies [cf63220]
+  - @whop/checkout@0.0.33
+
 ## 0.2.19
 
 ### Patch Changes
