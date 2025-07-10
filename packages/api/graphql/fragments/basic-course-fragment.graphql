@@ -1,12 +1,7 @@
 fragment BasicCourse on Course {
 	certificateAfterCompletionEnabled
 	chapters {
-		id
-		title
-		order
-		lessons {
-			id
-		}
+		...BasicCourseChapter
 	}
 	coverImage
 	description
