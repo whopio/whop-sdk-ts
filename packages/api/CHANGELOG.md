@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.32
+
+### Patch Changes
+
+- b881027: Add getCourse query
+
 ## 0.0.31
 
 ### Patch Changes
