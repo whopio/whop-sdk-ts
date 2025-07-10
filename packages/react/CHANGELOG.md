@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.21
+
+### Patch Changes
+
+- 9a6c80c: add option to change checkout embed accent color
+- Updated dependencies [9a6c80c]
+  - @whop/checkout@0.0.34
+
 ## 0.2.20
 
 ### Patch Changes
