@@ -386,6 +386,10 @@
 					]
 				},
 				{
+					"group": "Courses",
+					"pages": ["sdk/api/courses/get-course"]
+				},
+				{
 					"group": "Experiences",
 					"pages": [
 						"sdk/api/experiences/get-experience",

@@ -1,0 +1,84 @@
+---
+title: Get Course
+description: A course from a courses app experience
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.courses.getCourse({
+	// The ID of the experience that has the course.
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// Whether the course will award its students a PDF certificate after completing all lessons
+	certificateAfterCompletionEnabled: true,
+
+	// The chapters in this course
+	chapters: [
+		{
+			// The ID of the chapter. Looks like chap_XXX
+			id: "xxxxxxxxxxx",
+
+			// The title of the chapter
+			title: "some string",
+
+			// The order of the chapter within its course
+			order: 10,
+
+			// The lessons in this chapter
+			lessons: [
+				{
+					// The ID of the lesson
+					id: "xxxxxxxxxxx",
+
+					// The type of the lesson (text, video, pdf, multi, quiz, knowledge_check)
+					lessonType:
+						"knowledge_check" /* Valid values: knowledge_check | multi | pdf | quiz | text | video */,
+
+					// The title of the lesson
+					title: "some string",
+
+					// The order of the lesson within its chapter
+					order: 10,
+
+					// Number of days from course start until the lesson is unlocked
+					daysFromCourseStartUntilUnlock: 10,
+				},
+			],
+		},
+	],
+
+	// The URL of the course's cover image, which is shown in course preview cards
+	coverImage: "some string",
+
+	// A short description of the course
+	description: "some string",
+
+	// The ID of the course. Looks like cors_XXX
+	id: "xxxxxxxxxxx",
+
+	// The language spoken in the video content of the course, used to generate closed captions in the right language
+	language:
+		"bg" /* Valid values: bg | ca | cs | da | de | el | en | es | fi | fr | hr | it | nl | no | pl | pt | ro | ru | sk | sv | tr | uk */,
+
+	// Whether the course requires students to complete the previous lesson before moving on to the next one
+	requireCompletingLessonsInOrder: true,
+
+	// A short tagline for the course. It is displayed under the course title in the UI
+	tagline: "some string",
+
+	// The title of the course
+	title: "some string",
+
+	// Whether to apply protections on videos in the course (such as overlaying your user id, and logging tampering attempts)
+	videoProtectionEnabled: true,
+};
+
+```

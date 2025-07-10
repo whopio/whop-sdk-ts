@@ -1,0 +1,5 @@
+query getCourse($experienceId: ID!) {
+	course(experienceId: $experienceId) {
+		...BasicCourse
+	}
+}
