@@ -37,6 +37,19 @@ const response = {
 				{
 					// The ID of the lesson
 					id: "xxxxxxxxxxx",
+
+					// The type of the lesson (text, video, pdf, multi, quiz, knowledge_check)
+					lessonType:
+						"knowledge_check" /* Valid values: knowledge_check | multi | pdf | quiz | text | video */,
+
+					// The title of the lesson
+					title: "some string",
+
+					// The order of the lesson within its chapter
+					order: 10,
+
+					// Number of days from course start until the lesson is unlocked
+					daysFromCourseStartUntilUnlock: 10,
 				},
 			],
 		},
