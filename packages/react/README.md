@@ -186,6 +186,10 @@ export default function Home() {
 			 * This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
 			 */
 			prefill={{ email: "example@domain.com" }}
+			/**
+			 * **Optional** - The theme options to apply to the checkout embed.
+			 */
+			themeOptions={{ accentColor: "green" }}
 		/>
 	);
 }
