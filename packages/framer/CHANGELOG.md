@@ -1,5 +1,11 @@
 # @whop/framer
 
+## 0.0.5
+
+### Patch Changes
+
+- @whop/react@0.2.22
+
 ## 0.0.4
 
 ### Patch Changes
