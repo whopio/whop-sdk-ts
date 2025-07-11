@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.33
+
+### Patch Changes
+
+- 44855e8: fix oauth url missing state
+
 ## 0.0.32
 
 ### Patch Changes
