@@ -97,6 +97,7 @@ export class WhopOAuth {
 		oAuthUrl.searchParams.set("client_id", this.appId);
 		oAuthUrl.searchParams.set("response_type", "code");
 		oAuthUrl.searchParams.set("scope", scope.join(" "));
+		oAuthUrl.searchParams.set("state", state);
 
 		if (redirectUri instanceof URL) {
 			oAuthUrl.searchParams.set("redirect_uri", redirectUri.toString());
