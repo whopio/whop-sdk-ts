@@ -50,6 +50,39 @@ const response = {
 
 					// Number of days from course start until the lesson is unlocked
 					daysFromCourseStartUntilUnlock: 10,
+
+					// The associated Mux asset for video lessons
+					muxAsset: {
+						// The ID of the Mux asset
+						id: "xxxxxxxxxxx",
+
+						// The Mux-provided ID of the asset
+						muxAssetId: "some string",
+
+						// The public playback ID of the Mux asset
+						playbackId: "some string",
+
+						// The signed playback ID of the Mux asset
+						signedPlaybackId: "some string",
+
+						// The signed thumbnail playback token of the Mux asset
+						signedThumbnailPlaybackToken: "some string",
+
+						// The signed video playback token of the Mux asset
+						signedVideoPlaybackToken: "some string",
+
+						// The signed storyboard playback token of the Mux asset
+						signedStoryboardPlaybackToken: "some string",
+
+						// The duration of the video in seconds
+						durationSeconds: 10,
+
+						// The status of the Mux asset
+						status: "created" /* Valid values: created | ready | uploading */,
+
+						// The time at which the video finished uploading
+						finishedUploadingAt: 1716931200,
+					},
 				},
 			],
 		},

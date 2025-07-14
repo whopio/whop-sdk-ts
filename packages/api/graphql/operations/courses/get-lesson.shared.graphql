@@ -1,0 +1,7 @@
+query getLesson($experienceId: ID!, $lessonId: ID!) {
+	course(experienceId: $experienceId) {
+		lesson(id: $lessonId) {
+			...FullCourseLesson
+		}
+	}
+}
