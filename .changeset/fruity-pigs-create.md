@@ -2,4 +2,4 @@
 "@whop/api": patch
 ---
 
-Modify courses graphql queries
+Add additional fields to courses.getCourse. Create courses.getLesson, courses.getUserLessonInteractions.

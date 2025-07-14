@@ -14,11 +14,11 @@ fragment FullCourseLesson on Lesson {
 	}
 	attachments {
 		nodes {
-			...CourseAttachment
+			...Attachment
 		}
 	}
 	mainPdf {
-		...CourseAttachment
+		...Attachment
 	}
 }
 
@@ -39,7 +39,7 @@ fragment CourseAssessmentQuestion on AssessmentQuestion {
 	id
 	correctAnswer
 	image {
-		...CourseAttachment
+		...Attachment
 	}
 	options {
 		id
@@ -50,36 +50,4 @@ fragment CourseAssessmentQuestion on AssessmentQuestion {
 	order
 	questionText
 	questionType
-}
-
-fragment CourseAttachment on AttachmentInterface {
-	__typename
-	id
-	signedId
-	analyzed
-	byteSizeV2
-	filename
-	contentType
-	source(variant: original) {
-		url
-	}
-	... on ImageAttachment {
-		height
-		width
-		blurhash
-		aspectRatio
-	}
-	... on VideoAttachment {
-		height
-		width
-		duration
-		aspectRatio
-		preview(variant: original) {
-			url
-		}
-	}
-	... on AudioAttachment {
-		duration
-		waveformUrl
-	}
 }
