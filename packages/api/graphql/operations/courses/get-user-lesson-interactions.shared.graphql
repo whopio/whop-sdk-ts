@@ -1,0 +1,10 @@
+query getUserLessonInteractions($experienceId: ID!, $lessonId: ID!) {
+	course(experienceId: $experienceId) {
+		lessons {
+			lessonInteraction {
+				id
+				completed
+			}
+		}
+	}
+}

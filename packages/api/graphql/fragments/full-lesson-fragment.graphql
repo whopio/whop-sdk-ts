@@ -1,0 +1,85 @@
+# Includes everything needed to render the lesson page in Whop's courses app
+fragment FullCourseLesson on Lesson {
+	id
+	lessonType
+	title
+	order
+	content
+	daysFromCourseStartUntilUnlock
+	muxAsset {
+		...CourseMuxAsset
+	}
+	assessmentQuestions {
+		...CourseAssessmentQuestion
+	}
+	attachments {
+		nodes {
+			...CourseAttachment
+		}
+	}
+	mainPdf {
+		...CourseAttachment
+	}
+}
+
+fragment CourseMuxAsset on MuxAsset {
+	id
+	muxAssetId
+	playbackId
+	signedPlaybackId
+	signedThumbnailPlaybackToken
+	signedVideoPlaybackToken
+	signedStoryboardPlaybackToken
+	durationSeconds
+	status
+	finishedUploadingAt
+}
+
+fragment CourseAssessmentQuestion on AssessmentQuestion {
+	id
+	correctAnswer
+	image {
+		...CourseAttachment
+	}
+	options {
+		id
+		isCorrect
+		optionText
+		order
+	}
+	order
+	questionText
+	questionType
+}
+
+fragment CourseAttachment on AttachmentInterface {
+	__typename
+	id
+	signedId
+	analyzed
+	byteSizeV2
+	filename
+	contentType
+	source(variant: original) {
+		url
+	}
+	... on ImageAttachment {
+		height
+		width
+		blurhash
+		aspectRatio
+	}
+	... on VideoAttachment {
+		height
+		width
+		duration
+		aspectRatio
+		preview(variant: original) {
+			url
+		}
+	}
+	... on AudioAttachment {
+		duration
+		waveformUrl
+	}
+}
