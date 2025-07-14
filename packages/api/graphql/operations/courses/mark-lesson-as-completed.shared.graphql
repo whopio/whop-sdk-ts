@@ -1,0 +1,3 @@
+mutation markLessonAsCompleted($input: MarkLessonAsCompletedInput!) {
+	markLessonAsCompleted(input: $input)
+}

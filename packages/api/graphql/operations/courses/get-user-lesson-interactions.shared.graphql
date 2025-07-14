@@ -2,6 +2,7 @@ query getUserLessonInteractions($experienceId: ID!) {
 	course(experienceId: $experienceId) {
 		chapters {
 			lessons {
+				id
 				lessonInteraction {
 					id
 					completed
