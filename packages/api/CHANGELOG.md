@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.34
+
+### Patch Changes
+
+- e9486ac: Add additional fields to courses.getCourse. Create courses.getLesson, courses.getUserLessonInteractions.
+
 ## 0.0.33
 
 ### Patch Changes
