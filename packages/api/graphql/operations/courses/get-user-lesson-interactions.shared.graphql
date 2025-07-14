@@ -1,4 +1,4 @@
-query getUserLessonInteractions($experienceId: ID!, $lessonId: ID!) {
+query getUserLessonInteractions($experienceId: ID!) {
 	course(experienceId: $experienceId) {
 		chapters {
 			lessons {
