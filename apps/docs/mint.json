@@ -387,7 +387,11 @@
 				},
 				{
 					"group": "Courses",
-					"pages": ["sdk/api/courses/get-course"]
+					"pages": [
+						"sdk/api/courses/get-course",
+						"sdk/api/courses/get-lesson",
+						"sdk/api/courses/get-user-lesson-interactions"
+					]
 				},
 				{
 					"group": "Experiences",
