@@ -5,7 +5,16 @@ description: "Learn how to embed Whop's checkout flow on your website"
 
 Embedded checkout allows you to embed Whop's checkout flow on your own website. This allows you to offer your customers a seamless checkout experience without leaving your website.
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/0hGnAzwxd4g?si=0LDncN3P_MKfrsvD&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/0hGnAzwxd4g?si=0LDncN3P_MKfrsvD&rel=0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+/>
 
 ## What you need to get started
 
@@ -29,7 +38,10 @@ This component will now mount an iframe with the Whop checkout embed. Once the c
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
 
-### Available controls
+<Tip>
+  Keep that Plan ID handy. You'll need to paste it into your website code, so
+  save it somewhere you can find it.
+</Tip>
 
 To get access to the controls of the checkout embed, you can use the `ref` prop.
 
@@ -577,9 +589,7 @@ Defaults to `false`
 
 **Optional** - A callback function that will be called when the checkout is complete.
 
-<Note>
-  This option will set `skipRedirect` to `true`
-</Note>
+<Note>This option will set `skipRedirect` to `true`</Note>
 
 ```tsx
 <WhopCheckoutEmbed
@@ -594,9 +604,7 @@ Defaults to `false`
 
 **Optional** - The UTM parameters to add to the checkout URL.
 
-<Note>
-  The keys must start with `utm_`
-</Note>
+<Note>The keys must start with `utm_`</Note>
 
 ```tsx
 <WhopCheckoutEmbed
@@ -656,7 +664,8 @@ Navigate to the **Assets** tab in your framer project, click the **\+** button n
 ### Step 2: Add the checkout embed code component
 
 <Note>
-  You do not have to install the package explicitly. Framer will automatically detect and install the package for you.
+  You do not have to install the package explicitly. Framer will automatically
+  detect and install the package for you.
 </Note>
 
 Paste the following code into the editor:
@@ -733,7 +742,8 @@ wco.submit("whop-embedded-checkout");
 **Required** - The plan id you want to checkout.
 
 <Tip>
-  To get your plan id, you need to first create a plan in the Manage Pricing section on your whop page.
+  To get your plan id, you need to first create a plan in the Manage Pricing
+  section on your whop page.
 </Tip>
 
 #### **`data-whop-checkout-theme`**
@@ -844,9 +854,7 @@ Defaults to `false`
 
 **Optional** - The callback to call when the checkout succeeds
 
-<Note>
-  This option will set `data-whop-checkout-skip-redirect` to `true`
-</Note>
+<Note>This option will set `data-whop-checkout-skip-redirect` to `true`</Note>
 
 ```html
 <script>
