@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.35
+
+### Patch Changes
+
+- b7181d2: Create courses.markLessonAsCompleted mutation. Add content to BasicCourseLesson fragment. Add lesson ids to courses.getUserLessonInteractions.
+
 ## 0.0.34
 
 ### Patch Changes
