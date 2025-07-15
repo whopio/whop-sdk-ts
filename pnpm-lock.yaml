@@ -521,8 +521,8 @@ importers:
         specifier: ^0.80.1
         version: 0.80.1(@babel/core@7.28.0)
       '@whop/api':
-        specifier: 0.0.34
-        version: 0.0.34
+        specifier: workspace:*
+        version: link:../api
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -4900,10 +4900,6 @@ packages:
 
   '@whop-apps/typed-transport@0.0.1-canary.116':
     resolution: {integrity: sha512-JI8tBQIzENmet9VKmVpqb5DjtbFbsm5DGlcPID+bHXz+0dlssND+aupxJnRJaU/M/bksCf5B059Vu8uTARaymA==}
-
-  '@whop/api@0.0.34':
-    resolution: {integrity: sha512-G6Uw2Xebd8suqqRnqZxbgcu6GNDwfeInrcM3aqgd0Jx9wiJNqhkVcz/jG22NuBJucj047AoSwUpcD37/K/Wt0g==}
-    engines: {node: 22.x, pnpm: 9.15.9}
 
   '@wry/caches@1.0.1':
     resolution: {integrity: sha512-bXuaUNLVVkD20wcGBWRyo7j9N3TxePEWFZj2Y+r9OoUzfqmavM84+mFykRicNsBqatba5JLay1t48wxaXaWnlA==}
@@ -15527,15 +15523,6 @@ snapshots:
   '@whop-apps/typed-transport@0.0.1-canary.116':
     dependencies:
       zod: 3.25.36
-
-  '@whop/api@0.0.34':
-    dependencies:
-      graphql: 16.11.0
-      graphql-request: 7.2.0(graphql@16.11.0)
-      graphql-tag: 2.12.6(graphql@16.11.0)
-      jose: 6.0.11
-      js-md5: 0.8.3
-      tiny-typed-emitter: 2.1.0
 
   '@wry/caches@1.0.1':
     dependencies:

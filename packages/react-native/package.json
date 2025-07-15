@@ -39,7 +39,7 @@
 		"@babel/runtime": "^7.27.6",
 		"@react-native/babel-preset": "^0.80.1",
 		"@react-native/metro-config": "^0.80.1",
-		"@whop/api": "0.0.34",
+		"@whop/api": "workspace:*",
 		"dotenv": "16.5.0",
 		"events": "^3.3.0",
 		"find-up": "^7.0.0",
