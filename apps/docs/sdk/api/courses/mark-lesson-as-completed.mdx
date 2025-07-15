@@ -1,0 +1,20 @@
+---
+title: Mark Lesson As Completed
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.courses.markLessonAsCompleted({
+	// The ID of the lesson to mark as completed
+	lessonId: "xxxxxxxxxxx" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = true;
+
+```
