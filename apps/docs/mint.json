@@ -390,7 +390,8 @@
 					"pages": [
 						"sdk/api/courses/get-course",
 						"sdk/api/courses/get-lesson",
-						"sdk/api/courses/get-user-lesson-interactions"
+						"sdk/api/courses/get-user-lesson-interactions",
+						"sdk/api/courses/mark-lesson-as-completed"
 					]
 				},
 				{
