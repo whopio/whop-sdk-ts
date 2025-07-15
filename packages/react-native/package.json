@@ -1,0 +1,71 @@
+{
+	"name": "@whop/react-native",
+	"description": "React Native SDK for building embedded apps on Whop",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/react-native"
+	},
+	"keywords": ["whop", "react-native", "sdk", "embedded", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
+	"exports": {
+		".": {
+			"types": "./dist/lib/index.d.ts",
+			"import": "./dist/lib/index.mjs",
+			"require": "./dist/lib/index.cjs"
+		}
+	},
+	"main": "./dist/lib/index.cjs",
+	"module": "./dist/lib/index.mjs",
+	"types": "./dist/lib/index.d.ts",
+	"files": ["dist"],
+	"bin": {
+		"whop-react-native": "./dist/cli/index.js"
+	},
+	"scripts": {
+		"build": "pnpm run clean && tsup && cp src/cli/*.js dist/cli",
+		"clean": "rm -rf dist",
+		"dev": "tsup --watch",
+		"check-types": "tsc --noEmit",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"dependencies": {
+		"@babel/core": "^7.28.0",
+		"@babel/plugin-transform-export-namespace-from": "^7.27.1",
+		"@babel/preset-env": "^7.28.0",
+		"@babel/runtime": "^7.27.6",
+		"@react-native/babel-preset": "^0.80.1",
+		"@react-native/metro-config": "^0.80.1",
+		"@whop/api": "0.0.34",
+		"dotenv": "16.5.0",
+		"events": "^3.3.0",
+		"find-up": "^7.0.0",
+		"jszip": "^3.10.1",
+		"metro": "^0.83.0",
+		"metro-react-native-babel-transformer": "^0.77.0",
+		"rimraf": "^6.0.1"
+	},
+	"devDependencies": {
+		"@types/node": "latest",
+		"@types/react": "19.1.5",
+		"react": "^19.0.0",
+		"react-native": "0.80.0",
+		"tsup": "8.5.0",
+		"typescript": "latest"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"engines": {
+		"node": "22.x",
+		"pnpm": "9.15.9"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"react-native": "0.80.0"
+	}
+}
