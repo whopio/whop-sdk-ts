@@ -1,10 +1,15 @@
-import { type TurboModule, TurboModuleRegistry } from "react-native";
+import type { TurboModule } from "react-native";
+import { TurboModuleRegistry } from "react-native";
 
-interface NativeWhopCoreSpec extends TurboModule {
-	getConstants(): {
-		apiHost: string;
-	};
+export type FunctionCallResult = {
+	isOk: boolean;
+	data: string | null;
+	errorMessage: string | null;
+};
+
+export interface Spec extends TurboModule {
+	execSync(name: string, paramsJson: string): FunctionCallResult;
+	execAsync(name: string, paramsJson: string): Promise<FunctionCallResult>;
 }
 
-export const NativeWhopCore =
-	TurboModuleRegistry.getEnforcing<NativeWhopCoreSpec>("NativeWhopCore");
+export default TurboModuleRegistry.getEnforcing<Spec>("NativeWhopCore");
