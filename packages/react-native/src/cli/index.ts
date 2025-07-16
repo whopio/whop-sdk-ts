@@ -25,26 +25,41 @@ async function main() {
 
 	const [command] = args.positionals;
 
-	let dryRun = true;
+	let shouldBuild = true;
+	let shouldUpload = true;
+	let shouldClean = true;
 	if (command === "build") {
-		dryRun = true;
-	} else if (["deploy", "publish", "ship"].includes(command)) {
-		dryRun = false;
+		shouldUpload = false;
+	} else if (command === "ship") {
+		shouldBuild = true;
+		shouldUpload = true;
+	} else if (command === "upload") {
+		shouldBuild = false;
+		shouldClean = false;
+	} else if (command === "clean") {
+		shouldBuild = false;
+		shouldUpload = false;
 	} else {
 		console.error(
-			"Usage: whop-react-native build [--ios] [--android] [--web] [--dry-run]",
+			`Usage:
+	whop-react-native ship   [--ios] [--android] [--web]   # runs build and then publishes it as a dev build to whop.
+	whop-react-native build  [--ios] [--android] [--web]   # builds your app into a distributable bundle in the build/ directory.
+	whop-react-native upload [--ios] [--android] [--web]   # uploads the existing build directory to whop.
+	whop-react-native clean                                # cleans the build directory.`,
 		);
 		process.exit(1);
 	}
 
 	const root = await getRootProjectDirectory();
 
-	await cleanBuildDirectory(root);
+	if (shouldClean) {
+		await cleanBuildDirectory(root);
+	}
 
 	const didProvidePlatform =
 		args.values.ios || args.values.android || args.values.web;
 
-	const opts = { dryRun };
+	const opts = { shouldBuild, shouldUpload };
 	const promises: Promise<void>[] = [];
 
 	if (args.values.ios || !didProvidePlatform) {

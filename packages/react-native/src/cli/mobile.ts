@@ -11,10 +11,18 @@ import { VALID_VIEW_TYPES } from "./valid-view-type";
 export async function buildAndPublish(
 	root: string,
 	platform: "ios" | "android",
-	{ dryRun = false }: { dryRun: boolean } = { dryRun: false },
+	{
+		shouldBuild = true,
+		shouldUpload = true,
+	}: { shouldBuild: boolean; shouldUpload: boolean } = {
+		shouldBuild: true,
+		shouldUpload: true,
+	},
 ) {
-	await bundle(root, platform);
-	if (!dryRun) {
+	if (shouldBuild) {
+		await bundle(root, platform);
+	}
+	if (shouldUpload) {
 		await createMobileBuild(root, platform);
 	}
 }
