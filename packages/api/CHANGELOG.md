@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.36
+
+### Patch Changes
+
+- 4bd6e46: Created initial react native package with build and ship cli
+
 ## 0.0.35
 
 ### Patch Changes
