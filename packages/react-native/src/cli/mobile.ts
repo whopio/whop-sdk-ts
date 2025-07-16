@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { mkdir, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getDefaultConfig } from "@react-native/metro-config";
+import { findUp } from "find-up";
 import JSZip from "jszip";
 import { type ReportableEvent, type Reporter, runBuild } from "metro";
 import { getChecksum, uploadFile } from "./file";
@@ -42,14 +43,14 @@ export async function bundle(root: string, platform: "ios" | "android") {
 	const defaultConfig = getDefaultConfig(root);
 
 	const babelLocation = require.resolve("@babel/runtime/package");
-	const extraNodeModules = path.resolve(
-		babelLocation,
-		"..",
-		"..",
-		"..",
-		"..",
-		"node_modules",
-	);
+
+	const bableNodeModules = await findUp("node_modules", {
+		cwd: babelLocation,
+		type: "directory",
+	});
+	if (!bableNodeModules) {
+		throw new Error("babel node_modules parent folder not found");
+	}
 
 	await runBuild(
 		{
@@ -64,14 +65,14 @@ export async function bundle(root: string, platform: "ios" | "android") {
 			watchFolders: [
 				root,
 				path.resolve(root, "node_modules"),
-				extraNodeModules,
+				bableNodeModules,
 			],
 			reporter: new CustomReporter(),
 			resolver: {
 				...defaultConfig.resolver,
 				nodeModulesPaths: [
 					...(defaultConfig.resolver?.nodeModulesPaths ?? []),
-					extraNodeModules,
+					bableNodeModules,
 				],
 			},
 		},
