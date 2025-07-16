@@ -80,6 +80,7 @@ async function cleanBuildDirectory(root: string) {
 	if (existsSync(buildDirectory)) {
 		await rimraf(buildDirectory);
 	}
+	console.log(" ✔︎ cleaned build directory");
 }
 
 async function getRootProjectDirectory() {
