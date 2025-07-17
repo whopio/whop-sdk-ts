@@ -1,0 +1,5 @@
+mutation updateLessonOrder($input: UpdateLessonOrderInput!) {
+	updateLessonOrder(input: $input) {
+		...FullCourseLesson
+	}
+}

@@ -1,0 +1,5 @@
+mutation createLesson($input: CreateLessonInput!) {
+	createLesson(input: $input) {
+		...FullCourseLesson
+	}
+}

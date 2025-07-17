@@ -388,10 +388,18 @@
 				{
 					"group": "Courses",
 					"pages": [
+						"sdk/api/courses/create-chapter",
+						"sdk/api/courses/create-lesson",
+						"sdk/api/courses/delete-chapter",
+						"sdk/api/courses/delete-lesson",
 						"sdk/api/courses/get-course",
 						"sdk/api/courses/get-lesson",
 						"sdk/api/courses/get-user-lesson-interactions",
-						"sdk/api/courses/mark-lesson-as-completed"
+						"sdk/api/courses/mark-lesson-as-completed",
+						"sdk/api/courses/update-chapter-order",
+						"sdk/api/courses/update-chapter",
+						"sdk/api/courses/update-lesson-order",
+						"sdk/api/courses/update-lesson"
 					]
 				},
 				{

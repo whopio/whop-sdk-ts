@@ -1,0 +1,5 @@
+mutation createChapter($input: CreateChapterInput!) {
+	createChapter(input: $input) {
+		...BasicCourseChapter
+	}
+}
