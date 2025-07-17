@@ -1,0 +1,19 @@
+{
+	"name": "{{projectName}}",
+	"version": "0.0.1",
+	"scripts": {
+		"build": "whop-react-native build",
+		"upload": "whop-react-native upload",
+		"clean": "whop-react-native clean",
+		"ship": "whop-react-native ship"
+	},
+	"dependencies": {
+		"@whop/react-native": "{{whopReactNativeVersion}}",
+		"react": "{{reactVersion}}",
+		"react-native": "0.80.0"
+	},
+	"devDependencies": {
+		"@types/react": "{{typesReactVersion}}",
+		"typescript": "{{typescriptVersion}}"
+	}
+}
