@@ -1,0 +1,39 @@
+{
+	"name": "@whop/create-react-native",
+	"description": "Create a new React Native project for Whop",
+	"version": "0.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/whopio/whop-sdk-ts",
+		"directory": "packages/create-react-native"
+	},
+	"keywords": ["whop", "react-native", "sdk", "embedded", "apps", "payments"],
+	"bugs": "https://github.com/whopio/whop-sdk-ts/issues",
+	"homepage": "https://whop.com/developers/",
+	"license": "MIT",
+	"files": ["dist"],
+	"bin": {
+		"create-react-native": "./dist/index.js"
+	},
+	"scripts": {
+		"build": "pnpm run clean && tsup",
+		"clean": "rm -rf dist",
+		"dev": "tsup --watch",
+		"check-types": "tsc --noEmit",
+		"lint:fix": "biome check --write --unsafe"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "latest",
+		"tsup": "8.5.0",
+		"typescript": "latest"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"engines": {
+		"node": "22.x",
+		"pnpm": "9.15.9"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
