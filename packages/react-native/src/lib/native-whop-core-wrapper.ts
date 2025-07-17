@@ -7,6 +7,11 @@ export interface ExecSyncApi {
 	getAppApiOrigin(params: EmptyObject): { apiOrigin: string };
 	cacheGet(params: { key?: string | null }): { data?: string | null };
 	cacheSet(params: { key?: string | null; data?: string | null }): EmptyObject;
+	routerPush(params: {
+		path: string[];
+		params: Record<string, string>;
+	}): EmptyObject;
+	routerPop(params: EmptyObject): EmptyObject;
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {}
