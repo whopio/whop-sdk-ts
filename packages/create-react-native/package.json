@@ -1,7 +1,7 @@
 {
 	"name": "@whop/create-react-native",
 	"description": "Create a new React Native project for Whop",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
