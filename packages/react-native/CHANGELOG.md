@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.0.4
+
+### Patch Changes
+
+- 7fac232: update routing types
+
 ## 0.0.3
 
 ### Patch Changes
