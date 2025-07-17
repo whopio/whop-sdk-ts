@@ -5,11 +5,11 @@ export default defineConfig({
 	sourcemap: true,
 	clean: true,
 	dts: true,
-	format: ["cjs", "esm"],
-	target: "es2022",
+	format: ["cjs"],
+	target: "node18",
 	outDir: "dist",
-	outExtension: ({ format }) =>
-		format === "cjs"
-			? { js: ".js", dts: ".d.ts" }
-			: { js: ".mjs", dts: ".d.mts" },
+	banner: {
+		js: "#!/usr/bin/env node",
+	},
+	outExtension: () => ({ js: ".js" }),
 });

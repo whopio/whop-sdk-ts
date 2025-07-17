@@ -1,22 +1,20 @@
 {
-	"name": "whop-react-native-template",
+	"name": "{{projectName}}",
 	"version": "1.0.0",
-	"description": "",
 	"scripts": {
 		"build": "whop-react-native build",
+		"upload": "whop-react-native upload",
+		"clean": "whop-react-native clean",
 		"ship": "whop-react-native ship"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
-		"@whop/react-native": "0.0.2",
-		"react": "^19.1.0",
+		"@whop/react-native": "{{whopReactNativeVersion}}",
+		"react": "{{reactVersion}}",
 		"react-native": "0.80.0"
 	},
 	"devDependencies": {
-		"@types/react": "^19.1.8",
-		"typescript": "^5.8.3"
+		"@types/react": "{{typesReactVersion}}",
+		"typescript": "{{typescriptVersion}}"
 	},
 	"packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531"
 }

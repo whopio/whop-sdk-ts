@@ -13,7 +13,9 @@ src
 .env.development.local
 .env.test.local
 .env.production.local
+.DS_Store
 
 scripts
 !scripts/postinstall.mjs
+!template/**/*
 
