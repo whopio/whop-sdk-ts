@@ -1,0 +1,5 @@
+mutation updateChapterOrder($input: UpdateChapterOrderInput!) {
+	updateChapterOrder(input: $input) {
+		...BasicCourseChapter
+	}
+}

@@ -1,0 +1,5 @@
+mutation deleteCourse($input: DeleteCourseInput!) {
+	deleteCourse(input: $input) {
+		...BasicCourse
+	}
+}

@@ -1,0 +1,5 @@
+mutation deleteChapter($input: DeleteChapterInput!) {
+	deleteChapter(input: $input) {
+		...BasicCourseChapter
+	}
+}
