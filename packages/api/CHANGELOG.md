@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.37
+
+### Patch Changes
+
+- b531da4: Add courses mutations for creating, updating and deleting lessons and chapters
+
 ## 0.0.36
 
 ### Patch Changes
