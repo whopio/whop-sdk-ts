@@ -12,6 +12,10 @@ export interface ExecSyncApi {
 		params: Record<string, string>;
 	}): EmptyObject;
 	routerPop(params: EmptyObject): EmptyObject;
+	routerGetCurrent(params: EmptyObject): {
+		path: string[];
+		params: Record<string, string>;
+	};
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {}
