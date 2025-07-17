@@ -1,5 +1,3 @@
 mutation deleteChapter($input: DeleteChapterInput!) {
-	deleteChapter(input: $input) {
-		...BasicCourseChapter
-	}
+	deleteChapter(input: $input)
 }
