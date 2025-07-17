@@ -1,15 +1,10 @@
 import { WhopClientSdk } from "@whop/api";
 import { Platform } from "react-native";
-import nativeWhopCore from "./native-whop-core";
+import { __internal_execSync } from "./native-whop-core-wrapper";
 
 function getAppOrigin() {
 	if (Platform.OS === "android" || Platform.OS === "ios") {
-		const result = nativeWhopCore.execSync("getAppApiOrigin", "{}");
-		if (result.isOk) {
-			const { apiOrigin } = JSON.parse(result.data || "{}");
-			return apiOrigin;
-		}
-		throw new Error(`Failed to get app origin: ${result.errorMessage}`);
+		return __internal_execSync("getAppApiOrigin", {}).apiOrigin;
 	}
 
 	if (Platform.OS === "web" && typeof window !== "undefined") {
@@ -25,3 +20,5 @@ export const whopSdk: WhopClientSdk = WhopClientSdk({
 	apiOrigin: appOrigin,
 	apiPath: "/_whop/public-graphql/",
 });
+
+export * from "@whop/api";
