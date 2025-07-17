@@ -4,7 +4,7 @@ import { __internal_execSync } from "./native-whop-core-wrapper";
 
 function getAppOrigin() {
 	if (Platform.OS === "android" || Platform.OS === "ios") {
-		return __internal_execSync("getAppApiOrigin", "{}").apiOrigin;
+		return __internal_execSync("getAppApiOrigin", {}).apiOrigin;
 	}
 
 	if (Platform.OS === "web" && typeof window !== "undefined") {
