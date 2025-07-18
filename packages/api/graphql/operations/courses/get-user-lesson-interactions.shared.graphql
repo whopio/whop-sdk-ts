@@ -1,5 +1,5 @@
-query getUserLessonInteractions($experienceId: ID!) {
-	course(experienceId: $experienceId) {
+query getUserLessonInteractions($courseId: ID!) {
+	course(id: $courseId) {
 		chapters {
 			id
 			lessons {

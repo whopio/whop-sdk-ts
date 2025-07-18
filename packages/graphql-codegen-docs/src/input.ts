@@ -35,6 +35,10 @@ const idPrefixes = {
 	feedId: "feed",
 	ledgerAccountId: "ldgr",
 	chatExperienceId: "exp",
+	courseId: "cors",
+	lessonId: "lesn",
+	chapterId: "chap",
+	muxAssetId: "mux",
 };
 
 type PrimitiveKind =
