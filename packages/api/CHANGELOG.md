@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.39
+
+### Patch Changes
+
+- 31a2054: Change courses.getUserLessonInteractions query to use course id instead of experience id
+
 ## 0.0.38
 
 ### Patch Changes
