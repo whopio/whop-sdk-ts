@@ -16,6 +16,22 @@ export interface ExecSyncApi {
 		path: string[];
 		params: Record<string, string>;
 	};
+	setNavigationBarData(params: {
+		title?: string | null;
+		description?: string | null;
+	}): EmptyObject;
+	routerPresentSheet(params: {
+		path: string[];
+		params: Record<string, string>;
+	}): EmptyObject;
+	routerDismissSheet(params: EmptyObject): EmptyObject;
+	routerGetCurrentSheet(params: EmptyObject):
+		| {
+				path: string[];
+				params: Record<string, string>;
+		  }
+		| null
+		| undefined;
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {}
