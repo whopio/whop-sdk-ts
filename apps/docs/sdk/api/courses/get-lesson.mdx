@@ -7,7 +7,9 @@ description: A course from a courses app experience
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.courses.getLesson({
-	// The ID of the experience that has the course.
+	// The ID of the experience that has the course. (this is deprecated, use the
+	// id argument instead. passing this in will return the first course in the
+	// experience for backwards compatibility)
 	experienceId: "exp_XXXXXXXX" /* Required! */,
 
 	lessonId: "xxxxxxxxxxx" /* Required! */,
