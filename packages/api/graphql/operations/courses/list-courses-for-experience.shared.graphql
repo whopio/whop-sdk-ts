@@ -1,6 +1,10 @@
-query listCoursesForExperience($experienceId: ID!) {
+query listCoursesForExperience(
+	$experienceId: ID!
+	$first: Int
+	$after: String
+) {
 	publicExperience(id: $experienceId) {
-		courses {
+		courses(first: $first, after: $after) {
 			nodes {
 				...BasicCourse
 			}
