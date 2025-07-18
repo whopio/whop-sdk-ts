@@ -1,7 +1,10 @@
-interface BaseViewProps {
-	currentUserId: string | undefined | null;
+export interface PathParams {
 	path: string[];
 	params: Record<string, string>;
+}
+
+interface BaseViewProps extends PathParams {
+	currentUserId: string | undefined | null;
 }
 
 export interface ExperienceViewProps extends BaseViewProps {
