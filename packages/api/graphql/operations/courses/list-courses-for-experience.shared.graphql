@@ -8,10 +8,9 @@ query listCoursesForExperience(
 			nodes {
 				...BasicCourse
 			}
+			totalCount
 			pageInfo {
 				hasNextPage
-				hasPreviousPage
-				startCursor
 				endCursor
 			}
 		}
