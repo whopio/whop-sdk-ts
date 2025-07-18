@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.38
+
+### Patch Changes
+
+- 4b77b81: add courses.listCoursesForExperience query
+
 ## 0.0.37
 
 ### Patch Changes

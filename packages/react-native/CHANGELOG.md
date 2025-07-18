@@ -1,5 +1,13 @@
 # @whop/react-native
 
+## 0.0.5
+
+### Patch Changes
+
+- 7df4c61: add ability to present sheets and set navigation bar data
+- Updated dependencies [4b77b81]
+  - @whop/api@0.0.38
+
 ## 0.0.4
 
 ### Patch Changes
