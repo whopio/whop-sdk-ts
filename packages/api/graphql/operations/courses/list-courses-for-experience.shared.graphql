@@ -1,0 +1,18 @@
+query listCoursesForExperience(
+	$experienceId: ID!
+	$first: Int
+	$after: String
+) {
+	publicExperience(id: $experienceId) {
+		courses(first: $first, after: $after) {
+			nodes {
+				...BasicCourse
+			}
+			totalCount
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
+		}
+	}
+}
