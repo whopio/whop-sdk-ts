@@ -1,0 +1,9 @@
+query listCoursesForExperience($experienceId: ID!) {
+	publicExperience(id: $experienceId) {
+		courses {
+			nodes {
+				...BasicCourse
+			}
+		}
+	}
+}
