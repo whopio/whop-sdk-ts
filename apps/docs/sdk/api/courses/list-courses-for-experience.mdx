@@ -128,16 +128,13 @@ const response = {
 			},
 		],
 
+		// The total number of items in this connection.
+		totalCount: 10,
+
 		// Information to aid in pagination.
 		pageInfo: {
 			// When paginating forwards, are there more items?
 			hasNextPage: true,
-
-			// When paginating backwards, are there more items?
-			hasPreviousPage: true,
-
-			// When paginating backwards, the cursor to continue.
-			startCursor: "some string",
 
 			// When paginating forwards, the cursor to continue.
 			endCursor: "some string",
