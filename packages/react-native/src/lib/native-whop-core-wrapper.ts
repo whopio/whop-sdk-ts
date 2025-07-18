@@ -1,4 +1,5 @@
 import nativeWhopCore from "./native-whop-core";
+import type { PathParams } from "./props";
 
 // biome-ignore lint/complexity/noBannedTypes: allow here
 type EmptyObject = {};
@@ -7,31 +8,16 @@ export interface ExecSyncApi {
 	getAppApiOrigin(params: EmptyObject): { apiOrigin: string };
 	cacheGet(params: { key?: string | null }): { data?: string | null };
 	cacheSet(params: { key?: string | null; data?: string | null }): EmptyObject;
-	routerPush(params: {
-		path: string[];
-		params: Record<string, string>;
-	}): EmptyObject;
+	routerPush(params: PathParams): EmptyObject;
 	routerPop(params: EmptyObject): EmptyObject;
-	routerGetCurrent(params: EmptyObject): {
-		path: string[];
-		params: Record<string, string>;
-	};
+	routerGetCurrent(params: EmptyObject): PathParams;
 	setNavigationBarData(params: {
 		title?: string | null;
 		description?: string | null;
 	}): EmptyObject;
-	routerPresentSheet(params: {
-		path: string[];
-		params: Record<string, string>;
-	}): EmptyObject;
+	routerPresentSheet(params: PathParams): EmptyObject;
 	routerDismissSheet(params: EmptyObject): EmptyObject;
-	routerGetCurrentSheet(params: EmptyObject):
-		| {
-				path: string[];
-				params: Record<string, string>;
-		  }
-		| null
-		| undefined;
+	routerGetCurrentSheet(params: EmptyObject): PathParams | null | undefined;
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {}
