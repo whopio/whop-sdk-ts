@@ -70,7 +70,7 @@ function makeRequester(
 }
 
 function getEndpoint(apiOptions: WhopClientSdkOptions) {
-	if (typeof document === "undefined") {
+	if (typeof document === "undefined" && !apiOptions.apiOrigin) {
 		throw new Error("WhopApi.client() is only available in the browser");
 	}
 

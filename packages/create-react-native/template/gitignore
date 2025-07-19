@@ -1,0 +1,17 @@
+.env
+.env.local
+.env.development.local
+.env.test.local
+
+node_modules/
+build/
+dist/
+.turbo/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+.DS_Store
+.tsbuildinfo
+.metro-health-check*
+
+babel.config.js

@@ -1,0 +1,5 @@
+mutation updateLesson($input: UpdateLessonInput!) {
+	updateLesson(input: $input) {
+		...FullCourseLesson
+	}
+}

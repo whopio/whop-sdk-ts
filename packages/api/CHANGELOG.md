@@ -1,5 +1,29 @@
 # @whop/api
 
+## 0.0.38
+
+### Patch Changes
+
+- 4b77b81: add courses.listCoursesForExperience query
+
+## 0.0.37
+
+### Patch Changes
+
+- b531da4: Add courses mutations for creating, updating and deleting lessons and chapters
+
+## 0.0.36
+
+### Patch Changes
+
+- 4bd6e46: Created initial react native package with build and ship cli
+
+## 0.0.35
+
+### Patch Changes
+
+- b7181d2: Create courses.markLessonAsCompleted mutation. Add content to BasicCourseLesson fragment. Add lesson ids to courses.getUserLessonInteractions.
+
 ## 0.0.34
 
 ### Patch Changes

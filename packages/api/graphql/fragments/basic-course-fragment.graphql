@@ -29,6 +29,7 @@ fragment BasicCourseLesson on Lesson {
 	title
 	order
 	daysFromCourseStartUntilUnlock
+	content
 	muxAsset {
 		...CourseMuxAsset
 	}

@@ -1,0 +1,274 @@
+---
+title: Update Lesson Order
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.courses.updateLessonOrder({
+	// The ID of the lesson to place this lesson below
+	belowLessonId: "xxxxxxxxxxx",
+
+	// The ID of the chapter to move the lesson to
+	chapterId: "chap_XXXXXXXX" /* Required! */,
+
+	// The ID of the lesson to reorder
+	lessonId: "lesn_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The ID of the lesson
+	id: "xxxxxxxxxxx",
+
+	// The type of the lesson (text, video, pdf, multi, quiz, knowledge_check)
+	lessonType:
+		"knowledge_check" /* Valid values: knowledge_check | multi | pdf | quiz | text | video */,
+
+	// The title of the lesson
+	title: "some string",
+
+	// The order of the lesson within its chapter
+	order: 10,
+
+	// The content of the lesson
+	content: "some string",
+
+	// Number of days from course start until the lesson is unlocked
+	daysFromCourseStartUntilUnlock: 10,
+
+	// The associated Mux asset for video lessons
+	muxAsset: {
+		// The ID of the Mux asset
+		id: "xxxxxxxxxxx",
+
+		// The Mux-provided ID of the asset
+		muxAssetId: "some string",
+
+		// The public playback ID of the Mux asset
+		playbackId: "some string",
+
+		// The signed playback ID of the Mux asset
+		signedPlaybackId: "some string",
+
+		// The signed thumbnail playback token of the Mux asset
+		signedThumbnailPlaybackToken: "some string",
+
+		// The signed video playback token of the Mux asset
+		signedVideoPlaybackToken: "some string",
+
+		// The signed storyboard playback token of the Mux asset
+		signedStoryboardPlaybackToken: "some string",
+
+		// The duration of the video in seconds
+		durationSeconds: 10,
+
+		// The status of the Mux asset
+		status: "created" /* Valid values: created | ready | uploading */,
+
+		// The time at which the video finished uploading
+		finishedUploadingAt: 1716931200,
+	},
+
+	// Assessment questions for quiz/knowledge check lessons
+	assessmentQuestions: [
+		{
+			// The ID of the assessment question
+			id: "xxxxxxxxxxx",
+
+			// The correct answer for the question
+			correctAnswer: "some string",
+
+			// Optional image attachment for the question
+			image: {
+				// The ID of the attachment
+				id: "xxxxxxxxxxx",
+
+				// A signed ID of the attachment to directly query the attachment
+				signedId: "xxxxxxxxxxx",
+
+				// Whether the attachment has been analyzed
+				analyzed: true,
+
+				// The size of the file in bytes
+				byteSizeV2: "9999999",
+
+				// The name of the file
+				filename: "some string",
+
+				// The attachment's content type (e.g., image/jpg, video/mp4)
+				contentType: "some string",
+
+				// The source of the attachment
+				source: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The blurhash of the image
+				blurhash: "some string",
+
+				// The height of the video
+				height: 10,
+
+				// The width of the video
+				width: 10,
+
+				// The aspect ratio of the video
+				aspectRatio: 10,
+
+				// The preview of the video
+				preview: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The duration of the audio in seconds
+				duration: 10,
+
+				// The URL of the waveform for the audio
+				waveformUrl: "some string",
+			},
+
+			// The answer options for multiple choice/select questions
+			options: [
+				{
+					// The ID of the assessment question option
+					id: "xxxxxxxxxxx",
+
+					// Whether this option is a correct answer
+					isCorrect: true,
+
+					// The text of the answer option
+					optionText: "some string",
+
+					// The order of this option within the question
+					order: 10,
+				},
+			],
+
+			// The order of the question within its lesson
+			order: 10,
+
+			// The text of the question
+			questionText: "some string",
+
+			// The type of the question
+			questionType:
+				"multiple_choice" /* Valid values: multiple_choice | multiple_select | short_answer | true_false */,
+		},
+	],
+
+	// The attached files in this lesson
+	attachments: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the attachment
+				id: "xxxxxxxxxxx",
+
+				// A signed ID of the attachment to directly query the attachment
+				signedId: "xxxxxxxxxxx",
+
+				// Whether the attachment has been analyzed
+				analyzed: true,
+
+				// The size of the file in bytes
+				byteSizeV2: "9999999",
+
+				// The name of the file
+				filename: "some string",
+
+				// The attachment's content type (e.g., image/jpg, video/mp4)
+				contentType: "some string",
+
+				// The source of the attachment
+				source: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The blurhash of the image
+				blurhash: "some string",
+
+				// The height of the video
+				height: 10,
+
+				// The width of the video
+				width: 10,
+
+				// The aspect ratio of the video
+				aspectRatio: 10,
+
+				// The preview of the video
+				preview: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The duration of the audio in seconds
+				duration: 10,
+
+				// The URL of the waveform for the audio
+				waveformUrl: "some string",
+			},
+		],
+	},
+
+	// The main PDF file for this lesson
+	mainPdf: {
+		// The ID of the attachment
+		id: "xxxxxxxxxxx",
+
+		// A signed ID of the attachment to directly query the attachment
+		signedId: "xxxxxxxxxxx",
+
+		// Whether the attachment has been analyzed
+		analyzed: true,
+
+		// The size of the file in bytes
+		byteSizeV2: "9999999",
+
+		// The name of the file
+		filename: "some string",
+
+		// The attachment's content type (e.g., image/jpg, video/mp4)
+		contentType: "some string",
+
+		// The source of the attachment
+		source: {
+			// The URL to access the attachment
+			url: "some string",
+		},
+
+		// The blurhash of the image
+		blurhash: "some string",
+
+		// The height of the video
+		height: 10,
+
+		// The width of the video
+		width: 10,
+
+		// The aspect ratio of the video
+		aspectRatio: 10,
+
+		// The preview of the video
+		preview: {
+			// The URL to access the attachment
+			url: "some string",
+		},
+
+		// The duration of the audio in seconds
+		duration: 10,
+
+		// The URL of the waveform for the audio
+		waveformUrl: "some string",
+	},
+};
+
+```

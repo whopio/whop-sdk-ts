@@ -1,0 +1,5 @@
+mutation updateChapter($input: UpdateChapterInput!) {
+	updateChapter(input: $input) {
+		...BasicCourseChapter
+	}
+}
