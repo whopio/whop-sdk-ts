@@ -1,0 +1,23 @@
+query listCoursesForCompany($companyId: ID!, $first: Int, $after: String) {
+	company(id: $companyId) {
+		courses(first: $first, after: $after) {
+			nodes {
+				id
+				title
+				coverImage
+				experience {
+					id
+					accessPasses {
+						id
+						title
+					}
+				}
+			}
+			totalCount
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
+		}
+	}
+}
