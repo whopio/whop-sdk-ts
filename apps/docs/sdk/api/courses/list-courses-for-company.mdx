@@ -1,0 +1,73 @@
+---
+title: List Courses For Company
+description: Fetch a company
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.courses.listCoursesForCompany({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	first: 10,
+
+	after: "pageInfo.endCursor",
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The courses in the company's experiences
+	courses: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the course. Looks like cors_XXX
+				id: "xxxxxxxxxxx",
+
+				// The title of the course
+				title: "some string",
+
+				// The URL of the course's cover image, which is shown in course preview cards
+				coverImage: "some string",
+
+				// The experience that the course belongs to
+				experience: {
+					// The unique ID representing this experience
+					id: "xxxxxxxxxxx",
+
+					// The access passes that are associated with this experience. This should not be
+					// used unless you are trying to list all access passes the experience has, for
+					// some reason. You probably don't want to use this though and should be using accessPass.
+					accessPasses: [
+						{
+							// The internal ID of the public access pass.
+							id: "xxxxxxxxxxx",
+
+							// The title of the access pass. Use for Whop 4.0.
+							title: "some string",
+						},
+					],
+				},
+			},
+		],
+
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+	},
+};
+
+```
