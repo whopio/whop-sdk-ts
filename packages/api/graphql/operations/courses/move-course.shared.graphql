@@ -1,0 +1,3 @@
+mutation moveCourse($input: MoveCourseInput!) {
+	moveCourse(input: $input)
+}
