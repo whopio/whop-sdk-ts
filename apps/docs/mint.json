@@ -140,10 +140,6 @@
 			]
 		},
 		{
-			"group": "Build with AI",
-			"pages": ["ai-docs", "mcp"]
-		},
-		{
 			"group": "Growth",
 			"pages": ["distribution/get-started"]
 		},
