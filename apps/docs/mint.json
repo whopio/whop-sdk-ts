@@ -79,7 +79,7 @@
 			"pages": ["get-started", "fees"]
 		},
     		{
-   			"group": "1. Manage your community",
+   			"group": "Manage your community",
     			"pages": [
         			"manage-your-whop/manage-members",
 			        "manage-your-whop/message-members",
@@ -91,14 +91,14 @@
     			]
 		},
 		{
-    			"group": "2. Manage your team",
+    			"group": "Manage your team",
     			"pages": [
 			        "manage-your-whop/manage-team-roles",
 			        "manage-your-whop/pay-your-team"
     			]
 		},
 		{
-		    	"group": "3. Manage payments and disputes",
+		    	"group": "Manage payments and disputes",
 		    	"pages": [
 			        "manage-your-whop/payment-link",
 			        "manage-your-whop/refund-customer",
