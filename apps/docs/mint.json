@@ -75,7 +75,7 @@
 	],
 	"navigation": [
 		{
-			"group": "Get started",
+			"group": "Overview",
 			"pages": ["get-started", "fees"]
 		},
     		{
