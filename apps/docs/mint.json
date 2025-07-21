@@ -39,16 +39,20 @@
 			"url": "/"
 		},
 		{
+			"name": "Manage your whop",
+			"url": "manage-your-whop"
+		},
+		{
 			"name": "Payments",
 			"url": "payments"
 		},
 		{
-			"name": "Apps",
-			"url": "apps"
+			"name": "Growth",
+			"url": "distribution"
 		},
 		{
-			"name": "Distribution",
-			"url": "/distribution"
+			"name": "Build apps",
+			"url": "apps"
 		},
 		{
 			"name": "SDK Reference",
