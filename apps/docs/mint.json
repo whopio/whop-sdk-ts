@@ -83,14 +83,12 @@
         		"pages": ["manage-your-whop/overview"]
     		},		
 		{
-			"group": "Setup Whop",
+			"group": "Start your own whop",
 			"pages": [
 				"create-account",
-				"activate-account",
-				"web-dashboard",
-				"mobile-dashboard",
-				"invite-team",
-				"migrate-to-whop"
+				"add-apps",
+				"set-up-store-page",
+				"set-up-products-pricing",
 			]
 		},
 		{
