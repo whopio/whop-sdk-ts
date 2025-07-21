@@ -1,5 +1,13 @@
 # @whop/react-native
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [31a2054]
+- Updated dependencies [5a44378]
+  - @whop/api@0.0.39
+
 ## 0.0.5
 
 ### Patch Changes
