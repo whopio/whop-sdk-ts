@@ -78,6 +78,10 @@
 			"group": "Get Started",
 			"pages": ["get-started", "fees"]
 		},
+    		{
+        		"group": "Manage your whop", 
+        		"pages": ["manage-your-whop/overview"]
+    		},		
 		{
 			"group": "Setup Whop",
 			"pages": [
