@@ -43,12 +43,12 @@
 			"url": "manage-your-whop"
 		},
 		{
-			"name": "Payments",
-			"url": "payments"
-		},
-		{
 			"name": "Growth",
 			"url": "distribution"
+		},
+		{
+			"name": "Payments",
+			"url": "payments"
 		},
 		{
 			"name": "Build apps",
@@ -107,11 +107,11 @@
 			]
 		},
 		{
-			"group": "Get Started",
+			"group": "Payments",
 			"pages": ["payments/get-started", "payments/features/checkout-embed"]
 		},
 		{
-			"group": "Get Started",
+			"group": "Build apps",
 			"pages": [
 				"apps/introduction",
 				"apps/getting-started",
@@ -147,11 +147,11 @@
 			"pages": ["ai-docs", "mcp"]
 		},
 		{
-			"group": "Get started",
+			"group": "Growth",
 			"pages": ["distribution/get-started"]
 		},
 		{
-			"group": "Getting started",
+			"group": "SDK Reference",
 			"pages": [
 				"sdk/installation",
 				"sdk/local-development",
