@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.40
+
+### Patch Changes
+
+- c99fb53: switch all course queries to use courseId instead of experienceId
+
 ## 0.0.39
 
 ### Patch Changes
