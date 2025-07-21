@@ -81,8 +81,6 @@
     		{
    			"group": "Manage your community",
     			"pages": [
-        			"manage-your-whop/manage-members",
-			        "manage-your-whop/message-members",
 			        "manage-your-whop/create-waitlist",
 			        "manage-your-whop/locked-premium-content",
 			        "manage-your-whop/free-trials",
