@@ -2,4 +2,4 @@
 "@whop/api": patch
 ---
 
-Create courses.getlessonDetails
+Remove courses.getLesson and create courses.getlessonDetails
