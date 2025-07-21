@@ -1,0 +1,7 @@
+query getLessonDetails($courseId: ID!, $lessonId: ID!) {
+	course(id: $courseId) {
+		lesson(id: $lessonId) {
+			...FullCourseLesson
+		}
+	}
+}
