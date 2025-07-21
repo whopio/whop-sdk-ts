@@ -1,5 +1,5 @@
 query getCourse($courseId: ID!) {
-	course(courseId: $courseId) {
+	course(id: $courseId) {
 		...BasicCourse
 	}
 }
