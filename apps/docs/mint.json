@@ -92,16 +92,15 @@
 			]
 		},
 		{
-			"group": "Supported business models",
+			"group": "Build your business on Whop",
 			"pages": [
 				"supported-business-models/communities",
-				"supported-business-models/agencies",
-				"supported-business-models/coaches",
-				"supported-business-models/marketplaces",
-				"supported-business-models/software",
-				"supported-business-models/courses",
-				"supported-business-models/events",
-				"supported-business-models/other"
+            			"supported-business-models/courses", 
+            			"supported-business-models/coaches",
+            			"supported-business-models/agencies",
+            			"supported-business-models/software",
+            			"supported-business-models/marketplaces",
+            			"supported-business-models/other"
 			]
 		},
 		{
