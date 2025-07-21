@@ -394,7 +394,6 @@
 						"sdk/api/courses/delete-lesson",
 						"sdk/api/courses/get-course",
 						"sdk/api/courses/get-lesson-details",
-						"sdk/api/courses/get-lesson",
 						"sdk/api/courses/get-user-lesson-interactions",
 						"sdk/api/courses/list-courses-for-company",
 						"sdk/api/courses/list-courses-for-experience",
