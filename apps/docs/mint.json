@@ -92,6 +92,14 @@
 			]
 		},
 		{
+        		"group": "Whop apps",
+        		"pages": [
+       	     			"what-are-whop-apps",
+           			"whop-app-store", 
+            			"what-apps-should-you-add"
+        		]
+    		},
+		{
 			"group": "Build your business on Whop",
 			"pages": [
 				"supported-business-models/communities",
