@@ -79,9 +79,36 @@
 			"pages": ["get-started", "fees"]
 		},
     		{
-        		"group": "Manage your whop", 
-        		"pages": ["manage-your-whop/overview"]
-    		},		
+   			"group": "1. Manage your community",
+    			"pages": [
+        			"manage-your-whop/manage-members",
+			        "manage-your-whop/message-members",
+			        "manage-your-whop/create-waitlist",
+			        "manage-your-whop/locked-premium-content",
+			        "manage-your-whop/free-trials",
+			        "manage-your-whop/tracking-analytics",
+			        "manage-your-whop/legal-documents"
+    			]
+		},
+		{
+    			"group": "2. Manage your team",
+    			"pages": [
+			        "manage-your-whop/manage-team-roles",
+			        "manage-your-whop/pay-your-team"
+    			]
+		},
+		{
+		    	"group": "3. Manage payments and disputes",
+		    	"pages": [
+			        "manage-your-whop/payment-link",
+			        "manage-your-whop/refund-customer",
+			        "manage-your-whop/resolution-center",
+			        "manage-your-whop/dispute-fighter",
+			        "manage-your-whop/credit-card-disputes",
+			        "manage-your-whop/taxes",
+			        "manage-your-whop/financing-setup"
+    			]
+		},		
 		{
 			"group": "Start your own whop",
 			"pages": [
