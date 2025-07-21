@@ -94,9 +94,9 @@
 		{
         		"group": "Whop apps",
         		"pages": [
-       	     			"what-are-whop-apps",
-           			"whop-app-store", 
-            			"what-apps-should-you-add"
+       	     			"whop-apps/what-are-whop-apps",
+           			"whop-apps/whop-app-store", 
+            			"whop-apps/what-apps-should-you-add"
         		]
     		},
 		{
