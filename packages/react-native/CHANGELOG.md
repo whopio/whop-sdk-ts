@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.0.8
+
+### Patch Changes
+
+- db894ca: added animation support and more native apis
+
 ## 0.0.7
 
 ### Patch Changes
