@@ -53,6 +53,7 @@
 		"@types/react": "19.1.5",
 		"react": "^19.0.0",
 		"react-native": "0.80.0",
+		"react-native-reanimated": "3.18.0",
 		"tsup": "8.5.0",
 		"typescript": "latest"
 	},
@@ -66,6 +67,7 @@
 	},
 	"peerDependencies": {
 		"react": "^19.0.0",
-		"react-native": "0.80.0"
+		"react-native": "0.80.0",
+		"react-native-reanimated": "3.18.0"
 	}
 }
