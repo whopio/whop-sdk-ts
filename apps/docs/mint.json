@@ -99,10 +99,10 @@
 		    	"group": "Manage payments and disputes",
 		    	"pages": [
 			        "manage-your-whop/payment-link",
+                    "manage-your-whop/set-up-payouts",
 			        "manage-your-whop/refund-customer",
 			        "manage-your-whop/resolution-center",
 			        "manage-your-whop/dispute-fighter",
-			        "manage-your-whop/credit-card-disputes",
 			        "manage-your-whop/taxes",
 			        "manage-your-whop/financing-setup"
     			]
