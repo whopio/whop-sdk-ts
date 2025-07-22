@@ -18,6 +18,13 @@ export interface ExecSyncApi {
 	routerPresentSheet(params: PathParams): EmptyObject;
 	routerDismissSheet(params: EmptyObject): EmptyObject;
 	routerGetCurrentSheet(params: EmptyObject): PathParams | null | undefined;
+	downgradeToWebView(params: EmptyObject): EmptyObject;
+	getHostAppDetails(params: EmptyObject): {
+		build: string;
+		version: string;
+		platform: "ios" | "android" | "web";
+		buildType: "appstore" | "testflight" | "debug";
+	};
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {}

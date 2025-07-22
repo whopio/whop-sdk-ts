@@ -9,6 +9,9 @@ export default defineConfig({
 	target: "es2022",
 	outDir: "dist",
 	external: ["./whop-react-native-babel-transformer.js"],
+	banner: {
+		js: "#!/usr/bin/env node",
+	},
 	outExtension: ({ format }) =>
 		format === "cjs"
 			? { js: ".js", dts: ".d.ts" }
