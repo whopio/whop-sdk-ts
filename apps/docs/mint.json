@@ -109,7 +109,7 @@
 			]
 		},
         {
-			"group": "Using Whop for payment processing",
+			"group": "Set up payment processing",
 			"pages": [
 				"payments/overview",
                 "payments/create-a-whop",
