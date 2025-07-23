@@ -108,6 +108,14 @@
 				"manage-your-whop/financing-setup"
 			]
 		},
+        {
+			"group": "Using Whop for payment processing",
+			"pages": [
+				"payments/create-a-whop",
+				"payments/create-a-product",
+                "payments/create-checkout-link"
+			]
+		},
 		{
 			"group": "Start your own whop",
 			"pages": [
