@@ -132,7 +132,7 @@
 			"pages": [
 				"payments/resolution-center",
                 "payments/dispute-fighter",
-				"payments/credit-card-disputed"
+				"payments/credit-card-disputes"
 			]
 		},
 		{
