@@ -78,62 +78,63 @@
 			"group": "Overview",
 			"pages": ["get-started", "fees"]
 		},
-    		{
-   			"group": "Manage your community",
-    			"pages": [
-			        "manage-your-whop/create-waitlist",
-			        "manage-your-whop/locked-premium-content",
-			        "manage-your-whop/free-trials",
-			        "manage-your-whop/tracking-analytics",
-			        "manage-your-whop/legal-documents"
-    			]
+		{
+			"group": "Manage your community",
+			"pages": [
+				"manage-your-whop/create-waitlist",
+				"manage-your-whop/locked-premium-content",
+				"manage-your-whop/free-trials",
+				"manage-your-whop/tracking-analytics",
+				"manage-your-whop/legal-documents"
+			]
 		},
 		{
-    			"group": "Manage your team",
-    			"pages": [
-			        "manage-your-whop/manage-team-roles",
-			        "manage-your-whop/pay-your-team"
-    			]
+			"group": "Manage your team",
+			"pages": [
+				"manage-your-whop/manage-team-roles",
+				"manage-your-whop/pay-your-team"
+			]
 		},
 		{
-		    	"group": "Manage payments and disputes",
-		    	"pages": [
-			        "manage-your-whop/payment-link",
-                    "manage-your-whop/set-up-payouts",
-			        "manage-your-whop/refund-customer",
-			        "manage-your-whop/resolution-center",
-			        "manage-your-whop/dispute-fighter",
-			        "manage-your-whop/taxes",
-			        "manage-your-whop/financing-setup"
-    			]
-		},		
+			"group": "Manage payments and disputes",
+			"pages": [
+				"manage-your-whop/payment-link",
+				"manage-your-whop/set-up-payouts",
+				"manage-your-whop/payment-declines",
+				"manage-your-whop/refund-customer",
+				"manage-your-whop/resolution-center",
+				"manage-your-whop/dispute-fighter",
+				"manage-your-whop/taxes",
+				"manage-your-whop/financing-setup"
+			]
+		},
 		{
 			"group": "Start your own whop",
 			"pages": [
 				"create-account",
+				"import-from-other-platforms",
 				"add-apps",
 				"set-up-store-page",
 				"set-up-products-pricing"
 			]
 		},
 		{
-        		"group": "Whop apps",
-        		"pages": [
-       	     			"whop-apps/what-are-whop-apps",
-           			"whop-apps/whop-app-store", 
-            			"whop-apps/what-apps-should-you-add"
-        		]
-    		},
+			"group": "Whop apps",
+			"pages": [
+				"whop-apps/what-are-whop-apps",
+				"whop-apps/whop-app-store",
+				"whop-apps/what-apps-should-you-add"
+			]
+		},
 		{
 			"group": "Build your business on Whop",
 			"pages": [
 				"supported-business-models/communities",
-            			"supported-business-models/courses", 
-            			"supported-business-models/coaches",
-            			"supported-business-models/agencies",
-            			"supported-business-models/software",
-            			"supported-business-models/marketplaces",
-            			"supported-business-models/other"
+				"supported-business-models/courses",
+				"supported-business-models/coaches",
+				"supported-business-models/agencies",
+				"supported-business-models/software",
+				"supported-business-models/marketplaces"
 			]
 		},
 		{
@@ -173,21 +174,19 @@
 			]
 		},
 		{
-    			"group": "Whop's marketing tools",
-   	 		"pages": [
-        			"distribution/popup-promotions",
-        			"distribution/automated-messaging",
-        			"distribution/promo-codes",
-        			"distribution/affiliate-program",
-        			"distribution/notifications",
-        			"distribution/content-rewards"
-    			]
+			"group": "Whop's marketing tools",
+			"pages": [
+				"distribution/popup-promotions",
+				"distribution/automated-messaging",
+				"distribution/promo-codes",
+				"distribution/affiliate-program",
+				"distribution/notifications",
+				"distribution/content-rewards"
+			]
 		},
 		{
-    			"group": "Resources",
-    			"pages": [
-        		"distribution/first-10-members"
-    			]
+			"group": "Resources",
+			"pages": ["distribution/first-10-members"]
 		},
 		{
 			"group": "SDK Reference",
