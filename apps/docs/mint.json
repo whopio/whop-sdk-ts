@@ -146,10 +146,6 @@
 			]
 		},
 		{
-			"group": "Payments",
-			"pages": ["payments/get-started", "payments/features/checkout-embed"]
-		},
-		{
 			"group": "Build apps",
 			"pages": [
 				"apps/introduction",
