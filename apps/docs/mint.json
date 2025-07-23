@@ -117,6 +117,24 @@
                 "payments/create-checkout-link"
 			]
 		},
+       {
+			"group": "Manage payments",
+			"pages": [
+				"payments/checkout-embed",
+                "payments/set-up-payouts",
+				"payments/refund-customer",
+                "payments/taxes",
+                "payments/financing"
+			]
+		},
+       {
+			"group": "Manage disputes",
+			"pages": [
+				"payments/resolution-center",
+                "payments/dispute-fighter",
+				"payments/credit-card-disputed"
+			]
+		},
 		{
 			"group": "Start your own whop",
 			"pages": [
