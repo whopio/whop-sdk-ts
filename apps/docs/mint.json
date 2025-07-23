@@ -111,7 +111,8 @@
         {
 			"group": "Using Whop for payment processing",
 			"pages": [
-				"payments/create-a-whop",
+				"payments/overview",
+                "payments/create-a-whop",
 				"payments/create-a-product",
                 "payments/create-checkout-link"
 			]
@@ -145,6 +146,7 @@
 				"supported-business-models/marketplaces"
 			]
 		},
+
 		{
 			"group": "Build apps",
 			"pages": [
