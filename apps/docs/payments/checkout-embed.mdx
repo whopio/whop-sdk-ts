@@ -489,3 +489,41 @@ Defaults to `false`
 	</body>
 </html>
 ```
+- **React** (for React websites)
+- **Framer** (for Framer sites)
+- **HTML/JavaScript** (for any website including ClickFunnels, GoHighLevel, WordPress, etc.)
+
+## FAQs
+
+<AccordionGroup>
+  <Accordion title="Why is my checkout not loading?">
+    Make sure you've correctly replaced `plan_XXXXXXXXX` or `PLAN_ID_HERE` in the code snippets with your actual Plan ID from the Whop dashboard. Also verify that the script tag is properly loaded in the `<head>` section if using HTML/JS.
+  </Accordion>
+  <Accordion title="Where do I find my Plan ID?">
+    Go to your **Dashboard** \> **Checkout links** \> Click the **three dots (⋮)** on your pricing option \> Hover over **Details** \> Click the ID (starts with `plan_`) to copy it.
+  </Accordion>
+  <Accordion title="Can I embed multiple checkouts on the same page?">
+    Yes, you can add multiple checkout embeds with different Plan IDs. Each embed operates independently.
+  </Accordion>
+  <Accordion title="How do I change the checkout theme?">
+    For React: add `theme="dark"` or `theme="light"` as a property. For HTML: add `data-whop-checkout-theme="dark"` to your div element.
+  </Accordion>
+  <Accordion title="Can I hide the price in the embedded checkout?">
+    Yes, add `hidePrice={true}` in React or `data-whop-checkout-hide-price="true"` in HTML to hide the price display.
+  </Accordion>
+  <Accordion title="What happens after a customer completes checkout?">
+    By default, customers are redirected to your whop. You can customize this by setting a custom redirect URL or skipping the redirect entirely.
+  </Accordion>
+  <Accordion title="How do I prevent the redirect after checkout?">
+    Use `skipRedirect={true}` in React or `data-whop-checkout-skip-redirect="true"` in HTML to keep users on the same page.
+  </Accordion>
+  <Accordion title="Is the embedded checkout mobile-responsive?">
+    Yes, the checkout automatically adapts to different screen sizes and devices.
+  </Accordion>
+  <Accordion title="Can I customize the checkout's appearance with CSS?">
+    You can style the wrapper using the `.whop-checkout-wrapper iframe` CSS class, but the checkout content itself cannot be modified for security reasons.
+  </Accordion>
+  <Accordion title="Can I pre-fill customer information?">
+    Yes, use `prefill={{ email: "customer@example.com" }}` in React or `data-whop-checkout-prefill-email="customer@example.com"` in HTML.
+  </Accordion>
+</AccordionGroup>
