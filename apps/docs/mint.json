@@ -140,8 +140,8 @@
 			"pages": [
 				"create-account",
 				"add-apps",
-				"set-up-store-page",
 				"set-up-products-pricing",
+                "set-up-store-page",
                 "import-from-other-platforms"
 			]
 		},
