@@ -43,10 +43,6 @@
 			"url": "manage-your-whop"
 		},
 		{
-			"name": "Growth",
-			"url": "distribution"
-		},
-		{
 			"name": "Payments",
 			"url": "payments"
 		},
@@ -96,16 +92,13 @@
 			]
 		},
 		{
-			"group": "Manage payments and disputes",
+			"group": "Growth and marketing",
 			"pages": [
-				"manage-your-whop/payment-link",
-				"manage-your-whop/set-up-payouts",
-				"manage-your-whop/payment-declines",
-				"manage-your-whop/refund-customer",
-				"manage-your-whop/resolution-center",
-				"manage-your-whop/dispute-fighter",
-				"manage-your-whop/taxes",
-				"manage-your-whop/financing-setup"
+				"manage-your-whop/popup-promotions",
+				"manage-your-whop/automated-messaging",
+				"manage-your-whop/promo-codes",
+				"manage-your-whop/affiliate-program",
+				"manage-your-whop/content-rewards",
 			]
 		},
         {
