@@ -189,20 +189,6 @@
 			]
 		},
 		{
-			"group": "Whop's marketing tools",
-			"pages": [
-				"distribution/popup-promotions",
-				"distribution/automated-messaging",
-				"distribution/promo-codes",
-				"distribution/affiliate-program",
-				"distribution/content-rewards"
-			]
-		},
-		{
-			"group": "Resources",
-			"pages": ["distribution/first-10-members"]
-		},
-		{
 			"group": "SDK Reference",
 			"pages": [
 				"sdk/installation",
