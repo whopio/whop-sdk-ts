@@ -113,7 +113,8 @@
        {
 			"group": "Manage payments",
 			"pages": [
-				"payments/checkout-embed",
+				"payments/checkout-links",
+                "payments/checkout-embed",
                 "payments/set-up-payouts",
 				"payments/refund-customer",
                 "payments/taxes",
