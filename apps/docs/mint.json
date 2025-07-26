@@ -101,15 +101,6 @@
 				"manage-your-whop/content-rewards"
 			]
 		},
-        {
-			"group": "Set up payment processing",
-			"pages": [
-				"payments/overview",
-                "payments/create-a-whop",
-				"payments/create-a-product",
-                "payments/create-checkout-link"
-			]
-		},
        {
 			"group": "Manage payments",
 			"pages": [
@@ -129,6 +120,15 @@
 				"payments/credit-card-disputes"
 			]
 		},
+        {
+			"group": "Set up payment processing",
+			"pages": [
+				"payments/overview",
+                "payments/create-a-whop",
+				"payments/create-a-product",
+                "payments/create-checkout-link"
+			]
+		},      
 		{
 			"group": "Start your own whop",
 			"pages": [
