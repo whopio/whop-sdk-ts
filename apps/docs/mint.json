@@ -109,6 +109,7 @@
                 "payments/set-up-payouts",
 				"payments/refund-customer",
                 "payments/taxes",
+                "payments/payment-declines",
                 "payments/financing"
 			]
 		},
