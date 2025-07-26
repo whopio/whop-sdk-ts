@@ -28,6 +28,7 @@ fragment BasicCourseLesson on Lesson {
 	lessonType
 	title
 	order
+	visibility
 	daysFromCourseStartUntilUnlock
 	content
 	muxAsset {
