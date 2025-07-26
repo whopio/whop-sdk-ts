@@ -21,6 +21,9 @@ const result = await whopSdk.courses.updateLesson({
 
 	// The title of the lesson
 	title: "some string",
+
+	// Determines how / whether this lesson is visible to users.
+	visibility: "hidden" /* Valid values: hidden | visible */,
 });
 
 ```
@@ -41,6 +44,9 @@ const response = {
 
 	// The order of the lesson within its chapter
 	order: 10,
+
+	// The visibility of the lesson. Determines how / whether this lesson is visible to users.
+	visibility: "hidden" /* Valid values: hidden | visible */,
 
 	// The content of the lesson
 	content: "some string",
