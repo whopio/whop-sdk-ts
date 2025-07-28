@@ -4,6 +4,7 @@ fragment FullCourseLesson on Lesson {
 	lessonType
 	title
 	order
+	visibility
 	content
 	daysFromCourseStartUntilUnlock
 	muxAsset {
