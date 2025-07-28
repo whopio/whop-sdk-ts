@@ -60,6 +60,7 @@ All Moderator and Sales Manager permissions, plus:
 - View Marketing section
 - Invite other team members (Moderators and Sales Managers only)
 - View general settings (but can't edit them)
+- Edit the store page
 
 <Tip>
   The Admin role is best for operations managers, team leads, heads of marketing/community, or anyone needing broader dashboard access.
@@ -71,7 +72,6 @@ All permissions from other roles, plus:
 
 - Access to Payouts
 - View and manage API keys, OAuth, and Webhooks settings
-- Edit the store page
 - Invite new Owners
 - Full control over all whop settings
 
@@ -81,19 +81,41 @@ All permissions from other roles, plus:
 
 **Complete permissions breakdown**
 
-| Permissions                                                                               | Moderator | Sales Manager               | Admin                                              | Owner |
-| :---------------------------------------------------------------------------------------- | :-------- | :-------------------------- | :------------------------------------------------- | :---- |
-| Delete messages and mute/ban users in the Chat app, and delete comments in the Forums app | ✔️        | ✔️                          | ✔️                                                 | ✔️    |
-| View Users table on dashboard                                                             | ❌         | ✔️ (can't export the table) | ✔️                                                 | ✔️    |
-| View Checkout links section on dashboard and create new checkout links                    | ❌         | ✔️                          | ✔️                                                 | ✔️    |
-| View waitlists and cancellation reasons tables on dashboard                               | ❌         | ❌                           | ✔️                                                 | ✔️    |
-| View Finances section of dashboard                                                        | ❌         | ❌                           | ✔️ (except Payouts section)                        | ✔️    |
-| View Marketing section of dashboard                                                       | ❌         | ❌                           | ✔️                                                 | ✔️    |
-| View general settings of dashboard                                                        | ❌         | ❌                           | ✔️ (can't edit)                                    | ✔️    |
-| View team settings on dashboard and invite new team members                               | ❌         | ❌                           | ✔️ (can only invite Sales Managers and Moderators) | ✔️    |
-| View API keys settings on dashboard                                                       | ❌         | ❌                           | ❌                                                  | ✔️    |
-| View OAuth settings on dashboard                                                          | ❌         | ❌                           | ❌                                                  | ✔️    |
-| View Webhooks settings on dashboard                                                       | ❌         | ❌                           | ❌                                                  | ✔️    |
+| Permission                                   | Moderator | Sales Manager | Admin | Owner |
+| :------------------------------------------- | :-------- | :------------ | :---- | :---- |
+| Delete messages in the Chat app              | ✔️        | ✔️            | ✔️    | ✔️    |
+| Mute users in Chat app                       | ✔️        | ✔️            | ✔️    | ✔️    |
+| Ban users in Chat app                        | ✔️        | ✔️            | ✔️    | ✔️    |
+| Delete comments in Forums app                | ✔️        | ✔️            | ✔️    | ✔️    |
+| View Checkout links section on dashboard     | ❌         | ✔️            | ✔️    | ✔️    |
+| Create new checkout links                    | ❌         | ✔️            | ✔️    | ✔️    |
+| View Users table on dashboard                | ❌         | ✔️            | ✔️    | ✔️    |
+| Edit store page                              | ❌         | ❌             | ✔️    | ✔️    |
+| Add & configure apps                         | ❌         | ❌             | ✔️    | ✔️    |
+| Create products                              | ❌         | ❌             | ✔️    | ✔️    |
+| Give refunds to customers                    | ❌         | ❌             | ✔️    | ✔️    |
+| Export Users table on dashboard              | ❌         | ❌             | ✔️    | ✔️    |
+| View waitlists                               | ❌         | ❌             | ✔️    | ✔️    |
+| View cancellation reasons                    | ❌         | ❌             | ✔️    | ✔️    |
+| View Finances section                        | ❌         | ❌             | ✔️    | ✔️    |
+| Access Payouts section                       | ❌         | ❌             | ❌     | ✔️    |
+| View Marketing section                       | ❌         | ❌             | ✔️    | ✔️    |
+| Manage Marketing section                     | ❌         | ❌             | ✔️    | ✔️    |
+| View general settings                        | ❌         | ❌             | ✔️    | ✔️    |
+| Edit general settings                        | ❌         | ❌             | ❌     | ✔️    |
+| View team settings                           | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Moderators                            | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Sales Managers                        | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Admins                                | ❌         | ❌             | ❌     | ✔️    |
+| Invite Owners                                | ❌         | ❌             | ❌     | ✔️    |
+| View analytics on Home page of the dashboard | ❌         | ❌             | ❌     | ✔️    |
+| View API keys settings                       | ❌         | ❌             | ❌     | ✔️    |
+| Manage API keys settings                     | ❌         | ❌             | ❌     | ✔️    |
+| View OAuth settings                          | ❌         | ❌             | ❌     | ✔️    |
+| Manage OAuth settings                        | ❌         | ❌             | ❌     | ✔️    |
+| View Webhooks settings                       | ❌         | ❌             | ❌     | ✔️    |
+| Manage Webhooks settings                     | ❌         | ❌             | ❌     | ✔️    |
+| Transfer ownership                           | ❌         | ❌             | ❌     | ✔️    |
 
 <Warning>
   Important: Some things your team can do (like deleting messages or checkout links) can't be undone and could hurt your business. Always give people the lowest level of access they need to do their job.
