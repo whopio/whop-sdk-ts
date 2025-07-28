@@ -19,6 +19,9 @@ const result = await whopSdk.courses.updateLesson({
 	lessonType:
 		"knowledge_check" /* Valid values: knowledge_check | multi | pdf | quiz | text | video */,
 
+	// The ID of the Mux asset to attach to this lesson
+	muxAssetId: "some string",
+
 	// The title of the lesson
 	title: "some string",
 

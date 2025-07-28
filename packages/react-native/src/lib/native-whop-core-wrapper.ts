@@ -27,7 +27,15 @@ export interface ExecSyncApi {
 	};
 }
 
-export interface ExecAsyncApi extends ExecSyncApi {}
+export interface ExecAsyncApi extends ExecSyncApi {
+	inAppPurchase(params: {
+		id?: string | null;
+		planId: string;
+	}): {
+		sessionId: string;
+		receiptId: string;
+	};
+}
 
 export function __internal_execSync<F extends keyof ExecSyncApi>(
 	name: F,
