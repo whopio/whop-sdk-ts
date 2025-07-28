@@ -6,7 +6,7 @@ export function DiscoverView(props: DiscoverViewProps) {
 		<ScrollView>
 			<Text>Hello World! (DiscoverView)</Text>
 			<Text>currentUserId: {props.currentUserId}</Text>
-			<Text>restPath: {props.restPath}</Text>
+			<Text>path: /{props.path.join("/")}</Text>
 		</ScrollView>
 	);
 }

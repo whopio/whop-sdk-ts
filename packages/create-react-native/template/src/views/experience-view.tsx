@@ -8,7 +8,7 @@ export function ExperienceView(props: ExperienceViewProps) {
 			<Text>companyId: {props.companyId}</Text>
 			<Text>experienceId: {props.experienceId}</Text>
 			<Text>currentUserId: {props.currentUserId}</Text>
-			<Text>restPath: {props.restPath}</Text>
+			<Text>path: /{props.path.join("/")}</Text>
 		</ScrollView>
 	);
 }
