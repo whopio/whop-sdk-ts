@@ -1,0 +1,3 @@
+mutation deleteLessonAttachment($input: DeleteLessonAttachmentInput!) {
+	deleteLessonAttachment(input: $input)
+}
