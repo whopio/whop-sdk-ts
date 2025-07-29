@@ -3,58 +3,48 @@ title: "Payment declines"
 description: "Learn how payment declines work and how to manage them"
 ---
 
-When a customer's payment doesn't go through, Whop automatically tries to recover it and gives customers several chances to update their payment info before canceling their membership.
+Learn what causes payment declines, what Whop does to recover them, and how you or your customers can fix declined payments.
 
-Understanding how payment declines work helps you keep customers happy and revenue flowing when payment issues arise.
+## Why has a payment been declined?
+
+Common reasons for payment declines:
+
+- The customer’s card has insufficient funds
+- The card is expired or the details entered are incorrect
+- The bank blocked the charge or flagged it for fraud
+- The transaction was blocked due to international restrictions
+- The customer hit their spending limit or daily cap
 
 ## What happens when a payment is declined
 
-When a customer's payment gets declined or fails, Whop automatically takes several steps to try and recover the payment:
+When a customer's payment gets declined or fails, Whop takes several steps to try and recover the payment:
 
 - **The subscription status changes to Past due**: This means the payment needs attention, but doesn't immediately cancel access
   - You can view Past due payments by going to **Dashboard** \> **Payments**, clicking **Status** and selecting only **Past due**
-- **Automatic email reminders are sent**: Your customers receive emails prompting them to update their payment information
-- **Access may be temporarily paused**: Depending on your settings, customer access might stop working until the payment goes through.
+- **We email the customer**: Your customers receive emails prompting them to update their payment information
+- **We retry the payment: **Whop automatically retries the charge over a 5-day period
+- **Access may be temporarily paused**: Depending on your settings, your customer might lose access to your whop until the payment goes through
   - Go to **Dashboard** \> **Settings** \> **Checkout** and choose whether you want members to have **Access while past due** or not
+- **Subscription is canceled**: If the payment still fails after 5 days, the subscription is canceled automatically
 
-## Whop's automatic retry system
+## What you can do to fix a declined payment
 
-Whop gives customers **5 days** to fix payment problems before automatically canceling their membership.
+When a payment is declined, you can help the customer update their payment method and manually retry the payment from your dashboard. 
 
-During these 5 days:
+**Step 1: Ask the customer to update their payment method**
 
-- We automatically retry the payment in the background
-- Customers can update their payment method or try again manually
-- If payment still fails after 5 days, we automatically cancel the membership
+- Contact the customer to confirm they have sufficient funds and a working payment method
+- To update their payment method, ask them to follow these steps:
+  1. Go to https://whop.com/@me/settings/memberships/inactive
+  2. Click the **card** button on the affected subscription
+  3. Select **Update payment**
+  4. Add the new card details and save
 
-This system helps you recover most failed payments while ensuring customers don't receive free access indefinitely.
+**Step 2: Manually retry the payment from your dashboard**
 
-## How customers can update their payment method
+1. Go to **Dashboard** \> **Payments**
+2. Click **Status** and select only **Failed**
+3. Select the failed payment
+4. Click **Retry payment**
 
-Customers can easily update their payment information without canceling their subscription.
-
-To update the payment method:
-
-- Go to https://whop.com/@me/settings/memberships/inactive
-- Click the **card** button on the affected subscription
-- Select **Update payment**
-- Add the new card details and save
-
-<Tip>
-  Updating the payment method does not cancel the subscription — it just provides new payment information for future charges.
-</Tip>
-
-## How to retry failed payments manually
-
-If a payment fails and automatic retries haven't worked yet, you can manually retry the payment:
-
-To retry a failed payment:
-
-- Contact the customer with the **Failed** payment to ensure they have sufficient funds and a working payment method
-- They can update their payment method by going to https://whop.com/@me/settings/payment-methods/ and clicking **Add payment method**
-- Go to **Dashboard** \> **Payments**
-- Click **Status** and select only **Failed**
-- Select the failed payment
-- Click **Retry payment**
-
-When the payment processes successfully, customer access is restored automatically.
+When the payment processes successfully, Whop restores the customer’s access automatically.
