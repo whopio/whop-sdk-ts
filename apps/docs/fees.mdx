@@ -1,17 +1,15 @@
 ---
 title: "Fees"
-description: "Understand fees on Whop"
+description: "Whop's goal is to be the cheapest place to process payments."
 ---
 
-## Transactions
 
-Whop processes payments from your customers, applies platform and processing fees, and deposits the rest into your account. This section breaks down how fees apply across different payment methods.
 
 | Payment Method                      | Fee             | Notes                                                                    |
 | :---------------------------------- | :-------------- | :----------------------------------------------------------------------- |
 | **Card Processing (US)**            | 2.9% \+ \$0.30  | Applied to all credit and debit card transactions in the US              |
 | **Card Processing (International)** | 3.9% \+ \$0.30  | Applied to all credit and debit card transactions international (non-US) |
-| **ACH Processing**                  | 0.8% (max \$10) | Applied to payments from US bank accounts.                               |
+| **ACH Processing**                  | 0.8%            | Applied to payments from US bank accounts.                               |
 | **Buy Now, Pay Later**              | 15%             | Covers Affirm, Afterpay, Klarna, Sezzle, SplitIt, and Zip                |
 
 <Tip>
@@ -25,6 +23,14 @@ Additional fees apply to digital products hosted and sold on Whop to cover the c
 | **Hosting** | 3%  | Paid by creators (businesses hosting their digital product on Whop)      |
 | **Service** | 5%  | Paid by buyers (end customers buying access to digital products on Whop) |
 
+## Foreign Exchange
+
+For international transactions processed in currencies other than USD, an additional foreign exchange fee applies.
+
+| Service | Fee | Notes                                                    |
+| :------ | :-- | :------------------------------------------------------- |
+| **FX**  | 1%  | Applied when customer payments settle from non-USD to USD |
+
 ## Payouts
 
 An overview of the available payout methods on Whop, including processing times and fees.
@@ -33,17 +39,17 @@ An overview of the available payout methods on Whop, including processing times 
 
 | Method                                       | Fee               | Processing Time    |
 | :------------------------------------------- | :---------------- | :----------------- |
-| **Standard ACH (US Only)**                   | Free              | 3 business days    |
-| **Next-Day ACH (US Only)**                   | 2% (max \$10,000) | 1 business day     |
-| **Bank Wire (US Only)**                      | \$25.00           | Same business day  |
+| **Standard ACH (US Only)**                   | \$2.50            | 3 business days    |
+| **Next-Day ACH (US Only)**                   | 2% \+ \$1.00      | 1 business day     |
+| **Bank Wire (US Only)**                      | \$23.00           | Same business day  |
 | **International Bank Deposit & Cash Pickup** | 1%                | Varies by location |
 
 ### Instant payouts
 
 | Method             | Fee               | Processing Time        |
 | :----------------- | :---------------- | :--------------------- |
-| **Instant Pay**    | 4% (max \$10,000) | Minutes (push-to-card) |
-| **Zelle / RTP**    | 4% (max \$10,000) | Real-time              |
+| **RTP (Instant)**  | 4% \+ \$1.00      | Real-time              |
+| **Venmo**          | 5%                | Minutes                |
 | **Cryptocurrency** | 5%                | 10-60 minutes          |
 
 <Tip>
@@ -52,12 +58,15 @@ An overview of the available payout methods on Whop, including processing times 
 
 ## Additionals
 
-Whop charges fees to cover fraud detection and subscription billing.
+Whop charges fees to cover fraud detection, payment optimization, and subscription billing.
 
-| Service                     | Fee    | Notes                                         |
-| :-------------------------- | :----- | :-------------------------------------------- |
-| **Billing & Subscriptions** | 0.5%   | Applied to recurring subscription payments    |
-| **Fraud & Authentication**  | \$0.16 | 3D Secure authentication and fraud prevention |
+| Service                     | Fee     | Notes                                         |
+| :-------------------------- | :------ | :-------------------------------------------- |
+| **Billing & Subscriptions** | 0.4%    | Applied to recurring subscription payments    |
+| **Payment Orchestration**   | \$0.03  | Transaction routing and optimization          |
+| **3D Secure**               | \$0.03  | Enhanced authentication for card payments     |
+| **Fraud Detection (Radar)** | \$0.07  | Advanced fraud prevention and risk analysis   |
+| **Network Tokens**          | \$0.03  | Secure tokenization for stored payment methods |
 
 <Tip>
   Learn more about how sales tax and VAT are handled on Whop [here](/apps/docs/payments/taxes).
@@ -74,7 +83,7 @@ Fees apply only when disputes occur or when you opt into premium protections (Ea
 
 ## Other payment methods
 
-If you need to pay affiliates at scale or pay your teammates, Whop’s suite of platform tools make it easy to distribute earnings and incentives.
+If you need to pay affiliates at scale or pay your teammates, Whop's suite of platform tools make it easy to distribute earnings and incentives.
 
 | Transfer Type              | Fee | Notes                                         |
 | :------------------------- | :-- | :-------------------------------------------- |
