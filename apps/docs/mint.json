@@ -151,11 +151,15 @@
 		{
 			"group": "Build your business on Whop",
 			"pages": [
-				"supported-business-models/communities",
-				"supported-business-models/courses",
+				"supported-business-models/paid-groups",
+				"supported-business-models/educational-programs",
 				"supported-business-models/coaches",
 				"supported-business-models/agencies",
-				"supported-business-models/software"
+				"supported-business-models/saas",
+				"supported-business-models/newsletters",
+				"supported-business-models/events",
+				"supported-business-models/dtc-ecommerce",
+				"supported-business-models/brick-and-mortar"
 			]
 		},
 
