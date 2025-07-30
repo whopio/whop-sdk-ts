@@ -81,7 +81,7 @@
 				"manage-your-whop/locked-premium-content",
 				"manage-your-whop/free-trials",
 				"manage-your-whop/tracking-analytics",
-                "manage-your-whop/integrations",
+				"manage-your-whop/integrations",
 				"manage-your-whop/legal-documents"
 			]
 		},
@@ -96,57 +96,53 @@
 			"group": "Growth and marketing",
 			"pages": [
 				"manage-your-whop/tracking-links",
-                "manage-your-whop/popup-promotions",
+				"manage-your-whop/popup-promotions",
 				"manage-your-whop/automated-messaging",
 				"manage-your-whop/promo-codes",
 				"manage-your-whop/affiliate-program",
 				"manage-your-whop/content-rewards"
 			]
 		},
-       {
-			"group": "Manage payments",
-			"pages": [
-				"payments/checkout-links",
-                "payments/checkout-embed",
-                "payments/set-up-payouts",
-				"payments/refund-customer",
-                "payments/taxes",
-                "payments/payment-declines",
-                "payments/financing"
-			]
-		},
-       {
-			"group": "Manage disputes",
-			"pages": [
-				"payments/resolution-center",
-                "payments/dispute-fighter",
-				"payments/credit-card-disputes"
-			]
-		},
-        {
+		{
 			"group": "Set up payment processing",
 			"pages": [
 				"payments/overview",
-                "payments/create-a-whop",
+				"payments/create-a-whop",
 				"payments/create-a-product",
-                "payments/create-checkout-link"
+				"payments/create-checkout-link",
+				"payments/embed-checkout"
 			]
-		},      
+		},
+		{
+			"group": "Manage payments",
+			"pages": [
+				"payments/set-up-payouts",
+				"payments/refund-customer",
+				"payments/taxes",
+				"payments/payment-declines",
+				"payments/financing"
+			]
+		},
+		{
+			"group": "Manage disputes",
+			"pages": [
+				"payments/resolution-center",
+				"payments/dispute-fighter",
+				"payments/credit-card-disputes"
+			]
+		},
 		{
 			"group": "Start your own whop",
 			"pages": [
 				"create-account",
 				"add-apps",
 				"set-up-products-pricing",
-                "set-up-store-page"
+				"set-up-store-page"
 			]
 		},
 		{
 			"group": "Whop apps",
-			"pages": [
-				"whop-apps/what-are-whop-apps",
-				"whop-apps/whop-app-store"
-			]
+			"pages": ["whop-apps/what-are-whop-apps", "whop-apps/whop-app-store"]
 		},
 		{
 			"group": "Build your business on Whop",
