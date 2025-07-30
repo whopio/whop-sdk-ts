@@ -1,6 +1,6 @@
 {
 	"openapi": ["/v5.yaml", "/v2.json", "/access.yaml"],
-	"name": "Whop Developers",
+	"name": "Whop Docs",
 	"api": {
 		"baseUrl": "https://api.whop.com"
 	},
