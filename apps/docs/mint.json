@@ -110,13 +110,13 @@
 				"payments/create-a-whop",
 				"payments/create-a-product",
 				"payments/create-checkout-link",
-				"payments/embed-checkout"
+				"payments/embed-checkout",
+				"payments/set-up-payouts"
 			]
 		},
 		{
 			"group": "Manage payments",
 			"pages": [
-				"payments/set-up-payouts",
 				"payments/refund-customer",
 				"payments/taxes",
 				"payments/payment-declines",
