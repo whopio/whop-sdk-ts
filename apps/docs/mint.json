@@ -142,7 +142,11 @@
 		},
 		{
 			"group": "Whop apps",
-			"pages": ["whop-apps/what-are-whop-apps", "whop-apps/whop-app-store"]
+			"pages": [
+				"whop-apps/what-are-whop-apps",
+				"whop-apps/apps-for-communities",
+				"whop-apps/apps-for-businesses"
+			]
 		},
 		{
 			"group": "Build your business on Whop",
