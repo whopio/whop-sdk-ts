@@ -39,8 +39,8 @@
 			"url": "/"
 		},
 		{
-			"name": "Manage your whop",
-			"url": "manage-your-whop"
+			"name": "Manage your business",
+			"url": "manage-your-business"
 		},
 		{
 			"name": "Payments",
@@ -75,32 +75,38 @@
 			"pages": ["get-started", "fees"]
 		},
 		{
-			"group": "Manage your community",
+			"group": "Products",
 			"pages": [
-				"manage-your-whop/create-waitlist",
-				"manage-your-whop/locked-premium-content",
-				"manage-your-whop/free-trials",
-				"manage-your-whop/tracking-analytics",
-				"manage-your-whop/integrations",
-				"manage-your-whop/legal-documents"
-			]
-		},
-		{
-			"group": "Manage your team",
-			"pages": [
-				"manage-your-whop/manage-team-roles",
-				"manage-your-whop/pay-your-team"
+				"manage-your-business/products/manage-products",
+				"manage-your-business/products/create-waitlist",
+				"manage-your-business/products/locked-premium-content",
+				"manage-your-business/products/free-trials"
 			]
 		},
 		{
 			"group": "Growth and marketing",
 			"pages": [
-				"manage-your-whop/tracking-links",
-				"manage-your-whop/popup-promotions",
-				"manage-your-whop/automated-messaging",
-				"manage-your-whop/promo-codes",
-				"manage-your-whop/affiliate-program",
-				"manage-your-whop/content-rewards"
+				"manage-your-business/growth-marketing/tracking-links",
+				"manage-your-business/growth-marketing/popup-promotions",
+				"manage-your-business/growth-marketing/automated-messaging",
+				"manage-your-business/growth-marketing/promo-codes",
+				"manage-your-business/growth-marketing/affiliate-program",
+				"manage-your-business/growth-marketing/content-rewards"
+			]
+		},
+		{
+			"group": "Manage your business",
+			"pages": [
+				"manage-your-business/manage-business/integrations",
+				"manage-your-business/manage-business/legal-documents",
+				"manage-your-business/manage-business/analytics"
+			]
+		},
+		{
+			"group": "Team management",
+			"pages": [
+				"manage-your-business/team-management/manage-team-roles",
+				"manage-your-business/team-management/pay-your-team"
 			]
 		},
 		{
