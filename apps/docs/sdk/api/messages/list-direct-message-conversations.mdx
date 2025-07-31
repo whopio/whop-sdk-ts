@@ -17,7 +17,8 @@ const result = await whopSdk.messages.listDirectMessageConversations({
 	query: "some string",
 
 	// Filter by status (accepted, requested, etc.)
-	status: "accepted" /* Valid values: accepted | hidden | requested */,
+	status:
+		"accepted" /* Valid values: accepted | archived | closed | hidden | requested */,
 
 	// Filter by unread status (true or false)
 	unread: true,
