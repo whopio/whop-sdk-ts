@@ -29,5 +29,8 @@
 	},
 	"[mdx]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[plaintext]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }
