@@ -1,5 +1,13 @@
 # @whop/api
 
+## 0.0.41
+
+### Patch Changes
+
+- dfc2a34: Add visibility field on course lessons
+- e5f70f2: Add mutations to courses: createAssessmentQuestion, deleteAssessmentQuestionImage, deleteLessonAttachment
+- 59028f7: Add courses.createCourse mutation
+
 ## 0.0.40
 
 ### Patch Changes

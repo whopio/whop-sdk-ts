@@ -1,5 +1,15 @@
 # @whop/react-native
 
+## 0.0.9
+
+### Patch Changes
+
+- d120399: add in app purchase async event
+- Updated dependencies [dfc2a34]
+- Updated dependencies [e5f70f2]
+- Updated dependencies [59028f7]
+  - @whop/api@0.0.41
+
 ## 0.0.8
 
 ### Patch Changes
