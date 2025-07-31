@@ -390,6 +390,7 @@
 					"pages": [
 						"sdk/api/courses/create-assessment-question",
 						"sdk/api/courses/create-chapter",
+						"sdk/api/courses/create-course",
 						"sdk/api/courses/create-lesson",
 						"sdk/api/courses/delete-assessment-question-image",
 						"sdk/api/courses/delete-chapter",
