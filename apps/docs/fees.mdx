@@ -10,18 +10,21 @@ import { Button } from "@/components/ui/button";
   <img src="/how-to-videos/fees.gif" alt="Fees" />
 </Frame>
 
-<CardGroup cols={4}>
+<CardGroup cols={3}>
   <Card title="Global access" icon="globe">
     195 countries, 135+ currencies, 100+ payment methods.
   </Card>
-  <Card title="Built-in fraud prevention" icon="shield-check">
+  <Card title="Fraud prevention" icon="shield-check">
     Powerful machine learning that adapts to new fraud patterns.
   </Card>
-  <Card title="Optimize your checkout" icon="cart-shopping">
+  <Card title="Optimized checkout" icon="cart-shopping">
     Flexible UI components and accelerated checkout.
   </Card>
   <Card title="Payment optimizations" icon="chart-line">
     Real-time retries & auto-updated cards to boost revenue.
+  </Card>
+  <Card title="Financing options" icon="chart-line">
+    Let your customers pay over time with Klarna, Afterpay, and more.
   </Card>
   <Card title="Embedded payments" icon="building-columns">
     Instant onboarding and platform management tools.
@@ -742,16 +745,9 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>2%</h3>
+          <h3>2% + $1.00</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
-            <br />
-            <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
-            <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
-            <span className="text-gray-500"> is required</span>
           </div>
         </div>
       </div>
@@ -781,16 +777,9 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>$2.50</h3>
+          <h3>4% + $1.00</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
-            <br />
-            <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
-            <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
-            <span className="text-gray-500"> is required</span>
           </div>
         </div>
       </div>
@@ -820,16 +809,9 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>$2.50</h3>
+          <h3>5% + $1.00</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
-            <br />
-            <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
-            <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
-            <span className="text-gray-500"> is required</span>
           </div>
         </div>
       </div>
@@ -859,16 +841,9 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>$2.50</h3>
+          <h3>5% + $1.00</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
-            <br />
-            <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
-            <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
-            <span className="text-gray-500"> is required</span>
           </div>
         </div>
       </div>
@@ -898,15 +873,13 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>$2.50</h3>
+          <h3>0% + $23.00</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
             <br />
             <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
-            <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
+             <span className="text-gray-500">+ 1% if </span>
+            <span className="text-[#6366f1]">cross border conversion</span>
             <span className="text-gray-500"> is required</span>
           </div>
         </div>
@@ -936,15 +909,13 @@ import { Button } from "@/components/ui/button";
         </div>
 
         <div className="text-sm">
-          <h3>$2.50</h3>
+          <h3>Variable local rates</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per successful payout
             <br />
             <br />
-            <span className="text-gray-500">+ 1.5% for international cards</span>
-            <br />
             <span className="text-gray-500">+ 1% if </span>
-            <span className="text-[#6366f1]">currency conversion</span>
+            <span className="text-[#6366f1]">cross border conversion</span>
             <span className="text-gray-500"> is required</span>
           </div>
         </div>
@@ -1091,7 +1062,7 @@ import { Button } from "@/components/ui/button";
         </div>
         <div className="text-sm">
           <h3>1%</h3>
-          <div className="text-gray-700 dark:text-gray-300">+ $0.03 per transaction</div>
+          <div className="text-gray-700 dark:text-gray-300">per transaction</div>
         </div>
       </div>
     </div>
@@ -1159,16 +1130,9 @@ import { Button } from "@/components/ui/button";
       </div>
       <div>[Start today →](/apps/docs/payments/taxes)</div>
     </div>
+	 <div>
+    </div>
     <div className="space-y-2">
-      <div>
-        <Icon icon="check" iconType="solid" /> Covers hands-on support and managed operations.
-      </div>
-      <div>
-        <Icon icon="check" iconType="solid" /> Simple, global pricing.
-      </div>
-      <div>
-        <Icon icon="check" iconType="solid" /> Scales with volume, not complexity.
-      </div>
     </div>
 
     <div className="-mx-6 mb-6 border-t border-gray-200 dark:border-gray-800">
@@ -1181,7 +1145,7 @@ import { Button } from "@/components/ui/button";
         </div>
         <div className="text-sm">
           <h3>3%</h3>
-          <div className="text-gray-700 dark:text-gray-300">+ $0.03 per transaction</div>
+          <div className="text-gray-700 dark:text-gray-300">per transaction</div>
         </div>
       </div>
     </div>
@@ -1189,14 +1153,14 @@ import { Button } from "@/components/ui/button";
     <div className="-mx-6 mb-6 border-t border-gray-200 dark:border-gray-800">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="ml-6">
-          <h3>Service Fee</h3>
+          <h3>Buyer Fee</h3>
           <p className="mb-4">
             General platform and infrastructure fee to support core functionality.
           </p>
         </div>
         <div className="text-sm">
           <h3>0%</h3>
-          <div className="text-gray-700 dark:text-gray-300">+ $0.03 per transaction</div>
+          <div className="text-gray-700 dark:text-gray-300">per transaction</div>
         </div>
       </div>
     </div>
