@@ -1,4 +1,82 @@
 ---
 title: "SaaS"
-description: "Learn how to launch and run your SaaS on Whop"
+description: "Learn how to build and run your SaaS on Whop"
 ---
+
+If you have an existing SaaS or are building a new one, you can use Whop to direct your customers to pay and let them manage their membership.
+
+## Launch a SaaS in 7 steps
+
+<Steps>
+  <Step title="Create your whop" titleSize="h3">
+    Head over to [**whop.com/sell**](https://whop.com/dashboard/start/):
+
+    - Choose a name for your SaaS
+    - Select your custom URL
+    - Complete the basic setup
+
+    Your whop is now live and ready to customize.
+
+    ![Launch your SaaS](/apps/docs/images/createawhopcommunity.png)
+
+  </Step>
+  <Step title="Create a product" titleSize="h3">
+   Create a product
+
+    <Tip>
+      You can add the Forums app multiple times (and rename them to whatever you want) to keep your communications organized and easy to follow.
+    </Tip>
+    ![Add forums](/apps/docs/how-to-videos/community-forums.gif)
+
+  </Step>
+
+  <Step title="Add checkout link to your website" titleSize="h3">
+	Go get your checkout link form whop.com/dashboard/checkout-links and put it on your website.
+
+  </Step>
+  <Step title="Add an app and get API keys" titleSize="h3">
+	Go to your dashboard and add app
+
+  </Step>
+  <Step title="Subscribe to webhooks" titleSize="h3">
+    Go to the dashboard section and add a webhook.
+  </Step>
+  <Step title="Check for access programatically" titleSize="h3">
+
+<CodeGroup>
+
+```javascript @whop/api
+const hasAccess = await whopSdk.access.checkIfUserHasAccessToAccessPass({
+  accessPassId: process.env.NEXT_PUBLIC_PREMIUM_ACCESS_PASS_ID, // from step 5 above.
+  userId: userId,
+});
+```
+
+</CodeGroup>
+
+  </Step>
+  <Step title="Design your store page and list on marketplace" titleSize="h3">
+    Your store page is where people can learn about your offer. Click your whop name in the top left, then select **Design store page** to open the editor. Click **Edit details** to customize:
+
+    - **Choose a clear name and headline:** Make it immediately obvious what your community offers and who it's for. Examples: "Marketing professionals sharing strategies and insights" or "Fitness enthusiasts building accountability and motivation"
+    - **Write a compelling description:** Focus on the value members receive and how your community will help them achieve their goals. Highlight specific benefits like exclusive content, expert guidance, peer connections, and ongoing support
+    - **Upload a logo:** Add a clean, simple logo to your store page
+    - **Add gallery images or video:** Images of events, member success stories, or a brief welcome video help potential members get to know you and what to expect when they join
+    - **Select the appropriate category:** This helps people discover your community when browsing Whop
+
+    ![Community store page](/apps/docs/images/Storepagecommunity.png)
+
+  </Step>
+
+</Steps>
+
+## Next steps
+
+<Card
+  title="Grow your community on Whop"
+  icon="chart-line"
+  href="/manage-your-whop"
+>
+  Learn how to use Whop's tools and features to get more members in your
+  community.
+</Card>
