@@ -1,0 +1,200 @@
+---
+title: List Receipts For Company
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.payments.listReceiptsForCompany({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	first: 10,
+
+	after: "pageInfo.endCursor",
+
+	filter: {
+		// A specific access pass.
+		accessPassIds: ["xxxxxxxxxxx"],
+
+		// The billing reason for the payment
+		billingReasons: [
+			"manual" /* Valid values: manual | one_time | subscription | subscription_create | subscription_cycle | subscription_update */,
+		],
+
+		// The currency of the payment.
+		currencies: [
+			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+		],
+
+		// Which way to order the results.
+		direction: "asc" /* Valid values: asc | desc */,
+
+		// To get all memberships created before this certain time.
+		endDate: 1716931200,
+
+		// How to order the results.
+		order: "created_at" /* Valid values: created_at | final_amount | paid_at */,
+
+		// How the payment was made (method).
+		paymentMethods: [
+			"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
+		],
+
+		// A specific plan.
+		planIds: ["xxxxxxxxxxx"],
+
+		// The text that is being searched.
+		query: "some string",
+
+		// To get all memberships created after this certain time.
+		startDate: 1716931200,
+
+		// The state of the payment.
+		statuses: [
+			"failed" /* Valid values: failed | partially_refunded | past_due | refunded | succeeded */,
+		],
+	},
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// All of a company's payments, with searching capabilities..
+	// Roles: owner, admin
+	receipts: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The receipt ID
+				id: "xxxxxxxxxxx",
+
+				// The current state of the receipt.
+				status:
+					"draft" /* Valid values: draft | open | paid | pending | uncollectible | unresolved | void */,
+
+				// How much the receipt is for after fees
+				amountAfterFees: 10,
+
+				// The final converted amount of the receipt in USD.
+				settledUsdAmount: 10,
+
+				// The final amount of this receipt.
+				finalAmount: 10,
+
+				// The currency of the payment.
+				currency:
+					"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+				// The access pass attached to this receipt.
+				accessPass: {
+					// The internal ID of the public access pass.
+					id: "xxxxxxxxxxx",
+
+					// The title of the access pass. Use for Whop 4.0.
+					title: "some string",
+				},
+
+				// The plan attached to this receipt.
+				plan: {
+					// The internal ID of the plan.
+					id: "xxxxxxxxxxx",
+
+					// The title of the owning object.
+					title: "some string",
+				},
+
+				// The member attached to this receipt.
+				member: {
+					// The user for this member, if any.
+					user: {
+						// The internal ID of the user account.
+						id: "xxxxxxxxxxx",
+
+						// The digital mailing address of the user.
+						email: "some string",
+
+						// The user's full name.
+						name: "some string",
+
+						// The whop username.
+						username: "some string",
+					},
+				},
+
+				// Whether this payment was auto refunded or not
+				autoRefunded: true,
+
+				// The billing reason
+				billingReason: "some string",
+
+				// The type of card used as the payment method.
+				brand: "some string",
+
+				// The total of the payment amount in USD.
+				totalUsdAmount: 10,
+
+				// The promo code used for this receipt.
+				promoCode: {
+					// The amount off (% or flat amount) for the promo.
+					amountOff: 10,
+
+					// The ID of the promo.
+					id: "xxxxxxxxxxx",
+
+					// The specific code used to apply the promo at checkout.
+					code: "some string",
+				},
+
+				// The dispute attached to this receipt (if any).
+				dispute: {
+					// The amount of the dispute (formatted).
+					amount: 10,
+
+					// The email of the customer from their payment details.
+					customerEmailAddress: "some string",
+
+					// The name of the customer from their payment details.
+					customerName: "some string",
+
+					// When it was made.
+					createdAt: 1716931200,
+
+					// The billing address of the user from their payment details.
+					billingAddress: "some string",
+
+					// An IP access log for the user from Whop.
+					accessActivityLog: "some string",
+				},
+
+				// The email of the user who made the payment.
+				email: "some string",
+
+				// The most recent charge on the receipt.
+				mostRecentCharge: {
+					// The risk level from Stripe for the charge.
+					outcomeRiskLevel:
+						"elevated" /* Valid values: elevated | highest | normal | not_assessed | unknown */,
+
+					// The risk score from Stripe for the charge.
+					outcomeRiskScore: 10,
+				},
+			},
+		],
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+	},
+};
+
+```
