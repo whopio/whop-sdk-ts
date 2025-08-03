@@ -519,7 +519,25 @@ This component will now mount an iframe with the Whop checkout embed. Once the c
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
 
-### Available React properties
+### Available controls
+
+To get access to the controls of the checkout embed, you can use the `ref` prop.
+
+```tsx
+const ref = useCheckoutEmbedControls();
+
+return <WhopCheckoutEmbed ref={ref} planId="plan_XXXXXXXXX" />;
+```
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+
+```tsx
+ref.current?.submit();
+```
+
+### Available properties
 
 #### **`planId`**
 
@@ -685,7 +703,24 @@ This will now mount an iframe inside of the element with the plan id you provide
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
 
-### Available HTML attributes
+### Available methods
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+First, attach an `id` to the checkout container:
+
+```md
+<div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+Then, you can submit the checkout by calling `wco.submit` with the id:
+
+```js
+wco.submit("whop-embedded-checkout");
+```
+
+### Available attributes
 
 #### **`data-whop-checkout-plan-id`**
 
@@ -764,6 +799,21 @@ Defaults to `false`
 <div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+#### **`data-whop-checkout-hide-submit-button`**
+
+**Optional** - Set to `true` to hide the submit button in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  When using this Option, you will need to [programmatically submit](#submit)
+  the checkout form.
+</Note>
+
+```md
+<div data-whop-checkout-hide-submit-button="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 #### **`data-whop-checkout-skip-redirect`**
 
 **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
@@ -791,6 +841,25 @@ Defaults to `false`
 
 <div
   data-whop-checkout-on-complete="onCheckoutComplete"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-on-state-change`**
+
+**Optional** - The callback to call when state of the checkout changes
+
+This can be used when programmatically controlling the submit of the checkout embed.
+
+```html
+<script>
+  window.onCheckoutStateChange = (state) => {
+    console.log(state);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-state-change="onCheckoutStateChange"
   data-whop-checkout-plan-id="plan_XXXXXXXXX"
 ></div>
 ```
