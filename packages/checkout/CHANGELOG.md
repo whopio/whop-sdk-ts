@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.35
+
+### Patch Changes
+
+- 21cfd77: allow embedded checkout to be submitted programmatically
+
 ## 0.0.34
 
 ### Patch Changes

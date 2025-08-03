@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.32
+
+### Patch Changes
+
+- 21cfd77: allow embedded checkout to be submitted programmatically
+- Updated dependencies [21cfd77]
+  - @whop/checkout@0.0.35
+
 ## 0.2.31
 
 ### Patch Changes
