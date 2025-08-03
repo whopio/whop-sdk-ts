@@ -1,3 +1,7 @@
+import type { WhopCheckoutSubmitDetails } from "./types";
+
+export type WhopCheckoutState = "loading" | "ready" | "disabled";
+
 export type WhopCheckoutMessage =
 	| {
 			event: "resize";
@@ -10,7 +14,14 @@ export type WhopCheckoutMessage =
 			event: "complete";
 			receipt_id?: string;
 			plan_id: string;
+	  }
+	| {
+			event: "state";
+			state: WhopCheckoutState;
 	  };
+
+const EVENT_TYPES = ["resize", "center", "complete", "state"] as const;
+type WhopCheckoutEventType = WhopCheckoutMessage["event"];
 
 export function isWhopCheckoutMessage(
 	event: MessageEvent<unknown>,
@@ -19,9 +30,7 @@ export function isWhopCheckoutMessage(
 		typeof event.data === "object" &&
 		event.data !== null &&
 		"event" in event.data &&
-		(event.data.event === "resize" ||
-			event.data.event === "center" ||
-			event.data.event === "complete")
+		EVENT_TYPES.includes(event.data.event as WhopCheckoutEventType)
 	);
 }
 
@@ -47,6 +56,22 @@ export function onWhopCheckoutMessage(
 		window.removeEventListener("message", handleMessage);
 	};
 }
+
+export function submitCheckoutFrame(
+	frame: HTMLIFrameElement,
+	_data?: WhopCheckoutSubmitDetails,
+) {
+	const origin = new URL(frame.src).origin;
+	frame.contentWindow?.postMessage(
+		{
+			__scope: "whop-embedded-checkout",
+			event: "submit",
+		},
+		origin,
+	);
+}
+
+export type { WhopCheckoutSubmitDetails };
 
 export interface WhopEmbeddedCheckoutStyleOptions {
 	container?: {
@@ -75,6 +100,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	styles?: WhopEmbeddedCheckoutStyleOptions,
 	prefill?: WhopEmbeddedCheckoutPrefillOptions,
 	themeOptions?: WhopEmbeddedCheckoutThemeOptions,
+	hideSubmitButton?: boolean,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -94,6 +120,9 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (skipRedirect) {
 		iframeUrl.searchParams.set("skip_redirect", "true");
+	}
+	if (hideSubmitButton) {
+		iframeUrl.searchParams.set("hide_submit_button", "true");
 	}
 	if (utm) {
 		for (const [key, value] of Object.entries(utm).sort((a, b) =>
@@ -157,3 +186,13 @@ export const EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST = [
 
 export const EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING =
 	"document-domain; execution-while-not-rendered; execution-while-out-of-viewport; payment; paymentRequest; sync-script;";
+
+type InferredWhopCheckoutEventType = (typeof EVENT_TYPES)[number];
+
+// if you understand this type hack you should consider working at Whop!
+// https://whop.com/careers
+const _: WhopCheckoutEventType extends InferredWhopCheckoutEventType
+	? InferredWhopCheckoutEventType extends WhopCheckoutEventType
+		? true
+		: false
+	: false = true;

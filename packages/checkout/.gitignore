@@ -6,3 +6,4 @@ dist
 next-env.d.ts
 src/codegen
 .wrangler
+public/index.html

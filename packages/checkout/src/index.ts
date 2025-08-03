@@ -6,9 +6,33 @@ import {
 	type WhopEmbeddedCheckoutThemeOptions,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
+	submitCheckoutFrame,
 } from "./util";
 
+function invokeCallback<Args extends unknown[]>(
+	callbackTarget?: string,
+	...args: Args
+) {
+	if (!callbackTarget) {
+		return;
+	}
+
+	const callback = (
+		window as unknown as {
+			[key: typeof callbackTarget]: ((...args: Args) => void) | undefined;
+		}
+	)[callbackTarget];
+	callback?.(...args);
+}
+
 function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
+	iframe.addEventListener("checkout:submit", (ev) => {
+		submitCheckoutFrame(iframe, ev.detail);
+	});
+
+	// this does not have to be cleaned up because the only time this would be removed is when the iframe is
+	// removed from the DOM and that implicitly removes the listener
+
 	window.wco?.frames.set(
 		iframe,
 		onWhopCheckoutMessage(iframe, function handleWhopCheckoutMessage(message) {
@@ -22,17 +46,15 @@ function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
 					break;
 				}
 				case "complete": {
-					const callbackTarget = node.dataset.whopCheckoutOnComplete;
-					if (callbackTarget) {
-						const callback = (
-							window as unknown as {
-								[key: typeof callbackTarget]:
-									| ((plan_id: string, receipt_id?: string) => void)
-									| undefined;
-							}
-						)[callbackTarget];
-						callback?.(message.plan_id, message.receipt_id);
-					}
+					invokeCallback(
+						node.dataset.whopCheckoutOnComplete,
+						message.plan_id,
+						message.receipt_id,
+					);
+					break;
+				}
+				case "state": {
+					invokeCallback(node.dataset.whopCheckoutOnStateChange, message.state);
 					break;
 				}
 			}
@@ -127,6 +149,7 @@ function mount(node: HTMLElement) {
 		getStylesFromNode(node),
 		getPrefillFromNode(node),
 		getThemeOptionsFromNode(node),
+		node.dataset.whopCheckoutHideSubmitButton === "true",
 	);
 
 	const iframe = document.createElement("iframe");
@@ -147,6 +170,13 @@ function mount(node: HTMLElement) {
 	// append iframe to the node
 	node.appendChild(iframe);
 
+	const frameIdentifier = node.id;
+
+	if (frameIdentifier) {
+		window.wco?.identifiedFrames.set(frameIdentifier, iframe);
+		iframe.dataset.whopCheckoutIdentifier = frameIdentifier;
+	}
+
 	// listen for iframe events
 	listen(iframe, node);
 }
@@ -163,6 +193,11 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 			const removedNodes = Array.from(mutation.removedNodes);
 			for (const [iframe, cleanup] of window.wco?.frames ?? []) {
 				if (removedNodes.includes(iframe)) {
+					if (iframe.dataset.whopCheckoutIdentifier) {
+						window.wco?.identifiedFrames.delete(
+							iframe.dataset.whopCheckoutIdentifier,
+						);
+					}
 					cleanup();
 					window.wco?.frames.delete(iframe);
 				}

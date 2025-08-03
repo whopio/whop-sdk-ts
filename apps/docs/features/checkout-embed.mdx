@@ -27,6 +27,24 @@ This component will now mount an iframe with the Whop checkout embed. Once the c
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
 
+### Available controls
+
+To get access to the controls of the checkout embed, you can use the `ref` prop.
+
+```tsx
+const ref = useCheckoutEmbedControls();
+
+return <WhopCheckoutEmbed ref={ref} planId="plan_XXXXXXXXX" />;
+```
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+
+```tsx
+ref.current?.submit();
+```
+
 ### Available properties
 
 #### **`planId`**
@@ -125,43 +143,6 @@ export default function Home() {
 }
 ```
 
-## Framer
-
-To embed Whop checkout in a Framer project, you can utilize Framer Code components with the Whop React SDK.
-
-### Step 1: Create a new Framer Code component
-
-Navigate to the **Assets** tab in your framer project, click the **+** button next to **Code** and select **New Code File**.
-
-### Step 2: Add the checkout embed code component
-
-<Note>
-  You do not have to install the package explicitly. Framer will automatically
-  detect and install the package for you.
-</Note>
-
-Paste the following code into the editor:
-
-```tsx
-import {
-  WhopFramerCheckoutEmbed,
-  propertyControls,
-} from "@whop/framer/checkout";
-import { addPropertyControls } from "framer";
-
-/**
- * @framerSupportedLayoutWidth auto
- * @framerSupportedLayoutHeight auto
- */
-export default function WhopCheckoutEmbed(props) {
-  return <WhopFramerCheckoutEmbed {...props} />;
-}
-
-addPropertyControls(WhopCheckoutEmbed, propertyControls);
-```
-
-You can now use the checkout embed component in your project and configure it through the framer interface.
-
 ## Other websites
 
 ### Step 1: Add the script tag
@@ -187,6 +168,23 @@ To create a checkout element, you need to include the following attribute on an 
 This will now mount an iframe inside of the element with the plan id you provided. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+### Available methods
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+First, attach an `id` to the checkout container:
+
+```md
+<div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+Then, you can submit the checkout by calling `wco.submit` with the id:
+
+```js
+wco.submit("whop-embedded-checkout");
+```
 
 ### Available attributes
 
@@ -265,6 +263,21 @@ Defaults to `false`
 <div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+#### **`data-whop-checkout-hide-submit-button`**
+
+**Optional** - Set to `true` to hide the submit button in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  When using this Option, you will need to [programmatically submit](#submit)
+  the checkout form.
+</Note>
+
+```md
+<div data-whop-checkout-hide-submit-button="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 #### **`data-whop-checkout-skip-redirect`**
 
 **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
@@ -290,6 +303,25 @@ Defaults to `false`
 
 <div
   data-whop-checkout-on-complete="onCheckoutComplete"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-on-state-change`**
+
+**Optional** - The callback to call when state of the checkout changes
+
+This can be used when programmatically controlling the submit of the checkout embed.
+
+```html
+<script>
+  window.onCheckoutStateChange = (state) => {
+    console.log(state);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-state-change="onCheckoutStateChange"
   data-whop-checkout-plan-id="plan_XXXXXXXXX"
 ></div>
 ```
