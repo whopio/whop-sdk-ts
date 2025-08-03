@@ -123,15 +123,22 @@ export default function RootLayout({
 This component can be used to embed whop checkout in your react app:
 
 ```tsx
-import { WhopCheckoutEmbed } from "@whop/react/checkout";
+import { WhopCheckoutEmbed, useCheckoutEmbedControls } from "@whop/react/checkout";
 
 export default function Home() {
+	const ref = useCheckoutEmbedControls(); // this is optional and only needed if you need to programmatically control the embed
 	return (
 		<WhopCheckoutEmbed
 			/**
 			 * **Required** - The plan id you want to checkout.
 			 */
 			planId="plan_XXXXXXXXX"
+         /**
+          * **Optional** - A ref to the embed controls.
+          *
+          * This can be used to submit the checkout form.
+          */
+         ref={ref}
 			/**
 			 * **Optional** - The theme you want to use for the checkout.
 			 *
@@ -165,6 +172,10 @@ export default function Home() {
 				/** The receipt id of the purchase. */
 				receipt_id?: string,
 			) => {}}
+			/**
+			 * **Optional** - A callback function that will be called when the checkout state changes.
+			 */
+			onStateChange={(state) => {}}
 			/**
 			 * **Optional** - The fallback content to show while the checkout is loading.
 			 */
