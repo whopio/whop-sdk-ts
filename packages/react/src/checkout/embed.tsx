@@ -2,14 +2,17 @@
 
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
+	type WhopCheckoutState,
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
 	onWhopCheckoutMessage,
+	submitCheckoutFrame,
 } from "@whop/checkout/util";
 
 import React, {
 	type ReactNode,
+	type RefObject,
 	useEffect,
 	useMemo,
 	useRef,
@@ -20,6 +23,7 @@ import { useIsHydrated } from "../util/use-is-hydrated";
 import { type AccentColor, isAccentColor } from "./colors";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_STRING,
+	type WhopCheckoutEmbedControls,
 	useEmbeddedCheckoutIframeUrl,
 } from "./util";
 
@@ -37,6 +41,12 @@ export interface WhopCheckoutEmbedProps {
 	 * **Required** - The plan id you want to checkout.
 	 */
 	planId: string;
+	/**
+	 * **Optional** - A ref to the embed controls.
+	 *
+	 * This can be used to submit the checkout form.
+	 */
+	ref?: RefObject<WhopCheckoutEmbedControls | null>;
 	/**
 	 * **Optional** - The theme you want to use for the checkout.
 	 *
@@ -73,6 +83,13 @@ export interface WhopCheckoutEmbedProps {
 		receipt_id?: string,
 	) => void;
 	/**
+	 * **Optional** - A callback function that will be called when the checkout state changes.
+	 */
+	onStateChange?: (
+		/** The new state of the checkout. */
+		state: WhopCheckoutState,
+	) => void;
+	/**
 	 * **Optional** - The UTM parameters to add to the checkout URL.
 	 *
 	 * **Note** - The keys must start with `utm_`
@@ -93,6 +110,12 @@ export interface WhopCheckoutEmbedProps {
 	 * **Optional** - The theme options to apply to the checkout embed.
 	 */
 	themeOptions?: WhopCheckoutEmbedThemeOptions;
+	/**
+	 * **Optional** - Set to `true` to hide the submit button in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	hideSubmitButton?: boolean;
 }
 
 export type {
@@ -102,15 +125,18 @@ export type {
 
 function WhopCheckoutEmbedInner({
 	planId,
+	ref,
 	theme,
 	sessionId,
 	hidePrice = false,
 	skipRedirect = false,
 	onComplete,
+	onStateChange,
 	utm,
 	styles,
 	prefill,
 	themeOptions,
+	hideSubmitButton = false,
 }: WhopCheckoutEmbedProps): ReactNode {
 	const resolvedThemeOptions: WhopEmbeddedCheckoutThemeOptions = useMemo(() => {
 		return {
@@ -131,6 +157,7 @@ function WhopCheckoutEmbedInner({
 		styles,
 		prefill,
 		resolvedThemeOptions,
+		hideSubmitButton,
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -158,10 +185,25 @@ function WhopCheckoutEmbedInner({
 						}
 						break;
 					}
+					case "state": {
+						if (onStateChange) {
+							onStateChange(message.state);
+						}
+						break;
+					}
 				}
 			},
 		);
-	}, [onComplete]);
+	}, [onComplete, onStateChange]);
+
+	if (ref) {
+		ref.current = {
+			submit: (opts) => {
+				if (!iframeRef.current) return;
+				submitCheckoutFrame(iframeRef.current, opts);
+			},
+		};
+	}
 
 	return (
 		<iframe

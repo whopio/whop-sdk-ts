@@ -1,5 +1,6 @@
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopCheckoutSubmitDetails,
 	getEmbeddedCheckoutIframeUrl,
 } from "@whop/checkout/util";
 import { useEffect, useMemo } from "react";
@@ -8,6 +9,10 @@ import { useLazyRef } from "../util/use-lazy-ref";
 type GetEmbeddedCheckoutIframeUrlParams = Parameters<
 	typeof getEmbeddedCheckoutIframeUrl
 >;
+
+export interface WhopCheckoutEmbedControls {
+	submit: (opts?: WhopCheckoutSubmitDetails) => void;
+}
 
 export function useEmbeddedCheckoutIframeUrl(
 	...params: GetEmbeddedCheckoutIframeUrlParams
@@ -34,6 +39,7 @@ function useWarnOnIframeUrlChange(
 		styles,
 		prefill,
 		themeOptions,
+		hideSubmitButton,
 	]: GetEmbeddedCheckoutIframeUrlParams
 ) {
 	const updatedIframeUrl = useMemo(
@@ -49,6 +55,7 @@ function useWarnOnIframeUrlChange(
 				styles,
 				prefill,
 				themeOptions,
+				hideSubmitButton,
 			),
 		[
 			planId,
@@ -60,6 +67,7 @@ function useWarnOnIframeUrlChange(
 			styles,
 			prefill,
 			themeOptions,
+			hideSubmitButton,
 		],
 	);
 
