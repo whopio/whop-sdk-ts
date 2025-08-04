@@ -166,6 +166,26 @@ export function GET(request: Request) {
 
 ## Implementing with authentication frameworks
 
-### Auth.js (coming soon)
+### Auth.js
 
-We will release an extensive guide on how to implement Whop OAuth with auth.js soon.
+To implement Whop OAuth with auth.js you can use the `authJsProvider` method on the `WhopOAuth` class.
+
+Get started by setting up the relevant auth.js distribution:
+
+- Next.js ([Installation Guide](https://authjs.dev/getting-started/installation?framework=Next.js)) via `next-auth@beta`
+- SvelteKit ([Installation Guide](https://authjs.dev/getting-started/installation?framework=SvelteKit)) via `@auth/sveltekit`
+- Qwik ([Installation Guide](https://authjs.dev/getting-started/installation?framework=Qwik)) via `@auth/qwik`
+- Express ([Installation Guide](https://authjs.dev/getting-started/installation?framework=Express)) via `@auth/express`
+
+Create a Whop OAuth provider and add it to your auth.js provider configuration:
+
+```ts
+const WhopProvider = whopApi.oauth.authJsProvider({
+  scope: ["read_user"],
+});
+
+const authConfig = {
+  providers: [WhopProvider],
+  // ... rest of your auth.js configuration
+};
+```
