@@ -7,51 +7,7 @@ query listReceiptsForCompany(
 	company(id: $companyId) {
 		receipts: receiptsV2(first: $first, after: $after, filter: $filter) {
 			nodes {
-				id
-				status
-				amountAfterFees
-				settledUsdAmount
-				finalAmount
-				currency
-				accessPass {
-					id
-					title
-				}
-				plan {
-					id
-					title
-				}
-				member {
-					user {
-						id
-						email
-						name
-						username
-					}
-				}
-				autoRefunded
-				billingReason
-				brand
-
-				totalUsdAmount
-				promoCode {
-					amountOff
-					id
-					code
-				}
-				dispute {
-					amount
-					customerEmailAddress
-					customerName
-					createdAt
-					billingAddress
-					accessActivityLog
-				}
-				email
-				mostRecentCharge {
-					outcomeRiskLevel
-					outcomeRiskScore
-				}
+				...Receipt
 			}
 			pageInfo {
 				hasNextPage

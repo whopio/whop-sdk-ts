@@ -1,0 +1,111 @@
+fragment Receipt on Receipt {
+	id
+	address {
+		name
+		line1
+		line2
+		city
+		state
+		postalCode
+		country
+	}
+	settledUsdAmount
+	billingReason
+	last4
+	currency
+	status
+	createdAt
+	total
+	brand
+	paymentProcessor
+	paymentMethodType
+	walletAddress
+	disputeAlertedAt
+	finalAmount
+	presentedFinalAmount
+	presentedSettledUsdAmount
+	refundedAmount
+	friendlyStatus
+	failureMessage
+	refundable
+	retryable
+	paidAt
+	amountAfterFees
+	receiptFees {
+		rawAmount
+		typeOfFee
+		description
+		label
+		value
+	}
+	lineItem {
+		name
+		amount
+		baseCurrency
+	}
+	resolution {
+		status
+	}
+	dispute {
+		status
+		amount
+		customerEmailAddress
+		customerName
+		createdAt
+		billingAddress
+		accessActivityLog
+	}
+	chargeSkippedPriceTooLow
+	lastPaymentAttempt
+	autoRefunded
+	member {
+		header
+		user {
+			id
+			username
+			name
+			email
+			country
+			countryName
+		}
+		imageSrcset(style: s40, allowAnimation: true) {
+			original
+			double
+			isVideo
+		}
+	}
+	plan {
+		id
+		title
+		formattedPrice
+		initialPrice
+		renewalPrice
+		paymentLinkDescription
+		accessPass {
+			id
+			title
+		}
+	}
+	membership {
+		id
+		status
+	}
+	promoCode {
+		id
+		code
+		amountOff
+		baseCurrency
+		promoType
+		numberOfIntervals
+	}
+	accessPass {
+		id
+		title
+	}
+	totalUsdAmount
+	email
+	mostRecentCharge {
+		outcomeRiskLevel
+		outcomeRiskScore
+	}
+}

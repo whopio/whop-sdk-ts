@@ -73,85 +73,147 @@ const response = {
 				// The receipt ID
 				id: "xxxxxxxxxxx",
 
-				// The current state of the receipt.
-				status:
-					"draft" /* Valid values: draft | open | paid | pending | uncollectible | unresolved | void */,
+				// The address of the user who made the payment.
+				address: {
+					// The name of the customer.
+					name: "some string",
 
-				// How much the receipt is for after fees
-				amountAfterFees: 10,
+					// The line 1 of the address.
+					line1: "some string",
+
+					// The line 2 of the address.
+					line2: "some string",
+
+					// The city of the address.
+					city: "some string",
+
+					// The state of the address.
+					state: "some string",
+
+					// The postal code of the address.
+					postalCode: "some string",
+
+					// The country of the address.
+					country: "some string",
+				},
 
 				// The final converted amount of the receipt in USD.
 				settledUsdAmount: 10,
 
-				// The final amount of this receipt.
-				finalAmount: 10,
+				// The billing reason
+				billingReason: "some string",
+
+				// The last 4 digits of the card used to make the payment.
+				last4: "some string",
 
 				// The currency of the payment.
 				currency:
 					"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
 
-				// The access pass attached to this receipt.
-				accessPass: {
-					// The internal ID of the public access pass.
-					id: "xxxxxxxxxxx",
+				// The current state of the receipt.
+				status:
+					"draft" /* Valid values: draft | open | paid | pending | uncollectible | unresolved | void */,
 
-					// The title of the access pass. Use for Whop 4.0.
-					title: "some string",
-				},
+				// The datetime the receipt was created
+				createdAt: 1716931200,
 
-				// The plan attached to this receipt.
-				plan: {
-					// The internal ID of the plan.
-					id: "xxxxxxxxxxx",
-
-					// The title of the owning object.
-					title: "some string",
-				},
-
-				// The member attached to this receipt.
-				member: {
-					// The user for this member, if any.
-					user: {
-						// The internal ID of the user account.
-						id: "xxxxxxxxxxx",
-
-						// The digital mailing address of the user.
-						email: "some string",
-
-						// The user's full name.
-						name: "some string",
-
-						// The whop username.
-						username: "some string",
-					},
-				},
-
-				// Whether this payment was auto refunded or not
-				autoRefunded: true,
-
-				// The billing reason
-				billingReason: "some string",
+				// The total of the payment amount.
+				total: 10,
 
 				// The type of card used as the payment method.
 				brand: "some string",
 
-				// The total of the payment amount in USD.
-				totalUsdAmount: 10,
+				// The payment processor used to make this payment.
+				paymentProcessor:
+					"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
 
-				// The promo code used for this receipt.
-				promoCode: {
-					// The amount off (% or flat amount) for the promo.
-					amountOff: 10,
+				// Returns the type of payment method used for the payment, if available. Ex. klarna, affirm, card, cashapp
+				paymentMethodType: "some string",
 
-					// The ID of the promo.
-					id: "xxxxxxxxxxx",
+				// The wallet address of the user who made the payment.
+				walletAddress: "some string",
 
-					// The specific code used to apply the promo at checkout.
-					code: "some string",
+				// When an alert came in that this transaction will be disputed
+				disputeAlertedAt: 1716931200,
+
+				// The final amount of this receipt.
+				finalAmount: 10,
+
+				// The final amount to show to the creator (excluding buyer fees).
+				presentedFinalAmount: 10,
+
+				// The settled amount in USD to show to the creator.
+				presentedSettledUsdAmount: 10,
+
+				// The payment refund amount(if applicable).
+				refundedAmount: 10,
+
+				// The friendly status of the receipt.
+				friendlyStatus:
+					"auto_refunded" /* Valid values: auto_refunded | canceled | dispute_warning | drafted | failed | incomplete | open_dispute | open_resolution | partially_refunded | past_due | pending | price_too_low | refunded | succeeded | uncollectible | unresolved */,
+
+				// If the payment failed, the reason for the failure.
+				failureMessage: "some string",
+
+				// Whether the payment can be refunded.
+				refundable: true,
+
+				// Whether the payment can be retried.
+				retryable: true,
+
+				// The datetime the receipt was paid
+				paidAt: 1716931200,
+
+				// How much the receipt is for after fees
+				amountAfterFees: 10,
+
+				// The fees associated with this specific payment.
+				receiptFees: [
+					{
+						// The value or amount to display for the fee.
+						rawAmount: 10,
+
+						// The type of fee.
+						typeOfFee:
+							"other_fee" /* Valid values: other_fee | processing_fee | whop_fee */,
+
+						// A tooltip / description for the specific fee
+						description: "some string",
+
+						// The label to display for the fee.
+						label: "some string",
+
+						// The value or amount to display for the fee.
+						value: "some string",
+					},
+				],
+
+				// The line item attached to this receipt (if any).
+				lineItem: {
+					// The name of the line item.
+					name: "some string",
+
+					// The amount of the line item.
+					amount: 10,
+
+					// The respective currency identifier for the plan.
+					baseCurrency:
+						"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+				},
+
+				// The resolution attached to this receipt (if any).
+				resolution: {
+					// The most recent status of the resolution
+					status:
+						"customer_info_needed" /* Valid values: customer_info_needed | customer_response_needed | customer_withdrew | customer_won | merchant_info_needed | merchant_response_needed | merchant_won | under_platform_review */,
 				},
 
 				// The dispute attached to this receipt (if any).
 				dispute: {
+					// The status of the dispute (mimics stripe's dispute status).
+					status:
+						"closed" /* Valid values: closed | lost | needs_response | other | under_review | warning_closed | warning_needs_response | warning_under_review | won */,
+
 					// The amount of the dispute (formatted).
 					amount: 10,
 
@@ -170,6 +232,128 @@ const response = {
 					// An IP access log for the user from Whop.
 					accessActivityLog: "some string",
 				},
+
+				// Whether the charge was skipped because the price was too low.
+				chargeSkippedPriceTooLow: true,
+
+				// The time of the last payment attempt.
+				lastPaymentAttempt: 1716931200,
+
+				// Whether this payment was auto refunded or not
+				autoRefunded: true,
+
+				// The member attached to this receipt.
+				member: {
+					// The header to show on the customers page
+					header: "some string",
+
+					// The user for this member, if any.
+					user: {
+						// The internal ID of the user account.
+						id: "xxxxxxxxxxx",
+
+						// The whop username.
+						username: "some string",
+
+						// The user's full name.
+						name: "some string",
+
+						// The digital mailing address of the user.
+						email: "some string",
+
+						// The country the user is from.
+						country: "some string",
+
+						// The name of the country the user is from (ex. United States). If not available, falls back to the country code.
+						countryName: "some string",
+					},
+
+					// The image for the member, derived from either the User or the Company Buyer.
+					imageSrcset: {
+						// Image url with requested image resolution.
+						original: "some string",
+
+						// Image url with double image resolution.
+						double: "some string",
+
+						// If the attachment should be rendered with sound and controls
+						isVideo: true,
+					},
+				},
+
+				// The plan attached to this receipt.
+				plan: {
+					// The internal ID of the plan.
+					id: "xxxxxxxxxxx",
+
+					// The title of the owning object.
+					title: "some string",
+
+					// The formatted price (including currency) for the plan.
+					formattedPrice: "some string",
+
+					// An additional amount charged upon first purchase (separate from the renewal price).
+					initialPrice: 10,
+
+					// The amount the customer is charged every billing period.
+					renewalPrice: 10,
+
+					// The description of the Plan as seen by the customer on the checkout page.
+					paymentLinkDescription: "some string",
+
+					// The access pass for the plan.
+					accessPass: {
+						// The internal ID of the public access pass.
+						id: "xxxxxxxxxxx",
+
+						// The title of the access pass. Use for Whop 4.0.
+						title: "some string",
+					},
+				},
+
+				// The membership attached to this receipt.
+				membership: {
+					// The internal ID of the membership.
+					id: "xxxxxxxxxxx",
+
+					// The state of the membership.
+					status:
+						"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+				},
+
+				// The promo code used for this receipt.
+				promoCode: {
+					// The ID of the promo.
+					id: "xxxxxxxxxxx",
+
+					// The specific code used to apply the promo at checkout.
+					code: "some string",
+
+					// The amount off (% or flat amount) for the promo.
+					amountOff: 10,
+
+					// The monetary currency of the promo code.
+					baseCurrency:
+						"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+					// The type (% or flat amount) of the promo.
+					promoType: "flat_amount" /* Valid values: flat_amount | percentage */,
+
+					// The number of billing cycles the promo is applied for.
+					numberOfIntervals: 10,
+				},
+
+				// The access pass attached to this receipt.
+				accessPass: {
+					// The internal ID of the public access pass.
+					id: "xxxxxxxxxxx",
+
+					// The title of the access pass. Use for Whop 4.0.
+					title: "some string",
+				},
+
+				// The total of the payment amount in USD.
+				totalUsdAmount: 10,
 
 				// The email of the user who made the payment.
 				email: "some string",
