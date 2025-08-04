@@ -40,7 +40,7 @@ import { Button } from "@/components/ui/button";
   </Card>
 </CardGroup>
 
-<Update label="Global payments" description="200+ countries" collapse>
+<Update label="Global payments" description="100+ payment methods" collapse>
   <div className="bg-white dark:bg-[#0f0f13] rounded-2xl border border-gray-200 dark:border-gray-800  p-6 pb-0 space-y-4">
     <div className="flex justify-between items-baseline">
       <div className="flex gap-3 items-start">
@@ -63,9 +63,6 @@ import { Button } from "@/components/ui/button";
     	</div>
     	<div>
     	<Icon icon="check" iconType="solid" /> Improve conversion with Whop's accelerated checkout.
-    	</div>
-    	<div>
-    	<Icon icon="check" iconType="solid" /> Reduce fraud and increase revenue with ML optimizations.
     	</div>
     	<div>
     	<Icon icon="check" iconType="solid" /> Save engineering time with prebuilt UIs.
@@ -566,16 +563,13 @@ import { Button } from "@/components/ui/button";
 
     <div className="space-y-2">
       <div>
-        <Icon icon="check" iconType="solid" /> Increase customer acquisition with 100+ payment methods.
+        <Icon icon="check" iconType="solid" /> Get paid anywhere in the world with global payout support
       </div>
       <div>
-        <Icon icon="check" iconType="solid" /> Improve conversion with Whop's accelerated checkout.
+        <Icon icon="check" iconType="solid" /> Multiple payout methods including crypto, Venmo, and wire transfers
       </div>
       <div>
-        <Icon icon="check" iconType="solid" /> Reduce fraud and increase revenue with ML optimizations.
-      </div>
-      <div>
-        <Icon icon="check" iconType="solid" /> Save engineering time with prebuilt UIs.
+        <Icon icon="check" iconType="solid" /> Same-day payouts available for immediate cash flow
       </div>
     </div>
 
@@ -584,7 +578,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Standard ACH</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Transfer to U.S. bank accounts via the standard ACH network (typically 1–3 business days for delivery).
           </p>
           {/* <div className="flex flex-wrap items-center gap-2">
             <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -629,7 +623,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Next day ACH</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Accelerated ACH transfer to U.S. bank accounts, delivered by the next business day (faster settlement speed).
           </p>
           {/* <div className="flex flex-wrap items-center gap-2">
             <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -661,7 +655,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Instant Bank Deposit (RTP)</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Real-time bank transfer to supported accounts with funds available instantly (24/7, where supported).
           </p>
           {/* <div className="flex flex-wrap items-center gap-2">
             <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -693,7 +687,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Crypto</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Cryptocurrency payout (e.g. Bitcoin, Ethereum) with global reach.
           </p>
           <div className="flex flex-wrap items-center gap-2">
 
@@ -716,7 +710,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Venmo</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Instant payout to a recipient's Venmo wallet (available for U.S. recipients only).
           </p>
           <div className="flex flex-wrap items-center gap-2">
             {/* <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -748,7 +742,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>Bank wire</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Traditional bank wire transfer (will typically take 1–2 business days to process in the US).
           </p>
           {/* <div className="flex flex-wrap items-center gap-2">
             <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -784,7 +778,7 @@ import { Button } from "@/components/ui/button";
         <div className="ml-6">
           <h3>International local banks</h3>
           <p className="mb-4">
-            Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.
+            Local bank transfer in your country and currency (timing varies by country).
           </p>
           {/* <div className="flex flex-wrap items-center gap-2">
             <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -829,7 +823,7 @@ import { Button } from "@/components/ui/button";
 		</div>
         <div className="flex flex-col">
           <h2 className="m-0 p-0">Fraud and security</h2>
-          <p className="m-0 p-0">Accept money and get paid out as fast as you want.</p>
+          <p className="m-0 p-0">Protect your business against fraud, chargebacks, and disputes.</p>
         </div>
       </div>
       <div>[Start today →](/apps/docs/payments/taxes)</div>
@@ -844,23 +838,6 @@ import { Button } from "@/components/ui/button";
       </div>
       <div>
         <Icon icon="check" iconType="solid" /> No hidden fees. No guessing.
-      </div>
-    </div>
-
-    <div className="-mx-6 mb-6 border-t border-gray-200 dark:border-gray-800">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="ml-6">
-          <h3>Dispute</h3>
-          <p className="mb-4">
-            Flat fee applied when a chargeback or dispute occurs.
-          </p>
-        </div>
-        <div className="text-sm">
-          <h3>$15.00</h3>
-          <div className="text-gray-700 dark:text-gray-300">
-            per dispute
-          </div>
-        </div>
       </div>
     </div>
 
@@ -893,6 +870,23 @@ import { Button } from "@/components/ui/button";
           <h3>$0.07</h3>
           <div className="text-gray-700 dark:text-gray-300">
             per transaction
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="-mx-6 mb-6 border-t border-gray-200 dark:border-gray-800">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="ml-6">
+          <h3>Dispute</h3>
+          <p className="mb-4">
+            Flat fee applied when a chargeback or dispute occurs.
+          </p>
+        </div>
+        <div className="text-sm">
+          <h3>$15.00</h3>
+          <div className="text-gray-700 dark:text-gray-300">
+            per dispute
           </div>
         </div>
       </div>
@@ -1023,7 +1017,7 @@ import { Button } from "@/components/ui/button";
 		</div>
         <div className="flex flex-col">
           <h2 className="m-0 p-0">Service fees</h2>
-          <p className="m-0 p-0">Accept money and get paid out as fast as you want.</p>
+          <p className="m-0 p-0">Transparent service fees with no hidden costs or surprises.</p>
         </div>
       </div>
       <div>[Start today →](/apps/docs/payments/taxes)</div>
