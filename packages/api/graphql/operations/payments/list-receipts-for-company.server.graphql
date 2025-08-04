@@ -7,7 +7,7 @@ query listReceiptsForCompany(
 	company(id: $companyId) {
 		receipts: receiptsV2(first: $first, after: $after, filter: $filter) {
 			nodes {
-				...Receipt
+				...BaseReceipt
 			}
 			pageInfo {
 				hasNextPage

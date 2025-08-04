@@ -1,4 +1,4 @@
-fragment Receipt on Receipt {
+fragment BaseReceipt on Receipt {
 	id
 	address {
 		name
