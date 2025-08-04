@@ -445,6 +445,7 @@
 					"pages": [
 						"sdk/api/payments/charge-user",
 						"sdk/api/payments/create-checkout-session",
+						"sdk/api/payments/list-receipts-for-company",
 						"sdk/api/payments/pay-user"
 					]
 				},

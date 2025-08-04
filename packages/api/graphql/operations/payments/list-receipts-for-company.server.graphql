@@ -1,0 +1,18 @@
+query listReceiptsForCompany(
+	$companyId: ID!
+	$first: Int
+	$after: String
+	$filter: ReceiptV2Filters
+) {
+	company(id: $companyId) {
+		receipts: receiptsV2(first: $first, after: $after, filter: $filter) {
+			nodes {
+				...BaseReceipt
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
+		}
+	}
+}

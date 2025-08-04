@@ -1,0 +1,78 @@
+fragment BaseReceipt on Receipt {
+	id
+	address {
+		name
+		line1
+		line2
+		city
+		state
+		postalCode
+		country
+	}
+	settledUsdAmount
+	billingReason
+	last4
+	currency
+	status
+	createdAt
+	total
+	brand
+	paymentProcessor
+	paymentMethodType
+	disputeAlertedAt
+	finalAmount
+	presentedFinalAmount
+	presentedSettledUsdAmount
+	refundedAmount
+	friendlyStatus
+	failureMessage
+	refundable
+	retryable
+	paidAt
+	amountAfterFees
+	chargeSkippedPriceTooLow
+	lastPaymentAttempt
+	autoRefunded
+	member {
+		header
+		user {
+			id
+			username
+			name
+			email
+			country
+			countryName
+		}
+		imageSrcset(style: s40, allowAnimation: true) {
+			original
+			double
+			isVideo
+		}
+	}
+	plan {
+		id
+		title
+		formattedPrice
+		initialPrice
+		renewalPrice
+		paymentLinkDescription
+	}
+	membership {
+		id
+		status
+	}
+	promoCode {
+		id
+		code
+		amountOff
+		baseCurrency
+		promoType
+		numberOfIntervals
+	}
+	accessPass {
+		id
+		title
+	}
+	totalUsdAmount
+	mostRecentRiskScore
+}
