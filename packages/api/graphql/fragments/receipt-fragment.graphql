@@ -19,7 +19,6 @@ fragment Receipt on Receipt {
 	brand
 	paymentProcessor
 	paymentMethodType
-	walletAddress
 	disputeAlertedAt
 	finalAmount
 	presentedFinalAmount
@@ -31,30 +30,6 @@ fragment Receipt on Receipt {
 	retryable
 	paidAt
 	amountAfterFees
-	receiptFees {
-		rawAmount
-		typeOfFee
-		description
-		label
-		value
-	}
-	lineItem {
-		name
-		amount
-		baseCurrency
-	}
-	resolution {
-		status
-	}
-	dispute {
-		status
-		amount
-		customerEmailAddress
-		customerName
-		createdAt
-		billingAddress
-		accessActivityLog
-	}
 	chargeSkippedPriceTooLow
 	lastPaymentAttempt
 	autoRefunded
@@ -81,10 +56,6 @@ fragment Receipt on Receipt {
 		initialPrice
 		renewalPrice
 		paymentLinkDescription
-		accessPass {
-			id
-			title
-		}
 	}
 	membership {
 		id
@@ -103,9 +74,5 @@ fragment Receipt on Receipt {
 		title
 	}
 	totalUsdAmount
-	email
-	mostRecentCharge {
-		outcomeRiskLevel
-		outcomeRiskScore
-	}
+	mostRecentRiskScore
 }
