@@ -1,5 +1,12 @@
 # @whop/api
 
+## 0.0.42
+
+### Patch Changes
+
+- be7d17e: Added list receipts for company graphql query
+- d7ebe1b: add auth.js provider to oauth helper
+
 ## 0.0.41
 
 ### Patch Changes
