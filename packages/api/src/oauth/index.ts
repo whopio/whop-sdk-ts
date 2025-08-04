@@ -1,4 +1,12 @@
 import type { AppValidScopes } from "@/codegen/graphql/server";
+import type { OAuth2Config } from "@auth/core/providers";
+
+export interface WhopOAuthProfile {
+	id: string;
+	username?: string;
+	email: string;
+	profile_pic_url?: string;
+}
 
 /**
  * The authorization tokens returned from the Whop OAuth2 API.
@@ -195,6 +203,62 @@ export class WhopOAuth {
 		return {
 			ok: true,
 			tokens,
+		};
+	}
+
+	/**
+	 * Get an Auth.js provider for the Whop OAuth2 API.
+	 *
+	 * Works with any Auth.js compatible client:
+	 * - [`next-auth`](https://www.npmjs.com/package/next-auth)
+	 * - [`@auth/qwik`](https://www.npmjs.com/package/@auth/qwik)
+	 * - [`@auth/sveltekit`](https://www.npmjs.com/package/@auth/sveltekit)
+	 * - [`@auth/express`](https://www.npmjs.com/package/@auth/express)
+	 * - etc.
+	 *
+	 * ```ts
+	 * const WhopProvider = whopOAuth.authJsProvider({
+	 * 	scope: ["read_user"],
+	 * })
+	 *
+	 * export const auth = Auth({
+	 *		providers: [WhopProvider],
+	 *	});
+	 * ```
+	 */
+	public authJsProvider({
+		scope = ["read_user"],
+	}: {
+		/**
+		 * The scopes to be used in the OAuth2 flow. This is used to request permissions from the user.
+		 *
+		 * @see https://dev.whop.com/api-reference/graphql/scopes
+		 */
+		scope?: AppValidScopes[];
+	}): OAuth2Config<WhopOAuthProfile> {
+		return {
+			id: "whop",
+			name: "Whop",
+			type: "oauth" as const,
+			clientId: this.appId,
+			clientSecret: this.appApiKey,
+			authorization: {
+				url: WhopOAuth.OAUTH_URL,
+				params: {
+					scope: scope.join(" "),
+				},
+			},
+			checks: ["state" as const],
+			token: new URL("/api/oauth/token", this.apiOrigin).href,
+			userinfo: new URL("/api/v5/me", this.apiOrigin).href,
+			profile(profile: WhopOAuthProfile) {
+				return {
+					id: profile.id,
+					name: profile.username || profile.email,
+					email: profile.email,
+					image: profile.profile_pic_url,
+				};
+			},
 		};
 	}
 }
