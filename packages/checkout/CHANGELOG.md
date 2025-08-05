@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.36
+
+### Patch Changes
+
+- cd036fe: feat: hide submit button in embedded checkout
+
 ## 0.0.35
 
 ### Patch Changes
