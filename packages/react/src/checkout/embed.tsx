@@ -116,6 +116,12 @@ export interface WhopCheckoutEmbedProps {
 	 * @default false
 	 */
 	hideSubmitButton?: boolean;
+	/**
+	 * **Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	hideTermsAndConditions?: boolean;
 }
 
 export type {
@@ -137,6 +143,7 @@ function WhopCheckoutEmbedInner({
 	prefill,
 	themeOptions,
 	hideSubmitButton = false,
+	hideTermsAndConditions = false,
 }: WhopCheckoutEmbedProps): ReactNode {
 	const resolvedThemeOptions: WhopEmbeddedCheckoutThemeOptions = useMemo(() => {
 		return {
@@ -158,6 +165,7 @@ function WhopCheckoutEmbedInner({
 		prefill,
 		resolvedThemeOptions,
 		hideSubmitButton,
+		hideTermsAndConditions,
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement>(null);

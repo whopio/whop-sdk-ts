@@ -158,6 +158,12 @@ export default function Home() {
 			 */
 			hidePrice={false}
 			/**
+			 * **Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+			 *
+			 * @default false
+			 */
+			hideTermsAndConditions={false}
+			/**
 			 * **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
 			 *
 			 * @default false

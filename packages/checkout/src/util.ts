@@ -101,6 +101,7 @@ export function getEmbeddedCheckoutIframeUrl(
 	prefill?: WhopEmbeddedCheckoutPrefillOptions,
 	themeOptions?: WhopEmbeddedCheckoutThemeOptions,
 	hideSubmitButton?: boolean,
+	hideTermsAndConditions?: boolean,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -123,6 +124,9 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (hideSubmitButton) {
 		iframeUrl.searchParams.set("hide_submit_button", "true");
+	}
+	if (hideTermsAndConditions) {
+		iframeUrl.searchParams.set("hide_tos", "true");
 	}
 	if (utm) {
 		for (const [key, value] of Object.entries(utm).sort((a, b) =>
