@@ -150,6 +150,7 @@ function mount(node: HTMLElement) {
 		getPrefillFromNode(node),
 		getThemeOptionsFromNode(node),
 		node.dataset.whopCheckoutHideSubmitButton === "true",
+		node.dataset.whopCheckoutHideTos === "true",
 	);
 
 	const iframe = document.createElement("iframe");
