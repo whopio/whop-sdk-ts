@@ -1,5 +1,12 @@
 # @whop/framer
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [cd036fe]
+  - @whop/react@0.2.34
+
 ## 0.0.16
 
 ### Patch Changes
