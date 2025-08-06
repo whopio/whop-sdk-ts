@@ -5,7 +5,7 @@ config({
 	path: [".env", ".env.local", ".env.development", ".env.production"],
 });
 
-function env(key: string) {
+export function env(key: string) {
 	const value = process.env[key];
 	if (!value) {
 		throw new Error(`Missing environment variable: ${key}`);

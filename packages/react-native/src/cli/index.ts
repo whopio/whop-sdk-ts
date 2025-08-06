@@ -2,8 +2,10 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
 import { findUp } from "find-up";
+import qrcode from "qrcode-terminal";
 import { rimraf } from "rimraf";
 import { buildAndPublish } from "./mobile";
+import { env } from "./sdk";
 
 async function main() {
 	const args = parseArgs({
@@ -24,6 +26,11 @@ async function main() {
 	});
 
 	const [command] = args.positionals;
+
+	if (command === "install") {
+		await handleInstall();
+		return;
+	}
 
 	let shouldBuild = true;
 	let shouldUpload = true;
@@ -92,6 +99,20 @@ async function getRootProjectDirectory() {
 	}
 	const root = path.dirname(file);
 	return root;
+}
+
+async function handleInstall() {
+	const appId = env("NEXT_PUBLIC_WHOP_APP_ID");
+	const installLink = `https://whop.com/apps/${appId}/install`;
+
+	console.log(`
+Open this link in your browser to install the app into your whop.
+${installLink}
+
+Or scan the QR code with your iPhone:
+	`);
+
+	qrcode.generate(installLink, { small: true });
 }
 
 main()
