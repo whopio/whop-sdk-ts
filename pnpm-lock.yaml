@@ -560,9 +560,6 @@ importers:
       '@react-native/metro-config':
         specifier: ^0.80.1
         version: 0.80.1(@babel/core@7.28.0)
-      '@types/qrcode-terminal':
-        specifier: ^0.12.2
-        version: 0.12.2
       '@whop/api':
         specifier: workspace:*
         version: link:../api
@@ -594,6 +591,9 @@ importers:
       '@types/node':
         specifier: latest
         version: 24.2.0
+      '@types/qrcode-terminal':
+        specifier: ^0.12.2
+        version: 0.12.2
       '@types/react':
         specifier: 19.1.5
         version: 19.1.5
