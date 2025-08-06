@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.34
+
+### Patch Changes
+
+- cd036fe: feat: hide submit button in embedded checkout
+- Updated dependencies [cd036fe]
+  - @whop/checkout@0.0.36
+
 ## 0.2.33
 
 ### Patch Changes

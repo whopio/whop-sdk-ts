@@ -40,6 +40,7 @@ function useWarnOnIframeUrlChange(
 		prefill,
 		themeOptions,
 		hideSubmitButton,
+		hideTermsAndConditions,
 	]: GetEmbeddedCheckoutIframeUrlParams
 ) {
 	const updatedIframeUrl = useMemo(
@@ -56,6 +57,7 @@ function useWarnOnIframeUrlChange(
 				prefill,
 				themeOptions,
 				hideSubmitButton,
+				hideTermsAndConditions,
 			),
 		[
 			planId,
@@ -68,6 +70,7 @@ function useWarnOnIframeUrlChange(
 			prefill,
 			themeOptions,
 			hideSubmitButton,
+			hideTermsAndConditions,
 		],
 	);
 

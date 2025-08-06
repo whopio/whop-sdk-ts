@@ -137,6 +137,16 @@ Defaults to `false`
 <div data-whop-checkout-hide-submit-button="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+### **`data-whop-checkout-hide-tos`**
+
+**Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-tos="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 ### **`data-whop-checkout-skip-redirect`**
 
 **Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
