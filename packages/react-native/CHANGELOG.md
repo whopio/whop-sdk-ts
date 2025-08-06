@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.0.11
+
+### Patch Changes
+
+- 56e4115: Add an install command to the cli
+
 ## 0.0.10
 
 ### Patch Changes
