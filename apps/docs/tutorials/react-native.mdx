@@ -194,7 +194,7 @@ function MyComponent() {
 
 Hook implementation to copy:
 
-```tsx use-colors.ts
+```tsx use-colors.ts expandable
 import {
   amber,
   amberA,
@@ -255,6 +255,10 @@ export function useColors() {
 # Secret internal features
 
 We are still working on polishing our api's but if you wanna build something cool RIGHT NOW, you can use some internal api's to communicate with the whop app.
+
+<Warning>
+  These function may throw. Use within a `try {} catch (e) {}` block.
+</Warning>
 
 ```tsx
 import { __internal_execSync, __internal_execAsync } from "@whop/react-native";
