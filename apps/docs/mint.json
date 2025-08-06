@@ -72,6 +72,7 @@
 		{
 			"group": "Tutorials",
 			"pages": [
+				"tutorials/react-native",
 				"tutorials/ai-car-customizer",
 				"tutorials/chat-bot",
 				"tutorials/ai-image-generator"

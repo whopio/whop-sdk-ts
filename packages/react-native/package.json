@@ -46,9 +46,11 @@
 		"jszip": "^3.10.1",
 		"metro": "^0.83.0",
 		"metro-react-native-babel-transformer": "^0.77.0",
+		"qrcode-terminal": "^0.12.0",
 		"rimraf": "^6.0.1"
 	},
 	"devDependencies": {
+		"@types/qrcode-terminal": "^0.12.2",
 		"@types/node": "latest",
 		"@types/react": "19.1.5",
 		"react": "^19.0.0",
