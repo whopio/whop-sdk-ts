@@ -1,5 +1,13 @@
 # @whop/react
 
+## 0.2.35
+
+### Patch Changes
+
+- 6677aae: allow getting state of email field in embedded checkout
+- Updated dependencies [6677aae]
+  - @whop/checkout@0.0.37
+
 ## 0.2.34
 
 ### Patch Changes

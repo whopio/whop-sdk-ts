@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.37
+
+### Patch Changes
+
+- 6677aae: allow getting state of email field in embedded checkout
+
 ## 0.0.36
 
 ### Patch Changes
