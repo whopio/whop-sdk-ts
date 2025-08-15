@@ -37,6 +37,9 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 			getEmail: (_identifier: string, _timeout = 2000) => {
 				throw new Error("Whop Embedded checkout script not initialized");
 			},
+			setEmail: (_identifier: string, _email: string) => {
+				throw new Error("Whop Embedded checkout script not initialized");
+			},
 		};
 	})();
 }

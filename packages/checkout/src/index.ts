@@ -4,9 +4,10 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
-	getCheckoutEmail,
+	getEmail,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
+	setEmail,
 	submitCheckoutFrame,
 } from "./util";
 
@@ -152,6 +153,8 @@ function mount(node: HTMLElement) {
 		getThemeOptionsFromNode(node),
 		node.dataset.whopCheckoutHideSubmitButton === "true",
 		node.dataset.whopCheckoutHideTos === "true",
+		node.dataset.whopCheckoutHideEmail === "true",
+		node.dataset.whopCheckoutDisableEmail === "true",
 	);
 
 	const iframe = document.createElement("iframe");
@@ -190,7 +193,15 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 			throw new Error(
 				`Failed to get email for Whop embedded checkout. No embed with identifier ${identifier} found.`,
 			);
-		return getCheckoutEmail(frame, timeout);
+		return getEmail(frame, timeout);
+	};
+	window.wco.setEmail = function setEmailImpl(identifier, email, timeout) {
+		const frame = window.wco?.identifiedFrames.get(identifier);
+		if (!frame)
+			throw new Error(
+				`Failed to set email for Whop embedded checkout. No embed with identifier ${identifier} found.`,
+			);
+		return setEmail(frame, email, timeout);
 	};
 	// observe the DOM an element with the `data-whop-checkout-plan-id` data attribute
 	const observer = new MutationObserver((mutations) => {
