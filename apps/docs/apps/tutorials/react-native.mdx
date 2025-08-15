@@ -1,0 +1,310 @@
+---
+title: "React Native (Beta)"
+description: Build whop apps using React Native for fast, mobile optimized experiences.
+---
+
+<Info>
+  The react native sdks are still in beta and we're actively working to improve
+  and fix any bugs. Currently the [whop
+  courses](https://whop.com/apps/app_0vPZThfBpAwLo/) app is fully powered by
+  react native on both iOS and Android.
+</Info>
+
+# Getting started
+
+Create a new app in the [dashboard](https://whop.com/dashboard/developer) and copy environment variables from the app details page.
+
+### Create the app locally
+
+Ensure you have at least node 22+ installed and pnpm 9.15+.
+To check run `node -v` and `pnpm -v`.
+
+```bash
+pnpm create @whop/react-native@latest
+```
+
+This creates a new whop react native skeleton app. `cd` into your new folder (named after your provided app name) and install dependencies using pnpm.
+
+```bash
+cd my-app
+pnpm install
+```
+
+### Edit your code
+
+The entry point for your app is in `src/views/experience-view.tsx`.
+This view will be rendered when a creator installs your app into their whop.
+
+For example, you can render a button that will greet the current user id.
+
+```tsx
+import type { ExperienceViewProps } from "@whop/react-native";
+import { Button, Alert, View } from "react-native";
+
+export function ExperienceView(props: ExperienceViewProps) {
+  function handleGreet() {
+    Alert.alert(
+      `Hello ${props.currentUserId}! Welcome to experience ${props.experienceId}`
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button title="Click Me!" onPress={handleGreet} />
+    </View>
+  );
+}
+```
+
+### Install your app
+
+Install your new app into your whop so you can preview it on your phone.
+
+```bash
+pnpm whop-react-native install
+```
+
+Open the app from inside your whop on your iPhone and shake it.
+This enables "dev mode" and allows you to see the latest 'non production' react native builds.
+On android you can use the info button in the top right to toggle developer mode.
+
+Right now, it should show an error in the bottom saying "No build found ..."
+
+<Info>
+  Developer mode can only be activated by owners and admins of the company that
+  owns the app.
+</Info>
+
+### Ship it!
+
+```bash
+pnpm ship
+```
+
+The `ship` command will build and upload your app to the whop servers. You can
+limit the platforms by passing either `--ios` or `--android`. From here it
+will be pushed live to your phone.
+
+<Info>
+  The `ship` command will NOT push the app to existing users of your app. It is
+  safe to run on existing web apps too meaning you can progressively migrate
+  your app to react native.
+</Info>
+
+### Deploy to production.
+
+Once you're happy with your app go to your [developer dashboard](https://whop.com/dashboard/developer) and click "Promote to production" on your latest development build.
+
+After going through an automated review, the app will be pushed instantly to all users of your app on iOS and Android.
+
+<Info>
+  ProTip: the `pnpm ship` command prints out a link you can use to promote your
+  app to production.
+</Info>
+
+From the builds screen you can also instant rollback to a previous production build which will be pushed live to all users across whop.
+
+# Native Integration
+
+The beauty of react native is its rich integration with native platform features and APIs.
+
+The Whop app exposes a set of common powerful native building blocks your can directly use in your react native app.
+
+Features like video playback, camera access, native gestures and animations are available already.
+We plan on expanding the capabilities to allow many different kinds of apps to be built!
+
+You can use these libraries pinned to these version:
+
+- `react-native-nitro-modules@0.26.3`
+- `react-native-video@6.16.1`
+- `@d11/react-native-fast-image@8.10.0`
+- `react-native-svg@15.12.0`
+- `react-native-webview@13.15.0`
+- `react-native-reanimated@3.18.0`
+- `react-native-gesture-handler@2.27.2`
+- `react-native-haptic-feedback@2.3.3`
+- `react-native-vision-camera@4.7.1`
+- `react-native-safe-area-context@5.5.2`
+
+# Whop SDK
+
+The whop sdk is available for use in the react native app out of the box. Using this you can fetch data within the scope of the current user.
+
+<Info>
+  We recommend using the `useQuery` hook from `@tanstack/react-query` to fetch
+  data.
+</Info>
+
+```tsx
+import { whopSdk } from "@whop/react-native";
+
+export function MyComponent() {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => whopSdk.users.getCurrentUser(),
+  });
+
+  return <Text>{user?.name}</Text>;
+}
+```
+
+# Future plans
+
+- Filesystem access
+- Whop UI Kit
+- Integrated router + robust deeplinking support
+- More native modules
+- Web Support + Hosting!
+- Anything you might want. [Join the developer community!](https://whop.com/developers)
+
+# Making authenticated requests
+
+You can make authenticated requests to your api by using the same proxy infrastructure used for existing web apps.
+
+1. Set your api origin as the `Base Domain` in the [developer dashboard](https://whop.com/dashboard/developer)
+2. Make a normal fetch request from your react native app using the `apiOrigin` from `__internal_execSync("getAppApiOrigin", {})`
+
+```tsx
+const apiOrigin = __internal_execSync("getAppApiOrigin", {});
+
+// Assuming your server has this api endpoint:
+fetch(`${apiOrigin}/api/v1/users/me`).then((res) => res.json());
+```
+
+3. On your server use the standard `verifyUserToken` function from the SDK to verify the request. Auth between react native apps and whop iframe apps is exactly the same meaning you can _reuse_ your backend.
+
+# Color themes
+
+React native by default exposes a `useColorScheme` hook that you can use to get the current color scheme of the device. This works correctly out of the box on whop react native apps too!.
+
+While we are still building our UI kit, you can use the following `useColors` hook as inspiration to build your own dynamic color scheme:
+
+```bash
+# Install the radix ui colors package
+pnpm i @radix-ui/colors
+```
+
+```tsx Usage
+function MyComponent() {
+  const colors = useColors();
+
+  return <View style={{ backgroundColor: colors.gray1 }} />;
+}
+```
+
+Hook implementation to copy:
+
+```tsx use-colors.ts expandable
+import {
+  amber,
+  amberA,
+  amberDark,
+  amberDarkA,
+  blue,
+  blueA,
+  blueDark,
+  blueDarkA,
+  gray,
+  grayA,
+  grayDark,
+  grayDarkA,
+  green,
+  greenA,
+  greenDark,
+  greenDarkA,
+  red,
+  redA,
+  redDark,
+  redDarkA,
+} from "@radix-ui/colors";
+import { useColorScheme } from "react-native";
+
+export function useColors() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
+
+  // Create all the color groups
+  const _grayA = isDark ? grayDarkA : grayA;
+  const _gray = isDark ? grayDark : gray;
+  const _blueA = isDark ? blueDarkA : blueA;
+  const _blue = isDark ? blueDark : blue;
+  const _redA = isDark ? redDarkA : redA;
+  const _red = isDark ? redDark : red;
+  const _amberA = isDark ? amberDarkA : amberA;
+  const _amber = isDark ? amberDark : amber;
+  const _greenA = isDark ? greenDarkA : greenA;
+  const _green = isDark ? greenDark : green;
+
+  // Merge them
+  return {
+    transparent: "transparent" as const,
+    ..._grayA,
+    ..._gray,
+    ..._blueA,
+    ..._blue,
+    ..._redA,
+    ..._red,
+    ..._amberA,
+    ..._amber,
+    ..._greenA,
+    ..._green,
+  };
+}
+```
+
+# Secret internal features
+
+We are still working on polishing our api's but if you wanna build something cool RIGHT NOW, you can use some internal api's to communicate with the whop app.
+
+<Warning>
+  These function may throw. Use within a `try {} catch (e) {}` block.
+</Warning>
+
+```tsx
+import { __internal_execSync, __internal_execAsync } from "@whop/react-native";
+
+// Example usage:
+__internal_execSync("routerPush", {
+  path: ["some", "second", "page"],
+  params: { query: "hello" },
+});
+// Pro tip: the `path` and `query` is passed as a prop to the `ExperienceView`
+// component. This is how multi level routing works for courses currently.
+
+// Full list of calls and types available here:
+
+export interface PathParams {
+  path: string[];
+  params: Record<string, string>;
+}
+
+export interface ExecSyncApi {
+  getAppApiOrigin(params: EmptyObject): { apiOrigin: string };
+  cacheGet(params: { key?: string | null }): { data?: string | null };
+  cacheSet(params: { key?: string | null; data?: string | null }): EmptyObject;
+  routerPush(params: PathParams): EmptyObject;
+  routerPop(params: EmptyObject): EmptyObject;
+  routerGetCurrent(params: EmptyObject): PathParams;
+  setNavigationBarData(params: {
+    title?: string | null;
+    description?: string | null;
+  }): EmptyObject;
+  routerPresentSheet(params: PathParams): EmptyObject;
+  routerDismissSheet(params: EmptyObject): EmptyObject;
+  routerGetCurrentSheet(params: EmptyObject): PathParams | null | undefined;
+  downgradeToWebView(params: EmptyObject): EmptyObject;
+  getHostAppDetails(params: EmptyObject): {
+    build: string;
+    version: string;
+    platform: "ios" | "android" | "web";
+    buildType: "appstore" | "testflight" | "debug";
+  };
+}
+
+export interface ExecAsyncApi extends ExecSyncApi {
+  inAppPurchase(params: { id?: string | null; planId: string }): {
+    sessionId: string;
+    receiptId: string;
+  };
+}
+```

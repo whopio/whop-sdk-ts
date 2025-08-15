@@ -1,0 +1,107 @@
+---
+title: "Automated messages"
+description: "Learn how to send automated marketing messages on Whop"
+---
+
+You can set up automated messages on Whop to send personalized DMs and emails when:
+
+1. Someone joins your whop;
+2. Someone leaves your whop; and
+3. Someone checks out your store page but doesn't buy.
+
+## How to find the automated messages settings
+
+1. **Open your Dashboard**: From your Whop account, click **Dashboard** on the left side of your screen to access your whop's advanced settings.
+2. **Find Automated messages**: Under the **Marketing** section in your sidebar, click **Automated messages**.
+
+Here, you'll see three automated message options: User joined, User left, and New lead.
+
+![Automatic messages](/apps/docs/how-to-videos/automessages.gif)
+
+## How to set up 'User joined' messages
+
+Send welcome messages automatically when new members join your whop. Use this feature to greet new members, let them know what their next steps should be, or upsell your higher ticket offers (potentially even offering a discount code).
+
+<Steps>
+  <Step title="Enable the automation" titleSize="h3">
+    Click **Enable automation** on the **User joined** card to activate this automated message.
+  </Step>
+  <Step title="Set up your automated message" titleSize="h3">
+    After enabling, you'll see several customization options:
+
+    - **Toggle button**: Turn this on or off anytime (top right)
+    - **Message field**: Write the message that's sent to new members
+    - **Variables**: Add these variables to personalize the message:
+      - recipient_name - Shows their actual name
+      - whop_name - Shows your whop's name
+    - **Add media**: Upload images or videos to your message
+    - **Send email option**: Check this box if you want users to also receive an email notification (in addition to the DM on Whop)
+    - **Send message as**: Select which team member the message should appear to come from
+  </Step>
+  <Step title="Save your settings" titleSize="h3">
+    Click **Save** to activate your User joined automation.
+  </Step>
+</Steps>
+
+## How to set up 'User left' messages
+
+Send a message when someone leaves your whop and decides they don't want to be a member anymore. Use this feature to gather feedback (to learn why they left), or even try entice them back with a discount. 
+
+<Steps>
+  <Step title="Enable the automation" titleSize="h3">
+    Click **Enable automation** on the **User left** card to activate this automated message.
+  </Step>
+  <Step title="Set up your automated message" titleSize="h3">
+    After enabling, you'll see several customization options:
+
+    - **Toggle button**: Turn this on or off anytime (top right)
+    - **Message field**: Write the message that will be sent to churned members
+    - **Variables**: Add these variables to personalize the message:
+      - recipient_name - Shows their actual name
+      - whop_name - Shows your whop's name
+    - **Add media**: Upload images or videos to your message
+    - **Send email option**: Check this box if you want users to also receive an email notification (in addition to the DM on Whop)
+    - **Send message as**: Select which team member the message should appear to come from
+  </Step>
+  <Step title="Save your settings" titleSize="h3">
+    Click **Save** to activate your User left automation.
+  </Step>
+</Steps>
+
+## How to set up 'New lead' messages
+
+Send messages to people who click on your popup promotions.
+
+<Tip>
+  For the 'New lead' messages to work properly, you first need to enable popup promotions.
+</Tip>
+
+<Steps>
+  <Step title="Enable popup promotions on Whop" titleSize="h3">
+    Before setting up New lead messages, enable popup promotions on your store page.
+
+    <Card title="Set up popup promotions" icon="hand-wave" href="/manage-your-whop/popup-promotions">
+      Learn how to set up popup promotions on your store page.
+    </Card>
+  </Step>
+  <Step title="Enable the automation" titleSize="h3">
+    Click **Enable automation** on the **New lead** card to activate this automated message.
+  </Step>
+  <Step title="Set up your automated message" titleSize="h3">
+    - **Toggle button**: Turn this on or off anytime (top right)
+    - **Message field**: Write the message that will be sent to new leads
+    - **Variables**: Add these variables to personalize the message:
+      - recipient_name - Shows their actual name
+      - whop_name - Shows your whop's name
+      - store_page_url - Direct link to your store page
+      - discount_percentage - The discount percentage from your popup promotion
+    - **Add media**: Upload images or videos to your message
+    - **Send email option**: Check this box if you want users to also receive an email notification (in addition to the DM on Whop)
+    - **Send message as**: Select which team member the message should appear to come from
+  </Step>
+  <Step title="Save your settings" titleSize="h3">
+    Click **Save** to activate your New lead automation.
+  </Step>
+</Steps>
+
+You can return to these settings anytime to change your messages or turn automations on and off.

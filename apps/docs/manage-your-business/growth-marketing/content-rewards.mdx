@@ -1,0 +1,158 @@
+---
+title: "Content Rewards"
+description: "Learn how to use Content Rewards to grow your social presence "
+---
+
+Content Rewards is a marketing tool that connects your brand with content creators - they make content about your brand and you pay them for the number of views they get.
+
+## What are Content Rewards?
+
+Content Rewards is a tool to incentivize your customers to talk about your brand. They create content, post it to their social media, and you pay them based on views - but only after you approve their post.
+
+**There are two types of campaigns you can run with Content Rewards:**
+
+- **Content clipping:** Creators turn your existing long-form content (podcasts, livestreams, webinars) into short clips for TikTok, YouTube Shorts, X and Instagram Reels. Perfect when you have:
+  - Podcasts or livestreams with great moments
+  - Webinars with key talking points
+  - Educational videos with quotable segments
+  - Any long-form content that could work as short clips
+- **User-generated content (UGC):** Creators produce original content featuring your brand based on guidelines you provide. Great for:
+  - Customer testimonials and success stories
+  - Brand awareness campaigns
+  - Showing your services in action
+
+You tell them what you want, and creators make original content that hits your requirements.
+
+## How do Content Rewards work?
+
+Content Rewards is an automated system that manages creator relationships and payments:
+
+1. **Set up your campaign:** Choose your campaign type (clipping or UGC) and provide details about your brand and campaign goals
+2. **Configure payment settings**: Set how much you will pay per 1,000 views and your budget for the campaign
+3. **Creators make and distribute content**: Creators post content to their social media accounts, following your guidelines and requirements
+4. **Review submissions:** Check submissions to see whether creators have followed your requirements, approving the ones that do and rejecting the ones that don’t
+5. **Performance tracking and payments**: After approving a submission, Whop automatically pays the content creator based on the number of views they got
+
+## Set up your first campaign
+
+### Step 1: Add the Content Rewards app to your whop
+
+- Go to your whop and click **Add app** to go to the Whop App Store
+- Select **Content Rewards** from the available apps
+- Click **Add** to include it in your whop
+
+![Add Content Rewards app](/apps/docs/how-to-videos/setupcontentrewards.gif)
+
+<Card title="Create your whop" icon="sparkles" href="/create-account">
+  If you don't have a whop yet, click on this card to learn how to set up your
+  account.
+</Card>
+
+### Step 2: Create your first campaign
+
+When you add the Content Rewards app, you'll see a form with all the settings you need to configure. Here's what each field means and how to set it up:
+
+![Configure Content Rewards](/apps/docs/images/croptions1.png)
+
+<Steps>
+  <Step title="Campaign name">
+    Your campaign name will be seen publicly by creators, so make it clear and appealing.
+
+    - Enter a descriptive name that represents your brand or specific campaign (e.g. Laptop Lunch Prep UGC Campaign)
+    - You can also include your reward rate in your title (Fanatics UGC - \$3 per 1,000 views) to entice content creators
+
+  </Step>
+  <Step title="Campaign type">
+    Select the type of content you want creators to make:
+
+    - **Clipping**: Creators take your existing videos or podcasts and turn them into short-form content
+    - **UGC (User-Generated Content)**: Creators make original content featuring your brand
+
+  </Step>
+  <Step title="Brand category">
+    Pick the category that best represents your brand. This helps creators understand your niche and create better targeted content.
+  </Step>
+  <Step title="Campaign budget">
+    Enter the total amount you're willing to spend on this campaign. Think of this like ad spend, but instead of paying a platform directly, you're investing in creators who will promote your brand. You can select your preferred currency from the dropdown menu.
+
+    <Tip>
+      Note: You will not be charged until you set up your payments on Whop and deposit funds.
+    </Tip>
+
+  </Step>
+  <Step title="Reward rate">
+    Set how much creators earn per 1,000 views on their videos.
+
+    <Tip>
+      - UGC content typically pays higher rates than clipping
+      - Higher rates attract better creators
+    </Tip>
+
+  </Step>
+  <Step title="Minimum payout">
+    Set the minimum amount a creator can earn from their video before it gets submitted for your review. If you set this to \$0, every single video submission (even with just a few views) will need to be reviewed. To focus on quality content that's actually performing, set a minimum payout amount.
+
+    - **Example**: With a \$3 reward rate and \$6 minimum payout, only videos with at least 2,000 views will be submitted for review (\$3 × 2 = \$6 earned).
+
+  </Step>
+  <Step title="Maximum payout">
+    Cap how much a single creator can earn from one video to protect your campaign budget. Without a cap, one video with hundreds of millions of views could consume your entire budget, leaving nothing for other creators. The maximum payout ensures your budget gets distributed across multiple creators and videos.
+
+    - **Example**: With a \$3,000 max payout and \$3 reward rate, a creator stops earning once their video hits 1 million views, even if it continues growing.
+
+  </Step>
+  <Step title="Flat fee bonus (optional)">
+    When you set a flat fee bonus, every approved submission earns both the view-based reward AND the flat fee amount. This can help attract more creators, especially when you're launching a new campaign.
+
+    - **Example**: With a \$3 reward rate, \$10 flat fee, and 2,000 views, a creator earns \$16 total (\$6 from views \+ \$10 flat fee).
+
+  </Step>
+  <Step title="Platform selection">
+    Choose which social media platforms you'll accept submissions from.
+  </Step>
+  <Step title="Available content">
+    This is where you communicate what you want and give creators everything they need to make great content for your brand. Here's what to include:
+
+    - Brand guidelines and details about your brand
+    - Your campaign goals and messaging
+    - Examples of content that's worked for your brand (case studies, successful hooks, etc.)
+    - For clipping campaigns: Access to your video footage and any assets they can use
+
+    <Tip>
+      Pro tip: Upload a comprehensive Google Doc with all your guidelines and examples, then paste the shareable link here. You can always update the document later without changing your campaign settings.
+    </Tip>
+
+  </Step>
+  <Step title="Requirements">
+    Clearly outline the rules creators must follow for their submissions to be approved and paid:
+
+    - Content quality standards
+    - Brand mention requirements
+    - Prohibited content guidelines
+    - Video length or format specifications
+    - Any specific messaging that must be included
+
+    This protects your brand and ensures you only pay for content that meets your standards.
+
+  </Step>
+</Steps>
+
+### Step 3: Fund and launch your campaign
+
+After creating your campaign, you'll see the Add budget popup automatically.
+
+To add funds:
+
+1. Pick how you want to pay (whop balance, card, Cash App, etc.)
+2. Enter the amount
+3. Click **Send**
+
+The payment takes about a minute to process. Your Content Reward will automatically move from **Pending budget** to the **Active** tab once it is complete.
+
+### **Top up your balance**
+
+You can add more money anytime by:
+
+1. Clicking the 3 dots (···) on your campaign
+2. Selecting **Add budget**
+3. Entering the amount and clicking **Send**

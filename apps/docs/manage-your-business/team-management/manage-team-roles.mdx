@@ -1,0 +1,155 @@
+---
+title: "Roles and permissions"
+description: "Learn how to manage your team, roles and permissions"
+---
+
+Your Team tab is where you decide who gets access to your whop and what permissions they have.
+
+## How to add team members to your whop
+
+1. Go to **Dashboard** \> **Team**
+2. **(Recommended):** Toggle on **Require 2FA** to make sure all team members use secure login
+3. Click **Invite team member** in the top right corner
+4. Enter the person's email address in the **Email** field
+5. Select their role from the **Role** dropdown menu
+6. Click **Invite**
+
+![Invite team members](/apps/docs/how-to-videos/inviteteam.gif)
+
+Your team member will automatically be sent an invitation email. When they accept, they'll show up in your team table with their new permissions.
+
+You can see all your pending invites on the **Invites** tab next to **Members**.
+
+<Warning>
+  Start small. Always give someone the lowest role that lets them do their job. You can always give them more access later if needed.
+</Warning>
+
+## Roles and permissions overview
+
+There are four different roles you can assign to your team members:
+
+- **Moderator**
+- **Sales Manager**
+- **Admin**
+- **Owner**
+
+Each of these roles has a different level of permissions - Moderator has the least access, and Owner has the most.
+
+### **Moderator**
+
+- Delete messages and mute or ban members in the Chat app
+- Delete comments in Forums
+- Keep your community chat friendly and spam-free
+
+<Tip>
+  The Moderator role is best for community managers, support agents, or anyone helping manage your community.
+</Tip>
+
+### **Sales Manager**
+
+All Moderator permissions, plus:
+
+- View the Users table (but can't export it)
+- View and create checkout links
+
+<Tip>
+  The Sales Manager role is best for marketing team members, affiliate managers, or sales reps who need to create and track custom checkout links.
+</Tip>
+
+### **Admin**
+
+All Moderator and Sales Manager permissions, plus:
+
+- View waitlists and cancellation reasons
+- Access Finances section (except Payouts)
+- View and manage products, apps, and the store page
+- Give refunds to customers
+- View and manage the Marketing section of the dashboard
+- Invite other team members (Moderators and Sales Managers only)
+- View general settings (but can't edit them)
+
+<Tip>
+  The Admin role is best for operations managers, team leads, heads of marketing/community, or anyone needing broader dashboard access.
+</Tip>
+
+### **Owner**
+
+All permissions from other roles, plus:
+
+- Access to Payouts
+- View and manage API keys, OAuth, and Webhooks settings
+- Invite Admins and Owners
+- View **analytics**
+- Transfer ownership
+
+<Tip>
+  The Owner role is best for founders, co-founders, CTOs, or finance/legal leads who need complete control.
+</Tip>
+
+### **Complete permissions breakdown**
+
+| Permission                                   | Moderator | Sales Manager | Admin | Owner |
+| :------------------------------------------- | :-------- | :------------ | :---- | :---- |
+| Delete messages in the Chat app              | ✔️        | ✔️            | ✔️    | ✔️    |
+| Mute users in Chat app                       | ✔️        | ✔️            | ✔️    | ✔️    |
+| Ban users in Chat app                        | ✔️        | ✔️            | ✔️    | ✔️    |
+| Delete comments in Forums app                | ✔️        | ✔️            | ✔️    | ✔️    |
+| View Checkout links section on dashboard     | ✔️        | ✔️            | ✔️    | ✔️    |
+| Create new checkout links                    | ❌         | ✔️            | ✔️    | ✔️    |
+| View Users table on dashboard                | ✔️        | ✔️            | ✔️    | ✔️    |
+| Edit store page                              | ❌         | ❌             | ✔️    | ✔️    |
+| Add & configure apps                         | ❌         | ❌             | ✔️    | ✔️    |
+| Create products                              | ❌         | ❌             | ✔️    | ✔️    |
+| Give refunds to customers                    | ❌         | ❌             | ✔️    | ✔️    |
+| Export Users table on dashboard              | ❌         | ❌             | ✔️    | ✔️    |
+| View waitlists                               | ❌         | ❌             | ✔️    | ✔️    |
+| View cancellation reasons                    | ❌         | ❌             | ✔️    | ✔️    |
+| View Finances section                        | ❌         | ❌             | ✔️    | ✔️    |
+| Access Payouts section                       | ❌         | ❌             | ❌     | ✔️    |
+| View Marketing section                       | ❌         | ❌             | ✔️    | ✔️    |
+| Manage Marketing section                     | ❌         | ❌             | ✔️    | ✔️    |
+| View general settings                        | ❌         | ❌             | ✔️    | ✔️    |
+| Edit general settings                        | ❌         | ❌             | ❌     | ✔️    |
+| View team settings                           | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Moderators                            | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Sales Managers                        | ❌         | ❌             | ✔️    | ✔️    |
+| Invite Admins                                | ❌         | ❌             | ❌     | ✔️    |
+| Invite Owners                                | ❌         | ❌             | ❌     | ✔️    |
+| View analytics on Home page of the dashboard | ❌         | ❌             | ❌     | ✔️    |
+| View API keys settings                       | ❌         | ❌             | ❌     | ✔️    |
+| Manage API keys settings                     | ❌         | ❌             | ❌     | ✔️    |
+| View OAuth settings                          | ❌         | ❌             | ❌     | ✔️    |
+| Manage OAuth settings                        | ❌         | ❌             | ❌     | ✔️    |
+| View Webhooks settings                       | ❌         | ❌             | ❌     | ✔️    |
+| Manage Webhooks settings                     | ❌         | ❌             | ❌     | ✔️    |
+| Transfer ownership                           | ❌         | ❌             | ❌     | ✔️    |
+
+<Warning>
+  Important: Some things your team can do (like deleting messages or checkout links) can't be undone.
+</Warning>
+
+## How to change team member roles
+
+You can update anyone's role at any time to give them more or less access.
+
+To change someone's role:
+
+1. Go to **Dashboard \> Team**
+2. Find the team member in the members table
+3. Click the dropdown menu in their **Role** column
+4. Select their new role
+5. Click **Save**
+
+The change happens right away, and they'll have their new permissions immediately.
+
+## How to remove team members
+
+To remove a team member:
+
+1. Go to **Dashboard \> Team**
+2. Find the team member you want to remove
+3. Click the three dots (︙) on the right side of their row
+4. Select **Remove user**
+5. Click the red **Remove user** button in the confirmation pop-up
+
+They'll immediately lose access to your whop and will need to be reinvited if you want to add them back to the team.

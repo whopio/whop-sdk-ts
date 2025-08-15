@@ -1,0 +1,53 @@
+---
+title: "Popup promotions"
+description: "Learn how to set up popup promotions on your store page"
+---
+
+Popup promotions show a discount offer to people who've been browsing your store page for 45\+ seconds or are about to click away. Even if they don't purchase immediately, you capture their contact info so you can follow up later.
+
+## Enable popup promotions
+
+<Steps>
+  <Step title="Access your store settings" titleSize="h3">
+    Go to your **Dashboard** and click **Edit store page** under the Admin area of your whop, then click the **Edit details** button on the store page.
+  </Step>
+  <Step title="Turn on popup promotions" titleSize="h3">
+    In the Edit details popup, scroll down to find the **Enable popup promotion** setting and toggle it on.
+  </Step>
+</Steps>
+
+![Popup](/apps/docs/how-to-videos/enablepopup720p30fps.gif)
+
+## Set up your popup promotion
+
+When you enable popup promotions, you'll need to configure the settings:
+
+- **Set your discount percentage**: Use the **Discount percentage** field to decide how much of a deal you want to offer. This is what visitors will see when they've been browsing for 45\+ seconds or are trying to leave your store page (showing exit intent).
+
+## View and contact your leads
+
+When popup promotions are running, you can view your leads and follow up with them directly.
+
+<Tip>
+  Your list of leads includes everyone who has clicked the 'Claim' button on your popup promotion
+</Tip>
+
+<Steps>
+  <Step title="Check your leads" titleSize="h3">
+    Go to **Dashboard** \> **Leads** to see everyone who has interacted with your popup promotions.
+  </Step>
+  <Step title="Review lead details" titleSize="h3">
+    For each lead, you'll find:
+
+    - Username
+    - Which whop they visited
+    - Email address
+    - Visit date
+  </Step>
+  <Step title="Reach out to your leads" titleSize="h3">
+    Click the **Send message** button next to any lead to contact them directly and encourage them to complete their purchase.
+  </Step>
+  <Step title="Export your data (optional)" titleSize="h3">
+    Click **Export** in the top right to download your list of leads.
+  </Step>
+</Steps>

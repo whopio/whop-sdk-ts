@@ -1,0 +1,73 @@
+---
+title: "Add apps"
+description: "Learn how to add apps to your whop"
+---
+
+Apps are the building blocks for your business on Whop. 
+
+Here’s how it works: You create your own whop, then pick and choose which apps to include. Want a chat room for your community? Add the **Chat** app. Selling a course? Add the **Course** app. 
+
+There are hundreds of apps to choose from, and you can add any of them from the Whop App Store.
+
+## How to add apps to your whop
+
+<Steps>
+  <Step title="Go to the Whop App Store" iconType="regular" titleSize="h3">
+    You can find all the available apps in the Whop App Store.
+
+    - Inside your whop, click **Add app**
+    - Browse the different categories of apps to find the apps your members will find most valuable
+
+    Learn more about what apps you should add to your whop [here](/apps/docs/whop-apps/what-are-whop-apps).
+  </Step>
+  <Step title="Add apps to your whop" iconType="regular" stepNumber={2} titleSize="h3">
+    When you find an app you'd like to add, click **Add**.
+
+    You will see the app has been added in the left-hand column of your whop.
+
+    <Tip>
+      You can add as many apps as you want, and add each app as many times as you'd like (for example, you can add the Chat app multiple times to create different chat groups for different topics).
+    </Tip>
+  </Step>
+</Steps>
+
+## Configure the app settings
+
+Each app comes with its own settings that let you control the experience and functionality.
+
+- **Chat app**: Choose who can post and react, ban links or images
+- **Courses app**: Upload videos, add files, create quizzes
+- **Events app**: Add upcoming events with details and links
+
+To customize any app:
+
+1. Click on the app in your Whop
+2. Click the **Configure** settings
+
+<Tip>
+  Only you (and other team members) can see and edit the configuration settings of each app.
+</Tip>
+
+## Learn more about Whop apps
+
+<CardGroup cols={2}>
+  <Card title="What are Whop apps?" icon="block-brick" href="/whop-apps/what-are-whop-apps">
+    Learn more about what Whop apps are and how to use them.
+  </Card>
+  <Card title="The Whop App Store" icon="store" href="/whop-apps/whop-app-store">
+    Learn more about the Whop App Store.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+To launch your internet business, make sure you’ve completed the rest of the setup steps:
+
+<CardGroup cols={2}>
+  <Card title="Set up pricing" icon="dollar-sign" href="/set-up-products-pricing">
+    Choose your pricing model and what members get when they join.
+  </Card>
+  <Card title="Set up your store page" icon="store" href="/set-up-store-page">
+    Your store page is where visitors come to learn about your offer.
+  </Card>
+</CardGroup>

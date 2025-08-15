@@ -1,0 +1,93 @@
+---
+title: "Credit card disputes"
+description: "Learn how to manage credit card disputes on Whop "
+---
+
+Credit card disputes happen when customers contact their bank to challenge a payment. Learn how credit card disputes work and how to respond to them effectively.
+
+## What you need to know
+
+- The disputed amount is **immediately withdrawn** from your balance - this makes sure that you are able to cover the amount of the dispute if it is lost
+- You have **7–21 days** to respond with proof of the purchase via Whops [**Dispute fighter**](/apps/docs/payments/dispute-fighter)
+- The bank's decision will typically take **2–3 months** - you can check this status at any time from the Dispute fighter
+- To respond: Go to **Dashboard** \> **Dispute fighter**
+
+## Dispute process overview
+
+A dispute happens when a customer contacts their bank or credit card company to challenge a payment they made to your whop. Here's the basic process:
+
+- **Customer files dispute** → Card issuer investigates the dispute
+- **Whop gets notified** → You see the dispute in the [Dispute fighter](https://whop.com/dashboard/disputes/)
+- **Money gets frozen** → Disputed amount \+ \$15 fee taken immediately from your balance
+- **You submit evidence** → You have 7-21 days to respond to the dispute
+- **Card issuer decides** → Takes 2-3 months for final decision
+
+<Tip>
+  To access your disputes: Go to Dashboard \> Dispute fighter
+</Tip>
+
+### Common reasons customers file disputes
+
+- They don't recognize the charge on their statement
+- They think the transaction was fraudulent
+- They're unhappy with their purchase and aren't aware of the **Resolution Center**
+- They tried to cancel but got charged anyway
+
+## Reserves
+
+If your dispute rate gets too high, or if your account shows signs of being at risk of disputes, some of your Whop balance will be held in a reserve.
+
+Reserves protect your account and make sure that you always have enough money available to cover any disputes that might arise. A percentage of each transaction (determined by your dispute risk) will be held for 90 days, after which you can withdraw it as normal. 
+
+### A reserve will be placed on your account if:
+
+- Your dispute rate is too high 
+- You have a high rate of unresolved resolution center cases      
+- Transaction patterns show high risk of payments being disputed 
+
+Reserves are temporary and will be released as soon as your account’s dispute rates are healthy. You can check your dispute rate at any time on your Health report on the Payouts page of your creator dashboard. 
+
+If Whop detects fraudulent activity, an immediate, 100% reserve will be placed on your account until any signs of fraud are resolved.
+
+## Keeping your account healthy
+
+**Maintaining low dispute rates**
+
+Keeping your dispute rate low is critical to keeping your business healthy. High dispute rates put you at risk with Whop, credit card networks, and financing partners.
+
+To keep your dispute rates low:
+
+- Have a clear Terms of Service, Return policies, and Refund policies
+- Make sure your customers know where to go to get help - direct them to the **Resolution center** on Whop to resolve the issue directly
+- Respond to Resolution center cases - refund customers where it is deserved to avoid them disputing the payment with their bank
+- Set up [auto-responses to Resolution center](https://whop.com/dashboard/resolution-center/) cases to automatically refund cases below a certain dollar amount (that you set)
+- Set up [early dispute alerts on the Dispute fighter ](https://whop.com/dashboard/disputes/)to automatically refund transactions before they officially become a dispute
+
+**Negative balances**
+
+Your whop balance can go negative if you have already withdrawn your funds and do not have enough money in your account to cover a dispute or refund.
+
+You can pay off your negative balance from the [Payouts](https://whop.com/dashboard/payouts/) page on your dashboard.
+
+## Dispute FAQs
+
+<AccordionGroup>
+  <Accordion title="Why is the dispute amount different from what the customer originally paid?">
+    The dispute amount can differ for several reasons:
+
+    - **Currency changes** - Exchange rates shift between when they paid and when they disputed
+    - **Partial disputes** - Customer only disputes part of what they bought
+    - **Multiple charges** - Card issuer combines several disputed payments into one
+    - **Partially refunded payments** - Customer disputes the full amount even after getting some money back
+  </Accordion>
+  <Accordion title="Why can't I respond to a dispute?">
+    Some disputes you automatically lose and can't challenge:
+
+    - Certain fraud cases (depending on the card company)
+    - Disputes from some countries due to local laws
+    - Cases where the card issuer won't accept evidence
+  </Accordion>
+  <Accordion title="Do I need to submit evidence if the customer cancels their dispute?">
+    Yes, you still need to submit evidence.
+  </Accordion>
+</AccordionGroup>

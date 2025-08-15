@@ -1,0 +1,31 @@
+---
+title: "The Whop App Store"
+description: "Everything you need to know about the Whop App Store"
+---
+
+The Whop App Store is a marketplace where you can browse and install apps for your whop.
+
+## How to access the Whop App Store
+
+To start browsing available apps:
+
+- Log in and go to your whop
+- Click **Add app** from the left sidebar
+- You're now in the Whop App Store and ready to explore
+
+## How to navigate the Whop App Store
+
+1. **Browse by category**: Click on any category tab to see apps designed for your type of business:
+   - Business & Productivity, Coaching, Developer Tools, E-commerce & Shopping, Games, Health & Fitness, Social, Sports, Trading, Travel, and more
+2. **Filter your results** to discover the best apps:
+   - **Newest**: See the latest apps that just dropped
+   - **Trending**: Find what's getting the most installs right now
+   - **Most Addicting**: Discover which apps people are spending the most time using
+
+When you find an app that looks perfect for your community, click the **Add** button.
+
+<Tip>
+  New apps are constantly being added to the Whop App Store. Make it a habit to check it regularly to discover new apps your members will find useful.
+</Tip>
+
+![Whop App Store](/apps/docs/how-to-videos/whopappsfiltersandcategories720p30fps.gif)

@@ -1,0 +1,42 @@
+---
+title: "Tracking links"
+description: "Set up tracking links to see where your users are coming from "
+---
+
+Create custom tracking links to see exactly where traffic is coming from and which marketing efforts are working.
+
+<Tip>
+  Use different links for your emails, Twitter posts, Instagram bio, YouTube descriptions - then compare which channels convert best.
+</Tip>
+
+### How to set up tracking links
+
+1. Go to **Dashboard** \> **Marketing** \> **Tracking links**
+2. Click **\+ Create tracking link**
+3. Fill out these details:
+   - **Name**: A name only you can see
+   - **Whop**: Choose which whop it links to
+   - **Destination**: This is where the user will be sent after they click the link
+     - Select **Checkout** if you want the link to send them straight to a checkout page
+     - Select **Store** if you want the link to send them to your store page
+   - **Plan**: Pick the pricing plan you want to link to
+4. Create a custom URL for each link
+5. Click **Create**
+6. Copy your link by clicking the 3 dots (︙) \> **Copy link**
+
+![Tracking links](/apps/docs/how-to-videos/trackinglinks720p30fps.gif)
+
+### What you can measure with tracking links
+
+When your tracking links are live, you'll see exactly how each link performs with detailed analytics. 
+
+Here's what you can track:
+
+- **Clicks**: Total number of people who clicked your link
+- **Revenue generated**: Actual dollars earned from each link
+- **Conversion rate**: Percentage of clicks that turn into paying customers
+- **Converted users**: Number of people who actually bought after clicking
+
+<Card title="Set up external tracking integrations" icon="magnifying-glass" href="/manage-your-whop/integrations">
+  Whop integrates with major analytics platforms to help you get the full picture of your marketing and monitor your traffic
+</Card>
