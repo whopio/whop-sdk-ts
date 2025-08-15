@@ -207,6 +207,18 @@ export default function Home() {
 			 * **Optional** - The theme options to apply to the checkout embed.
 			 */
 			themeOptions={{ accentColor: "green" }}
+			/**
+			 * **Optional** - Set to `true` to hide the email input in the embedded checkout form.
+			 *
+			 * @default false
+			 */
+			hideEmail={false}
+			/**
+			 * **Optional** - Set to `true` to disable the email input in the embedded checkout form.
+			 *
+			 * @default false
+			 */
+			disableEmail={false}
 		/>
 	);
 }

@@ -30,21 +30,36 @@ You can configure the redirect url in your [whop's settings](https://whop.com/da
 
 ## Available methods
 
-### **`submit`**
-
-To submit checkout programmatically, you can use the `submit` method on the checkout element.
 First, attach an `id` to the checkout container:
 
 ```md
 <div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
-Then, you can submit the checkout by calling `wco.submit` with the id:
+### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
 
 ```js
 wco.submit("whop-embedded-checkout");
 ```
 
+### **`getEmail`**
+
+To get the email of the user who is checking out, you can use the `getEmail` method on the checkout element.
+
+```js
+const email = await wco.getEmail("whop-embedded-checkout");
+console.log(email);
+```
+
+### **`setEmail`**
+
+To set the email of the user who is checking out, you can use the `setEmail` method on the checkout element.
+
+```js
+wco.setEmail("whop-embedded-checkout", "example@domain.com");
+```
 
 ## Available attributes
 
@@ -203,6 +218,33 @@ Used to prefill the email in the embedded checkout form. This setting can be hel
 ```md
 <div data-whop-checkout-prefill-email="example@domain.com" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
+
+
+#### **`data-whop-checkout-hide-email`**
+
+**Optional** - Set to `true` to hide the email input in the embedded checkout form. Make sure to display the users email in the parent page when setting this attribute.
+
+Defaults to `false`
+
+Use this in conjunction with the `data-whop-checkout-prefill-email` attribute or the `setEmail` method to control the email input.
+
+```md
+<div data-whop-checkout-hide-email="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-disable-email`**
+
+**Optional** - Set to `true` to disable the email input in the embedded checkout form.
+
+Defaults to `false`
+
+
+Use this in conjunction with the `data-whop-checkout-prefill-email` attribute or the `setEmail` method to control the email input.
+
+```md
+<div data-whop-checkout-disable-email="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 
 ## Full example
 

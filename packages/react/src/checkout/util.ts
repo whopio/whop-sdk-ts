@@ -12,6 +12,8 @@ type GetEmbeddedCheckoutIframeUrlParams = Parameters<
 
 export interface WhopCheckoutEmbedControls {
 	submit: (opts?: WhopCheckoutSubmitDetails) => void;
+	getEmail: (timeout?: number) => Promise<string>;
+	setEmail: (email: string, timeout?: number) => Promise<void>;
 }
 
 export function useEmbeddedCheckoutIframeUrl(

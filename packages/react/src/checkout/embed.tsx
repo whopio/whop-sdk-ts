@@ -6,7 +6,9 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
+	getEmail,
 	onWhopCheckoutMessage,
+	setEmail,
 	submitCheckoutFrame,
 } from "@whop/checkout/util";
 
@@ -122,6 +124,18 @@ export interface WhopCheckoutEmbedProps {
 	 * @default false
 	 */
 	hideTermsAndConditions?: boolean;
+	/**
+	 * **Optional** - Set to `true` to hide the email input in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	hideEmail?: boolean;
+	/**
+	 * **Optional** - Set to `true` to disable the email input in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	disableEmail?: boolean;
 }
 
 export type {
@@ -144,6 +158,8 @@ function WhopCheckoutEmbedInner({
 	themeOptions,
 	hideSubmitButton = false,
 	hideTermsAndConditions = false,
+	hideEmail = false,
+	disableEmail = false,
 }: WhopCheckoutEmbedProps): ReactNode {
 	const resolvedThemeOptions: WhopEmbeddedCheckoutThemeOptions = useMemo(() => {
 		return {
@@ -166,6 +182,8 @@ function WhopCheckoutEmbedInner({
 		resolvedThemeOptions,
 		hideSubmitButton,
 		hideTermsAndConditions,
+		hideEmail,
+		disableEmail,
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -209,6 +227,16 @@ function WhopCheckoutEmbedInner({
 			submit: (opts) => {
 				if (!iframeRef.current) return;
 				submitCheckoutFrame(iframeRef.current, opts);
+			},
+			getEmail: (timeout) => {
+				if (!iframeRef.current)
+					throw new Error("Whop embedded checkout frame not found");
+				return getEmail(iframeRef.current, timeout);
+			},
+			setEmail: (email, timeout) => {
+				if (!iframeRef.current)
+					throw new Error("Whop embedded checkout frame not found");
+				return setEmail(iframeRef.current, email, timeout);
 			},
 		};
 	}

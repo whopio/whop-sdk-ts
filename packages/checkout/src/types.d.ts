@@ -11,6 +11,12 @@ declare global {
 					email?: string;
 				},
 			) => void;
+			getEmail: (identifier: string, timeout?: number) => Promise<string>;
+			setEmail: (
+				identifier: string,
+				email: string,
+				timeout?: number,
+			) => Promise<void>;
 		};
 	}
 

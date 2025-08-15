@@ -1,38 +1,15 @@
+import { WhopCheckoutSetEmailError } from "./errors";
+import {
+	type WhopCheckoutMessage,
+	type WhopCheckoutState,
+	isWhopCheckoutMessage,
+} from "./messages";
+import { rpc } from "./rpc";
 import type { WhopCheckoutSubmitDetails } from "./types";
 
-export type WhopCheckoutState = "loading" | "ready" | "disabled";
+export { isWhopCheckoutMessage };
 
-export type WhopCheckoutMessage =
-	| {
-			event: "resize";
-			height: number;
-	  }
-	| {
-			event: "center";
-	  }
-	| {
-			event: "complete";
-			receipt_id?: string;
-			plan_id: string;
-	  }
-	| {
-			event: "state";
-			state: WhopCheckoutState;
-	  };
-
-const EVENT_TYPES = ["resize", "center", "complete", "state"] as const;
-type WhopCheckoutEventType = WhopCheckoutMessage["event"];
-
-export function isWhopCheckoutMessage(
-	event: MessageEvent<unknown>,
-): event is MessageEvent<WhopCheckoutMessage> {
-	return (
-		typeof event.data === "object" &&
-		event.data !== null &&
-		"event" in event.data &&
-		EVENT_TYPES.includes(event.data.event as WhopCheckoutEventType)
-	);
-}
+export type { WhopCheckoutMessage, WhopCheckoutState };
 
 export function onWhopCheckoutMessage(
 	iframe: HTMLIFrameElement,
@@ -55,6 +32,33 @@ export function onWhopCheckoutMessage(
 	return () => {
 		window.removeEventListener("message", handleMessage);
 	};
+}
+
+export async function setEmail(
+	frame: HTMLIFrameElement,
+	email: string,
+	timeout = 2000,
+) {
+	return rpc(
+		frame,
+		{ event: "set-email", email },
+		"set-email-result",
+		(message) => {
+			if (message.ok) return;
+			throw new WhopCheckoutSetEmailError(message.error);
+		},
+		timeout,
+	);
+}
+
+export async function getEmail(frame: HTMLIFrameElement, timeout = 2000) {
+	return rpc(
+		frame,
+		{ event: "get-email" },
+		"get-email-result",
+		(message) => message.email,
+		timeout,
+	);
 }
 
 export function submitCheckoutFrame(
@@ -102,6 +106,8 @@ export function getEmbeddedCheckoutIframeUrl(
 	themeOptions?: WhopEmbeddedCheckoutThemeOptions,
 	hideSubmitButton?: boolean,
 	hideTermsAndConditions?: boolean,
+	hideEmail?: boolean,
+	disableEmail?: boolean,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -127,6 +133,12 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (hideTermsAndConditions) {
 		iframeUrl.searchParams.set("hide_tos", "true");
+	}
+	if (hideEmail) {
+		iframeUrl.searchParams.set("email.hidden", "1");
+	}
+	if (disableEmail) {
+		iframeUrl.searchParams.set("email.disabled", "1");
 	}
 	if (utm) {
 		for (const [key, value] of Object.entries(utm).sort((a, b) =>
@@ -190,13 +202,3 @@ export const EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST = [
 
 export const EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING =
 	"document-domain; execution-while-not-rendered; execution-while-out-of-viewport; payment; paymentRequest; sync-script;";
-
-type InferredWhopCheckoutEventType = (typeof EVENT_TYPES)[number];
-
-// if you understand this type hack you should consider working at Whop!
-// https://whop.com/careers
-const _: WhopCheckoutEventType extends InferredWhopCheckoutEventType
-	? InferredWhopCheckoutEventType extends WhopCheckoutEventType
-		? true
-		: false
-	: false = true;
