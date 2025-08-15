@@ -23,7 +23,7 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 				const frame = window.wco?.identifiedFrames.get(identifier);
 				if (!frame)
 					throw new Error(
-						`Failed to submit Whop embedded checkout. No frame with identifier ${identifier} found.`,
+						`Failed to submit Whop embedded checkout. No embed with identifier ${identifier} found.`,
 					);
 				frame.dispatchEvent(
 					new CustomEvent("checkout:submit", {
@@ -33,6 +33,9 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 						composed: true,
 					}),
 				);
+			},
+			getEmail: (_identifier: string, _timeout = 2000) => {
+				throw new Error("Whop Embedded checkout script not initialized");
 			},
 		};
 	})();

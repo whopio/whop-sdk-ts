@@ -45,6 +45,21 @@ Then, you can submit the checkout by calling `wco.submit` with the id:
 wco.submit("whop-embedded-checkout");
 ```
 
+### **`getEmail`**
+
+To get the email of the user who is checking out, you can use the `getEmail` method on the checkout element.
+First, attach an `id` to the checkout container:
+
+```md
+<div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+Then, you can get the email by calling `wco.getEmail` with the id:
+
+```js
+const email = await wco.getEmail("whop-embedded-checkout");
+console.log(email);
+```
 
 ## Available attributes
 

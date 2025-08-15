@@ -4,6 +4,7 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
+	getCheckoutEmail,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
 	submitCheckoutFrame,
@@ -183,6 +184,14 @@ function mount(node: HTMLElement) {
 }
 
 if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
+	window.wco.getEmail = function getEmailImpl(identifier, timeout) {
+		const frame = window.wco?.identifiedFrames.get(identifier);
+		if (!frame)
+			throw new Error(
+				`Failed to get email for Whop embedded checkout. No embed with identifier ${identifier} found.`,
+			);
+		return getCheckoutEmail(frame, timeout);
+	};
 	// observe the DOM an element with the `data-whop-checkout-plan-id` data attribute
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {

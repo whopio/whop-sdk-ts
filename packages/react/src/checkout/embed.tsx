@@ -6,6 +6,7 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
+	getCheckoutEmail,
 	onWhopCheckoutMessage,
 	submitCheckoutFrame,
 } from "@whop/checkout/util";
@@ -209,6 +210,11 @@ function WhopCheckoutEmbedInner({
 			submit: (opts) => {
 				if (!iframeRef.current) return;
 				submitCheckoutFrame(iframeRef.current, opts);
+			},
+			getEmail: (timeout) => {
+				if (!iframeRef.current)
+					throw new Error("Whop embedded checkout frame not found");
+				return getCheckoutEmail(iframeRef.current, timeout);
 			},
 		};
 	}
