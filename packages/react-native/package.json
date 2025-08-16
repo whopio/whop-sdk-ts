@@ -52,8 +52,8 @@
 	"devDependencies": {
 		"@types/qrcode-terminal": "^0.12.2",
 		"@types/node": "latest",
-		"@types/react": "19.1.5",
-		"react": "^19.0.0",
+		"@types/react": "19.1.10",
+		"react": "^19.1.0",
 		"react-native": "0.80.0",
 		"react-native-reanimated": "3.18.0",
 		"tsup": "8.5.0",
