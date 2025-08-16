@@ -72,7 +72,7 @@
 	"navigation": [
 		{
 			"group": "Overview",
-			"pages": ["get-started", "fees"]
+			"pages": ["get-started", "refer-businesses-to-whop", "fees"]
 		},
 		{
 			"group": "Products",
@@ -182,10 +182,10 @@
 		{
 			"group": "Tutorials",
 			"pages": [
-				"tutorials/react-native",
-				"tutorials/ai-car-customizer",
-				"tutorials/chat-bot",
-				"tutorials/ai-image-generator"
+				"apps/tutorials/react-native",
+				"apps/tutorials/ai-car-customizer",
+				"apps/tutorials/chat-bot",
+				"apps/tutorials/ai-image-generator"
 			]
 		},
 		{
