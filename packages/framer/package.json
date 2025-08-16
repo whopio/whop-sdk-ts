@@ -54,13 +54,13 @@
 		"@whop/react": "workspace:^"
 	},
 	"devDependencies": {
-		"@swc/cli": "^0.7.7",
+		"@swc/cli": "0.7.7",
 		"@swc/core": "1.11.29",
 		"@types/node": "latest",
 		"@types/react": "19.1.5",
 		"concurrently": "9.1.2",
-		"framer": "^2.4.1",
-		"react": "^19.0.0",
+		"framer": "2.4.1",
+		"react": "19.1.0",
 		"typescript": "latest"
 	},
 	"packageManager": "pnpm@9.15.9",
