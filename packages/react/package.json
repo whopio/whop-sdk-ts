@@ -84,16 +84,16 @@
 		"@whop/checkout": "workspace:^",
 		"@whop/iframe": "workspace:^",
 		"frosted-ui": "0.0.1-canary.77",
-		"use-sync-external-store": "^1.5.0"
+		"use-sync-external-store": "1.5.0"
 	},
 	"devDependencies": {
-		"@swc/cli": "^0.7.7",
+		"@swc/cli": "0.7.7",
 		"@swc/core": "1.11.29",
 		"@types/node": "latest",
 		"@types/react": "19.1.5",
-		"@types/use-sync-external-store": "^1.5.0",
+		"@types/use-sync-external-store": "1.5.0",
 		"concurrently": "9.1.2",
-		"react": "^19.0.0",
+		"react": "19.1.0",
 		"typescript": "latest"
 	},
 	"packageManager": "pnpm@9.15.9",
