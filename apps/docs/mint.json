@@ -206,7 +206,8 @@
 			"pages": [
 				"sdk/installation",
 				"sdk/local-development",
-				"sdk/whop-api-client"
+				"sdk/whop-api-client",
+				"sdk/ai"
 			]
 		},
 		{
