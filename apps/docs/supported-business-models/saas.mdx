@@ -1,0 +1,171 @@
+---
+title: "SaaS"
+description: "Learn how to build and run your SaaS on Whop"
+---
+
+If you have an existing SaaS or are building a new one, you can use Whop to direct your customers to pay and let them manage their membership.
+
+To integrate, all you have to do is adjust your `User` table to include the `whop_user_id` and `whop_username` columns.
+
+| Column          | Type   | Description                                                |
+| --------------- | ------ | ---------------------------------------------------------- |
+| `whop_user_id`  | string | Unique identifier for the user provided by Whop.           |
+| `whop_username` | string | The user's Whop username, helpful for display and logging. |
+
+**Note**
+Use the Whop SDK’s `access.checkIfUserHasAccessToAccessPass` method (shown in Step&nbsp;6) by passing the `whop_user_id` and the relevant access&nbsp;pass (product) ID to determine whether the user should be allowed to access your software.
+
+If you would prefer to not have manage your own user table or even a database, consider building a Whop app here.
+
+## Get your SaaS live on Whop:
+
+<Steps>
+  <Step title="Create your whop" titleSize="h3">
+    Head over to [**whop.com/sell**](https://whop.com/dashboard/start/):
+
+    - Choose a name for your SaaS
+    - Select your custom URL
+    - Complete the basic setup
+
+    Your whop is now live and ready to customize.
+
+    ![Launch your SaaS](/apps/docs/images/createawhopcommunity.png)
+
+  </Step>
+  <Step title="Create a product" titleSize="h3">
+	- Go to your Dashboard
+	- Go to Products
+	- Click Add Product
+
+  </Step>
+
+  <Step title="Add checkout link to your website" titleSize="h3">
+    There are two primary ways to send customers to checkout: an embedded checkout or a hosted checkout link.
+
+    ### Embedded checkout
+
+    Follow these two steps to embed the checkout on your page. First, include the Whop Checkout loader script:
+
+    ```html
+    <!-- Step 1 – Include the Whop Checkout loader -->
+    <script
+      async
+      defer
+      src="https://js.whop.com/static/checkout/loader.js"
+    ></script>
+    ```
+
+    Then, add the checkout element where you want it to appear. Replace `plan_XXXXXXXXX` with your actual plan ID from the dashboard.
+
+    ```html
+    <!-- Step 2 – Add the checkout element -->
+    <div data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+    ```
+
+    ### Hosted checkout link
+
+    Alternatively, you can link customers to Whop’s hosted checkout page. You can get this link from your dashboard or generate one programmatically and link to the `checkoutUrl` it returns (as shown in Step 6).
+
+    ```html
+    <!-- Hosted checkout link -->
+    <a href="https://whop.com/checkout/plan_xxxxxxxxx" target="_blank" rel="noopener">
+      Buy now
+    </a>
+    ```
+
+If you would like to programmatically create a checkout session, you can do so with the following code:
+
+<CodeGroup>
+
+```typescript pages/api/create-checkout-session.ts
+import { whopSdk } from "~/lib/whop-sdk";
+
+export async function createCheckoutSession(experienceId: string) {
+  const checkoutSession = await whopSdk.payments.createCheckoutSession({
+    planId: process.env.NEXT_PUBLIC_PREMIUM_PLAN_ID!,
+    metadata: {
+      customKey: "customValue",
+    },
+  });
+
+  return checkoutSession;
+}
+```
+
+When you receive the webhook (see below), you can use the `metadata` object to access the custom key and value you attached to the checkout session.
+
+</CodeGroup>
+
+  </Step>
+  <Step title="Add an app and get API keys" titleSize="h3">
+	Go to your dashboard and add app
+
+  </Step>
+  <Step title="Subscribe to webhooks" titleSize="h3">
+    Go to the dashboard section and add a webhook.
+  </Step>
+  <Step title="Check for access programmatically" titleSize="h3">
+
+<CodeGroup>
+
+```typescript lib/whop-sdk.ts
+import { WhopServerSdk } from "@whop/api";
+
+// Instantiate the Whop SDK client.
+// 👉 Replace the ENV vars below with the ones from your Whop dashboard.
+export const whopSdk = WhopServerSdk({
+  // Required: your App ID ("App Settings" → App ID)
+  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID!,
+
+  // Required: the API key you generated in "API Keys"
+  appApiKey: process.env.WHOP_API_KEY!,
+});
+```
+
+```typescript pages/api/validate-access.ts
+import { whopSdk } from "~/lib/whop-sdk";
+
+// Validate that a signed-in user has access to your premium product before
+// letting them use your SaaS feature.
+export async function validateAccess(whopUserId: string) {
+  const result = await whopSdk.access.checkIfUserHasAccessToAccessPass({
+    // Access Pass / Product ID you want to gate behind
+    accessPassId: process.env.NEXT_PUBLIC_PREMIUM_ACCESS_PASS_ID!,
+    // The Whop user we stored in our database
+    userId: whopUserId,
+  });
+
+  return result.hasAccess; // boolean
+}
+```
+
+</CodeGroup>
+
+  </Step>
+
+  <Step title="Give users a way to manage their membership" titleSize="h3">
+  	You can link users here to manage their membership: https://whop.com/@me/settings/memberships/.
+	
+	They can simply login with the same email and they use to access your SaaS without a password.
+  </Step>
+  <Step title="Design your store page and list on marketplace" titleSize="h3">
+    Your store page is where people can learn about your offer. Click your whop name in the top left, then select **Design store page** to open the editor. Click **Edit details** to customize:
+
+    - **Choose a clear name and headline:** Make it immediately obvious what your community offers and who it's for. Examples: "Marketing professionals sharing strategies and insights" or "Fitness enthusiasts building accountability and motivation"
+    - **Write a compelling description:** Focus on the value members receive and how your community will help them achieve their goals. Highlight specific benefits like exclusive content, expert guidance, peer connections, and ongoing support
+    - **Upload a logo:** Add a clean, simple logo to your store page
+    - **Add gallery images or video:** Images of events, member success stories, or a brief welcome video help potential members get to know you and what to expect when they join
+    - **Select the appropriate category:** This helps people discover your community when browsing Whop
+
+    ![Community store page](/apps/docs/images/Storepagecommunity.png)
+
+  </Step>
+
+</Steps>
+
+## Next steps
+
+<Card title="Add apps to your whop" icon="chart-line" href="/manage-your-whop">
+  Add apps to let your users learn how to use your software, chat with
+  eachother, and even order merch.
+</Card>

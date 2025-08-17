@@ -1,0 +1,16 @@
+---
+title: Docs for your LLM
+description: Learn how to build with AI using Whop's APIs.
+---
+
+Our docs are available in a text format. You can use this to feed your LLM with the docs.
+
+https://dev.whop.com/llms-full.txt
+
+You can also install our MCP by runnning this command:
+
+```bash
+npx mint-mcp add whop
+```
+
+This provides you with a ready-to-use MCP server with knowledge of our docs.

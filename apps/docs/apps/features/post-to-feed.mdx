@@ -1,0 +1,104 @@
+---
+title: Create forum post
+description: "Create a forum and a post using the API"
+---
+
+## Overview
+
+To post in a forum, you must:
+
+1. Find or create a _Forum Experience_
+2. Create a _Forum Post_ inside the _Forum Experience_
+
+<Info>
+  If you already know what forum experience you want to post in, you can skip
+  step 1, and use the experience ID directly in step 2.
+</Info>
+
+---
+
+## Find or create a forum experience
+
+A forum post must be created within a **Forum Experience**.
+The `findOrCreateForum` method will find an existing forum experience with the specified name,
+or create a new one with all the specified options
+
+```typescript
+const newForum = await whopSdk
+  .withUser("YOUR_AGENT_USER_ID")
+  .forums.findOrCreateForum({
+    experienceId: experienceId,
+    name: "Dino game results",
+    whoCanPost: "admins",
+    // optional:
+    // expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+    // price: {
+    // baseCurrency: "usd",
+    // initialPrice: 100,
+    // }
+  });
+```
+
+> This will create the forum in the same whop as the supplied experience.
+
+---
+
+## Create a forum post.
+
+Once you have the `experienceId` from the above, use it to create a post.
+
+### Basic Forum Post
+
+```ts
+const forumPost = await whopSdk
+  .withUser("YOUR_AGENT_USER_ID")
+  .forums.createForumPost({
+    forumExperienceId: newForum.createForum?.id,
+    title: "Welcome!",
+    content: "Excited to kick things off in our new forum 🎉",
+  });
+```
+
+- `withUser()`: ID of the user posting
+- `forumExperienceId`: The ID of the target forum
+- `title` and `content`: Main post body. _(title is optional)_
+
+### Forum post with advanced options
+
+This demonstrates a rich post using all features:
+
+```ts
+const forumPost = await whopSdk
+  .withUser("YOUR_AGENT_USER_ID")
+  .forums.createForumPost({
+    forumExperienceId: "exp_XXXXXX",
+    // Visible even before purchase.
+    title: "Big Launch + Community Poll!",
+    // Visible only after purchase
+    content: "Hidden content unless purchased. 🔒",
+    // Add media to the post.
+    // Learn how to upload in the upload-media section
+    attachments: [
+      {
+        directUploadId: "XXXXXXXXXXXXXXXXXXXXXXXXXX",
+      },
+    ],
+
+    // Do not send a notification to everyone about this post.
+    isMention: false,
+
+    // Lock the content and attachments behind a
+    // one time purchase in the price + currency.
+    paywallAmount: 9.99,
+    paywallCurrency: "usd",
+
+    // Add a poll to the post.
+    poll: {
+      options: [
+        { id: "1", text: "New Product Features" },
+        { id: "2", text: "Exclusive AMA" },
+        { id: "3", text: "Member Giveaways" },
+      ],
+    },
+  });
+```

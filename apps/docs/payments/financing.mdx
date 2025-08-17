@@ -1,0 +1,130 @@
+---
+title: "Financing"
+description: "Let customers split payments into monthly instalments"
+---
+
+Give your customers the flexibility to split their purchases into monthly installments while you get paid upfront.
+
+When your business has been approved, financing options are added to your checkout automatically.
+
+## Available financing options
+
+Whop partners with five financing providers. Depending on your business, you may qualify for some or all of these options:
+
+- **Splitit**
+- **Sezzle**
+- **AfterPay**
+- **Klarna**
+- **Zip Pay**
+
+## How to apply for financing
+
+Apply for financing via this [financing application form](https://hunterd.app.n8n.cloud/form/e9e21a0c-91d5-4cda-9b14-a9506be5af44).
+
+You can also apply for financing directly from the [Checkout links page](https://whop.com/dashboard/links/checkout/) of your dashboard.
+
+1. Click **\+ Create checkout link**
+2. Select **One-time** as your pricing type
+3. Under **Payment methods**, click **Apply for financing**
+4. Complete the application form
+
+You will receive an email if we cannot accept or are missing information from your application. Once you are accepted, you will get a Whop DM notifying you that you have access to financing.
+
+Once accepted, all active financing options will automatically show up at customer checkout. You can toggle which financing options you do or do not want as an option on each checkout link from the [Checkout links page](https://whop.com/dashboard/links/checkout/).
+
+## Eligibility requirements
+
+To qualify for financing options, your business must meet these requirements:
+
+### 1. Basic setup requirements
+
+- Your**Whop Payments account** must be fully set up and verified
+  - Go to [**Payouts**](https://whop.com/dashboard/payouts/) in your dashboard to complete setup
+- **Your store page must be filled out **
+  - We need to understand what you're selling and how you fulfill orders
+
+### 2. Business requirements
+
+- **Eligible categories**: Financing companies **cannot **support gambling, sports betting, trading signals (pure education may be ok\!), credit offers, or adult content under any circumstances
+- **Low dispute rate**: Have \< 2% dispute rate over the last 90 days
+  - If you are new to Whop, we will ask for statements from the last 90 days from your previous **payment processor**. Note that we need processing statements, NOT bank statements, and we need to see your total number of transactions and total number of disputes over the last 90 days.
+- **Processing volume**: At least \$30,000 processed from 10\+ different customers in the last 90 days
+
+<Tip>
+  You'll receive a Whop DM when your business is approved and financing is
+  enabled. If you haven't heard back about your application, check your email
+  for requests for additional documentation or application updates.
+</Tip>
+
+## How it works for customers
+
+When financing is enabled:
+
+1. Financing options appear automatically on your checkout page
+2. Customers choose their preferred provider (e.g. Klarna, AfterPay)
+3. Customers are redirected to the financing provider for instant approval
+4. They complete their purchase through the financing platform
+
+You can control which financing options appear on each of your checkout links through your pricing settings.
+
+<Tip>You still receive full payment upfront (minus standard fees)</Tip>
+
+## Keep your financing access
+
+Whop’s priority is to make sure you keep your financing access for the long term. Whop has the following features to help you keep your dispute rates low and keep financing active on your account:
+
+**Dispute rate monitoring**
+
+- View dispute rates for each financing partner on your **Health report** (in the **Payouts** section)
+- Alerts sent via email and Whop DM when dispute rates hit warning levels:
+  - Klarna: warning at 0.5% dispute rate on Klarna transactions
+  - All others: warning 1% dispute rate on any other BNPL option
+
+<Tip>
+  When you receive an alert, take extra precautions to prevent further disputes.
+  Set clear return policies, refund angry customers, and make sure your
+  customers know where to go to resolve issues so they don't dispute directly
+  with the bank.
+</Tip>
+
+**Splitit minimum balance (Splitit only) **
+
+- 15% of every Splitit transaction is held in your Whop balance for 180 days
+- This shows Splitit that you can cover any potential disputes
+- Track your Splitit balance and release dates on your [**Payouts**](https://whop.com/dashboard/payouts/) page
+
+### **Dispute rate limits**
+
+Stay under these thresholds to keep your financing access:
+
+- **Klarna:** Under 1% dispute rate
+- **All other providers:** Under 2% dispute rate
+
+Financing access will be automatically revoked if you hit these dispute rate thresholds on financed transactions, and you will be notified via email that you have lost access to financing.
+
+## Troubleshooting
+
+If financing isn't showing on your checkout links after approval, check these common issues:
+
+**Transaction too large**
+
+- Sezzle: \$2,500 limit
+- AfterPay: \$4,000 limit
+- Splitit: \$65,000 limit
+
+**Wrong pricing type**
+
+- Financing only works with one-time payments, not subscriptions
+
+**Location restrictions**
+
+- Sezzle, Klarna, and AfterPay only show for US customers
+
+**Dispute rate too high**
+
+- Check your Health report - you may have exceeded the 2% dispute threshold (1% for Klarna)
+
+**Incomplete setup**
+
+- Ensure your Whop Payments account is fully configured
+- Verify your store page is complete with clear product descriptions

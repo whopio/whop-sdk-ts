@@ -1,0 +1,101 @@
+---
+title: "Resolution center"
+description: "Manage refund requests before they turn into disputes"
+---
+
+The **Resolution center** is where you can review and respond to customer refund claims.
+
+## How the Resolution center works
+
+Here’s what happens when a customer opens a claim:
+
+1. **Customer opens a claim**
+   - They explain the issue and choose a reason
+   - They can upload up to 3 files (screenshots, videos, receipts)
+2. **You receive a notification**
+   - Whop sends you an email
+   - The case appears in your **Resolution center**
+3. **You respond**
+   - Chat directly with the customer
+   - Click **Accept**, **Deny**, or **Request more info**
+
+<Info>
+  Whop automatically uploads user logs for every case. In these, you can see:
+
+  - When the user bought access to your Whop
+  - If they agreed to your Terms of Service and Refund policy
+  - If they claimed access to your Whop
+  - If they engaged with your Whop
+</Info>
+
+4. **A decision is made**
+   - If resolved between you and the customer, the case is closed
+   - If the case is not resolves or you don’t respond within 7 days, Whop will step in and make a decision
+
+## How to respond to a Resolution center case
+
+1. Go to **Dashboard** \> **Resolution center**
+2. Click the case you want to manage
+3. Click **Accept**, **Deny**, or **Request more info**
+
+You can upload any proof in your response, so make sure to have solid Terms of Service and Return policy.
+
+<Card title="Upload legal documents" icon="file-circle-check" href="/manage-your-whop/legal-documents">
+  Learn how to upload legal documents and policies to your whop.
+</Card>
+
+<Tip>
+  Cases without a response for 7 days are sent to Whop's team automatically. Responding fast shows you care and helps keep customers happy.
+</Tip>
+
+## Set up auto respond for small refunds
+
+You can set up automatic refunds for smaller claims:
+
+1. Go to **Dashboard** \> **Resolution center**
+2. Click **Auto respond**
+3. Pick the amount for which auto-refunds are sent:
+   - This can be set under **Auto-refund card payments below**
+   - And **Auto-refund PayPal payments below**
+4. (Optional) Add a custom message your customers will see when they get auto-refunded
+
+## Escalations and appeals
+
+**If you don't respond within 7 days:**
+
+- Whop reviews the case and decides based on all available info
+- Both you and the customer are notified of the outcome
+
+**Appeal process:**
+
+- If either you or your customer disagrees with a decision, either party can appeal
+- Whop will review the case again
+- That decision is final and cannot be appealed further
+
+## Notifications
+
+Whop will email you when:
+
+- A customer opens a new dispute
+- A customer replies to your request for more info
+- A case is esolved, escalated, or appealed
+- Final decisions are made
+
+If you're not getting emails from the Resolution center, go to **Dashboard** \> **Settings** \> **Notifications** and turn on the **Resolution center** toggle.
+
+## FAQs
+
+<AccordionGroup>
+  <Accordion title="How many cases can a customer open?">
+    Customers can open a case within 120 days of each payment they've made. For example, if a customer has made three payments, they can open three cases. However, only one case can be opened per payment. Once a case is closed and all appeals have been exhausted, the case cannot be reopened.
+  </Accordion>
+  <Accordion title="Can a customer open a case for a payment that has already been refunded?">
+    No. When a payment is refunded, no further case can be opened.
+  </Accordion>
+  <Accordion title="Are all payments eligible for the Resolution center?">
+    Only fiat payments are eligible for the Resolution center. Payments made with cryptocurrency via Coinbase Commerce are not eligible since they are irreversible and non-refundable.
+  </Accordion>
+  <Accordion title="What happens when Whop decides in favor of the customer?">
+    Whop will either refund the customer on your behalf (which will be automatically processed) or decide to credit the customer's Whop Balance (which you do not incur a cost for). The result will be clearly communicated to you and the customer through the Resolution center timeline for the case.
+  </Accordion>
+</AccordionGroup>

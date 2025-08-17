@@ -1,0 +1,63 @@
+---
+title: "Promo codes"
+description: "Learn how to create and manage promo codes"
+---
+
+Use promo codes to offer percentage discounts (like 10% off) or fixed amounts (like \$10 off) that people can apply at checkout to join your whop.
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/tIdnAPTwt7g?si=jtsX6HJOG-Lh3KlE&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
+## How to create a promo code
+
+<Steps>
+  <Step title="Access your dashboard" titleSize="h3">
+    Head over to your **Dashboard.**
+
+    <Tip>
+      Make sure you're viewing the whop you want to create a discount for (using the whop selection modal at the top left).
+    </Tip>
+  </Step>
+  <Step title="Navigate to Promo codes" titleSize="h3">
+    Click the **Marketing** dropdown and select **Promo codes**. You'll see any existing promo codes you've already created for your whop here.
+  </Step>
+  <Step title="Create a new code" titleSize="h3">
+    If this is your first promo code, click **\+ Create Promo Code** in the center of your page. If you've already created a promo code (and you want to create a new one) click **\+ Create promo code** at the top right of your screen. A popup will appear where you'll set up your code.
+  </Step>
+  <Step title="Set up your promo code" titleSize="h3">
+    Configure the settings for your promo code:
+
+    1. **Code**: This is the actual promo code name, like "SAVE20" or "WELCOME10." Type what you want your code to be called.
+    2. **Discount**: Decide how much your discount will be
+       - Use the dropdown to pick either a **Percentage** (like 10% off) or a **Fixed amount** (like \$10 off).
+       - Then, enter the discount value in the field above the dropdown.
+    3. **Discount duration:** Decide how long the discount applies
+       - **One-time (default)**: The discount is applied only once.
+       - **Forever**: The discount applies to all future payments.
+       - **Multiple months**: The discount applies for a specific number of months (a field will pop up for you to enter the number).
+    4. **Eligible users**: Who can use this code?
+       - **Everyone (default)**: Anyone can use it.
+       - **Only new**: Only new customers can use this code.
+       - **Only churned**: Only previous customers who have left can use it.
+    5. **Expires**: Set when the promo code expires using the date and time selector. This is enabled by default and set to one month from creation.
+    6. **Usage limit section**: Enter the maximum number of times this code can be used. Default is set to 100 uses.
+    7. **One per customer**: If you enable this, each customer can only use the promo code once. This is enabled by default.
+    8. **Apply to specific whops**: This is off by default. If you turn it on, you can limit the promo code to certain checkout links within your organization.
+  </Step>
+  <Step title="Activate your code" titleSize="h3">
+    Click **Create** at the bottom of the popup to make your promo code live.
+  </Step>
+</Steps>
+
+![Promo code](/apps/docs/how-to-videos/promocode720p30fps.gif)
+
+## Manually expire a promo code
+
+If you need to deactivate a promo code before its set expiration date, you can manually expire it.
+
+1. **Access the promo code options**: Click the three dots (︙) next to the promo code you want to expire.
+2. **Click Expire**: Select **Expire** from the dropdown menu that appears.
+3. **Confirm expiration**: A confirmation message will pop up. Click **Expire** to permanently deactivate the promo code.
+
+<Warning>
+  When a promo code is expired, you can't reactivate it. If you want to offer that same discount again, you'll need to create a brand new promo code.
+</Warning>
