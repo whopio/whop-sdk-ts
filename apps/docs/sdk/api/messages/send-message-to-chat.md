@@ -1,0 +1,21 @@
+---
+title: Send Message To Chat
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.messages.sendMessageToChat({
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+
+	message: "some string" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = "some string";
+
+```

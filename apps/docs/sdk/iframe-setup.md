@@ -1,0 +1,95 @@
+---
+title: Getting Started
+description: Getting started with the Whop iFrame SDK
+---
+
+Whop apps are embedded into the site using iFrames. This SDK provides a type-safe way for you to communicate with the Whop application using a request/response style API powered by `window.postMessage`.
+
+Since this package relies on `window.postMessage`, it only works in **Client Components**.
+
+### Relevant Packages
+
+- `@whop/iframe` - The main package for the iframe SDK.
+- `@whop/react` - A React wrapper for Whop Apps including helpers for the iframe SDK.
+
+---
+
+## Setup
+
+The main function exported from the `@whop/iframe` package is the `createSdk` function. When called, this function sets up a listener for messages from the main Whop site, using `window.on('message', ...)`. It is also exposed through the `WhopIframeSdkProvider` component from `@whop/react`.
+
+### React
+
+If you're using React, it is recommended to use the `WhopIframeSdkProvider` component from `@whop/react` to provide the iframe SDK to all child components.
+
+<CodeGroup>
+```javascript Step 1: Mount provider in root layout
+// app/layout.tsx
+import { WhopIframeSdkProvider } from "@whop/react";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode,
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <WhopIframeSdkProvider>{children}</WhopIframeSdkProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```javascript Step 2: Consume the iframe SDK in a component
+// components/example.tsx
+import { useIframeSdk } from "@whop/react";
+
+export const Example = () => {
+  const iframeSdk = useIframeSdk();
+
+  return (
+    <button
+      onClick={() => iframeSdk.openExternalUrl({ url: "https://example.com" })}
+    >
+      Open External URL
+    </button>
+  );
+};
+```
+
+</CodeGroup>
+
+### Other Frameworks
+
+For other frameworks, you can use the `createSdk` function from `@whop/iframe` to create an instance of the iframe SDK.
+
+<CodeGroup>
+```javascript Step 1: Create the iframe SDK instance
+// lib/iframe-sdk.ts
+import { createSdk } from "@whop/iframe";
+
+export const iframeSdk = createSdk({
+  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+});
+```
+
+```javascript Step 2: Use the iframe SDK instance
+// index.ts
+import { iframeSdk } from "@/lib/iframe-sdk";
+
+const navigationButtonElement = document.querySelector("button");
+
+if (navigationButtonElement) {
+  navigationButtonElement.addEventListener("click", () => {
+    iframeSdk.openExternalUrl({ url: "https://example.com" });
+  });
+}
+```
+
+</CodeGroup>
+
+---
+
+<Check>We have now setup the SDK and iFrame.</Check>

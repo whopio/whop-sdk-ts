@@ -1,0 +1,65 @@
+---
+title: Upload Media
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.attachments.uploadMedia({
+	// The size of the file in bytes
+	byteSize: 10,
+
+	// The size of the file in bytes
+	byteSizeV2: "9999999",
+
+	// The checksum of the file
+	checksum: "some string" /* Required! */,
+
+	// The content type of the file
+	contentType: "some string",
+
+	// The filename of the file
+	filename: "some string" /* Required! */,
+
+	// The metadata of the file
+	metadata: { any: "json" },
+
+	// Whether or not to use multipart upload. The file must be larger than 5MB
+	multipart: true,
+
+	// The type of record to attach the file to
+	record:
+		"abuse_report" /* Valid values: abuse_report | access_pass | app | assessment_question | automated_messages_config | bot | bounty | bounty_submission | competition_prize | content_reward_campaign | content_reward_submission | course_lesson | dispute | dms_post | experience | forum_post | resolution_event_upload | review | review_report | user */ /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The signed ID of the blob
+	id: "xxxxxxxxxxx",
+
+	// The headers for the upload
+	headers: { any: "json" },
+
+	// The URL to upload the blob
+	uploadUrl: "some string",
+
+	// The multipart upload ID
+	multipartUploadId: "some string",
+
+	// The URLs for the parts of the multipart upload
+	multipartUploadUrls: [
+		{
+			// The part number of the part
+			partNumber: 10,
+
+			// The url to upload the part
+			url: "some string",
+		},
+	],
+};
+
+```

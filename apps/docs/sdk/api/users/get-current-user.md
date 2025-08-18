@@ -1,0 +1,88 @@
+---
+title: Get Current User
+description: Returns the current user and company.
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.users.getCurrentUser();
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The user the viewer is in scope of.
+	user: {
+		// The internal ID of the user
+		id: "xxxxxxxxxxx",
+
+		// The email address of the user
+		email: "some string",
+
+		// The name of the user
+		name: "some string",
+
+		// The Whop username for this user
+		username: "some string",
+
+		// The user's profile picture
+		profilePicture: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
+
+		// The user's bio
+		bio: "some string",
+
+		// Whether or not the user's phone is verified
+		phoneVerified: true,
+
+		// The user's banner image
+		bannerImage: "some string",
+
+		// The timestamp of when the user was created
+		createdAt: 1716931200,
+
+		// The day of the user's date of birth
+		dateOfBirthDay: 10,
+
+		// The month of the user's date of birth
+		dateOfBirthMonth: 10,
+
+		// The year of the user's date of birth
+		dateOfBirthYear: 10,
+
+		// The user's ledger account.
+		ledgerAccount: {
+			// The ID of the LedgerAccount.
+			id: "xxxxxxxxxxx",
+
+			// The fee for transfers, if applicable.
+			transferFee: 10,
+
+			// The balances associated with the account.
+			balanceCaches: {
+				// A list of nodes.
+				nodes: [
+					{
+						// The amount of the balance.
+						balance: 10,
+
+						// The amount of the balance that is pending.
+						pendingBalance: 10,
+
+						// The currency of the balance.
+						currency:
+							"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+					},
+				],
+			},
+		},
+	},
+};
+
+```

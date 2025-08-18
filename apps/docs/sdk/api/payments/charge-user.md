@@ -1,0 +1,51 @@
+---
+title: Charge User
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.payments.chargeUser({
+	// The affiliate code to use for the checkout session
+	affiliateCode: "some string",
+
+	// The amount to charge the user
+	amount: 10 /* Required! */,
+
+	// The currency to charge in
+	currency:
+		"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */ /* Required! */,
+
+	// The description of the charge. Maximum 200 characters.
+	description: "some string",
+
+	// Additional metadata for the charge
+	metadata: { any: "json" },
+
+	// The URL to redirect the user to after the checkout session is created
+	redirectUrl: "some string",
+
+	// The ID of the user to charge
+	userId: "user_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The status of the charge attempt
+	status: "needs_action" /* Valid values: needs_action | success */,
+
+	// The checkout session if additional action is needed
+	inAppPurchase: {
+		// The ID of the checkout session
+		id: "xxxxxxxxxxx",
+
+		// The ID of the plan to use for the checkout session
+		planId: "xxxxxxxxxxx",
+	},
+};
+
+```

@@ -1,0 +1,122 @@
+---
+title: "Set up your store page"
+description: "Edit the details on your whop's store page: logo, name, headline, description, URL, and much more"
+---
+
+Your store page is where visitors learn about your offer. It shows details about your product, pricing, answers common questions, and highlights testimonials.
+
+##  Complete the store page setup checklist
+
+If you're building your whop for the first time, you'll see a checklist to guide you through setting up your store page.
+
+<Tip>
+  Don't overthink your initial setup: You can always come back to improve it later as you learn what works best for your audience.
+</Tip>
+
+<Steps>
+  <Step title="Add title, headline and description" titleSize="h3">
+    Your title, headline, and description help visitors understand what your product is and how it will help them.
+
+    To add these:
+
+    1. Click **Add title, headline, and description** in the checklist
+    2. In the **Edit details** tab that appears, enter your store name in the **Name** field
+       - Keep it simple and easy to remember
+       - Choose a name that clearly communicates what you offer
+    3. Write a catchy **Headline** that grabs attention
+       - Try this simple formula: "[What you help with] for [who you help]"
+         - Example: _"Healthy, delicious meals in 15 minutes for busy professionals"_
+    4. Write a detailed **Description** that explains
+       - What members will get
+       - How your product will help a customer
+       - Example: "Access weekly meal plans, grocery lists, and step-by-step cooking tutorials that fit your schedule"
+    5. Click **Save** when you’re done
+  </Step>
+  <Step title="Add your logo" titleSize="h3">
+    To add your logo:
+
+    1. Click **Add logo** in the checklist
+    2. Click **Upload logo** to select your logo file from your device
+    3. Position and adjust your logo as you like
+    4. Click **Save**
+  </Step>
+  <Step title="Add gallery images" titleSize="h3">
+    This image or video sits at the top of your store page.
+
+    To add your gallery image(s):
+
+    1. Click **Add gallery images** in the checklist
+    2. Click **Upload media** and select the media files you want to show in your gallery
+       - You can select up to eight images/videos
+       - We recommend uploading images with a 16:9 aspect ratio
+    3. Arrange them how you want (the top-left one shows first)
+    4. Click **Save**
+
+    <Tip>
+      Pro tip: A short video (or VSL) talking about the product improves conversions.
+    </Tip>
+  </Step>
+  <Step title="Choose category" titleSize="h3">
+    Picking the right category helps people find your store when browsing Whop.
+
+    To choose a category:
+
+    1. Click **Choose category** in the checklist
+    2. Open the dropdown menu and select the category that best fits what you offer
+    3. Click **Save**
+  </Step>
+</Steps>
+
+## How to update your store page details
+
+Update your store page by accessing the **Edit Details** page:
+
+1. Go to the home page of your Whop
+   - You can get here at any time by clicking on the whop on the **Your whops** tab of the dashboard
+2. Click the three dots (···) menu in the top right corner of the left-hand tab (next to your whop name)
+3. Select **Manage store**
+
+From here, you can change:
+
+- **Your logo**
+- **Store name**: Your business or product name (limited to 30 characters)
+- **Headline**: Your main selling point (limited to 60 characters)
+- **Description**: How you help customers (limited to 180 characters)
+- **Store page URL**: Your custom web address for this specific whop
+- **Category**: Business category that helps customers find your offerings in search and browse
+- **Call to Action (CTA)**: Customize the text that appears on your store page button (e.g., "Join", "Subscribe")
+- **Post purchase redirect link**: If applicable, add a link to redirect customers to immediately after checkout
+- **Upsell**: Customers can one-click add on a product directly after checkout
+  - You can set up a description and video to display on a 1-click upsell landing page that customers are taken to immediately after checkout
+- **Visibility**: Choose whether you want your offer (whop) to appear on our marketplace
+- **Pop-up promotions**: Show limited-time deals in a pop-up window when visitors are about to leave your store page
+- **Apply for Discover**: After completing your store page, you can apply to appear on Whop's Discover page (2M\+ visitors every month)
+
+## Additional store page settings
+
+Update additional advanced settings on your store page:
+
+1. Go to the home page of your whop
+2. Click on the **Store page** button
+3. Use the **Edit details** buttons to edit each section of your store page
+
+From here, you can change:
+
+- **Your personal details**: Add your bio and social links so visitors can learn more about you and your expertise
+- **Target personas:** Describe who your whop is for and what a customer will gain by purchasing your offer
+- **Pricing:** How much it costs to join your whop - you can offer multiple prices
+- **Benefits**: Describe the value, features and benefits your members will get access to
+- **FAQs**: Answer any common questions visitors may have before joining your whop
+
+## Next steps
+
+To get your business up and running on Whop, make sure you've completed the rest of the setup steps:
+
+<CardGroup cols={2}>
+  <Card title="Add apps to your Whop" icon="block-brick" href="/add-apps">
+    Apps are building blocks for your business.
+  </Card>
+  <Card title="Set up products and pricing" icon="dollar-sign" href="/set-up-products-pricing">
+    Charge subscriptions or one time payments.
+  </Card>
+</CardGroup>

@@ -1,0 +1,120 @@
+---
+title: Get Experience
+description: Fetch an experience.
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.experiences.getExperience({
+	// The ID of the experience
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The unique ID representing this experience
+	id: "xxxxxxxxxxx",
+
+	// The written name of the description.
+	name: "some string",
+
+	// A short written description of what is being offered
+	description: "some string",
+
+	// The logo for the experience.
+	logo: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+
+	// The experience interface for this experience.
+	app: {
+		// The ID of the app
+		id: "xxxxxxxxxxx",
+
+		// The name of the app
+		name: "some string",
+
+		// The icon for the app. This icon is shown on discovery, on the product page, on
+		// checkout, and as a default icon for the experiences.
+		icon: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
+	},
+
+	// The company that owns this experience.
+	company: {
+		// The ID (tag) of the company.
+		id: "xxxxxxxxxxx",
+
+		// The title of the company.
+		title: "some string",
+	},
+
+	// The upsell type for the experience, if any.
+	upsellType:
+		"after_checkout" /* Valid values: after_checkout | before_checkout | only_in_whop */,
+
+	// The upsell plan for the experience, if any.
+	upsellPlan: {
+		// The internal ID of the plan.
+		id: "xxxxxxxxxxx",
+
+		// The respective currency identifier for the plan.
+		baseCurrency:
+			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+		// The price a person has to pay for a plan on the renewal purchase.
+		rawRenewalPrice: 10,
+
+		// The price a person has to pay for a plan on the initial purchase.
+		rawInitialPrice: 10,
+
+		// How much the user has to pay on the first payment.
+		initialPriceDue: 10,
+
+		// When the plan was created.
+		createdAt: 1716931200,
+
+		// When the plan was last updated.
+		updatedAt: 1716931200,
+
+		// The interval at which the plan charges (renewal plans).
+		billingPeriod: 10,
+
+		// The number of free trial days added before a renewal plan.
+		trialPeriodDays: 10,
+
+		// The interval at which the plan charges (expiration plans).
+		expirationDays: 10,
+
+		// Limits/doesn't limit the number of units available for purchase.
+		unlimitedStock: true,
+
+		// The description of the Plan as seen by the customer on the checkout page.
+		paymentLinkDescription: "some string",
+
+		// This is the release method the business uses to sell this plan.
+		releaseMethod: "buy_now" /* Valid values: buy_now | raffle | waitlist */,
+
+		// The number of units available for purchase.
+		stock: 10,
+
+		// Shows or hides the plan from public/business view.
+		visibility:
+			"archived" /* Valid values: archived | hidden | quick_link | visible */,
+
+		// Indicates if the plan is a one time payment or recurring.
+		planType: "one_time" /* Valid values: one_time | renewal */,
+	},
+};
+
+```

@@ -1,0 +1,68 @@
+---
+title: Set up the API client
+description: We provide a TS client that makes it super easy to use our API. We highly recommend you use this client.
+---
+
+Our SDK makes it simple to use our API. It's a wrapper around our GraphQL API with pre-built functions for all of our endpoints. The endpoints are outlined in the SDK reference section of our docs.
+
+### Install
+
+<CodeGroup>
+
+```bash pnpm
+pnpm add @whop/api
+```
+
+```bash npm
+npm install @whop/api
+```
+
+```bash yarn
+yarn add @whop/api
+```
+
+</CodeGroup>
+
+### Setup your client
+
+Create a new file that instantiates the client and exports it. We recommend putting this file at `lib/whop-sdk.ts`.
+
+This file reads your ENV keys, which can be found on your app developer page on the Whop dashboard.
+
+```ts
+import { WhopServerSdk, makeUserTokenVerifier } from "@whop/api";
+
+export const whopSdk = WhopServerSdk({
+  // This is the appId of your app. You can find this in the "App Settings" section of your app's Whop dashboard.
+  // This is required.
+  appId: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+
+  // Add your app api key here - this is required.
+  // You can get this from the Whop dashboard after creating an app in the "API Keys" section.
+  appApiKey: process.env.WHOP_API_KEY,
+
+  // This will make api requests on behalf of this user.
+  // This is optional, however most api requests need to be made on behalf of a user.
+  // You can create an agent user for your app, and use their userId here.
+  // You can also apply a different userId later with the `withUser` function.
+  onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
+
+  // This is the companyId that will be used for the api requests.
+  // When making api requests that query or mutate data about a company, you need to specify the companyId.
+  // This is optional, however if not specified certain requests will fail.
+  // This can also be applied later with the `withCompany` function.
+  companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
+});
+```
+
+### Example usage
+
+The rest of the examples in this section will use this client and import it from `lib/whop-sdk.ts`.
+
+Here is an example
+
+```ts
+import { whopSdk } from "./lib/whop-sdk";
+
+const user = await whopSdk.users.getCurrentUser();
+```

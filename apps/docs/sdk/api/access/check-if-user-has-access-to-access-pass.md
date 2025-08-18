@@ -1,0 +1,30 @@
+---
+title: Check If User Has Access To Access Pass
+description: Check if the user has access to a Whop resource
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.access.checkIfUserHasAccessToAccessPass({
+	// The ID of the access pass
+	accessPassId: "prod_XXXXXXXX" /* Required! */,
+
+	// The ID of the user
+	userId: "user_XXXXXXXX",
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// Whether the user has access to the resource
+	hasAccess: true,
+
+	// The permission level of the user
+	accessLevel: "admin" /* Valid values: admin | customer | no_access */,
+};
+
+```

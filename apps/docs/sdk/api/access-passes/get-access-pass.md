@@ -1,0 +1,156 @@
+---
+title: Get Access Pass
+description: Fetches an access pass based on the ID or the route
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.accessPasses.getAccessPass({
+	// The ID or route of the access pass to fetch.
+	accessPassId: "prod_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The internal ID of the public access pass.
+	id: "xxxxxxxxxxx",
+
+	// The title of the access pass. Use for Whop 4.0.
+	title: "some string",
+
+	// A short description of what the company offers or does.
+	shortenedDescription: "some string",
+
+	// Whether this product is Whop verified.
+	verified: true,
+
+	// This access pass will/will not be displayed publicly.
+	visibility:
+		"archived" /* Valid values: archived | hidden | quick_link | visible */,
+
+	// The route of the access pass.
+	route: "some string",
+
+	// The number of active users for this access pass.
+	activeUsersCount: 10,
+
+	// The logo for the access pass.
+	logo: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+
+	// The banner image for the access pass.
+	bannerImage: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+
+	// The headline of the access pass.
+	headline: "some string",
+
+	// A short type of the company that this access pass belongs to.
+	company: {
+		// The ID (tag) of the company.
+		id: "xxxxxxxxxxx",
+
+		// The title of the company.
+		title: "some string",
+	},
+
+	// The average of all reviews for this access pass.
+	reviewsAverage: 10,
+
+	// The user that owns the access pass (company owner).
+	ownerUser: {
+		// The internal ID of the user.
+		id: "xxxxxxxxxxx",
+
+		// The name of the user from their Whop account.
+		name: "some string",
+
+		// The username of the user from their Whop account.
+		username: "some string",
+
+		// The user's profile picture
+		profilePicture: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
+
+		// Whether or not the user's phone is verified
+		phoneVerified: true,
+
+		// The city the user is from.
+		city: "some string",
+
+		// The country the user is from.
+		country: "some string",
+	},
+
+	// The attachments for the access pass.
+	galleryImages: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the attachment
+				id: "xxxxxxxxxxx",
+
+				// A signed ID of the attachment to directly query the attachment
+				signedId: "xxxxxxxxxxx",
+
+				// Whether the attachment has been analyzed
+				analyzed: true,
+
+				// The size of the file in bytes
+				byteSizeV2: "9999999",
+
+				// The name of the file
+				filename: "some string",
+
+				// The attachment's content type (e.g., image/jpg, video/mp4)
+				contentType: "some string",
+
+				// The source of the attachment
+				source: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The blurhash of the image
+				blurhash: "some string",
+
+				// The height of the video
+				height: 10,
+
+				// The width of the video
+				width: 10,
+
+				// The aspect ratio of the video
+				aspectRatio: 10,
+
+				// The preview of the video
+				preview: {
+					// The URL to access the attachment
+					url: "some string",
+				},
+
+				// The duration of the audio in seconds
+				duration: 10,
+
+				// The URL of the waveform for the audio
+				waveformUrl: "some string",
+			},
+		],
+	},
+};
+
+```

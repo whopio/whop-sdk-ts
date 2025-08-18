@@ -1,0 +1,59 @@
+---
+title: Get User
+description: Fetch a specific user.
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.users.getUser({
+	// ID of the user by tag or the username.
+	userId: "user_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The internal ID of the user.
+	id: "xxxxxxxxxxx",
+
+	// The name of the user from their Whop account.
+	name: "some string",
+
+	// The username of the user from their Whop account.
+	username: "some string",
+
+	// The user's profile picture
+	profilePicture: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+
+	// The city the user is from.
+	city: "some string",
+
+	// The country the user is from.
+	country: "some string",
+
+	// The user's bio
+	bio: "some string",
+
+	// Whether or not the user's phone is verified
+	phoneVerified: true,
+
+	// The user's banner image
+	banner: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+
+	// When the user was created.
+	createdAt: 1716931200,
+};
+
+```

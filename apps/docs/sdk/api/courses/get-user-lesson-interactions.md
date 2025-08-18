@@ -1,0 +1,49 @@
+---
+title: Get User Lesson Interactions
+description: A course from a courses app experience
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.courses.getUserLessonInteractions({
+	// The ID of the course to fetch.
+	courseId: "cors_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The chapters in this course
+	chapters: [
+		{
+			// The ID of the chapter. Looks like chap_XXX
+			id: "xxxxxxxxxxx",
+
+			// The lessons in this chapter
+			lessons: [
+				{
+					// The ID of the lesson
+					id: "xxxxxxxxxxx",
+
+					// The user's lesson interactions for this lesson
+					lessonInteraction: {
+						// The ID of the lesson interaction
+						id: "xxxxxxxxxxx",
+
+						// Whether the lesson has been completed by the user
+						completed: true,
+
+						// When the interaction was created
+						createdAt: 1716931200,
+					},
+				},
+			],
+		},
+	],
+};
+
+```

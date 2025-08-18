@@ -1,0 +1,47 @@
+---
+title: "Overview"
+description: "Start here if you want to use Whop to accept payments"
+---
+
+If you want better processing, but you've already built your business on platforms, you can also use Whop for checkout and payments.
+
+## Get started
+
+<CardGroup cols={3}>
+  <Card
+    title="Create an account"
+    icon="sparkles"
+    href="/payments/create-a-whop"
+  >
+    To start accepting payments, create your account on Whop.
+  </Card>
+  <Card title="Create a product" icon="tag" href="/payments/create-a-product">
+    Products are how you package and price your various offers.
+  </Card>
+  <Card
+    title="Copy checkout link"
+    icon="link"
+    href="/payments/create-checkout-link"
+  >
+    Checkout links let you send customers straight to a payment page.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+Customize your payments flow and offer flexible payment options to maximize conversions.
+
+<CardGroup cols={2}>
+  <Card
+    title="Embedded checkout"
+    icon="cart-shopping"
+    href="/payments/checkout-embed"
+  >
+    Integrate Whop's checkout directly into your website for a seamless payment
+    experience without redirects.
+  </Card>
+  <Card title="Set up financing" icon="credit-card" href="/payments/financing">
+    Let customers pay in installments with flexible financing options to
+    increase average order value and conversions.
+  </Card>
+</CardGroup>

@@ -1,0 +1,74 @@
+---
+title: List Direct Message Conversations
+description: Fetch direct message or group chats for the current user. Experimental, don't use in production yet.
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.messages.listDirectMessageConversations({
+	// The `last_post_sent_at` timestamp to fetch channels before
+	beforeTimestamp: "9999999",
+
+	// Maximum number of channels to return
+	limit: 10,
+
+	// Filter by user or group name, e.g. 'Jack' or 'Fight Club'
+	query: "some string",
+
+	// Filter by status (accepted, requested, etc.)
+	status:
+		"accepted" /* Valid values: accepted | archived | closed | hidden | requested */,
+
+	// Filter by unread status (true or false)
+	unread: true,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = [
+	{
+		// The timestamp when the channel was created
+		createdAt: 1716931200,
+
+		// The unique identifier of the channel, e.g. 'feed_12345'
+		id: "xxxxxxxxxxx",
+
+		// Whether or not the channel is pinned to the top of the list
+		isPinned: true,
+
+		// The custom name of the DM channel, if any
+		customName: "some string",
+
+		// Whether or not the channel is a group chat
+		isGroupChat: true,
+
+		// List of members for the channel
+		feedMembers: [
+			{
+				// The username of the user e.g. 'jacksmith01'
+				username: "some string",
+
+				// The unique identifier of the member resource, e.g. 'feed_member_12345'
+				id: "xxxxxxxxxxx",
+			},
+		],
+
+		// Whether or not the channel has unread posts
+		isUnread: true,
+
+		// Last post in the channel
+		lastMessage: {
+			// The text content of the post
+			content: "some string",
+
+			// The ID of the user who sent this message, e.g. 'user_12345'
+			userId: "xxxxxxxxxxx",
+		},
+	},
+];
+
+```

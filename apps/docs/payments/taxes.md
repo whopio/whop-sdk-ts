@@ -1,0 +1,124 @@
+---
+title: "Taxes"
+description: "Learn more about how Whop helps you handle your taxes"
+---
+
+<Warning>
+  Whop is not qualified to provide financial or tax advice. Always consult with a Certified Public Accountant (CPA), Chartered Accountant, or professional tax advisor for guidance specific to your situation.
+</Warning>
+
+Learn how taxes work on Whop - including which tax forms you’ll receive, how sales tax and VAT are handled, and how to apply taxes to your prices.
+
+## Tax forms you'll receive
+
+If you're based in the US, you'll receive tax forms from Whop when you meet certain income thresholds.
+
+### 1099-K forms from Whop
+
+We'll send you a 1099-K tax form if you're US-based and hit the minimum gross receipts for the year:
+
+| Tax Year        | Minimum Gross Receipts |
+| :-------------- | :--------------------- |
+| 2024            | \$5,000                |
+| 2025            | \$2,500                |
+| 2026 and beyond | \$600                  |
+
+To receive your 1099-K by January 31st, make sure whop has your:
+
+- Legal name
+- Mailing address
+- Tax ID Number (TIN)
+
+### Additional 1099-K forms
+
+If you use other payment processors like PayPal alongside Whop, you may receive separate 1099-K forms from each.
+
+### If you're not in the US
+
+We don't send tax forms to creators outside the US right now. If you need any paperwork or reports, just reach out to our support team.
+
+## How Whop handles sales tax, GST, and VAT
+
+Whop acts as the Merchant of Record (MoR) and Deemed Supplier for all Whop Payments transactions, which means we handle the collection and remittance of US sales tax, GST, and VAT for you.
+
+### What Whop covers
+
+When customers pay through Whop Payments, we automatically:
+
+- Figure out what taxes are needed based on where your customer lives
+- Collect those taxes when they check out
+- Remit taxes to the appropriate tax authorities
+- Handle US sales tax, international GST, and VAT compliance
+
+### What you're responsible for
+
+- All other tax filings required in your jurisdiction
+- Handle taxes for any sales through other payment methods you might use
+- Report your income on your tax returns
+
+<Info>
+  If you use other payment processors besides Whop, you might need to handle tax collection yourself. This depends on where you and your customers are located and how much you make.
+</Info>
+
+## Understanding VAT for international sales
+
+VAT (Value-Added Tax) is a tax on products and services in places like Europe, the UK, and other jurisdictions.
+
+### How VAT works on Whop
+
+- **Tax rate determined by customer location**: The VAT rate depends on where your customer is located, not where you're based
+- **Whop handles collection**: As the Merchant of Record, we collect VAT from EU and UK customers
+- **Automatic remittance**: We remit collected VAT to the appropriate tax authorities on your behalf
+
+This means you don't need to worry about VAT when selling to international customers through Whop Payments.
+
+## Choose how taxes are applied to your prices
+
+You get to choose how taxes are applied to your prices.
+
+### Exclusive pricing (default)
+
+Taxes are added on top of your price:
+
+**Example:**
+
+- Your price: \$100
+- Taxes: \$20
+- Customer pays: \$120
+- You receive: \$100
+
+### Inclusive pricing
+
+Taxes are included in your price:
+
+**Example:**
+
+- Your price: \$100
+- Taxes: \$20
+- Customer pays: \$100
+- You receive: \$80
+
+### How to change how taxes are applied to your prices
+
+To switch between **Inclusive** and **Exclusive** pricing:
+
+1. Go to your **Dashboard**
+2. Click **Settings**
+3. Select **Legal**
+4. Click **Tax type**
+5. Choose your preferred tax setting:
+   - **Exclusive**: Customer pays for tax
+   - **Inclusive**: You pay for tax
+6. Click **Save**
+
+## Getting tax reports and invoices
+
+Our support team can help you get the documents you need for tax time.
+
+### Request reports and invoices
+
+Contact Whop support to get:
+
+- Tax reporting documents
+- VAT compliance invoices
+- Any other paperwork you need

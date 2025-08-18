@@ -1,0 +1,49 @@
+---
+title: "Free trials"
+description: "Learn how to set up a free trial for your whop"
+---
+
+Free trials give people access to your whop for a limited time. Once the trial ends, they are automatically charged the standard price for access.
+
+## How to set up a free trial for your whop
+
+There are two ways to set up a free trial:
+
+<Note>
+  You can only add a free trial to 'Recurring' checkout links.
+</Note>
+
+### 1. Through your Dashboard
+
+To set up a free trial from your Dashboard:
+
+1. Go to **Dashboard** \> **Checkout links**
+2. Pick an existing link and click the 3 dots (⋮) \> **Edit**, or make a new one by clicking **\+ Create checkout link**
+3. Check **Free trial**
+4. Pick how many free days you want to offer (like 1 day, 7 days, or 30 days)
+5. Click **Update checkout link** to activate your free trial
+
+### 2. Through your whop's Pricing page
+
+To set up a free trial from your whop's **Pricing** page:
+
+1. Go to **whop** \> **Manage pricing**
+2. Pick an existing pricing option and click the 3 dots (…) \> **Edit**, or make a new one by clicking **\+ Create pricing option**
+3. Check **Free trial**
+4. Pick how many free days you want to offer
+5. Click **Update checkout link** to activate your free trial
+
+<Warning>
+  After the trial ends, people automatically get charged the full price unless they cancel first. This helps you make more money without doing any extra work.
+</Warning>
+
+![Free trial](/apps/docs/how-to-videos/freetrial720p30fps1.gif)
+
+## Understanding trial abuse and prevention
+
+- **What is trial abuse?** This happens when someone keeps signing up for free trials but cancels before they have to pay. They might use different emails or make new accounts to avoid paying.
+- **How Whop stops this:** Whop automatically catches when the same person tries to sign up for multiple free trials. If someone cancels and then tries to rejoin with another trial, the system will charge them full price instead of giving them another free period.
+
+<Tip>
+  Don't worry too much about trial abuse: 99% of people use trials honestly, and Whop handles the bad actors automatically.
+</Tip>

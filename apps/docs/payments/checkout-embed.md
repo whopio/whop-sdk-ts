@@ -1,0 +1,975 @@
+---
+title: "Embed checkout"
+description: "Learn how to embed Whop's checkout flow on your website"
+---
+
+Embedded checkout allows you to embed Whop's checkout flow on your own website. This allows you to offer your customers a seamless checkout experience without leaving your website.
+
+<iframe
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/0hGnAzwxd4g?si=0LDncN3P_MKfrsvD&rel=0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+/>
+
+## What you need to get started
+
+### Step 1: Install the package
+
+```bash
+npm install @whop/react
+```
+
+### Step 2: Add the checkout element
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/react/checkout";
+
+export default function Home() {
+  return <WhopCheckoutEmbed planId="plan_XXXXXXXXX" />;
+}
+```
+
+This component will now mount an iframe with the Whop checkout embed. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
+
+You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+<Tip>
+  Keep that Plan ID handy. You'll need to paste it into your website code, so
+  save it somewhere you can find it.
+</Tip>
+
+To get access to the controls of the checkout embed, you can use the `ref` prop.
+
+```tsx
+const ref = useCheckoutEmbedControls();
+
+return <WhopCheckoutEmbed ref={ref} planId="plan_XXXXXXXXX" />;
+```
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+
+```tsx
+ref.current?.submit();
+```
+
+#### **`getEmail`**
+
+To get the email of the user who is checking out, you can use the `getEmail` method on the checkout element.
+
+```tsx
+const email = await ref.current?.getEmail();
+console.log(email);
+```
+
+#### **`setEmail`**
+
+To set the email of the user who is checking out, you can use the `setEmail` method on the checkout element.
+
+```tsx
+try {
+  await ref.current?.setEmail("example@domain.com");
+} catch (error) {
+  console.error(error);
+}
+```
+
+### Available properties
+
+#### **`planId`**
+
+**Required** - The plan id you want to checkout.
+
+#### **`theme`**
+
+**Optional** - The theme you want to use for the checkout.
+
+Possible values are `light`, `dark` or `system`.
+
+#### **`sessionId`**
+
+**Optional** - The session id to use for the checkout.
+
+This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
+
+#### **`hidePrice`**
+
+**Optional** - Turn on to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+#### **`hideTermsAndConditions`**
+
+**Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+
+Defaults to `false`
+
+#### **`skipRedirect`**
+
+**Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+
+Defaults to `false`
+
+#### **`onComplete`**
+
+**Optional** - A callback function that will be called when the checkout is complete.
+
+<Note>This option will set `skipRedirect` to `true`</Note>
+
+```tsx
+<WhopCheckoutEmbed
+  onComplete={(planId, receiptId) => {
+    console.log(planId, receiptId);
+  }}
+  planId="plan_XXXXXXXXX"
+/>
+```
+
+#### **`utm`**
+
+**Optional** - The UTM parameters to add to the checkout URL.
+
+**Note** - The keys must start with `utm_`
+
+```tsx
+<WhopCheckoutEmbed
+  planId="plan_XXXXXXXXX"
+  utm={{ utm_campaign: "ad_XXXXXXX" }}
+/>
+```
+
+#### **`fallback`**
+
+**Optional** - The fallback content to show while the checkout is loading.
+
+```tsx
+<WhopCheckoutEmbed fallback={<>loading...</>} planId="plan_XXXXXXXXX" />
+```
+
+#### **`prefill`**
+
+**Optional** - The prefill options to apply to the checkout embed.
+
+Used to prefill the email in the embedded checkout form.
+This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```tsx
+<WhopCheckoutEmbed
+  prefill={{ email: "example@domain.com" }}
+  planId="plan_XXXXXXXXX"
+/>
+```
+
+#### **`hideEmail`**
+
+**Optional** - Set to `true` to hide the email input in the embedded checkout form. Make sure to display the users email in the parent page when setting this attribute.
+
+Defaults to `false`
+
+<Note>
+  Use this in conjunction with the `prefill` attribute or the `setEmail` method
+  to control the email input.
+</Note>
+
+```tsx
+<WhopCheckoutEmbed hideEmail planId="plan_XXXXXXXXX" />
+```
+
+#### **`disableEmail`**
+
+**Optional** - Set to `true` to disable the email input in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  Use this in conjunction with the `prefill` attribute or the `setEmail` method
+  to control the email input.
+</Note>
+
+```tsx
+<WhopCheckoutEmbed disableEmail planId="plan_XXXXXXXXX" />
+```
+
+### Full example
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/react/checkout";
+
+export default function Home() {
+  return (
+    <WhopCheckoutEmbed
+      fallback={<>loading...</>}
+      planId="plan_XXXXXXXXX"
+      theme="light"
+      hidePrice={false}
+      sessionId="ch_XXXXXXXXX"
+    />
+  );
+}
+```
+
+## Other websites
+
+### Step 1: Add the script tag
+
+To embed checkout, you need to add the following script tag into the `<head>` of your page:
+
+```md
+<script
+  async
+  defer
+  src="https://js.whop.com/static/checkout/loader.js"
+></script>
+```
+
+### Step 2: Add the checkout element
+
+To create a checkout element, you need to include the following attribute on an element in your page:
+
+```md
+<div data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+This will now mount an iframe inside of the element with the plan id you provided. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
+
+You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+### Available methods
+
+First, attach an `id` to the checkout container:
+
+```md
+<div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+
+```js
+wco.submit("whop-embedded-checkout");
+```
+
+#### **`getEmail`**
+
+To get the email of the user who is checking out, you can use the `getEmail` method on the checkout element.
+
+```js
+const email = await wco.getEmail("whop-embedded-checkout");
+console.log(email);
+```
+
+#### **`setEmail`**
+
+To set the email of the user who is checking out, you can use the `setEmail` method on the checkout element.
+
+```js
+wco.setEmail("whop-embedded-checkout", "example@domain.com");
+```
+
+### Available attributes
+
+#### **`data-whop-checkout-plan-id`**
+
+**Required** - The plan id you want to checkout.
+
+> To get your plan id, you need to first create a plan in the **Manage Pricing** section on your whop page.
+
+#### **`data-whop-checkout-theme`**
+
+**Optional** - The theme you want to use for the checkout.
+
+Possible values are `light`, `dark` or `system`.
+
+```md
+<div data-whop-checkout-theme="light" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-theme-accent-color`**
+
+**Optional** - The accent color to apply to the checkout embed
+
+Possible values are
+
+- `tomato`
+- `red`
+- `ruby`
+- `crimson`
+- `pink`
+- `plum`
+- `purple`
+- `violet`
+- `iris`
+- `cyan`
+- `teal`
+- `jade`
+- `green`
+- `grass`
+- `brown`
+- `blue`
+- `orange`
+- `indigo`
+- `sky`
+- `mint`
+- `yellow`
+- `amber`
+- `lime`
+- `lemon`
+- `magenta`
+- `gold`
+- `bronze`
+- `gray`
+
+```md
+<div data-whop-checkout-theme-accent-color="green" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-session`**
+
+**Optional** - The session id to use for the checkout.
+
+This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
+
+```md
+<div data-whop-checkout-session="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-price`**
+
+**Optional** - Set to `true` to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-submit-button`**
+
+**Optional** - Set to `true` to hide the submit button in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  When using this Option, you will need to [programmatically submit](#submit)
+  the checkout form.
+</Note>
+
+```md
+<div data-whop-checkout-hide-submit-button="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-tos`**
+
+**Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-tos="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-skip-redirect`**
+
+**Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-skip-redirect="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-on-complete`**
+
+**Optional** - The callback to call when the checkout succeeds
+
+<Note>This option will set `data-whop-checkout-skip-redirect` to `true`</Note>
+
+```html
+<script>
+  window.onCheckoutComplete = (planId, receiptId) => {
+    console.log(planId, receiptId);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-complete="onCheckoutComplete"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-on-state-change`**
+
+**Optional** - The callback to call when state of the checkout changes
+
+This can be used when programmatically controlling the submit of the checkout embed.
+
+```html
+<script>
+  window.onCheckoutStateChange = (state) => {
+    console.log(state);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-state-change="onCheckoutStateChange"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-skip-utm`**
+
+By default any utm params from the main page will be forwarded to the checkout embed.
+
+**Optional** - Set to `true` to prevent the automatic forwarding of utm parameters
+
+Defaults to `false`
+
+#### **`data-whop-checkout-prefill-email`**
+
+Used to prefill the email in the embedded checkout form. This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```md
+<div data-whop-checkout-prefill-email="example@domain.com" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-email`**
+
+**Optional** - Set to `true` to hide the email input in the embedded checkout form. Make sure to display the users email in the parent page when setting this attribute.
+
+Defaults to `false`
+
+<Note>
+  Use this in conjunction with the `data-whop-checkout-prefill-email` attribute
+  or the `setEmail` method to control the email input.
+</Note>
+
+```md
+<div data-whop-checkout-hide-email="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-disable-email`**
+
+**Optional** - Set to `true` to disable the email input in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  Use this in conjunction with the `data-whop-checkout-prefill-email` attribute
+  or the `setEmail` method to control the email input.
+</Note>
+
+```md
+<div data-whop-checkout-disable-email="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+### Full example
+
+```md
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<script
+			async
+			defer
+  			src="https://js.whop.com/static/checkout/loader.js"
+		></script>
+		<title>Whop embedded checkout example</title>
+		<style>
+			div {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			data-whop-checkout-plan-id="plan_XXXXXXXXX"
+			data-whop-checkout-session="ch_XXXXXXXXX"
+			data-whop-checkout-theme="light"
+			data-whop-checkout-hide-price="false"
+			style="height: fit-content; overflow: hidden; max-width: 50%;"
+		></div>
+	</body>
+</html>
+```
+- **React** (for React websites)
+- **Framer** (for Framer sites)
+- **HTML/JavaScript** (for any website including ClickFunnels, GoHighLevel, WordPress, etc.)
+
+## React setup
+
+### Step 1: Install the package
+
+```bash
+npm install @whop/react
+```
+
+### Step 2: Add the checkout element
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/react/checkout";
+
+export default function Home() {
+  return <WhopCheckoutEmbed planId="plan_XXXXXXXXX" />;
+}
+```
+
+Just swap out `plan_XXXXXXXXX` with your real Plan ID.
+
+This component will now mount an iframe with the Whop checkout embed. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
+
+You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+### Available controls
+
+To get access to the controls of the checkout embed, you can use the `ref` prop.
+
+```tsx
+const ref = useCheckoutEmbedControls();
+
+return <WhopCheckoutEmbed ref={ref} planId="plan_XXXXXXXXX" />;
+```
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+
+```tsx
+ref.current?.submit();
+```
+
+### Available properties
+
+#### **`planId`**
+
+**Required** - The plan id you want to checkout.
+
+#### **`theme`**
+
+**Optional** - The theme you want to use for the checkout.
+
+Possible values are `light`, `dark` or `system`.
+
+#### **`sessionId`**
+
+**Optional** - The session id to use for the checkout.
+
+This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
+
+#### **`hidePrice`**
+
+**Optional** - Turn on to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+#### **`hideTermsAndConditions`**
+
+**Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+
+Defaults to `false`
+
+#### **`skipRedirect`**
+
+**Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+
+Defaults to `false`
+
+#### **`onComplete`**
+
+**Optional** - A callback function that will be called when the checkout is complete.
+
+<Note>This option will set `skipRedirect` to `true`</Note>
+
+```tsx
+<WhopCheckoutEmbed
+  onComplete={(planId, receiptId) => {
+    console.log(planId, receiptId);
+  }}
+  planId="plan_XXXXXXXXX"
+/>
+```
+
+#### **`utm`**
+
+**Optional** - The UTM parameters to add to the checkout URL.
+
+<Note>The keys must start with `utm_`</Note>
+
+```tsx
+<WhopCheckoutEmbed
+  planId="plan_XXXXXXXXX"
+  utm={{ utm_campaign: "ad_XXXXXXX" }}
+/>
+```
+
+#### **`fallback`**
+
+**Optional** - The fallback content to show while the checkout is loading.
+
+```tsx
+<WhopCheckoutEmbed fallback={<>loading...</>} planId="plan_XXXXXXXXX" />
+```
+
+#### **`prefill`**
+
+**Optional** - The prefill options to apply to the checkout embed.
+
+Used to prefill the email in the embedded checkout form.
+This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```tsx
+<WhopCheckoutEmbed
+  prefill={{ email: "example@domain.com" }}
+  planId="plan_XXXXXXXXX"
+/>
+```
+
+### Full React example
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/react/checkout";
+
+export default function Home() {
+  return (
+    <WhopCheckoutEmbed
+      fallback={<>loading...</>}
+      planId="plan_XXXXXXXXX"
+      theme="light"
+      hidePrice={false}
+      sessionId="ch_XXXXXXXXX"
+    />
+  );
+}
+```
+
+## Framer setup
+
+To embed Whop checkout in a Framer project, you can utilize Framer Code components with the Whop React SDK.
+
+### Step 1: Create a new Framer Code component
+
+Navigate to the **Assets** tab in your framer project, click the **\+** button next to **Code** and select **New Code File**.
+
+### Step 2: Add the checkout embed code component
+
+<Note>
+  You do not have to install the package explicitly. Framer will automatically
+  detect and install the package for you.
+</Note>
+
+Paste the following code into the editor:
+
+```tsx
+import {
+  WhopFramerCheckoutEmbed,
+  propertyControls,
+} from "@whop/framer/checkout";
+import { addPropertyControls } from "framer";
+
+/**
+ * @framerSupportedLayoutWidth auto
+ * @framerSupportedLayoutHeight auto
+ */
+export default function WhopCheckoutEmbed(props) {
+  return <WhopFramerCheckoutEmbed {...props} />;
+}
+
+addPropertyControls(WhopCheckoutEmbed, propertyControls);
+```
+
+You can now use the checkout embed component in your project and configure it through the framer interface.
+
+## HTML/JavaScript setup
+
+This method works with any website - ClickFunnels, WordPress, GoHighLevel, or your own custom site.
+
+### Step 1: Add the script tag
+
+To embed checkout, you need to add the following script tag into the `<head>` of your page:
+
+```md
+<script
+  async
+  defer
+  src="https://js.whop.com/static/checkout/loader.js"
+></script>
+```
+
+### Step 2: Add the checkout element
+
+To create a checkout element, you need to include the following attribute on an element in your page:
+
+```md
+<div data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+This will now mount an iframe inside of the element with the plan id you provided. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
+
+You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+### Available methods
+
+#### **`submit`**
+
+To submit checkout programmatically, you can use the `submit` method on the checkout element.
+First, attach an `id` to the checkout container:
+
+```md
+<div id="whop-embedded-checkout" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+Then, you can submit the checkout by calling `wco.submit` with the id:
+
+```js
+wco.submit("whop-embedded-checkout");
+```
+
+### Available attributes
+
+#### **`data-whop-checkout-plan-id`**
+
+**Required** - The plan id you want to checkout.
+
+<Tip>
+  To get your plan id, you need to first create a plan in the Manage Pricing
+  section on your whop page.
+</Tip>
+
+#### **`data-whop-checkout-theme`**
+
+**Optional** - The theme you want to use for the checkout.
+
+Possible values are `light`, `dark` or `system`.
+
+```md
+<div data-whop-checkout-theme="light" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-theme-accent-color`**
+
+**Optional** - The accent color to apply to the checkout embed
+
+Possible values are
+
+- `tomato`
+- `red`
+- `ruby`
+- `crimson`
+- `pink`
+- `plum`
+- `purple`
+- `violet`
+- `iris`
+- `cyan`
+- `teal`
+- `jade`
+- `green`
+- `grass`
+- `brown`
+- `blue`
+- `orange`
+- `indigo`
+- `sky`
+- `mint`
+- `yellow`
+- `amber`
+- `lime`
+- `lemon`
+- `magenta`
+- `gold`
+- `bronze`
+- `gray`
+
+```md
+<div data-whop-checkout-theme-accent-color="green" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-session`**
+
+**Optional** - The session id to use for the checkout.
+
+This can be used to attach metadata to a checkout by first creating a session through the API and then passing the session id to the checkout element.
+
+```md
+<div data-whop-checkout-session="ch_XXXXXXXXX" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-price`**
+
+**Optional** - Set to `true` to hide the price in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-price="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-submit-button`**
+
+**Optional** - Set to `true` to hide the submit button in the embedded checkout form.
+
+Defaults to `false`
+
+<Note>
+  When using this Option, you will need to [programmatically submit](#submit)
+  the checkout form.
+</Note>
+
+```md
+<div data-whop-checkout-hide-submit-button="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-hide-tos`**
+
+**Optional** - Set to `true` to hide the terms and conditions in the embedded checkout form.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-hide-tos="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-skip-redirect`**
+
+**Optional** - Set to `true` to skip the final redirect and keep the top frame loaded.
+
+Defaults to `false`
+
+```md
+<div data-whop-checkout-skip-redirect="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+#### **`data-whop-checkout-on-complete`**
+
+**Optional** - The callback to call when the checkout succeeds
+
+<Note>This option will set `data-whop-checkout-skip-redirect` to `true`</Note>
+
+```html
+<script>
+  window.onCheckoutComplete = (planId, receiptId) => {
+    console.log(planId, receiptId);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-complete="onCheckoutComplete"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-on-state-change`**
+
+**Optional** - The callback to call when state of the checkout changes
+
+This can be used when programmatically controlling the submit of the checkout embed.
+
+```html
+<script>
+  window.onCheckoutStateChange = (state) => {
+    console.log(state);
+  };
+</script>
+
+<div
+  data-whop-checkout-on-state-change="onCheckoutStateChange"
+  data-whop-checkout-plan-id="plan_XXXXXXXXX"
+></div>
+```
+
+#### **`data-whop-checkout-skip-utm`**
+
+By default any utm params from the main page will be forwarded to the checkout embed.
+
+**Optional** - Set to `true` to prevent the automatic forwarding of utm parameters
+
+Defaults to `false`
+
+#### **`data-whop-checkout-prefill-email`**
+
+Used to prefill the email in the embedded checkout form. This setting can be helpful when integrating the embed into a funnel that collects the email prior to payment already.
+
+```md
+<div data-whop-checkout-prefill-email="example@domain.com" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
+### Full HTML example
+
+```md
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<script
+			async
+			defer
+  			src="https://js.whop.com/static/checkout/loader.js"
+		></script>
+		<title>Whop embedded checkout example</title>
+		<style>
+			div {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			data-whop-checkout-plan-id="plan_XXXXXXXXX"
+			data-whop-checkout-session="ch_XXXXXXXXX"
+			data-whop-checkout-theme="light"
+			data-whop-checkout-hide-price="false"
+			style="height: fit-content; overflow: hidden; max-width: 50%;"
+		></div>
+	</body>
+</html>
+```
+
+## FAQs
+
+<AccordionGroup>
+  <Accordion title="Why is my checkout not loading?">
+    Make sure you've correctly replaced `plan_XXXXXXXXX` or `PLAN_ID_HERE` in the code snippets with your actual Plan ID from the Whop dashboard. Also verify that the script tag is properly loaded in the `<head>` section if using HTML/JS.
+  </Accordion>
+  <Accordion title="Where do I find my Plan ID?">
+    Go to your **Dashboard** \> **Checkout links** \> Click the **three dots (⋮)** on your pricing option \> Hover over **Details** \> Click the ID (starts with `plan_`) to copy it.
+  </Accordion>
+  <Accordion title="Can I embed multiple checkouts on the same page?">
+    Yes, you can add multiple checkout embeds with different Plan IDs. Each embed operates independently.
+  </Accordion>
+  <Accordion title="How do I change the checkout theme?">
+    For React: add `theme="dark"` or `theme="light"` as a property. For HTML: add `data-whop-checkout-theme="dark"` to your div element.
+  </Accordion>
+  <Accordion title="Can I hide the price in the embedded checkout?">
+    Yes, add `hidePrice={true}` in React or `data-whop-checkout-hide-price="true"` in HTML to hide the price display.
+  </Accordion>
+  <Accordion title="What happens after a customer completes checkout?">
+    By default, customers are redirected to your whop. You can customize this by setting a custom redirect URL or skipping the redirect entirely.
+  </Accordion>
+  <Accordion title="How do I prevent the redirect after checkout?">
+    Use `skipRedirect={true}` in React or `data-whop-checkout-skip-redirect="true"` in HTML to keep users on the same page.
+  </Accordion>
+  <Accordion title="Is the embedded checkout mobile-responsive?">
+    Yes, the checkout automatically adapts to different screen sizes and devices.
+  </Accordion>
+  <Accordion title="Can I customize the checkout's appearance with CSS?">
+    You can style the wrapper using the `.whop-checkout-wrapper iframe` CSS class, but the checkout content itself cannot be modified for security reasons.
+  </Accordion>
+  <Accordion title="Can I pre-fill customer information?">
+    Yes, use `prefill={{ email: "customer@example.com" }}` in React or `data-whop-checkout-prefill-email="customer@example.com"` in HTML.
+  </Accordion>
+</AccordionGroup>

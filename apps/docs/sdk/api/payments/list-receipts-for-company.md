@@ -1,0 +1,296 @@
+---
+title: List Receipts For Company
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.payments.listReceiptsForCompany({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	first: 10,
+
+	after: "pageInfo.endCursor",
+
+	filter: {
+		// A specific access pass.
+		accessPassIds: ["xxxxxxxxxxx"],
+
+		// The billing reason for the payment
+		billingReasons: [
+			"manual" /* Valid values: manual | one_time | subscription | subscription_create | subscription_cycle | subscription_update */,
+		],
+
+		// The currency of the payment.
+		currencies: [
+			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+		],
+
+		// Which way to order the results.
+		direction: "asc" /* Valid values: asc | desc */,
+
+		// To get all memberships created before this certain time.
+		endDate: 1716931200,
+
+		// How to order the results.
+		order: "created_at" /* Valid values: created_at | final_amount | paid_at */,
+
+		// How the payment was made (method).
+		paymentMethods: [
+			"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
+		],
+
+		// A specific plan.
+		planIds: ["xxxxxxxxxxx"],
+
+		// The text that is being searched.
+		query: "some string",
+
+		// To get all memberships created after this certain time.
+		startDate: 1716931200,
+
+		// The state of the payment.
+		statuses: [
+			"failed" /* Valid values: failed | partially_refunded | past_due | refunded | succeeded */,
+		],
+	},
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// All of a company's payments, with searching capabilities..
+	// Roles: owner, admin
+	receipts: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The receipt ID
+				id: "xxxxxxxxxxx",
+
+				// The address of the user who made the payment.
+				address: {
+					// The name of the customer.
+					name: "some string",
+
+					// The line 1 of the address.
+					line1: "some string",
+
+					// The line 2 of the address.
+					line2: "some string",
+
+					// The city of the address.
+					city: "some string",
+
+					// The state of the address.
+					state: "some string",
+
+					// The postal code of the address.
+					postalCode: "some string",
+
+					// The country of the address.
+					country: "some string",
+				},
+
+				// The final converted amount of the receipt in USD.
+				settledUsdAmount: 10,
+
+				// The billing reason
+				billingReason: "some string",
+
+				// The last 4 digits of the card used to make the payment.
+				last4: "some string",
+
+				// The currency of the payment.
+				currency:
+					"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+				// The current state of the receipt.
+				status:
+					"draft" /* Valid values: draft | open | paid | pending | uncollectible | unresolved | void */,
+
+				// The datetime the receipt was created
+				createdAt: 1716931200,
+
+				// The total of the payment amount.
+				total: 10,
+
+				// The type of card used as the payment method.
+				brand: "some string",
+
+				// The payment processor used to make this payment.
+				paymentProcessor:
+					"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
+
+				// Returns the type of payment method used for the payment, if available. Ex. klarna, affirm, card, cashapp
+				paymentMethodType: "some string",
+
+				// When an alert came in that this transaction will be disputed
+				disputeAlertedAt: 1716931200,
+
+				// The final amount of this receipt.
+				finalAmount: 10,
+
+				// The final amount to show to the creator (excluding buyer fees).
+				presentedFinalAmount: 10,
+
+				// The settled amount in USD to show to the creator.
+				presentedSettledUsdAmount: 10,
+
+				// The payment refund amount(if applicable).
+				refundedAmount: 10,
+
+				// The friendly status of the receipt.
+				friendlyStatus:
+					"auto_refunded" /* Valid values: auto_refunded | canceled | dispute_warning | drafted | failed | incomplete | open_dispute | open_resolution | partially_refunded | past_due | pending | price_too_low | refunded | succeeded | uncollectible | unresolved */,
+
+				// If the payment failed, the reason for the failure.
+				failureMessage: "some string",
+
+				// Whether the payment can be refunded.
+				refundable: true,
+
+				// Whether the payment can be retried.
+				retryable: true,
+
+				// The datetime the receipt was paid
+				paidAt: 1716931200,
+
+				// How much the receipt is for after fees
+				amountAfterFees: 10,
+
+				// Whether the charge was skipped because the price was too low.
+				chargeSkippedPriceTooLow: true,
+
+				// The time of the last payment attempt.
+				lastPaymentAttempt: 1716931200,
+
+				// Whether this payment was auto refunded or not
+				autoRefunded: true,
+
+				// The member attached to this receipt.
+				member: {
+					// The header to show on the customers page
+					header: "some string",
+
+					// The user for this member, if any.
+					user: {
+						// The internal ID of the user account.
+						id: "xxxxxxxxxxx",
+
+						// The whop username.
+						username: "some string",
+
+						// The user's full name.
+						name: "some string",
+
+						// The digital mailing address of the user.
+						email: "some string",
+
+						// The country the user is from.
+						country: "some string",
+
+						// The name of the country the user is from (ex. United States). If not available, falls back to the country code.
+						countryName: "some string",
+					},
+
+					// The image for the member, derived from either the User or the Company Buyer.
+					imageSrcset: {
+						// Image url with requested image resolution.
+						original: "some string",
+
+						// Image url with double image resolution.
+						double: "some string",
+
+						// If the attachment should be rendered with sound and controls
+						isVideo: true,
+					},
+				},
+
+				// The plan attached to this receipt.
+				plan: {
+					// The internal ID of the plan.
+					id: "xxxxxxxxxxx",
+
+					// The title of the owning object.
+					title: "some string",
+
+					// The formatted price (including currency) for the plan.
+					formattedPrice: "some string",
+
+					// An additional amount charged upon first purchase (separate from the renewal price).
+					initialPrice: 10,
+
+					// The amount the customer is charged every billing period.
+					renewalPrice: 10,
+
+					// The description of the Plan as seen by the customer on the checkout page.
+					paymentLinkDescription: "some string",
+				},
+
+				// The membership attached to this receipt.
+				membership: {
+					// The internal ID of the membership.
+					id: "xxxxxxxxxxx",
+
+					// The state of the membership.
+					status:
+						"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+				},
+
+				// The promo code used for this receipt.
+				promoCode: {
+					// The ID of the promo.
+					id: "xxxxxxxxxxx",
+
+					// The specific code used to apply the promo at checkout.
+					code: "some string",
+
+					// The amount off (% or flat amount) for the promo.
+					amountOff: 10,
+
+					// The monetary currency of the promo code.
+					baseCurrency:
+						"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+					// The type (% or flat amount) of the promo.
+					promoType: "flat_amount" /* Valid values: flat_amount | percentage */,
+
+					// The number of billing cycles the promo is applied for.
+					numberOfIntervals: 10,
+				},
+
+				// The access pass attached to this receipt.
+				accessPass: {
+					// The internal ID of the public access pass.
+					id: "xxxxxxxxxxx",
+
+					// The title of the access pass. Use for Whop 4.0.
+					title: "some string",
+				},
+
+				// The total of the payment amount in USD.
+				totalUsdAmount: 10,
+
+				// The risk score of the most recent charge attempt. From 0 to 100.
+				mostRecentRiskScore: 10,
+			},
+		],
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+	},
+};
+
+```

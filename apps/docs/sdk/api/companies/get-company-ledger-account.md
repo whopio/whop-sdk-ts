@@ -1,0 +1,49 @@
+---
+title: Get Company Ledger Account
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.getCompanyLedgerAccount({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The ledger account for the company.
+	// Roles: owner
+	ledgerAccount: {
+		// The ID of the LedgerAccount.
+		id: "xxxxxxxxxxx",
+
+		// The fee for transfers, if applicable.
+		transferFee: 10,
+
+		// The balances associated with the account.
+		balanceCaches: {
+			// A list of nodes.
+			nodes: [
+				{
+					// The amount of the balance.
+					balance: 10,
+
+					// The amount of the balance that is pending.
+					pendingBalance: 10,
+
+					// The currency of the balance.
+					currency:
+						"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+				},
+			],
+		},
+	},
+};
+
+```

@@ -1,0 +1,60 @@
+---
+title: List Access Passes For Experience
+description: Fetch an experience.
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.experiences.listAccessPassesForExperience({
+	// The ID of the experience
+	experienceId: "exp_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The unique ID representing this experience
+	experienceId: "xxxxxxxxxxx",
+
+	// The access passes that are associated with this experience. This should not be
+	// used unless you are trying to list all access passes the experience has, for
+	// some reason. You probably don't want to use this though and should be using accessPass.
+	accessPasses: [
+		{
+			// The internal ID of the public access pass.
+			id: "xxxxxxxxxxx",
+
+			// The title of the access pass. Use for Whop 4.0.
+			title: "some string",
+
+			// A short description of what the company offers or does.
+			shortenedDescription: "some string",
+
+			// Whether this product is Whop verified.
+			verified: true,
+
+			// This access pass will/will not be displayed publicly.
+			visibility:
+				"archived" /* Valid values: archived | hidden | quick_link | visible */,
+
+			// The route of the access pass.
+			route: "some string",
+
+			// The number of active users for this access pass.
+			activeUsersCount: 10,
+
+			// The logo for the access pass.
+			logo: {
+				// The original URL of the attachment, such as a direct link to S3. This should
+				// never be displayed on the client and always passed to an Imgproxy transformer.
+				sourceUrl: "some string",
+			},
+		},
+	],
+};
+
+```

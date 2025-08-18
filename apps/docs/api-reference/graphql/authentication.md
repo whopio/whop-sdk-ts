@@ -1,0 +1,25 @@
+---
+title: "Authentication"
+icon: key
+description: "An overview of authentication methods for the Whop API"
+---
+
+All calls on Whop are made on behalf of a user, and a company ID if applicable, as followed below.
+
+<CodeGroup>
+
+```javascript get-user.ts
+export const whopApi = WhopApi({
+  appApiKey: process.env.WHOP_API_KEY,
+  onBehalfOfUserId: "YOUR_USER_OR_AN_AGENT_USER",
+  companyId: undefined,
+});
+
+// fetch another user
+
+await whopApi.FetchPublicUser({ userId: winningUser });
+```
+
+</CodeGroup>
+
+You are able to make calls on behalf of any user using your app.

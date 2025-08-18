@@ -1,0 +1,83 @@
+---
+title: List Experiences
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.experiences.listExperiences({
+	after: "pageInfo.endCursor",
+
+	first: 10,
+
+	accessPassId: "prod_XXXXXXXX",
+
+	appId: "app_XXXXXXXX",
+
+	onAccessPass: true,
+
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// All of the experiences connected to the company.
+	experiencesV2: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the experience
+				id: "xxxxxxxxxxx",
+
+				// The name of the experience
+				name: "some string",
+
+				// A short description of the experience
+				description: "some string",
+
+				// The image for the experience interface
+				logo: {
+					// Image url with requested image resolution.
+					sourceUrl: "some string",
+				},
+
+				// The interface of the experience
+				app: {
+					// The ID of the app
+					id: "xxxxxxxxxxx",
+
+					// The name of the app
+					name: "some string",
+
+					// The icon for the app. This icon is shown on discovery, on the product page, on
+					// checkout, and as a default icon for the experiences.
+					icon: {
+						// The original URL of the attachment, such as a direct link to S3. This should
+						// never be displayed on the client and always passed to an Imgproxy transformer.
+						sourceUrl: "some string",
+					},
+				},
+			},
+		],
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+
+		// The total number of items in this connection.
+		totalCount: 10,
+	},
+};
+
+```

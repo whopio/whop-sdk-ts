@@ -1,0 +1,114 @@
+---
+title: "What is Whop?"
+description: "Whop is a platform to launch and scale internet businesses."
+---
+
+Whop is on a mission to deliver everyone a sustainable income. That means that we help people choose what to sell, build their product, and get them customers. Businesses use Whop to sell information, software, and services.
+
+<iframe
+  className="w-full aspect-video rounded-xl"
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/9gZS9SQn_B0?si=0BPZ1dlKqUnJBVhV&modestbranding=1&rel=0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin "
+  allowfullscreen
+/>
+
+<Check>Businesses on Whop earn over \$1 billion every year.</Check>
+
+## Get started
+
+<CardGroup cols={1}>
+  <Card
+    title="Launch your business"
+    icon="sparkles"
+    href="/launch-your-business"
+  >
+    Start an online business with a few clicks.
+  </Card>
+</CardGroup>
+
+## Using Whop to accept payments
+
+This works well if you've already built your business on other tools but want better payment processing.
+
+<CardGroup cols={1}>
+  <Card
+    title="Start with payment processing"
+    icon="credit-card"
+    href="/payments/overview"
+  >
+    Use Whop to process payments and create checkout links.
+  </Card>
+</CardGroup>
+
+## Common business models
+
+Learn how to set up popular business models on Whop:
+
+<CardGroup cols={3}>
+  <Card
+    title="Educational programs"
+    icon="people-group"
+    href="/supported-business-models/educational-programs"
+  >
+    Sell courses, workshops, and other educational programs.
+  </Card>
+  <Card
+    title="Agency services"
+    icon="gear"
+    href="/supported-business-models/agency-services"
+  >
+    Send invoices, chat with clients, and get paid.
+  </Card>
+  <Card
+    title="Coaching"
+    icon="graduation-cap"
+    href="/supported-business-models/coaches"
+  >
+    Charge for your services and organize your clients in one spot.
+  </Card>
+</CardGroup>
+
+<CardGroup cols={3}>
+  <Card
+    title="Newsletters"
+    icon="chart-line"
+    href="/supported-business-models/newsletters"
+  >
+    Publish long form writing and charge subscribers for exclusive content.
+  </Card>
+  <Card
+    title="Paid groups"
+    icon="people-group"
+    href="/supported-business-models/paid-groups"
+  >
+    Build a paid community where members connect and share alpha.
+  </Card>
+  <Card title="SaaS" icon="laptop" href="/supported-business-models/saas">
+    Launch your app with built-in payments and user management.
+  </Card>
+</CardGroup>
+
+<CardGroup cols={3}>
+  <Card title="Events" icon="calendar" href="/supported-business-models/events">
+    Run paid masterminds, events, and give attendees a unified place to chat.
+  </Card>
+  <Card
+    title="DTC Ecommerce"
+    icon="gear"
+    href="/supported-business-models/dtc-ecommerce"
+  >
+    Sell physical products online with an out of the box social layer.
+  </Card>
+  <Card
+    title="Brick and Mortar"
+    icon="store"
+    href="/supported-business-models/brick-and-mortar"
+  >
+    Accept in-store payments and manage memberships for your physical location.
+  </Card>
+</CardGroup>
