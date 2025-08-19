@@ -4,6 +4,7 @@
 	"api": {
 		"baseUrl": "https://api.whop.com"
 	},
+	"versions": ["GraphQL API", "V2 API (deprecated)", "V5 API (deprecated)"],
 	"analytics": {
 		"ga4": {
 			"measurementId": "G-NGD3HKQGSV"
