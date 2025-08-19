@@ -3,6 +3,27 @@ title: "SaaS"
 description: "Learn how to build and run your SaaS on Whop"
 ---
 
+<CardGroup cols={2}>
+  <Card
+    title="Integrate with license keys"
+    href="#license-key-integration"
+    icon="key"
+    color="#16a34a"
+  >
+    Use license keys to gate access to your software.
+  </Card>
+  <Card
+    title="Integrate with email login"
+    href="#email-login-integration"
+    icon="envelope"
+    color="#16a34a"
+  >
+    Let users sign in via email and validate access with the SDK.
+  </Card>
+</CardGroup>
+
+## Email login integration
+
 If you have an existing SaaS or are building a new one, you can use Whop to direct your customers to pay and let them manage their membership.
 
 To integrate, all you have to do is adjust your `User` table to include the `whop_user_id` and `whop_username` columns.
@@ -145,8 +166,8 @@ export async function validateAccess(whopUserId: string) {
 
   <Step title="Give users a way to manage their membership" titleSize="h3">
   	You can link users here to manage their membership: https://whop.com/@me/settings/memberships/.
-	
-	They can simply login with the same email and they use to access your SaaS without a password.
+  	
+  	They can simply login with the same email and they use to access your SaaS without a password.
   </Step>
   <Step title="Design your store page and list on marketplace" titleSize="h3">
     Your store page is where people can learn about your offer. Click your whop name in the top left, then select **Design store page** to open the editor. Click **Edit details** to customize:
@@ -162,6 +183,103 @@ export async function validateAccess(whopUserId: string) {
   </Step>
 
 </Steps>
+
+## License Key Integration
+
+After purchasing a product, users are granted a unique license key that they can use to access and unlock their purchased product. As a developer, you can integrate this feature into your own software by requiring your users to enter their license key before being granted access to the product, or gate certain features of the application behind validating the current license key.
+
+## Getting started
+
+1. Add the software app to your whop [here](https://whop.com/apps/app_jHH5YT7jHYQANi/install/).
+2. Click configure in new software app you added
+3. Add software name and download link
+
+### Validating license keys via API
+
+If the metadata on the license key is empty (for example, the key is not yet bound to a computer), Whop's API returns a success response with status code `201`. This means that the license key is valid and can be used to access the product. Internally, the API sets the metadata of the license key that was passed in the API call.
+
+<CodeGroup
+title="Initially Setting the Metadata"
+tag="POST"
+label="memberships/:id/validate_license"
+>
+
+```js typescript
+import axios from "axios";
+
+const setMetadata = async () => {
+  try {
+    const response = await axios.post(
+      `https://api.whop.com/api/v2/memberships/${licenseKey}/validate_license`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: {
+          metadata: {
+            key: "value", // This is initially setting the key/value pair if it doesn't already exist
+          },
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default setMetadata;
+```
+
+</CodeGroup>
+
+### Validating Matching Metadata
+
+If the metadata on the license key is already set, and it matches the metadata that your software sends to Whop's API, then a success response is returned. This means that the license key is valid and can be used to access the product. Whop's API checks every key value pair in the metadata, ensuring that all fields contain the same data.
+
+Below is example metadata that would return a successful response if you wanted to store the users hardware ID (to only allow one session per user):
+
+**Client-side**
+
+```json
+{
+  "hwid": "098H52ST479QE053V2"
+}
+```
+
+**Server-side**
+
+```json
+{
+  "hwid": "098H52ST479QE053V2"
+}
+```
+
+### Validating Mismatched Metadata
+
+If the metadata on the license key is set, but the metadata fields do not match the metadata that your software sends to Whop's API, a failure response with status code `400` is returned. This means that the license key is not valid and cannot be used to access the product.
+
+Below is example metadata that would return this error.
+
+**Client-side**
+
+```json
+{
+  "hwid": "30294GLDKJ54F0SLKF"
+}
+```
+
+**Server-side**
+
+```json
+{
+  "hwid": "098H52ST479QE053V2"
+}
+```
+
+### Removing Metadata
+
+Users can reset their key's metadata by going to their orders - but to programatically reset their license, you'll need to send a POST request to our [memberships endpoint](/api-reference/v2/memberships/update-a-membership) with an empty metadata body to reset it.
 
 ## Next steps
 
