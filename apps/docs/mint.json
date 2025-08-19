@@ -116,7 +116,7 @@
 				"payments/create-a-whop",
 				"payments/create-a-product",
 				"payments/create-checkout-link",
-				"payments/embed-checkout",
+				"payments/checkout-embed",
 				"payments/set-up-payouts"
 			]
 		},
