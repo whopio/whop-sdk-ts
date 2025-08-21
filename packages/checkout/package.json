@@ -17,16 +17,22 @@
 	"files": ["dist"],
 	"exports": {
 		".": {
+			"types": "./dist/static/checkout/index.d.ts",
 			"import": "./dist/static/checkout/index.mjs",
 			"require": "./dist/static/checkout/index.cjs",
-			"types": "./dist/static/checkout/index.d.ts",
 			"default": "./dist/static/checkout/index.js"
 		},
 		"./loader": "./dist/static/checkout/loader.js",
+		"./react": {
+			"types": "./dist/static/checkout/react/index.d.ts",
+			"import": "./dist/static/checkout/react/index.mjs",
+			"require": "./dist/static/checkout/react/index.cjs",
+			"default": "./dist/static/checkout/react/index.js"
+		},
 		"./util": {
+			"types": "./dist/static/checkout/util.d.ts",
 			"import": "./dist/static/checkout/util.mjs",
 			"require": "./dist/static/checkout/util.cjs",
-			"types": "./dist/static/checkout/util.d.ts",
 			"default": "./dist/static/checkout/util.js"
 		}
 	},
@@ -41,9 +47,19 @@
 	"devDependencies": {
 		"@swc/core": "1.11.29",
 		"@types/node": "latest",
+		"@types/react": "^18.0.0",
+		"react": "^18.0.0",
 		"tsup": "8.5.0",
 		"typescript": "latest",
 		"wrangler": "^4.19.1"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0 || ^19.0.0"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		}
 	},
 	"packageManager": "pnpm@9.15.9",
 	"engines": {
