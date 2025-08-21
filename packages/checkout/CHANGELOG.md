@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.38
+
+### Patch Changes
+
+- d0b1f24: add @whop/checkout/react
+
 ## 0.0.37
 
 ### Patch Changes

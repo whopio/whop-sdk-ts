@@ -1,5 +1,12 @@
 # @whop/react
 
+## 0.2.36
+
+### Patch Changes
+
+- Updated dependencies [d0b1f24]
+  - @whop/checkout@0.0.38
+
 ## 0.2.35
 
 ### Patch Changes
