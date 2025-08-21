@@ -1,0 +1,94 @@
+import { useEffect, useMemo } from "react";
+import {
+	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
+	type WhopCheckoutSubmitDetails,
+	getEmbeddedCheckoutIframeUrl,
+} from "../util";
+import { useLazyRef } from "../util/use-lazy-ref";
+
+type GetEmbeddedCheckoutIframeUrlParams = Parameters<
+	typeof getEmbeddedCheckoutIframeUrl
+>;
+
+export interface WhopCheckoutEmbedControls {
+	submit: (opts?: WhopCheckoutSubmitDetails) => void;
+	getEmail: (timeout?: number) => Promise<string>;
+	setEmail: (email: string, timeout?: number) => Promise<void>;
+}
+
+export function useEmbeddedCheckoutIframeUrl(
+	...params: GetEmbeddedCheckoutIframeUrlParams
+) {
+	const { current: iframeUrl } = useLazyRef(() =>
+		getEmbeddedCheckoutIframeUrl(...params),
+	);
+
+	if (iframeUrl) {
+		useWarnOnIframeUrlChange(iframeUrl, ...params);
+	}
+
+	return iframeUrl;
+}
+
+function useWarnOnIframeUrlChange(
+	iframeUrl: string,
+	...[
+		planId,
+		theme,
+		sessionId,
+		_origin,
+		hidePrice,
+		skipRedirect,
+		utm,
+		styles,
+		prefill,
+		themeOptions,
+		hideSubmitButton,
+		hideTermsAndConditions,
+	]: GetEmbeddedCheckoutIframeUrlParams
+) {
+	const updatedIframeUrl = useMemo(
+		() =>
+			getEmbeddedCheckoutIframeUrl(
+				planId,
+				theme,
+				sessionId,
+				undefined,
+				hidePrice,
+				skipRedirect,
+				utm,
+				styles,
+				prefill,
+				themeOptions,
+				hideSubmitButton,
+				hideTermsAndConditions,
+			),
+		[
+			planId,
+			theme,
+			sessionId,
+			hidePrice,
+			skipRedirect,
+			utm,
+			styles,
+			prefill,
+			themeOptions,
+			hideSubmitButton,
+			hideTermsAndConditions,
+		],
+	);
+
+	useEffect(() => {
+		if (
+			iframeUrl !== updatedIframeUrl &&
+			process.env.NODE_ENV === "development"
+		) {
+			console.warn(
+				`[WhopCheckoutEmbed] iframeUrl changed from ${iframeUrl} to ${updatedIframeUrl}. Updating props on the checkout embed is not supported. Please rerender the component.`,
+			);
+		}
+	}, [iframeUrl, updatedIframeUrl]);
+}
+
+export const EMBEDDED_CHECKOUT_IFRAME_SANDBOX_STRING =
+	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST.join(" ");

@@ -16,7 +16,7 @@ const extensions = {
 } as const;
 
 export default defineConfig({
-	entry: ["src/index.ts", "src/loader.ts", "src/util.ts"],
+	entry: ["src/index.ts", "src/loader.ts", "src/util.ts", "src/react/index.ts"],
 	sourcemap: false,
 	clean: true,
 	dts: true,
@@ -28,4 +28,14 @@ export default defineConfig({
 	minify: true,
 	publicDir: "public",
 	outExtension: ({ format }) => extensions[format],
+	esbuildOptions: (options) => {
+		// Configure JSX for broad React compatibility (classic transform works across all versions)
+		options.jsx = "transform";
+		options.jsxFactory = "React.createElement";
+		options.jsxFragment = "React.Fragment";
+		options.external = options.external || [];
+		if (Array.isArray(options.external)) {
+			options.external.push("react", "react-dom");
+		}
+	},
 });

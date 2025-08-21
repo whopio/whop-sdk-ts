@@ -2,7 +2,7 @@
 
 Embedded checkout allows you to embed Whop's checkout flow on your own website in two easy steps. This allows you to offer your users a seamless checkout experience without leaving your website.
 
-React users should use the `@whop/react` package which includes a version of this feature optimized for react.
+**For React users**: This package now includes React components! Use `@whop/checkout/react` for React integration. Alternatively, you can still use the standalone `@whop/react` package which provides additional React-specific features.
 
 ## Step 1: Add the script tag
 
@@ -27,6 +27,110 @@ To create a checkout element, you need to include the following attribute on an 
 This will now mount an iframe inside of the element with the plan id you provided. Once the checkout is complete, the user will be redirected to the redirect url you specified in the settings on Whop.
 
 You can configure the redirect url in your [whop's settings](https://whop.com/dashboard/whops/) or in your [company's settings](https://whop.com/dashboard/settings/checkout/) on the dashboard. If both are specified, the redirect url specified in the whop's settings will take precedence.
+
+## React Integration
+
+For React applications, you can use the React component instead of the script-based approach:
+
+### Installation and Setup
+
+```bash
+npm install @whop/checkout
+# or
+pnpm add @whop/checkout
+```
+
+### Basic Usage
+
+```tsx
+import { WhopCheckoutEmbed } from "@whop/checkout/react";
+
+export default function CheckoutPage() {
+  return (
+    <WhopCheckoutEmbed 
+      planId="plan_XXXXXXXXX"
+      onComplete={(planId, receiptId) => {
+        console.log("Checkout completed!", { planId, receiptId });
+      }}
+    />
+  );
+}
+```
+
+### Advanced Usage with Controls
+
+```tsx
+import { WhopCheckoutEmbed, useCheckoutEmbedControls } from "@whop/checkout/react";
+
+export default function CheckoutPage() {
+  const checkoutRef = useCheckoutEmbedControls();
+
+  const handleSubmit = () => {
+    checkoutRef.current?.submit();
+  };
+
+  const handleGetEmail = async () => {
+    try {
+      const email = await checkoutRef.current?.getEmail();
+      console.log("Current email:", email);
+    } catch (error) {
+      console.error("Failed to get email:", error);
+    }
+  };
+
+  return (
+    <div>
+      <WhopCheckoutEmbed 
+        ref={checkoutRef}
+        planId="plan_XXXXXXXXX"
+        theme="dark"
+        onComplete={(planId, receiptId) => {
+          console.log("Checkout completed!", { planId, receiptId });
+        }}
+        onStateChange={(state) => {
+          console.log("Checkout state changed:", state);
+        }}
+      />
+      <button onClick={handleSubmit}>Submit Checkout</button>
+      <button onClick={handleGetEmail}>Get Email</button>
+    </div>
+  );
+}
+```
+
+### React Component Props
+
+The `WhopCheckoutEmbed` component accepts the following props:
+
+- `planId` (required): The plan ID you want to checkout
+- `theme`: Theme preference (`"light"`, `"dark"`, or `"system"`)
+- `sessionId`: Session ID for attaching metadata
+- `hidePrice`: Hide the price in the checkout form
+- `skipRedirect`: Skip the final redirect after completion
+- `onComplete`: Callback when checkout is complete
+- `onStateChange`: Callback when checkout state changes
+- `utm`: UTM parameters for tracking
+- `styles`: Custom styles for the embed
+- `prefill`: Prefill options (e.g., email)
+- `themeOptions`: Theme customization options
+- `hideSubmitButton`: Hide the submit button
+- `hideTermsAndConditions`: Hide terms and conditions
+- `hideEmail`: Hide the email input
+- `disableEmail`: Disable the email input
+- `fallback`: Fallback content while loading
+
+### React Version Compatibility
+
+This package is compatible with React 18+ and React 19. It uses:
+
+- Modern React 18+ type definitions for better type safety
+- React hooks and modern patterns  
+- Server-side rendering safe patterns
+- forwardRef for proper ref handling
+
+### TypeScript Support
+
+Full TypeScript support is included with proper type definitions for all components and hooks.
 
 ## Available methods
 
