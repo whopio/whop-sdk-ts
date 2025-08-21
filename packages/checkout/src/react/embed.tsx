@@ -1,5 +1,14 @@
 "use client";
 
+import React, {
+	type MutableRefObject,
+	type ReactNode,
+	forwardRef,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
 	type WhopCheckoutState,
@@ -12,17 +21,6 @@ import {
 	setEmail,
 	submitCheckoutFrame,
 } from "../util";
-
-import React, {
-	type ReactNode,
-	type MutableRefObject,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-	forwardRef,
-} from "react";
-
 import { useIsHydrated } from "../util/use-is-hydrated";
 import { type AccentColor, isAccentColor } from "./colors";
 import {
@@ -141,8 +139,8 @@ export interface WhopCheckoutEmbedProps {
 }
 
 export type {
-	WhopEmbeddedCheckoutStyleOptions,
 	WhopEmbeddedCheckoutPrefillOptions,
+	WhopEmbeddedCheckoutStyleOptions,
 };
 
 const WhopCheckoutEmbedInner = forwardRef<
