@@ -627,11 +627,11 @@ importers:
         specifier: ^0.80.1
         version: 0.80.1(@babel/core@7.28.0)
       '@whop/api':
-        specifier: 0.0.42
-        version: 0.0.42(@auth/core@0.40.0)
+        specifier: workspace:*
+        version: link:../api
       '@whop/iframe':
-        specifier: 0.0.3
-        version: 0.0.3
+        specifier: workspace:*
+        version: link:../iframe
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -5385,16 +5385,6 @@ packages:
 
   '@whop-apps/typed-transport@0.0.1-canary.116':
     resolution: {integrity: sha512-JI8tBQIzENmet9VKmVpqb5DjtbFbsm5DGlcPID+bHXz+0dlssND+aupxJnRJaU/M/bksCf5B059Vu8uTARaymA==}
-
-  '@whop/api@0.0.42':
-    resolution: {integrity: sha512-8146m8jnUN/cxMXzzJPNIAm0W8zYKV4q4uzM6Ghjf/ipXMiX+AkzZgRYa/FNi7YTyZJfI7xUbdH3E7f8RPOHnQ==}
-    engines: {node: 22.x, pnpm: 9.15.9}
-    peerDependencies:
-      '@auth/core': ^0.40.0
-
-  '@whop/iframe@0.0.3':
-    resolution: {integrity: sha512-Gb64GPKnFq0E/GRuKCEHbfxgB362ccAjEA7GHsEMDgRug7PCPCf0DmQRMA0//qV4XKzKKVyis5VGRQivwmnEJg==}
-    engines: {node: 22.x, pnpm: 9.15.9}
 
   '@wry/caches@1.0.1':
     resolution: {integrity: sha512-bXuaUNLVVkD20wcGBWRyo7j9N3TxePEWFZj2Y+r9OoUzfqmavM84+mFykRicNsBqatba5JLay1t48wxaXaWnlA==}
@@ -16633,20 +16623,6 @@ snapshots:
   '@whop-apps/typed-transport@0.0.1-canary.116':
     dependencies:
       zod: 3.25.36
-
-  '@whop/api@0.0.42(@auth/core@0.40.0)':
-    dependencies:
-      '@auth/core': 0.40.0
-      graphql: 16.11.0
-      graphql-request: 7.2.0(graphql@16.11.0)
-      graphql-tag: 2.12.6(graphql@16.11.0)
-      jose: 6.0.11
-      js-md5: 0.8.3
-      tiny-typed-emitter: 2.1.0
-
-  '@whop/iframe@0.0.3':
-    dependencies:
-      zod: 3.22.3
 
   '@wry/caches@1.0.1':
     dependencies:
