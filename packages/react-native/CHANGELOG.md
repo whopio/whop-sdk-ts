@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.0.12
+
+### Patch Changes
+
+- 1e5f826: Add web build support
+
 ## 0.0.11
 
 ### Patch Changes
