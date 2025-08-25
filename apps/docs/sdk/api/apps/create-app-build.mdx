@@ -6,6 +6,9 @@ title: Create App Build
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.apps.createAppBuild({
+	// The ID of the app to create a build for. By default the current app from the api key is used.
+	appId: "app_XXXXXXXX",
+
 	// Attachment input for the app build file. This should be an upload in .zip
 	// format. The zip should contain at least one main_js_bundle.hbc file and
 	// optionally an assets folder next to it.
