@@ -48,6 +48,11 @@ function toPascalCase(str: string) {
 async function makeWebEntrypoint(root: string) {
 	const files = await getSupportedAppViewTypes(root);
 
+	const packageJsonPath = path.join(root, "package.json");
+	const packageJson = JSON.parse(await readFile(packageJsonPath, "utf-8"));
+	const hasReactNativeReanimated =
+		packageJson.dependencies?.["react-native-reanimated"];
+
 	const imports = files.map(
 		(file) =>
 			`import { ${toPascalCase(file)} } from "../../../src/views/${file}";`,
@@ -58,11 +63,14 @@ async function makeWebEntrypoint(root: string) {
 	);
 
 	const defaultKey = toPascalCase(files[0] ?? "experience-view");
+	const reanimatedImport = hasReactNativeReanimated
+		? `import "react-native-reanimated";`
+		: "";
 
 	const entry = `import { AppRegistry } from "react-native";
 import * as React from "react";
 import { WhopNavigationWrapper } from "@whop/react-native/web";
-import "react-native-reanimated";
+${reanimatedImport}
 
 ${imports.join("\n")} 
 
