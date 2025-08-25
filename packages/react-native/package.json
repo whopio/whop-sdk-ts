@@ -78,7 +78,56 @@
 		"react": "19.1.0",
 		"react-dom": "19.1.0",
 		"react-native": "0.80.0",
+		"react-native-web": "0.21.1",
+		"react-native-nitro-modules": "0.26.3",
+		"react-native-video": "6.16.1",
+		"@d11/react-native-fast-image": "8.10.0",
+		"react-native-svg": "15.12.0",
+		"react-native-webview": "13.15.0",
 		"react-native-reanimated": "3.18.0",
-		"react-native-web": "0.21.1"
+		"react-native-gesture-handler": "2.27.2",
+		"react-native-haptic-feedback": "2.3.3",
+		"react-native-vision-camera": "4.7.1",
+		"react-native-safe-area-context": "5.5.2",
+		"lottie-react-native": "7.3.2",
+		"react-native-image-picker": "8.2.1"
+	},
+	"peerDependenciesMeta": {
+		"react-native-nitro-modules": {
+			"optional": true
+		},
+		"react-native-video": {
+			"optional": true
+		},
+		"@d11/react-native-fast-image": {
+			"optional": true
+		},
+		"react-native-svg": {
+			"optional": true
+		},
+		"react-native-webview": {
+			"optional": true
+		},
+		"react-native-reanimated": {
+			"optional": true
+		},
+		"react-native-gesture-handler": {
+			"optional": true
+		},
+		"react-native-haptic-feedback": {
+			"optional": true
+		},
+		"react-native-vision-camera": {
+			"optional": true
+		},
+		"react-native-safe-area-context": {
+			"optional": true
+		},
+		"lottie-react-native": {
+			"optional": true
+		},
+		"react-native-image-picker": {
+			"optional": true
+		}
 	}
 }
