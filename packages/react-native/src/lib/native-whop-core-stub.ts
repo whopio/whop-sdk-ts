@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import type { ExecAsyncApi, ExecSyncApi } from "./native-whop-core-wrapper";
 
 export type FunctionCallResult = {
@@ -112,7 +113,7 @@ class WhopCoreNavigation {
 export type TWhopCoreNavigation = WhopCoreNavigation;
 
 const navigation = new WhopCoreNavigation();
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && Platform.OS === "web") {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	(window as any).whopCoreNavigation = navigation;
 
