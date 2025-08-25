@@ -16,6 +16,10 @@
 			"types": "./dist/lib/index.d.ts",
 			"import": "./dist/lib/index.mjs",
 			"require": "./dist/lib/index.cjs"
+		},
+		"./web": {
+			"types": "./dist/lib/web.d.ts",
+			"import": "./dist/lib/web.mjs"
 		}
 	},
 	"main": "./dist/lib/index.cjs",
@@ -40,7 +44,9 @@
 		"@react-native/babel-preset": "^0.80.1",
 		"@react-native/metro-config": "^0.80.1",
 		"@whop/api": "workspace:*",
+		"@whop/iframe": "workspace:*",
 		"dotenv": "16.5.0",
+		"esbuild": "^0.25.9",
 		"events": "^3.3.0",
 		"find-up": "^7.0.0",
 		"jszip": "^3.10.1",
@@ -50,8 +56,9 @@
 		"rimraf": "^6.0.1"
 	},
 	"devDependencies": {
-		"@types/qrcode-terminal": "^0.12.2",
+		"@types/babel__core": "^7.20.5",
 		"@types/node": "latest",
+		"@types/qrcode-terminal": "^0.12.2",
 		"@types/react": "19.1.5",
 		"react": "^19.0.0",
 		"react-native": "0.80.0",
@@ -68,8 +75,10 @@
 		"access": "public"
 	},
 	"peerDependencies": {
-		"react": "^19.0.0",
+		"react": "19.1.0",
+		"react-dom": "19.1.0",
 		"react-native": "0.80.0",
-		"react-native-reanimated": "3.18.0"
+		"react-native-reanimated": "3.18.0",
+		"react-native-web": "0.21.1"
 	}
 }

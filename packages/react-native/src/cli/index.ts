@@ -6,6 +6,7 @@ import qrcode from "qrcode-terminal";
 import { rimraf } from "rimraf";
 import { buildAndPublish } from "./mobile";
 import { env } from "./sdk";
+import { buildAndPublish as buildAndPublishWeb } from "./web";
 
 async function main() {
 	const args = parseArgs({
@@ -76,7 +77,7 @@ async function main() {
 		promises.push(buildAndPublish(root, "android", opts));
 	}
 	if (args.values.web || !didProvidePlatform) {
-		console.warn(" - [web] builds for web are not supported yet - coming soon");
+		promises.push(buildAndPublishWeb(root, opts));
 	}
 
 	await Promise.all(promises);

@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { mkdir, readdir, rename, writeFile } from "node:fs/promises";
+import { mkdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getDefaultConfig } from "@react-native/metro-config";
 import { findUp } from "find-up";
@@ -7,7 +7,7 @@ import JSZip from "jszip";
 import { type ReportableEvent, type Reporter, runBuild } from "metro";
 import { getChecksum, uploadFile } from "./file";
 import { APP_ID, COMPANY_ID, whopSdk } from "./sdk";
-import { VALID_VIEW_TYPES } from "./valid-view-type";
+import { getSupportedAppViewTypes } from "./valid-view-type";
 
 export async function buildAndPublish(
 	root: string,
@@ -94,30 +94,7 @@ export async function bundle(root: string, platform: "ios" | "android") {
 	console.log(` ✔︎ [${platform}] bundle created`);
 }
 
-async function getSupportedAppViewTypes(
-	root: string,
-): Promise<(typeof VALID_VIEW_TYPES)[number][]> {
-	const views = await readdir(path.join(root, "src", "views"), {
-		withFileTypes: true,
-		recursive: false,
-	});
-	const files = views
-		.filter((file) => file.isFile())
-		.map((file) => file.name.split(".")[0])
-		.filter((file) => !!file);
-
-	const validViews = files.filter((file) =>
-		VALID_VIEW_TYPES.includes(file as (typeof VALID_VIEW_TYPES)[number]),
-	) as (typeof VALID_VIEW_TYPES)[number][];
-
-	if (validViews.length === 0) {
-		throw new Error(
-			`No valid views found, please create a view in the src/views folder and name it with a valid view type: ${VALID_VIEW_TYPES.join(", ")}`,
-		);
-	}
-
-	return validViews;
-}
+// getSupportedAppViewTypes moved to valid-view-type.ts
 
 async function makeEntrypoint(
 	root: string,
@@ -226,7 +203,7 @@ export async function createMobileBuild(
 		throw new Error("Failed to create app build");
 	}
 
-	const dashboardUrl = `https://whop.com/dashboard/${COMPANY_ID}/developer/apps/${APP_ID}/builds/`;
+	const dashboardUrl = `https://whop.com/dashboard/${COMPANY_ID}/developer/apps/${APP_ID}/builds/?platform=${platform}`;
 
 	console.log(`\n ✔︎ [${platform}] deployed as development build ✔︎
    - build id: ${build.id}
