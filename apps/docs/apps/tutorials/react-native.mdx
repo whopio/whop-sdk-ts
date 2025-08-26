@@ -82,8 +82,8 @@ pnpm ship
 ```
 
 The `ship` command will build and upload your app to the whop servers. You can
-limit the platforms by passing either `--ios` or `--android`. From here it
-will be pushed live to your phone.
+limit the platforms by passing either `--ios`, `--android`, or `--web`. From here it
+will be pushed live to your phone and web browser.
 
 <Info>
   The `ship` command will NOT push the app to existing users of your app. It is
@@ -95,7 +95,7 @@ will be pushed live to your phone.
 
 Once you're happy with your app go to your [developer dashboard](https://whop.com/dashboard/developer) and click "Promote to production" on your latest development build.
 
-After going through an automated review, the app will be pushed instantly to all users of your app on iOS and Android.
+After going through an automated review, the app will be pushed instantly to all users of your app on iOS, Android, and web.
 
 <Info>
   ProTip: the `pnpm ship` command prints out a link you can use to promote your
@@ -110,13 +110,14 @@ The beauty of react native is its rich integration with native platform features
 
 The Whop app exposes a set of common powerful native building blocks your can directly use in your react native app.
 
-Features like video playback, camera access, native gestures and animations are available already.
+Features like video playback, camera access, native gestures and animations are available already on mobile platforms.
+Web support provides access to browser APIs and web-specific features.
 We plan on expanding the capabilities to allow many different kinds of apps to be built!
 
 You can use these libraries pinned to these version:
 
 - `react-native-nitro-modules@0.26.3`
-- `react-native-video@6.16.1`
+- `react-native-video@6.10.2`
 - `@d11/react-native-fast-image@8.10.0`
 - `react-native-svg@15.12.0`
 - `react-native-webview@13.15.0`
@@ -125,6 +126,8 @@ You can use these libraries pinned to these version:
 - `react-native-haptic-feedback@2.3.3`
 - `react-native-vision-camera@4.7.1`
 - `react-native-safe-area-context@5.5.2`
+- `lottie-react-native@7.3.2`
+- `react-native-image-picker@8.2.1`
 
 # Whop SDK
 
@@ -154,7 +157,7 @@ export function MyComponent() {
 - Whop UI Kit
 - Integrated router + robust deeplinking support
 - More native modules
-- Web Support + Hosting!
+- Web Support ✅ COMPLETE!
 - Anything you might want. [Join the developer community!](https://whop.com/developers)
 
 # Making authenticated requests
