@@ -1,4 +1,4 @@
-import type { WhopCheckoutSubmitDetails } from "./types";
+import type { WhopCheckoutAddress, WhopCheckoutSubmitDetails } from "./types";
 
 // get the script url from the script tag
 const currentScript = document.currentScript as HTMLScriptElement;
@@ -38,6 +38,12 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 				throw new Error("Whop Embedded checkout script not initialized");
 			},
 			setEmail: (_identifier: string, _email: string) => {
+				throw new Error("Whop Embedded checkout script not initialized");
+			},
+			getAddress: (_identifier: string, _timeout = 2000) => {
+				throw new Error("Whop Embedded checkout script not initialized");
+			},
+			setAddress: (_identifier: string, _address: WhopCheckoutAddress) => {
 				throw new Error("Whop Embedded checkout script not initialized");
 			},
 		};

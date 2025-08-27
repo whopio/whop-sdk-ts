@@ -4,9 +4,11 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
+	getAddress,
 	getEmail,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
+	setAddress,
 	setEmail,
 	submitCheckoutFrame,
 } from "./util";
@@ -57,6 +59,13 @@ function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
 				}
 				case "state": {
 					invokeCallback(node.dataset.whopCheckoutOnStateChange, message.state);
+					break;
+				}
+				case "address-validation-error": {
+					invokeCallback(node.dataset.whopCheckoutOnAddressValidationError, {
+						error_message: message.error_message,
+						error_code: message.error_code,
+					});
 					break;
 				}
 			}
@@ -124,6 +133,35 @@ function getPrefillFromNode(node: HTMLElement) {
 	if (node.dataset.whopCheckoutPrefillEmail) {
 		prefill.email = node.dataset.whopCheckoutPrefillEmail;
 	}
+	if (node.dataset.whopCheckoutPrefillName) {
+		prefill.address ??= {};
+		prefill.address.name = node.dataset.whopCheckoutPrefillName;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressLine1) {
+		prefill.address ??= {};
+		prefill.address.line1 = node.dataset.whopCheckoutPrefillAddressLine1;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressLine2) {
+		prefill.address ??= {};
+		prefill.address.line2 = node.dataset.whopCheckoutPrefillAddressLine2;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressCity) {
+		prefill.address ??= {};
+		prefill.address.city = node.dataset.whopCheckoutPrefillAddressCity;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressCountry) {
+		prefill.address ??= {};
+		prefill.address.country = node.dataset.whopCheckoutPrefillAddressCountry;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressState) {
+		prefill.address ??= {};
+		prefill.address.state = node.dataset.whopCheckoutPrefillAddressState;
+	}
+	if (node.dataset.whopCheckoutPrefillAddressPostalCode) {
+		prefill.address ??= {};
+		prefill.address.postalCode =
+			node.dataset.whopCheckoutPrefillAddressPostalCode;
+	}
 	return prefill;
 }
 
@@ -155,6 +193,8 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutHideTos === "true",
 		node.dataset.whopCheckoutHideEmail === "true",
 		node.dataset.whopCheckoutDisableEmail === "true",
+		node.dataset.whopCheckoutHideAddress === "true",
+		node.dataset.whopCheckoutAffiliateCode,
 	);
 
 	const iframe = document.createElement("iframe");
@@ -187,23 +227,28 @@ function mount(node: HTMLElement) {
 }
 
 if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
-	window.wco.getEmail = function getEmailImpl(identifier, timeout) {
+	function getFrame(identifier: string) {
 		const frame = window.wco?.identifiedFrames.get(identifier);
 		if (!frame)
-			throw new Error(
-				`Failed to get email for Whop embedded checkout. No embed with identifier ${identifier} found.`,
-			);
-		return getEmail(frame, timeout);
+			throw new Error(`No embed with identifier ${identifier} found.`);
+		return frame;
+	}
+	window.wco.getEmail = function getEmailImpl(identifier, timeout) {
+		return getEmail(getFrame(identifier), timeout);
 	};
 	window.wco.setEmail = function setEmailImpl(identifier, email, timeout) {
-		const frame = window.wco?.identifiedFrames.get(identifier);
-		if (!frame)
-			throw new Error(
-				`Failed to set email for Whop embedded checkout. No embed with identifier ${identifier} found.`,
-			);
-		return setEmail(frame, email, timeout);
+		return setEmail(getFrame(identifier), email, timeout);
 	};
-	// observe the DOM an element with the `data-whop-checkout-plan-id` data attribute
+	window.wco.getAddress = function getAddressImpl(identifier, timeout) {
+		return getAddress(getFrame(identifier), timeout);
+	};
+	window.wco.setAddress = function setAddressImpl(
+		identifier,
+		address,
+		timeout,
+	) {
+		return setAddress(getFrame(identifier), address, timeout);
+	};
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.addedNodes) {

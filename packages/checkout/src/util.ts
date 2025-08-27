@@ -1,11 +1,15 @@
-import { WhopCheckoutSetEmailError } from "./errors";
+import {
+	WhopCheckoutGetAddressError,
+	WhopCheckoutSetAddressError,
+	WhopCheckoutSetEmailError,
+} from "./errors";
 import {
 	type WhopCheckoutMessage,
 	type WhopCheckoutState,
 	isWhopCheckoutMessage,
 } from "./messages";
 import { rpc } from "./rpc";
-import type { WhopCheckoutSubmitDetails } from "./types";
+import type { WhopCheckoutAddress, WhopCheckoutSubmitDetails } from "./types";
 
 export { isWhopCheckoutMessage };
 
@@ -61,6 +65,39 @@ export async function getEmail(frame: HTMLIFrameElement, timeout = 2000) {
 	);
 }
 
+export async function setAddress(
+	frame: HTMLIFrameElement,
+	address: WhopCheckoutAddress,
+	timeout = 2000,
+) {
+	return rpc(
+		frame,
+		{ event: "set-address", address },
+		"set-address-result",
+		(message) => {
+			if (message.ok) return;
+			throw new WhopCheckoutSetAddressError(message.error);
+		},
+		timeout,
+	);
+}
+
+export async function getAddress(frame: HTMLIFrameElement, timeout = 2000) {
+	return rpc(
+		frame,
+		{ event: "get-address" },
+		"get-address-result",
+		(message) => {
+			if (!message.ok) throw new WhopCheckoutGetAddressError(message.error);
+			return {
+				address: message.address,
+				isComplete: message.is_complete,
+			};
+		},
+		timeout,
+	);
+}
+
 export function submitCheckoutFrame(
 	frame: HTMLIFrameElement,
 	_data?: WhopCheckoutSubmitDetails,
@@ -87,6 +124,7 @@ export interface WhopEmbeddedCheckoutStyleOptions {
 
 export interface WhopEmbeddedCheckoutPrefillOptions {
 	email?: string;
+	address?: Partial<WhopCheckoutAddress>;
 }
 
 export interface WhopEmbeddedCheckoutThemeOptions {
@@ -108,6 +146,8 @@ export function getEmbeddedCheckoutIframeUrl(
 	hideTermsAndConditions?: boolean,
 	hideEmail?: boolean,
 	disableEmail?: boolean,
+	hideAddressForm?: boolean,
+	affiliateCode?: string,
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
@@ -139,6 +179,12 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (disableEmail) {
 		iframeUrl.searchParams.set("email.disabled", "1");
+	}
+	if (hideAddressForm) {
+		iframeUrl.searchParams.set("address.hidden", "1");
+	}
+	if (affiliateCode) {
+		iframeUrl.searchParams.set("a", affiliateCode);
 	}
 	if (utm) {
 		for (const [key, value] of Object.entries(utm).sort((a, b) =>
@@ -173,6 +219,30 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (prefill?.email) {
 		iframeUrl.searchParams.set("email", prefill.email);
+	}
+	if (prefill?.address?.name) {
+		iframeUrl.searchParams.set("name", prefill.address.name);
+	}
+	if (prefill?.address?.line1) {
+		iframeUrl.searchParams.set("address.line1", prefill.address.line1);
+	}
+	if (prefill?.address?.line2) {
+		iframeUrl.searchParams.set("address.line2", prefill.address.line2);
+	}
+	if (prefill?.address?.city) {
+		iframeUrl.searchParams.set("address.city", prefill.address.city);
+	}
+	if (prefill?.address?.country) {
+		iframeUrl.searchParams.set("address.country", prefill.address.country);
+	}
+	if (prefill?.address?.state) {
+		iframeUrl.searchParams.set("address.state", prefill.address.state);
+	}
+	if (prefill?.address?.postalCode) {
+		iframeUrl.searchParams.set(
+			"address.postal_code",
+			prefill.address.postalCode,
+		);
 	}
 	if (themeOptions) {
 		for (const [optionName, optionValue] of Object.entries(themeOptions) as [

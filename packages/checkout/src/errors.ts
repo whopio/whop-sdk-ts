@@ -30,3 +30,23 @@ export function isWhopCheckoutSetEmailError(
 ): error is WhopCheckoutSetEmailError {
 	return error instanceof WhopCheckoutSetEmailError;
 }
+
+export class WhopCheckoutSetAddressError extends WhopCheckoutError {
+	public readonly name = "WhopCheckoutSetAddressError";
+}
+
+export function isWhopCheckoutSetAddressError(
+	error: unknown,
+): error is WhopCheckoutSetAddressError {
+	return error instanceof WhopCheckoutSetAddressError;
+}
+
+export class WhopCheckoutGetAddressError extends WhopCheckoutError {
+	public readonly name = "WhopCheckoutGetAddressError";
+}
+
+export function isWhopCheckoutGetAddressError(
+	error: unknown,
+): error is WhopCheckoutGetAddressError {
+	return error instanceof WhopCheckoutGetAddressError;
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import type { WhopCheckoutAddress } from "@/types";
 import React, {
 	type MutableRefObject,
 	type ReactNode,
@@ -16,8 +17,10 @@ import {
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	type WhopEmbeddedCheckoutThemeOptions,
+	getAddress,
 	getEmail,
 	onWhopCheckoutMessage,
+	setAddress,
 	setEmail,
 	submitCheckoutFrame,
 } from "../util";
@@ -92,6 +95,15 @@ export interface WhopCheckoutEmbedProps {
 		state: WhopCheckoutState,
 	) => void;
 	/**
+	 * **Optional** - A callback function that will be called when the address validation error occurs.
+	 */
+	onAddressValidationError?: (error: {
+		/** The error message of the address validation error. */
+		error_message: string;
+		/** The error code of the address validation error. */
+		error_code: string;
+	}) => void;
+	/**
 	 * **Optional** - The UTM parameters to add to the checkout URL.
 	 *
 	 * **Note** - The keys must start with `utm_`
@@ -136,6 +148,16 @@ export interface WhopCheckoutEmbedProps {
 	 * @default false
 	 */
 	disableEmail?: boolean;
+	/**
+	 * **Optional** - Set to `true` to hide the address form in the embedded checkout form.
+	 *
+	 * @default false
+	 */
+	hideAddressForm?: boolean;
+	/**
+	 * **Optional** - The affiliate code to use for the checkout.
+	 */
+	affiliateCode?: string;
 }
 
 export type {
@@ -156,6 +178,7 @@ const WhopCheckoutEmbedInner = forwardRef<
 			skipRedirect = false,
 			onComplete,
 			onStateChange,
+			onAddressValidationError,
 			utm,
 			styles,
 			prefill,
@@ -164,6 +187,8 @@ const WhopCheckoutEmbedInner = forwardRef<
 			hideTermsAndConditions = false,
 			hideEmail = false,
 			disableEmail = false,
+			hideAddressForm = false,
+			affiliateCode,
 		},
 		ref,
 	) => {
@@ -191,6 +216,8 @@ const WhopCheckoutEmbedInner = forwardRef<
 			hideTermsAndConditions,
 			hideEmail,
 			disableEmail,
+			hideAddressForm,
+			affiliateCode,
 		);
 
 		const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -224,46 +251,51 @@ const WhopCheckoutEmbedInner = forwardRef<
 							}
 							break;
 						}
+						case "address-validation-error": {
+							if (onAddressValidationError) {
+								onAddressValidationError({
+									error_message: message.error_message,
+									error_code: message.error_code,
+								});
+							}
+							break;
+						}
 					}
 				},
 			);
-		}, [onComplete, onStateChange]);
+		}, [onComplete, onStateChange, onAddressValidationError]);
 
 		if (ref) {
+			const controls: WhopCheckoutEmbedControls = {
+				submit: (opts?: WhopCheckoutSubmitDetails) => {
+					if (!iframeRef.current) return;
+					submitCheckoutFrame(iframeRef.current, opts);
+				},
+				getEmail: (timeout?: number) => {
+					if (!iframeRef.current)
+						throw new Error("Whop embedded checkout frame not found");
+					return getEmail(iframeRef.current, timeout);
+				},
+				setEmail: (email: string, timeout?: number) => {
+					if (!iframeRef.current)
+						throw new Error("Whop embedded checkout frame not found");
+					return setEmail(iframeRef.current, email, timeout);
+				},
+				setAddress: (address: WhopCheckoutAddress, timeout?: number) => {
+					if (!iframeRef.current)
+						throw new Error("Whop embedded checkout frame not found");
+					return setAddress(iframeRef.current, address, timeout);
+				},
+				getAddress: (timeout?: number) => {
+					if (!iframeRef.current)
+						throw new Error("Whop embedded checkout frame not found");
+					return getAddress(iframeRef.current, timeout);
+				},
+			};
 			if (typeof ref === "function") {
-				ref({
-					submit: (opts?: WhopCheckoutSubmitDetails) => {
-						if (!iframeRef.current) return;
-						submitCheckoutFrame(iframeRef.current, opts);
-					},
-					getEmail: (timeout?: number) => {
-						if (!iframeRef.current)
-							throw new Error("Whop embedded checkout frame not found");
-						return getEmail(iframeRef.current, timeout);
-					},
-					setEmail: (email: string, timeout?: number) => {
-						if (!iframeRef.current)
-							throw new Error("Whop embedded checkout frame not found");
-						return setEmail(iframeRef.current, email, timeout);
-					},
-				});
+				ref(controls);
 			} else {
-				ref.current = {
-					submit: (opts?: WhopCheckoutSubmitDetails) => {
-						if (!iframeRef.current) return;
-						submitCheckoutFrame(iframeRef.current, opts);
-					},
-					getEmail: (timeout?: number) => {
-						if (!iframeRef.current)
-							throw new Error("Whop embedded checkout frame not found");
-						return getEmail(iframeRef.current, timeout);
-					},
-					setEmail: (email: string, timeout?: number) => {
-						if (!iframeRef.current)
-							throw new Error("Whop embedded checkout frame not found");
-						return setEmail(iframeRef.current, email, timeout);
-					},
-				};
+				ref.current = controls;
 			}
 		}
 
