@@ -33,7 +33,7 @@ const result = await whopSdk.apps.createAppBuild({
 	// Supported app view types for the app build. A build can specify multiple view
 	// types, but should only specify ones that its code supports.
 	supportedAppViewTypes: [
-		"analytics" /* Valid values: analytics | dash | discover | hub */,
+		"analytics" /* Valid values: analytics | dash | dashboard | discover | hub */,
 	],
 });
 
@@ -66,7 +66,7 @@ const response = {
 	// The supported app view types for the app build. These are the views that the
 	// developer has specified that this build supports.
 	supportedAppViewTypes: [
-		"analytics" /* Valid values: analytics | dash | discover | hub */,
+		"analytics" /* Valid values: analytics | dash | dashboard | discover | hub */,
 	],
 
 	// The status of the app build (draft, approved, rejected, pending, etc)
