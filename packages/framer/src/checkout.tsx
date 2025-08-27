@@ -1,13 +1,11 @@
 import {
+	type AccentColor,
 	type WhopCheckoutEmbedThemeOptions,
 	type WhopEmbeddedCheckoutPrefillOptions,
 	type WhopEmbeddedCheckoutStyleOptions,
 	WhopCheckoutEmbed as WhopReactCheckoutEmbed,
-} from "@whop/react/checkout";
-import {
-	type AccentColor,
 	accentColorValues,
-} from "@whop/react/checkout/colors";
+} from "@whop/checkout/react";
 import { ControlType, type PropertyControls } from "framer";
 import React, { useMemo } from "react";
 import type { ReactNode } from "react";
