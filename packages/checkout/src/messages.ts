@@ -1,3 +1,5 @@
+import type { WhopCheckoutAddress } from "./types";
+
 export type WhopCheckoutState = "loading" | "ready" | "disabled";
 
 export type WhopCheckoutMessage =
@@ -33,6 +35,36 @@ export type WhopCheckoutMessage =
 			ok: false;
 			error: string;
 			event_id: string;
+	  }
+	| {
+			event: "set-address-result";
+			ok: true;
+			error?: never;
+			event_id: string;
+	  }
+	| {
+			event: "set-address-result";
+			ok: false;
+			error: string;
+			event_id: string;
+	  }
+	| {
+			event: "get-address-result";
+			ok: true;
+			address: WhopCheckoutAddress;
+			is_complete: boolean;
+			event_id: string;
+	  }
+	| {
+			event: "get-address-result";
+			ok: false;
+			error: string;
+			event_id: string;
+	  }
+	| {
+			event: "address-validation-error";
+			error_message: string;
+			error_code: string;
 	  };
 
 const EVENT_TYPES = [
@@ -42,6 +74,9 @@ const EVENT_TYPES = [
 	"state",
 	"get-email-result",
 	"set-email-result",
+	"set-address-result",
+	"get-address-result",
+	"address-validation-error",
 ] as const;
 type WhopCheckoutEventType = WhopCheckoutMessage["event"];
 

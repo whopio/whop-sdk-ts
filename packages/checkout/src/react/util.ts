@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from "react";
+import type { WhopCheckoutAddress } from "@/types";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
 	type WhopCheckoutSubmitDetails,
 	getEmbeddedCheckoutIframeUrl,
-} from "../util";
-import { useLazyRef } from "../util/use-lazy-ref";
+} from "@/util";
+import { useLazyRef } from "@/util/use-lazy-ref";
+import { useEffect, useMemo } from "react";
 
 type GetEmbeddedCheckoutIframeUrlParams = Parameters<
 	typeof getEmbeddedCheckoutIframeUrl
@@ -14,6 +15,11 @@ export interface WhopCheckoutEmbedControls {
 	submit: (opts?: WhopCheckoutSubmitDetails) => void;
 	getEmail: (timeout?: number) => Promise<string>;
 	setEmail: (email: string, timeout?: number) => Promise<void>;
+	setAddress: (address: WhopCheckoutAddress, timeout?: number) => Promise<void>;
+	getAddress: (timeout?: number) => Promise<{
+		address: WhopCheckoutAddress;
+		isComplete: boolean;
+	}>;
 }
 
 export function useEmbeddedCheckoutIframeUrl(
@@ -23,9 +29,7 @@ export function useEmbeddedCheckoutIframeUrl(
 		getEmbeddedCheckoutIframeUrl(...params),
 	);
 
-	if (iframeUrl) {
-		useWarnOnIframeUrlChange(iframeUrl, ...params);
-	}
+	useWarnOnIframeUrlChange(iframeUrl, ...params);
 
 	return iframeUrl;
 }
@@ -45,6 +49,10 @@ function useWarnOnIframeUrlChange(
 		themeOptions,
 		hideSubmitButton,
 		hideTermsAndConditions,
+		hideEmail,
+		disableEmail,
+		hideAddressForm,
+		affiliateCode,
 	]: GetEmbeddedCheckoutIframeUrlParams
 ) {
 	const updatedIframeUrl = useMemo(
@@ -62,6 +70,10 @@ function useWarnOnIframeUrlChange(
 				themeOptions,
 				hideSubmitButton,
 				hideTermsAndConditions,
+				hideEmail,
+				disableEmail,
+				hideAddressForm,
+				affiliateCode,
 			),
 		[
 			planId,
@@ -75,6 +87,10 @@ function useWarnOnIframeUrlChange(
 			themeOptions,
 			hideSubmitButton,
 			hideTermsAndConditions,
+			hideEmail,
+			disableEmail,
+			hideAddressForm,
+			affiliateCode,
 		],
 	);
 

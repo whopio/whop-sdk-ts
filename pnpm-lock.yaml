@@ -568,9 +568,6 @@ importers:
       '@whop/api':
         specifier: workspace:^
         version: link:../api
-      '@whop/checkout':
-        specifier: workspace:^
-        version: link:../checkout
       '@whop/iframe':
         specifier: workspace:^
         version: link:../iframe
