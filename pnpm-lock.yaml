@@ -481,9 +481,9 @@ importers:
 
   packages/framer:
     dependencies:
-      '@whop/react':
+      '@whop/checkout':
         specifier: workspace:^
-        version: link:../react
+        version: link:../checkout
     devDependencies:
       '@swc/cli':
         specifier: ^0.7.7
@@ -495,17 +495,17 @@ importers:
         specifier: latest
         version: 24.3.0
       '@types/react':
-        specifier: 19.1.5
-        version: 19.1.5
+        specifier: ^18.0.0
+        version: 18.3.23
       concurrently:
         specifier: 9.1.2
         version: 9.1.2
       framer:
         specifier: ^2.4.1
-        version: 2.4.1(framer-motion@10.18.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.4.1(framer-motion@10.18.0(react-dom@19.1.0(react@18.3.1))(react@18.3.1))(react-dom@19.1.0(react@18.3.1))(react@18.3.1)
       react:
-        specifier: ^19.0.0
-        version: 19.1.0
+        specifier: ^18.0.0
+        version: 18.3.1
       typescript:
         specifier: latest
         version: 5.9.2
@@ -18595,24 +18595,24 @@ snapshots:
 
   forwarded@0.2.0: {}
 
-  framer-motion@10.18.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  framer-motion@10.18.0(react-dom@19.1.0(react@18.3.1))(react@18.3.1):
     dependencies:
       tslib: 2.8.1
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 19.1.0(react@18.3.1)
 
-  framer@2.4.1(framer-motion@10.18.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  framer@2.4.1(framer-motion@10.18.0(react-dom@19.1.0(react@18.3.1))(react@18.3.1))(react-dom@19.1.0(react@18.3.1))(react@18.3.1):
     dependencies:
       '@juggle/resize-observer': 3.4.0
       eventemitter3: 3.1.2
       fontfaceobserver: 2.3.0
-      framer-motion: 10.18.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      framer-motion: 10.18.0(react-dom@19.1.0(react@18.3.1))(react@18.3.1)
       hoist-non-react-statics: 3.3.2
       hsluv: 0.0.3
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 18.3.1
+      react-dom: 19.1.0(react@18.3.1)
 
   fresh@0.5.2: {}
 
@@ -21747,6 +21747,11 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-dom@19.1.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      scheduler: 0.26.0
 
   react-dom@19.1.0(react@19.1.0):
     dependencies:
