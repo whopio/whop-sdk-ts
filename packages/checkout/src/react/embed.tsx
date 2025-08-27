@@ -25,7 +25,7 @@ import {
 	submitCheckoutFrame,
 } from "../util";
 import { useIsHydrated } from "../util/use-is-hydrated";
-import { type AccentColor, isAccentColor } from "./colors";
+import { type AccentColor, accentColorValues, isAccentColor } from "./colors";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_STRING,
 	type WhopCheckoutEmbedControls,
@@ -40,6 +40,8 @@ export interface WhopCheckoutEmbedThemeOptions {
 	 */
 	accentColor?: AccentColor;
 }
+
+export { accentColorValues, type AccentColor, isAccentColor };
 
 export interface WhopCheckoutEmbedProps {
 	/**
