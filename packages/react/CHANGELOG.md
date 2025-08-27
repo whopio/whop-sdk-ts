@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.2.37
+
+### Patch Changes
+
+- 4536ddc: removed /react/checkout in favor of /checkout/react
+
 ## 0.2.36
 
 ### Patch Changes

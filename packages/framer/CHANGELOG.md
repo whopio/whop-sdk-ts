@@ -1,5 +1,18 @@
 # @whop/framer
 
+## 0.0.20
+
+### Patch Changes
+
+- 97f7bb0: use @whop/checkout in framer
+- Updated dependencies [4536ddc]
+- Updated dependencies [4536ddc]
+- Updated dependencies [4536ddc]
+- Updated dependencies [4536ddc]
+- Updated dependencies [4536ddc]
+- Updated dependencies [4536ddc]
+  - @whop/checkout@0.0.39
+
 ## 0.0.19
 
 ### Patch Changes
