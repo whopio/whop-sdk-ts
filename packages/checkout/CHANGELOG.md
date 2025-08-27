@@ -1,5 +1,16 @@
 # @whop/checkout
 
+## 0.0.39
+
+### Patch Changes
+
+- 4536ddc: add address validation error event
+- 4536ddc: add setAddress embed rpc method
+- 4536ddc: add hide address form functionality
+- 4536ddc: add affiliate code handling
+- 4536ddc: add address prefilling
+- 4536ddc: add getEmail rpc on embed
+
 ## 0.0.38
 
 ### Patch Changes
