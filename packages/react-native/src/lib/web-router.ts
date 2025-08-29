@@ -1,11 +1,16 @@
 import type React from "react";
 import type { FC } from "react";
 import type { TWhopCoreNavigation } from "./native-whop-core-stub";
-import type { DiscoverViewProps, ExperienceViewProps } from "./props";
+import type {
+	DashboardViewProps,
+	DiscoverViewProps,
+	ExperienceViewProps,
+} from "./props";
 
 type AppReactComponent = {
 	ExperienceView: FC<ExperienceViewProps>;
 	DiscoverView: FC<DiscoverViewProps>;
+	DashboardView: FC<DashboardViewProps>;
 };
 
 function getNavigation(): TWhopCoreNavigation {
@@ -105,6 +110,26 @@ export function WhopNavigationWrapper<T extends keyof AppReactComponent>(
 		}) => {
 			return R.createElement(C, {
 				experienceId,
+				companyId,
+				currentUserId,
+				path: route.path,
+				params: route.params,
+			});
+		};
+	}
+
+	if (name === "DashboardView") {
+		if (!companyId) {
+			throw new Error("Missing required query params");
+		}
+
+		const C = Component as FC<DashboardViewProps>;
+
+		render = (route: {
+			path: string[];
+			params: Record<string, string>;
+		}) => {
+			return R.createElement(C, {
 				companyId,
 				currentUserId,
 				path: route.path,
