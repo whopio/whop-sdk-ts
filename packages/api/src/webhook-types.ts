@@ -9,7 +9,7 @@ interface CustomFieldResponse {
 }
 
 // Membership related types
-interface MembershipData {
+export interface MembershipData {
 	id: string;
 	product_id: string;
 	user_id?: string | null;
@@ -34,7 +34,7 @@ interface MembershipData {
 }
 
 // Payment/Receipt related types
-interface ReceiptData {
+export interface ReceiptData {
 	id: string;
 	membership_id?: string | null;
 	product_id?: string | null;
@@ -68,7 +68,7 @@ interface ReceiptData {
 }
 
 // Refund related types
-interface RefundData {
+export interface RefundData {
 	id: string;
 	status: string;
 	amount: number;
@@ -80,7 +80,7 @@ interface RefundData {
 }
 
 // Dispute related types
-interface DisputeData {
+export interface DisputeData {
 	id: string;
 	status: string;
 	amount: number;
