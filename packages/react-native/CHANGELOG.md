@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.0.13
+
+### Patch Changes
+
+- ade91e6: added app view type support
+
 ## 0.0.12
 
 ### Patch Changes
