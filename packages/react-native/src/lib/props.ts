@@ -12,4 +12,8 @@ export interface ExperienceViewProps extends BaseViewProps {
 	companyId: string;
 }
 
+export interface DashboardViewProps extends BaseViewProps {
+	companyId: string;
+}
+
 export interface DiscoverViewProps extends BaseViewProps {}

@@ -1,7 +1,11 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-export const VALID_VIEW_TYPES = ["experience-view", "discover-view"] as const;
+export const VALID_VIEW_TYPES = [
+	"experience-view",
+	"discover-view",
+	"dashboard-view",
+] as const;
 
 export async function getSupportedAppViewTypes(
 	root: string,

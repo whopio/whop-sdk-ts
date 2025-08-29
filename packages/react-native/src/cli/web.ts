@@ -76,13 +76,15 @@ ${imports.join("\n")}
 
 ${registry.join("\n")} 
 
+const viewType = new URLSearchParams(window.location.search).get("app_view") ?? "${defaultKey}"; 
+
 const root = document.getElementById("root") || (() => {
 	const d = document.createElement("div");
 	d.id = "root";
 	document.body.appendChild(d);
 	return d;
 })();
-AppRegistry.runApplication("${defaultKey}", { rootTag: root });
+AppRegistry.runApplication(viewType, { rootTag: root });
 `;
 
 	const entryFile = path.join(root, "build", "entrypoints", "web", "index.tsx");
