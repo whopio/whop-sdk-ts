@@ -8,7 +8,7 @@ Whop apps are composed of **views** - different pages you build into your app th
 
 ## App Views
 
-Your app consists of two main types of views:
+Your app consists of three main types of views:
 
 ### Experience Views
 
@@ -42,6 +42,14 @@ This not only helps potential users see real-world examples of your app in actio
 <Callout type="warning">
 When building discover views, include a **64px margin** on your top-level content to prevent it from being hidden by the iframe header.
 </Callout>
+
+### Dashboard Views
+
+The **dashboard view** is a new business-focused view that allows creators to access apps directly from their dashboard. This view is designed for apps that help businesses grow and manage operations.
+
+- **Route**: Typically `/dashboard/[companyId]`
+- **Access**: Private, gated through the Whop SDK
+- **Purpose**: Provide creators direct access to apps from their dashboard
 
 ## Building Experience Views
 
