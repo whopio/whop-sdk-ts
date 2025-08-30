@@ -231,6 +231,7 @@ You can use these events to build real-time apps such as chat bots and AI-agents
 
    const whopApi = WhopServerSdk({
      appApiKey: process.env.WHOP_API_KEY,
+     appId: process.env.NEXT_PUBLIC_WHOP_APP_ID,
    });
    ```
 
@@ -241,7 +242,7 @@ You can use these events to build real-time apps such as chat bots and AI-agents
      // Pass the user id of the user you want to receive events for
      .withUser("user_v9KUoZvTGp6ID")
      // Construct the websocket client
-     .websocketClient();
+     .websockets.client();
    ```
 
 3. Add event handlers for messages:
