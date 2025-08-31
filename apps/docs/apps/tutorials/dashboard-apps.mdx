@@ -16,7 +16,7 @@ This process is still in beta and will get smoother over time.
    - Discover Path: (Leave empty)
    - Dashboard Path: `/dashboard/[companyId]` \<- set this
 
-3. The click SAVE (top of page)
+3. Then click SAVE (top of page)
 
 4. Then click on the little icon on the right of the dashboard path input field. This will open your dashboard view within whop.
 
@@ -90,11 +90,11 @@ export const whopSdk = WhopServerSdk({
 <Info>
   When another company owner installs your app, they will be prompted with the
   same permissions request modal. (Directly after installing from app store) If
-  you then update you requested permissions, they will see the same prompt to
+  you then update your requested permissions, they will see the same prompt to
   re-grant then again when using your app.
 </Info>
 
-6. Now you can start making API requests for data on the companies that you have authorize. (We are adding more endpoints) But right now you can list the receipts (payments) for a company:
+6. Now you can start making API requests for data on the companies that you have authorized. (We are adding more endpoints) But right now you can list the receipts (payments) for a company:
 
 ```ts
 const companyReceipts = await whopSdk.payments.listReceiptsForCompany({
