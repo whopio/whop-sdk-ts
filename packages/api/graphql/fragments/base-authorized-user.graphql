@@ -1,0 +1,8 @@
+fragment BaseAuthorizedUser on AuthorizedUser {
+	id
+	name
+	username
+	userId
+	email
+	role
+}
