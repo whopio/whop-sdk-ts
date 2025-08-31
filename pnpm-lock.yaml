@@ -394,8 +394,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       '@protobuf-ts/protoc':
-        specifier: 2.11.0
-        version: 2.11.0
+        specifier: 2.11.1
+        version: 2.11.1
       '@types/node':
         specifier: latest
         version: 24.3.0
@@ -3463,8 +3463,8 @@ packages:
   '@prisma/get-platform@6.8.2':
     resolution: {integrity: sha512-vXSxyUgX3vm1Q70QwzwkjeYfRryIvKno1SXbIqwSptKwqKzskINnDUcx85oX+ys6ooN2ATGSD0xN2UTfg6Zcow==}
 
-  '@protobuf-ts/protoc@2.11.0':
-    resolution: {integrity: sha512-GYfmv1rjZ/7MWzUqMszhdXiuoa4Js/j6zCbcxFmeThBBUhbrXdPU42vY+QVCHL9PvAMXO+wEhUfPWYdd1YgnlA==}
+  '@protobuf-ts/protoc@2.11.1':
+    resolution: {integrity: sha512-mUZJaV0daGO6HUX90o/atzQ6A7bbN2RSuHtdwo8SSF2Qoe3zHwa4IHyCN1evftTeHfLmdz+45qo47sL+5P8nyg==}
     hasBin: true
 
   '@puppeteer/browsers@2.3.0':
@@ -14442,7 +14442,7 @@ snapshots:
     dependencies:
       '@prisma/debug': 6.8.2
 
-  '@protobuf-ts/protoc@2.11.0': {}
+  '@protobuf-ts/protoc@2.11.1': {}
 
   '@puppeteer/browsers@2.3.0':
     dependencies:
