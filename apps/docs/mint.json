@@ -249,6 +249,7 @@
 					"group": "Companies",
 					"pages": [
 						"sdk/api/companies/get-company-ledger-account",
+						"sdk/api/companies/get-company",
 						"sdk/api/companies/get-waitlist-entries-for-company"
 					]
 				},

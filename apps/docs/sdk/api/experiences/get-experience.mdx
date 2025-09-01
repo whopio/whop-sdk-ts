@@ -57,6 +57,16 @@ const response = {
 
 		// The title of the company.
 		title: "some string",
+
+		// The slug/route of the company on the Whop site.
+		route: "some string",
+
+		// The company's logo.
+		logo: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
 	},
 
 	// The upsell type for the experience, if any.
