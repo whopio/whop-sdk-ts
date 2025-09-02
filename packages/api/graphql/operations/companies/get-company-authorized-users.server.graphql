@@ -1,0 +1,7 @@
+query getCompanyAuthorizedUsers($companyId: ID!) {
+	company(id: $companyId) {
+		authorizedUsers {
+			...BaseAuthorizedUser
+		}
+	}
+}

@@ -169,6 +169,49 @@ if (paymentButton instanceof HTMLButtonElement) {
 
 </CodeGroup>
 
+### 3. Validate the payment
+
+> After a payment is processed, you should validate it on your server using webhooks to ensure the payment was successful and update your application accordingly.
+
+Set up a webhook route to handle payment events: 
+
+```typescript app/api/webhook/route.ts
+import { makeWebhookValidator, type PaymentWebhookData } from "@whop/api";
+import { after } from "next/server";
+
+const validateWebhook = makeWebhookValidator({
+  webhookSecret: process.env.WHOP_WEBHOOK_SECRET,
+});
+
+export async function POST(request: Request) {
+  // Validate the webhook to ensure it's from Whop
+  const webhook = await validateWebhook(request);
+
+  // Handle the webhook event
+  if (webhook.action === "payment.succeeded") {
+    after(handlePaymentSucceededWebhook(webhook.data));
+  }
+
+  // Make sure to return a 2xx status code quickly. Otherwise the webhook will be retried.
+  return new Response("OK", { status: 200 });
+}
+
+async function handlePaymentSucceededWebhook(data: PaymentWebhookData) {
+  const { id, user_id, subtotal, amount_after_fees, metadata, ... } = data;
+
+  // ...
+}
+```
+
+<Warning>
+  Make sure to create a webhook in your [dashboard](https://whop.com/dashboard/developer/) app settings and set your `WHOP_WEBHOOK_SECRET` environment variable.
+</Warning>
+
+<Frame>
+![Webhook Configuration](/images/app-webhooks.png)
+</Frame>
+
+
 ## Sending Payouts
 
 You can send payouts to any user using their Whop username. The funds will be transferred from your company's ledger account.

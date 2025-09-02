@@ -1,6 +1,6 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.42",
+	"version": "0.0.44",
 	"description": "Whop API client",
 	"repository": {
 		"type": "git",
@@ -78,7 +78,7 @@
 		"@graphql-tools/load": "^8.1.0",
 		"@graphql-tools/url-loader": "^8.0.31",
 		"@parcel/watcher": "2.5.1",
-		"@protobuf-ts/protoc": "2.11.0",
+		"@protobuf-ts/protoc": "2.11.1",
 		"@types/node": "latest",
 		"concurrently": "9.1.2",
 		"dotenv": "16.5.0",
