@@ -1,0 +1,34 @@
+query listCompanyPayments(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+	$filter: ReceiptV2Filters
+) {
+	company(id: $companyId) {
+		receiptsV2(
+			after: $after
+			before: $before
+			first: $first
+			last: $last
+			filter: $filter
+		) {
+			totalCount
+			pageInfo {
+				startCursor
+				hasPreviousPage
+				hasNextPage
+				endCursor
+			}
+			nodes {
+				id
+				currency
+				finalAmount
+				subtotal
+				createdAt
+				amountAfterFees
+			}
+		}
+	}
+}
