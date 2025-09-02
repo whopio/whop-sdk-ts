@@ -1,5 +1,18 @@
 # @whop/api
 
+## 0.0.44
+
+### Patch Changes
+
+- 72f6565: Add bannerImage to company
+
+## 0.0.43
+
+### Patch Changes
+
+- 967283d: Add companies.getCompany graphql query
+- db054d6: chore(deps): update dependency @protobuf-ts/protoc to v2.11.1
+
 ## 0.0.42
 
 ### Patch Changes
