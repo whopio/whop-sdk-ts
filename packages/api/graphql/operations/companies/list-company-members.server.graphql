@@ -1,0 +1,32 @@
+query listCompanyMembers(
+	$companyId: ID!
+	$first: Int
+	$last: Int
+	$after: String
+	$before: String
+	$searchQuery: String
+) {
+	publicCompany(id: $companyId) {
+		members(
+			first: $first
+			last: $last
+			after: $after
+			before: $before
+			query: $searchQuery
+		) {
+			nodes {
+				id
+				profile {
+					...BasePublicProfileUser
+				}
+			}
+			pageInfo {
+				startCursor
+				endCursor
+				hasNextPage
+				hasPreviousPage
+			}
+			totalCount
+		}
+	}
+}
