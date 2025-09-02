@@ -9,7 +9,7 @@ interface CustomFieldResponse {
 }
 
 // Membership related types
-interface MembershipData {
+export interface MembershipWebhookData {
 	id: string;
 	product_id: string;
 	user_id?: string | null;
@@ -34,7 +34,7 @@ interface MembershipData {
 }
 
 // Payment/Receipt related types
-interface ReceiptData {
+export interface PaymentWebhookData {
 	id: string;
 	membership_id?: string | null;
 	product_id?: string | null;
@@ -68,7 +68,7 @@ interface ReceiptData {
 }
 
 // Refund related types
-interface RefundData {
+export interface RefundWebhookData {
 	id: string;
 	status: string;
 	amount: number;
@@ -76,18 +76,18 @@ interface RefundData {
 	gateway_type: string;
 	created_at: number;
 	payment_id: string;
-	payment: ReceiptData;
+	payment: PaymentWebhookData;
 }
 
 // Dispute related types
-interface DisputeData {
+export interface DisputeWebhookData {
 	id: string;
 	status: string;
 	amount: number;
 	currency: string;
 	created_at: number;
 	payment_id: string;
-	payment: ReceiptData;
+	payment: PaymentWebhookData;
 }
 
 // Webhook types with discriminated unions
@@ -99,7 +99,7 @@ export type WhopWebhookRequestBody =
 				| "membership.metadata_updated"
 				| "membership.cancel_at_period_end_changed"
 				| "membership.experience_claimed";
-			data: MembershipData;
+			data: MembershipWebhookData;
 	  }
 	| {
 			action:
@@ -107,27 +107,27 @@ export type WhopWebhookRequestBody =
 				| "payment.failed"
 				| "payment.pending"
 				| "payment.affiliate_reward_created";
-			data: ReceiptData;
+			data: PaymentWebhookData;
 	  }
 	| {
 			action: "refund.created" | "refund.updated";
-			data: RefundData;
+			data: RefundWebhookData;
 	  }
 	| {
 			action: "dispute.created" | "dispute.updated";
-			data: DisputeData;
+			data: DisputeWebhookData;
 	  }
 	| {
 			action:
 				| "app_membership.went_valid"
 				| "app_membership.went_invalid"
 				| "app_membership.cancel_at_period_end_changed";
-			data: MembershipData;
+			data: MembershipWebhookData;
 	  }
 	| {
 			action:
 				| "app_payment.succeeded"
 				| "app_payment.failed"
 				| "app_payment.pending";
-			data: ReceiptData;
+			data: PaymentWebhookData;
 	  };
