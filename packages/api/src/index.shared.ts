@@ -8,6 +8,12 @@ export {
 	type UserTokenPayload,
 	type VerifyUserTokenOptions,
 } from "@/verify-user-token";
+export type {
+	DisputeWebhookData,
+	MembershipWebhookData,
+	PaymentWebhookData,
+	RefundWebhookData,
+} from "@/webhook-types";
 export { makeWebhookValidator, type WhopWebhookRequestBody } from "@/webhooks";
 export type { WhopWebsocketClientBrowser } from "@/websockets/client.browser";
 export type {
