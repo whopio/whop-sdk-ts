@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.44
+
+### Patch Changes
+
+- 72f6565: Add bannerImage to company
+
 ## 0.0.43
 
 ### Patch Changes
