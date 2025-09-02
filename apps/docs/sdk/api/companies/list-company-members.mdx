@@ -1,0 +1,88 @@
+---
+title: List Company Members
+description: Fetches a company based on the ID
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.listCompanyMembers({
+	// The ID of the company to fetch.
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	first: 10,
+
+	last: 10,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	searchQuery: "some string",
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The members of the company.
+	members: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the member
+				id: "xxxxxxxxxxx",
+
+				// The profile of the member
+				profile: {
+					// The internal ID of the user.
+					id: "xxxxxxxxxxx",
+
+					// The name of the user from their Whop account.
+					name: "some string",
+
+					// The username of the user from their Whop account.
+					username: "some string",
+
+					// The user's profile picture
+					profilePicture: {
+						// The original URL of the attachment, such as a direct link to S3. This should
+						// never be displayed on the client and always passed to an Imgproxy transformer.
+						sourceUrl: "some string",
+					},
+
+					// Whether or not the user's phone is verified
+					phoneVerified: true,
+
+					// The city the user is from.
+					city: "some string",
+
+					// The country the user is from.
+					country: "some string",
+				},
+			},
+		],
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+		},
+
+		// The total number of items in this connection.
+		totalCount: 10,
+	},
+};
+
+```
