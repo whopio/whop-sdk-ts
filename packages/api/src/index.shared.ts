@@ -9,10 +9,10 @@ export {
 	type VerifyUserTokenOptions,
 } from "@/verify-user-token";
 export type {
-	DisputeData,
-	MembershipData,
-	ReceiptData,
-	RefundData,
+	DisputeWebhookData,
+	MembershipWebhookData,
+	PaymentWebhookData,
+	RefundWebhookData,
 } from "@/webhook-types";
 export { makeWebhookValidator, type WhopWebhookRequestBody } from "@/webhooks";
 export type { WhopWebsocketClientBrowser } from "@/websockets/client.browser";
