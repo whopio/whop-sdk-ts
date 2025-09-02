@@ -1,0 +1,118 @@
+---
+title: List Company Payments
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.listCompanyPayments({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+
+	filter: {
+		// A specific access pass.
+		accessPassIds: ["xxxxxxxxxxx"],
+
+		// The billing reason for the payment
+		billingReasons: [
+			"manual" /* Valid values: manual | one_time | subscription | subscription_create | subscription_cycle | subscription_update */,
+		],
+
+		// The currency of the payment.
+		currencies: [
+			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+		],
+
+		// Which way to order the results.
+		direction: "asc" /* Valid values: asc | desc */,
+
+		// To get all memberships created before this certain time.
+		endDate: 1716931200,
+
+		// How to order the results.
+		order: "created_at" /* Valid values: created_at | final_amount | paid_at */,
+
+		// How the payment was made (method).
+		paymentMethods: [
+			"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
+		],
+
+		// A specific plan.
+		planIds: ["xxxxxxxxxxx"],
+
+		// The text that is being searched.
+		query: "some string",
+
+		// To get all memberships created after this certain time.
+		startDate: 1716931200,
+
+		// The state of the payment.
+		statuses: [
+			"failed" /* Valid values: failed | partially_refunded | past_due | refunded | succeeded */,
+		],
+	},
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// All of a company's payments, with searching capabilities..
+	// Roles: owner, admin
+	receiptsV2: {
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+
+		// A list of nodes.
+		nodes: [
+			{
+				// The receipt ID
+				id: "xxxxxxxxxxx",
+
+				// The currency of the payment.
+				currency:
+					"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+				// The final amount of this receipt.
+				finalAmount: 10,
+
+				// The subtotal of the payment amount.
+				subtotal: 10,
+
+				// The datetime the receipt was created
+				createdAt: 1716931200,
+
+				// How much the receipt is for after fees
+				amountAfterFees: 10,
+			},
+		],
+	},
+};
+
+```
