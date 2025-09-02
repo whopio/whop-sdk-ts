@@ -5,4 +5,7 @@ fragment CompanyFragment on PublicCompany {
 	logo {
 		sourceUrl
 	}
+	bannerImage {
+		sourceUrl
+	}
 }
