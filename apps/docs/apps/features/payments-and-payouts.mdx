@@ -176,7 +176,7 @@ if (paymentButton instanceof HTMLButtonElement) {
 Set up a webhook route to handle payment events: 
 
 ```typescript app/api/webhook/route.ts
-import { makeWebhookValidator, type ReceiptData } from "@whop/api";
+import { makeWebhookValidator, type PaymentWebhookData } from "@whop/api";
 import { after } from "next/server";
 
 const validateWebhook = makeWebhookValidator({
@@ -196,7 +196,7 @@ export async function POST(request: Request) {
   return new Response("OK", { status: 200 });
 }
 
-async function handlePaymentSucceededWebhook(data: ReceiptData) {
+async function handlePaymentSucceededWebhook(data: PaymentWebhookData) {
   const { id, user_id, subtotal, amount_after_fees, metadata, ... } = data;
 
   // ...
