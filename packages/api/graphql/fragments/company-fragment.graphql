@@ -1,0 +1,8 @@
+fragment CompanyFragment on PublicCompany {
+	id
+	title
+	route
+	logo {
+		sourceUrl
+	}
+}

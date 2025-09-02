@@ -1,0 +1,37 @@
+---
+title: Get Company
+description: Fetches a company based on the ID
+---
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.getCompany({
+	// The ID of the company to fetch.
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The ID (tag) of the company.
+	id: "xxxxxxxxxxx",
+
+	// The title of the company.
+	title: "some string",
+
+	// The slug/route of the company on the Whop site.
+	route: "some string",
+
+	// The company's logo.
+	logo: {
+		// The original URL of the attachment, such as a direct link to S3. This should
+		// never be displayed on the client and always passed to an Imgproxy transformer.
+		sourceUrl: "some string",
+	},
+};
+
+```

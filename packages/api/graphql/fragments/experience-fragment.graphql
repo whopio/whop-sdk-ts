@@ -29,7 +29,6 @@ fragment PublicExperienceFragment on PublicExperience {
 		}
 	}
 	company {
-		id
-		title
+		...CompanyFragment
 	}
 }
