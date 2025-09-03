@@ -406,8 +406,8 @@ importers:
         specifier: 16.5.0
         version: 16.5.0
       graphql-ruby-client:
-        specifier: 1.14.6
-        version: 1.14.6(@apollo/client@3.13.8(@types/react@19.1.5)(graphql-ws@6.0.4(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(graphql@16.11.0)
+        specifier: 1.14.8
+        version: 1.14.8(@apollo/client@3.13.8(@types/react@19.1.5)(graphql-ws@6.0.4(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(graphql@16.11.0)
       ts-proto:
         specifier: 2.7.1
         version: 2.7.1
@@ -7262,8 +7262,8 @@ packages:
     peerDependencies:
       graphql: 14 - 16
 
-  graphql-ruby-client@1.14.6:
-    resolution: {integrity: sha512-/72m24nMeT7rlm8+tH9u5ECbLkVqJ2ovq7sWYibD7VwKNPXb/GtEMInb7obpyjLS/ijt1hjX7LUSKlRWj35cBw==}
+  graphql-ruby-client@1.14.8:
+    resolution: {integrity: sha512-lmLBDPWUute5QTli2ogRTXLFR9QSLRx5XKDOgYsY0xWpzy2k4Xbqs5jPBsm+aLOtXcDWWHcNLDeTQLhbJwY3Og==}
     engines: {node: '>=10'}
     hasBin: true
     peerDependencies:
@@ -18883,7 +18883,7 @@ snapshots:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
       graphql: 16.11.0
 
-  graphql-ruby-client@1.14.6(@apollo/client@3.13.8(@types/react@19.1.5)(graphql-ws@6.0.4(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(graphql@16.11.0):
+  graphql-ruby-client@1.14.8(@apollo/client@3.13.8(@types/react@19.1.5)(graphql-ws@6.0.4(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(graphql@16.11.0):
     dependencies:
       '@apollo/client': 3.13.8(@types/react@19.1.5)(graphql-ws@6.0.4(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       glob: 10.4.5
