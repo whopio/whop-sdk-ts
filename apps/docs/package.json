@@ -10,6 +10,6 @@
 		"mintlify": "4.2.94"
 	},
 	"dependencies": {
-		"biome": "^0.3.3"
+		"biome": "0.3.3"
 	}
 }
