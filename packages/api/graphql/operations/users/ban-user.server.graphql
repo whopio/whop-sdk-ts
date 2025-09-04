@@ -1,0 +1,3 @@
+mutation banUser($input: BanUserInput!) {
+	banUser(input: $input)
+}
