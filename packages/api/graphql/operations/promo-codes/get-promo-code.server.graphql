@@ -1,0 +1,5 @@
+query getPromoCode($code: String!, $planId: ID!) {
+	promoCode(code: $code, planId: $planId) {
+		...BasePublicPromoCode
+	}
+}
