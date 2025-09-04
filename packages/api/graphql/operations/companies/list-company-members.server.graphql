@@ -1,32 +1,45 @@
 query listCompanyMembers(
 	$companyId: ID!
-	$first: Int
-	$last: Int
 	$after: String
 	$before: String
-	$searchQuery: String
+	$direction: Direction
+	$first: Int
+	$last: Int
+	$order: MembersSortableColumns
+	$filters: MembersFiltersInput
 ) {
-	publicCompany(id: $companyId) {
+	company(id: $companyId) {
 		members(
-			first: $first
-			last: $last
 			after: $after
 			before: $before
-			query: $searchQuery
+			direction: $direction
+			first: $first
+			last: $last
+			order: $order
+			filters: $filters
 		) {
-			nodes {
-				id
-				profile {
-					...BasePublicProfileUser
-				}
-			}
+			totalCount
 			pageInfo {
 				startCursor
-				endCursor
-				hasNextPage
 				hasPreviousPage
+				hasNextPage
+				endCursor
 			}
-			totalCount
+			nodes {
+				id
+				createdAt
+				status
+				phone
+				user {
+					id
+					email
+					name
+					username
+				}
+				imageSrcset(style: s128) {
+					original
+				}
+			}
 		}
 	}
 }
