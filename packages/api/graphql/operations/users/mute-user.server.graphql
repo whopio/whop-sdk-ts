@@ -1,0 +1,3 @@
+mutation muteUser($input: CreateCompanyMutedUserInput!) {
+	createCompanyMutedUser(input: $input)
+}
