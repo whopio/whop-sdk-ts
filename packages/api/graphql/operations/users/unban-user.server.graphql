@@ -1,0 +1,3 @@
+mutation unbanUser($input: UnbanUserInput!) {
+	unbanUser(input: $input)
+}

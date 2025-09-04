@@ -1,0 +1,33 @@
+---
+title: Ban User
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.users.banUser({
+	// The ID of the access pass to ban the user from
+	accessPassId: "prod_XXXXXXXX",
+
+	// The custom reason for banning the user
+	customReason: "some string",
+
+	// The ID of the feed to delete messages from
+	deleteMessagesInFeedId: "xxxxxxxxxxx",
+
+	// The reason for banning the user
+	reason:
+		"botting_content_rewards" /* Valid values: botting_content_rewards | botting_negative_reviews | control_center_blocked_country | harassment | other | spamming */,
+
+	// The ID of the user to ban
+	userId: "user_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = true;
+
+```
