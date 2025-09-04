@@ -1,0 +1,3 @@
+mutation unmuteUser($input: DeleteCompanyMutedUserInput!) {
+	deleteCompanyMutedUser(input: $input)
+}
