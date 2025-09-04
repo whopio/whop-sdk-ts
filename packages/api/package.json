@@ -1,6 +1,6 @@
 {
 	"name": "@whop/api",
-	"version": "0.0.45",
+	"version": "0.0.46",
 	"description": "Whop API client",
 	"repository": {
 		"type": "git",
