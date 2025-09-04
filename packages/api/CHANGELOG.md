@@ -1,5 +1,14 @@
 # @whop/api
 
+## 0.0.45
+
+### Patch Changes
+
+- 24ccb31: Add companies.listCompanyMembers query
+- 826c782: Add businessType and industryType to getCompany query
+- 1469914: Add userStat to getUser
+- 188953c: fix(deps): pin dependencies
+
 ## 0.0.44
 
 ### Patch Changes

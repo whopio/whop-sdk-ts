@@ -1,5 +1,16 @@
 # @whop/react-native
 
+## 0.0.16
+
+### Patch Changes
+
+- 188953c: fix(deps): pin dependencies
+- Updated dependencies [24ccb31]
+- Updated dependencies [826c782]
+- Updated dependencies [1469914]
+- Updated dependencies [188953c]
+  - @whop/api@0.0.45
+
 ## 0.0.15
 
 ### Patch Changes
