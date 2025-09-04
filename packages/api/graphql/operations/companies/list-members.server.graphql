@@ -1,0 +1,45 @@
+query listMembers(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$direction: Direction
+	$first: Int
+	$last: Int
+	$order: MembersSortableColumns
+	$filters: MembersFiltersInput
+) {
+	company(id: $companyId) {
+		members(
+			after: $after
+			before: $before
+			direction: $direction
+			first: $first
+			last: $last
+			order: $order
+			filters: $filters
+		) {
+			totalCount
+			pageInfo {
+				startCursor
+				hasPreviousPage
+				hasNextPage
+				endCursor
+			}
+			nodes {
+				id
+				createdAt
+				status
+				phone
+				user {
+					id
+					email
+					name
+					username
+				}
+				imageSrcset(style: s128) {
+					original
+				}
+			}
+		}
+	}
+}
