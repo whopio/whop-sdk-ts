@@ -1,15 +1,5 @@
 query getPromoCode($code: String!, $planId: ID!) {
 	promoCode(code: $code, planId: $planId) {
-		id
-		code
-		createdAt
-		promoType
-		baseCurrency
-		duration
-		amountOff
-		discountOff
-		existingMembershipsOnly
-		isPopupPromo
-		numberOfIntervals
+		...BasePublicPromoCode
 	}
 }
