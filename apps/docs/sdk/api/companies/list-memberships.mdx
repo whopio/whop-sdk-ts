@@ -107,12 +107,6 @@ const response = {
 				// The epoch timestamp of when the membership was created.
 				createdAt: 1716931200,
 
-				// The epoch timestamp of when the membership is set to expire.
-				expiresAt: 1716931200,
-
-				// The epoch timestamp of when the customer initiated a cancellation.
-				canceledAt: 1716931200,
-
 				// The total amount spent on the membership.
 				totalSpend: 10,
 
@@ -142,6 +136,21 @@ const response = {
 				plan: {
 					// The internal ID of the plan.
 					id: "xxxxxxxxxxx",
+				},
+
+				// The access pass the membership is connected to.
+				accessPass: {
+					// The internal ID of the public access pass.
+					id: "xxxxxxxxxxx",
+
+					// The title of the access pass. Use for Whop 4.0.
+					title: "some string",
+				},
+
+				// The type of promo code the membership is connected to.
+				promoCode: {
+					// The specific code used to apply the promo at checkout.
+					code: "some string",
 				},
 			},
 		],
