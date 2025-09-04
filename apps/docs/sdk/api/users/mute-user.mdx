@@ -1,0 +1,23 @@
+---
+title: Mute User
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.users.muteUser({
+	// The time the user is muted until, in milliseconds. If not provided, the user will be muted indefinitely
+	mutedUntil: 1716931200,
+
+	// The ID of the user to mute
+	userId: "user_XXXXXXXX" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = true;
+
+```
