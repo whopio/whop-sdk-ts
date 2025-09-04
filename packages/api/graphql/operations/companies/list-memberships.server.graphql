@@ -29,8 +29,6 @@ query listMemberships(
 				id
 				status
 				createdAt
-				expiresAt
-				canceledAt
 				totalSpend
 				member {
 					id
@@ -43,6 +41,13 @@ query listMemberships(
 				}
 				plan {
 					id
+				}
+				accessPass {
+					id
+					title
+				}
+				promoCode {
+					code
 				}
 			}
 		}
