@@ -29,7 +29,10 @@ query listMemberships(
 				id
 				status
 				createdAt
+				expiresAt
+				canceledAt
 				totalSpend
+				cancelationReason
 				member {
 					id
 					name
