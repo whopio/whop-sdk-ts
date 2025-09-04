@@ -27,10 +27,20 @@ query listCompanyEntries(
 					createdAt
 					updatedAtMs
 					user {
-						...BasePublicProfileUser
+						id
+						name
+						username
+						profilePicture {
+							sourceUrl
+						}
 					}
 					accessPass {
-						...AccessPassFragment
+						id
+						title
+						route
+						logo {
+							sourceUrl
+						}
 					}
 				}
 			}
