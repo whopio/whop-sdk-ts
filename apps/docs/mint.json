@@ -326,6 +326,15 @@
 						"sdk/api/users/get-user-ledger-account",
 						"sdk/api/users/get-user"
 					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"sdk/api/webhooks/create-webhook",
+						"sdk/api/webhooks/delete-webhook",
+						"sdk/api/webhooks/test-webhook",
+						"sdk/api/webhooks/update-webhook"
+					]
 				}
 			]
 		},

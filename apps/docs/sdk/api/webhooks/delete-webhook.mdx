@@ -1,0 +1,20 @@
+---
+title: Delete Webhook
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.webhooks.deleteWebhook({
+	// The ID of the webhook to delete.
+	id: "xxxxxxxxxxx" /* Required! */,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = true;
+
+```
