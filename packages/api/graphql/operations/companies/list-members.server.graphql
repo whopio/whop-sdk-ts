@@ -1,4 +1,4 @@
-query listCompanyMembers(
+query listMembers(
 	$companyId: ID!
 	$after: String
 	$before: String
