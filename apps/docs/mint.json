@@ -320,6 +320,14 @@
 					]
 				},
 				{
+					"group": "Promo Codes",
+					"pages": [
+						"sdk/api/promo-codes/create-promo-code",
+						"sdk/api/promo-codes/delete-promo-code",
+						"sdk/api/promo-codes/get-promo-code"
+					]
+				},
+				{
 					"group": "Users",
 					"pages": [
 						"sdk/api/users/get-current-user",
