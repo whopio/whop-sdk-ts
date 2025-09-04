@@ -1,5 +1,15 @@
 # @whop/api
 
+## 0.0.46
+
+### Patch Changes
+
+- ad17bd5: Add getPromoCode query and (create/delete)PromoCode mutations
+- b8b3f70: Add mute/unmute user mutations
+- 654a46e: Add banUser and unbanUser mutations
+- acd7b46: Add create/update/test/delete webhook mutations
+- fe73ed8: Add listMemberships query
+
 ## 0.0.45
 
 ### Patch Changes
