@@ -1,7 +1,7 @@
 {
 	"name": "@whop/framer",
 	"description": "Framer SDK for using Whop components in Framer",
-	"version": "0.0.20",
+	"version": "0.0.21",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
