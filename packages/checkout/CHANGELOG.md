@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.40
+
+### Patch Changes
+
+- 188953c: fix(deps): pin dependencies
+
 ## 0.0.39
 
 ### Patch Changes

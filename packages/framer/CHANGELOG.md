@@ -1,5 +1,13 @@
 # @whop/framer
 
+## 0.0.21
+
+### Patch Changes
+
+- 188953c: fix(deps): pin dependencies
+- Updated dependencies [188953c]
+  - @whop/checkout@0.0.40
+
 ## 0.0.20
 
 ### Patch Changes
