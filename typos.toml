@@ -16,4 +16,5 @@ extend-ignore-identifiers-re = [
 [default.extend-words]
 # Don't correct the word "whop"
 whop = "whop"
+vas = "vas"
 
