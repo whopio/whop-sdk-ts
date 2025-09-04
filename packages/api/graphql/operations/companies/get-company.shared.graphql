@@ -1,7 +1,7 @@
 query getCompany($companyId: ID!) {
 	company: publicCompany(id: $companyId) {
 		...CompanyFragment
-		businessType
 		industryType
+		businessType
 	}
 }
