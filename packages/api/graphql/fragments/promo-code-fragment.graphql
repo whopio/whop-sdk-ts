@@ -1,0 +1,26 @@
+fragment BasePromoCode on PromoCode {
+	id
+	code
+	createdAt
+	promoType
+	baseCurrency
+	duration
+	amountOff
+	discountOff
+	existingMembershipsOnly
+	numberOfIntervals
+}
+
+fragment BasePublicPromoCode on PublicPromoCode {
+	id
+	code
+	createdAt
+	promoType
+	baseCurrency
+	duration
+	amountOff
+	discountOff
+	existingMembershipsOnly
+	numberOfIntervals
+	isPopupPromo
+}

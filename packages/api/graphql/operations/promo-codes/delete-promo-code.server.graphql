@@ -1,0 +1,3 @@
+mutation deletePromoCode($input: DeletePromoCodeInput!) {
+	deletePromoCode(input: $input)
+}
