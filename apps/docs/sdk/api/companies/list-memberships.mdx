@@ -1,0 +1,151 @@
+---
+title: List Memberships
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.listMemberships({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	direction: "asc" /* Valid values: asc | desc */,
+
+	first: 10,
+
+	last: 10,
+
+	order:
+		"canceled_at" /* Valid values: canceled_at | created_at | date_joined | id | status | total_spend */,
+
+	filters: {
+		// The access pass IDs to filter the memberships by
+		accessPassIds: ["xxxxxxxxxxx"],
+
+		// The access pass types to filter the memberships by
+		accessPassTypes: [
+			"api_only" /* Valid values: api_only | app | experience_upsell | regular */,
+		],
+
+		// The cancelation reasons to filter the memberships by
+		cancelationReasons: [
+			"bad_experience" /* Valid values: bad_experience | missing_features | other | switching | technical_issues | testing | too_expensive */,
+		],
+
+		// The end date to filter the memberships by
+		endDate: 1716931200,
+
+		// Whether the memberships have a cancelation reason
+		hasCancelationReason: true,
+
+		// The header filter to filter the memberships by
+		headerFilter: "active" /* Valid values: active | churned */,
+
+		// The membership status to filter the memberships by
+		membershipStatus: "active" /* Valid values: active | inactive */,
+
+		// The plan IDs to filter the memberships by
+		planIds: ["xxxxxxxxxxx"],
+
+		// The promo code IDs to filter the memberships by
+		promoCodeIds: ["xxxxxxxxxxx"],
+
+		// The start date to filter the memberships by
+		startDate: 1716931200,
+
+		// The statuses to filter the memberships by
+		statuses: [
+			"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+		],
+
+		// The tracking link IDs to filter the memberships by
+		trackingLinkIds: ["xxxxxxxxxxx"],
+	},
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The memberships for the company
+	memberships: {
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+
+		// A list of nodes.
+		nodes: [
+			{
+				// The internal ID of the membership.
+				id: "xxxxxxxxxxx",
+
+				// The state of the membership.
+				status:
+					"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+
+				// The epoch timestamp of when the membership was created.
+				createdAt: 1716931200,
+
+				// The epoch timestamp of when the membership is set to expire.
+				expiresAt: 1716931200,
+
+				// The epoch timestamp of when the customer initiated a cancellation.
+				canceledAt: 1716931200,
+
+				// The total amount spent on the membership.
+				totalSpend: 10,
+
+				// The member of the membership.
+				member: {
+					// The internal ID of the user account for the member.
+					id: "xxxxxxxxxxx",
+
+					// The written name of the member.
+					name: "some string",
+
+					// The whop username of the member.
+					username: "some string",
+
+					// The digital mailing address of the member.
+					email: "some string",
+
+					// The user's profile picture
+					profilePicture: {
+						// The original URL of the attachment, such as a direct link to S3. This should
+						// never be displayed on the client and always passed to an Imgproxy transformer.
+						sourceUrl: "some string",
+					},
+				},
+
+				// The plan the membership is connected to.
+				plan: {
+					// The internal ID of the plan.
+					id: "xxxxxxxxxxx",
+				},
+			},
+		],
+	},
+};
+
+```
