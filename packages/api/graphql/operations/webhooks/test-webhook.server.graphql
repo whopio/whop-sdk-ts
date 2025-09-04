@@ -1,0 +1,7 @@
+mutation testWebhook($input: TestWebhookV2Input!) {
+	testWebhookV2(input: $input) {
+		body
+		status
+		success
+	}
+}

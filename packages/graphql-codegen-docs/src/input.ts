@@ -584,6 +584,8 @@ function parseScalarTypeDefinition(node: ScalarTypeDefinitionNode): BaseType {
 		case "BigInt":
 			return new PrimitiveType("bigint");
 		case "File":
+		case "UrlString":
+		case "StringFloat":
 			return new PrimitiveType("string");
 		default: {
 			const regularScalar = parsePrimitiveType(node.name.value, null);

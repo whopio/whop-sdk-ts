@@ -17,4 +17,5 @@ extend-ignore-identifiers-re = [
 # Don't correct the word "whop"
 whop = "whop"
 vas = "vas"
+cancelations = "cancelations"
 

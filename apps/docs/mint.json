@@ -320,11 +320,32 @@
 					]
 				},
 				{
+					"group": "Promo Codes",
+					"pages": [
+						"sdk/api/promo-codes/create-promo-code",
+						"sdk/api/promo-codes/delete-promo-code",
+						"sdk/api/promo-codes/get-promo-code"
+					]
+				},
+				{
 					"group": "Users",
 					"pages": [
+						"sdk/api/users/ban-user",
 						"sdk/api/users/get-current-user",
 						"sdk/api/users/get-user-ledger-account",
-						"sdk/api/users/get-user"
+						"sdk/api/users/get-user",
+						"sdk/api/users/mute-user",
+						"sdk/api/users/unban-user",
+						"sdk/api/users/unmute-user"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"sdk/api/webhooks/create-webhook",
+						"sdk/api/webhooks/delete-webhook",
+						"sdk/api/webhooks/test-webhook",
+						"sdk/api/webhooks/update-webhook"
 					]
 				}
 			]
