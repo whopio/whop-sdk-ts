@@ -1,0 +1,58 @@
+query listMemberships(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$direction: Direction
+	$first: Int
+	$last: Int
+	$order: MembershipsSortableColumns
+	$filters: MembershipsFiltersInput
+) {
+	company(id: $companyId) {
+		memberships(
+			after: $after
+			before: $before
+			direction: $direction
+			first: $first
+			last: $last
+			order: $order
+			filters: $filters
+		) {
+			totalCount
+			pageInfo {
+				startCursor
+				hasPreviousPage
+				hasNextPage
+				endCursor
+			}
+			nodes {
+				id
+				status
+				createdAt
+				expiresAt
+				canceledAt
+				totalSpend
+				cancelationReason
+				member {
+					id
+					name
+					username
+					email
+					profilePicture {
+						sourceUrl
+					}
+				}
+				plan {
+					id
+				}
+				accessPass {
+					id
+					title
+				}
+				promoCode {
+					code
+				}
+			}
+		}
+	}
+}
