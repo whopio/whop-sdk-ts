@@ -1,0 +1,23 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"cache": true,
+			"dependsOn": ["^build"],
+			"env": [
+				"AUTH_SECRET",
+				"WHOP_API_KEY",
+				"WHOP_WEBHOOK_SECRET",
+				"NEXT_PUBLIC_WHOP_AGENT_USER_ID",
+				"NEXT_PUBLIC_WHOP_APP_ID",
+				"NEXT_PUBLIC_WHOP_COMPANY_ID"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["^build"]
+		}
+	}
+}
