@@ -1,0 +1,10 @@
+fragment BaseWebhook on Webhook {
+	id
+	url
+	apiVersion
+	createdAt
+	enabled
+	events
+	resourceId
+	webhookSecret
+}
