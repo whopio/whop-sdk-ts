@@ -1,0 +1,92 @@
+---
+title: Create Promo Code
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.promoCodes.createPromoCode({
+	// The access pass to lock the promo code to, if any.
+	accessPassId: "prod_XXXXXXXX",
+
+	// The amount off (% or flat amount) for the promo.
+	amountOff: "Error(Unknown scalar type: StringFloat)" /* Required! */,
+
+	// The monetary currency of the promo code.
+	baseCurrency:
+		"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */ /* Required! */,
+
+	// Restricts promo use to only users who have churned from the company before.
+	churnedUsersOnly: true,
+
+	// The specific code used to apply the promo at checkout.
+	code: "some string" /* Required! */,
+
+	// Whether this promo code is for existing memberships only (cancelations)
+	existingMembershipsOnly: true,
+
+	// The date/time of when the promo expires.
+	expirationDatetime: 1716931200,
+
+	// Restricts promo use to only users who have never purchased from the company before.
+	newUsersOnly: true /* Required! */,
+
+	// The number of billing cycles the promo is applied for.
+	numberOfIntervals: 10 /* Required! */,
+
+	// Restricts promo use to only be applied once per customer.
+	onePerCustomer: true,
+
+	// The IDs of the plans that the affiliate can refer.
+	planIds: ["xxxxxxxxxxx"],
+
+	// The type (% or flat amount) of the promo.
+	promoType:
+		"flat_amount" /* Valid values: flat_amount | percentage */ /* Required! */,
+
+	// The quantity limit on the number of uses.
+	stock: 10,
+
+	// Whether or not the promo code should have unlimited stock.
+	unlimitedStock: true,
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The ID of the promo.
+	id: "xxxxxxxxxxx",
+
+	// The specific code used to apply the promo at checkout.
+	code: "some string",
+
+	// The timestamp of when the promo was created.
+	createdAt: 1716931200,
+
+	// The type (% or flat amount) of the promo.
+	promoType: "flat_amount" /* Valid values: flat_amount | percentage */,
+
+	// The monetary currency of the promo code.
+	baseCurrency:
+		"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+	// The duration of the promo.
+	duration: "forever" /* Valid values: forever | once | repeating */,
+
+	// The amount off (% or flat amount) for the promo.
+	amountOff: 10,
+
+	// The amount off formatted for display.
+	discountOff: "some string",
+
+	// Restricts promo use to only be applied to already purchased memberships.
+	existingMembershipsOnly: true,
+
+	// The number of billing cycles the promo is applied for.
+	numberOfIntervals: 10,
+};
+
+```
