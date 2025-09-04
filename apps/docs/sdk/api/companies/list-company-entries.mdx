@@ -1,0 +1,141 @@
+---
+title: List Company Entries
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.listCompanyEntries({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+
+	statuses: ["any" /* Valid values: any | approved | denied | pending */],
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The creator dashboard table for the company
+	companyEntries: {
+		// Entries
+		entries: {
+			// The total number of items in this connection.
+			totalCount: 10,
+
+			// Information to aid in pagination.
+			pageInfo: {
+				// When paginating backwards, the cursor to continue.
+				startCursor: "some string",
+
+				// When paginating backwards, are there more items?
+				hasPreviousPage: true,
+
+				// When paginating forwards, are there more items?
+				hasNextPage: true,
+
+				// When paginating forwards, the cursor to continue.
+				endCursor: "some string",
+			},
+
+			// A list of nodes.
+			nodes: [
+				{
+					// The internal ID of the entry.
+					id: "xxxxxxxxxxx",
+
+					// The name of the raffle/waitlist.
+					name: "some string",
+
+					// The status of the entry.
+					status: "any" /* Valid values: any | approved | denied | pending */,
+
+					// Whether the entry is a waitlist or raffle entry.
+					entryType: "some string",
+
+					// Whether or not the entry has been selected.
+					selected: true,
+
+					// When the entry was created.
+					createdAt: 1716931200,
+
+					// The timestamp (in milliseconds since epoch) of when the object was last updated
+					updatedAtMs: "9999999",
+
+					// The user who created the entry.
+					user: {
+						// The internal ID of the user.
+						id: "xxxxxxxxxxx",
+
+						// The name of the user from their Whop account.
+						name: "some string",
+
+						// The username of the user from their Whop account.
+						username: "some string",
+
+						// The user's profile picture
+						profilePicture: {
+							// The original URL of the attachment, such as a direct link to S3. This should
+							// never be displayed on the client and always passed to an Imgproxy transformer.
+							sourceUrl: "some string",
+						},
+
+						// Whether or not the user's phone is verified
+						phoneVerified: true,
+
+						// The city the user is from.
+						city: "some string",
+
+						// The country the user is from.
+						country: "some string",
+					},
+
+					// The access pass tied to this entry, if there is one.
+					accessPass: {
+						// The internal ID of the public access pass.
+						id: "xxxxxxxxxxx",
+
+						// The title of the access pass. Use for Whop 4.0.
+						title: "some string",
+
+						// A short description of what the company offers or does.
+						shortenedDescription: "some string",
+
+						// Whether this product is Whop verified.
+						verified: true,
+
+						// This access pass will/will not be displayed publicly.
+						visibility:
+							"archived" /* Valid values: archived | hidden | quick_link | visible */,
+
+						// The route of the access pass.
+						route: "some string",
+
+						// The number of active users for this access pass.
+						activeUsersCount: 10,
+
+						// The logo for the access pass.
+						logo: {
+							// The original URL of the attachment, such as a direct link to S3. This should
+							// never be displayed on the client and always passed to an Imgproxy transformer.
+							sourceUrl: "some string",
+						},
+					},
+				},
+			],
+		},
+	},
+};
+
+```
