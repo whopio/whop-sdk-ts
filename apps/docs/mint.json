@@ -328,6 +328,15 @@
 						"sdk/api/users/mute-user",
 						"sdk/api/users/unmute-user"
 					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"sdk/api/webhooks/create-webhook",
+						"sdk/api/webhooks/delete-webhook",
+						"sdk/api/webhooks/test-webhook",
+						"sdk/api/webhooks/update-webhook"
+					]
 				}
 			]
 		},

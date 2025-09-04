@@ -1,0 +1,5 @@
+mutation createWebhook($input: CreateWebhookInput!) {
+	createWebhook(input: $input) {
+		...BaseWebhook
+	}
+}
