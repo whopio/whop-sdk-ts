@@ -1,0 +1,39 @@
+query listCompanyEntries(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+	$statuses: [EntryStatus!]
+) {
+	company(id: $companyId) {
+		companyEntries: creatorDashboardTable(
+			tableFilters: { statuses: $statuses }
+		) {
+			entries(after: $after, before: $before, first: $first, last: $last) {
+				totalCount
+				pageInfo {
+					startCursor
+					hasPreviousPage
+					hasNextPage
+					endCursor
+				}
+				nodes {
+					id
+					name
+					status
+					entryType
+					selected
+					createdAt
+					updatedAtMs
+					user {
+						...BasePublicProfileUser
+					}
+					accessPass {
+						...AccessPassFragment
+					}
+				}
+			}
+		}
+	}
+}
