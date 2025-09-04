@@ -322,9 +322,11 @@
 				{
 					"group": "Users",
 					"pages": [
+						"sdk/api/users/ban-user",
 						"sdk/api/users/get-current-user",
 						"sdk/api/users/get-user-ledger-account",
 						"sdk/api/users/get-user",
+						"sdk/api/users/unban-user",
 						"sdk/api/users/mute-user",
 						"sdk/api/users/unmute-user"
 					]
