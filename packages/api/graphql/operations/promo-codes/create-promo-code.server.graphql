@@ -1,0 +1,5 @@
+mutation createPromoCode($input: CreatePromoCodeInput!) {
+	createPromoCode(input: $input) {
+		id
+	}
+}
