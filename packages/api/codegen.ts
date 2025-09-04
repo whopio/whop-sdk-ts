@@ -46,6 +46,7 @@ const graphqlCodegenConfig = {
 	strictScalars: true,
 	preResolveTypes: true,
 	declarationKind: "interface",
+	arrayInputCoercion: false,
 	scalars: {
 		BigInt: "string",
 		File: "string",
