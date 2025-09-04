@@ -1,0 +1,109 @@
+---
+title: List Company Memberships
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.listCompanyMemberships({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+
+	statuses: [
+		"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+	],
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// The creator dashboard table for the company
+	companyMemberships: {
+		// Memberships
+		memberships: {
+			// The total number of items in this connection.
+			totalCount: 10,
+
+			// Information to aid in pagination.
+			pageInfo: {
+				// When paginating forwards, the cursor to continue.
+				endCursor: "some string",
+
+				// When paginating forwards, are there more items?
+				hasNextPage: true,
+
+				// When paginating backwards, are there more items?
+				hasPreviousPage: true,
+
+				// When paginating backwards, the cursor to continue.
+				startCursor: "some string",
+			},
+
+			// A list of nodes.
+			nodes: [
+				{
+					// The internal ID of the membership.
+					id: "xxxxxxxxxxx",
+
+					// The state of the membership.
+					status:
+						"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
+
+					// The epoch timestamp of when the membership was created.
+					createdAt: 1716931200,
+
+					// The epoch timestamp of when the membership is set to expire.
+					expiresAt: 1716931200,
+
+					// The epoch timestamp of when the customer initiated a cancellation.
+					canceledAt: 1716931200,
+
+					// The total amount spent on the membership.
+					totalSpend: 10,
+
+					// The member of the membership.
+					member: {
+						// The internal ID of the user account for the member.
+						id: "xxxxxxxxxxx",
+
+						// The written name of the member.
+						name: "some string",
+
+						// The whop username of the member.
+						username: "some string",
+
+						// The digital mailing address of the member.
+						email: "some string",
+
+						// The user's profile picture
+						profilePicture: {
+							// The original URL of the attachment, such as a direct link to S3. This should
+							// never be displayed on the client and always passed to an Imgproxy transformer.
+							sourceUrl: "some string",
+						},
+					},
+
+					// The plan the membership is connected to.
+					plan: {
+						// The internal ID of the plan.
+						id: "xxxxxxxxxxx",
+					},
+				},
+			],
+		},
+	},
+};
+
+```
