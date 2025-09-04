@@ -107,8 +107,17 @@ const response = {
 				// The epoch timestamp of when the membership was created.
 				createdAt: 1716931200,
 
+				// The epoch timestamp of when the membership is set to expire.
+				expiresAt: 1716931200,
+
+				// The epoch timestamp of when the customer initiated a cancellation.
+				canceledAt: 1716931200,
+
 				// The total amount spent on the membership.
 				totalSpend: 10,
+
+				// The reason that the member canceled the membership (filled out by the member).
+				cancelationReason: "some string",
 
 				// The member of the membership.
 				member: {
