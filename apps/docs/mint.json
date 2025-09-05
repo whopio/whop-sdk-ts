@@ -345,6 +345,8 @@
 					"pages": [
 						"sdk/api/webhooks/create-webhook",
 						"sdk/api/webhooks/delete-webhook",
+						"sdk/api/webhooks/get-webhook",
+						"sdk/api/webhooks/list-webhooks",
 						"sdk/api/webhooks/test-webhook",
 						"sdk/api/webhooks/update-webhook"
 					]
