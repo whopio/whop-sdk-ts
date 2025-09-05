@@ -1,0 +1,58 @@
+query listWaitlistEntries(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$direction: Direction
+	$first: Int
+	$last: Int
+	$order: EntriesSortableColumns
+	$filters: EntriesFiltersInput
+) {
+	company(id: $companyId) {
+		entries(
+			after: $after
+			before: $before
+			direction: $direction
+			first: $first
+			last: $last
+			order: $order
+			filters: $filters
+		) {
+			totalCount
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			nodes {
+				id
+				name
+				status
+				createdAt
+				updatedAtMs
+				user {
+					id
+					name
+					username
+					profilePicture {
+						sourceUrl
+					}
+				}
+				plan {
+					id
+					title
+				}
+				accessPass {
+					id
+					title
+				}
+				customFieldResponses {
+					id
+					question
+					answer
+				}
+			}
+		}
+	}
+}
