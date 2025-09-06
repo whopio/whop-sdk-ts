@@ -1,0 +1,37 @@
+query listAccessPasses(
+	$companyId: ID!
+	$visibility: VisibilityFilter
+	$order: AccessPassOrder
+	$last: Int
+	$first: Int
+	$direction: Direction
+	$conditions: [AccessPassConditions!]
+	$before: String
+	$after: String
+	$accessPassTypes: [AccessPassTypes!]
+) {
+	company(id: $companyId) {
+		accessPasses: accessPassesV2(
+			visibility: $visibility
+			order: $order
+			last: $last
+			first: $first
+			direction: $direction
+			conditions: $conditions
+			before: $before
+			after: $after
+			accessPassTypes: $accessPassTypes
+		) {
+			totalCount
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			nodes {
+				...BaseAccessPass
+			}
+		}
+	}
+}
