@@ -251,9 +251,9 @@
 						"sdk/api/companies/get-company-authorized-users",
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-company",
-						"sdk/api/companies/get-waitlist-entries-for-company",
 						"sdk/api/companies/list-members",
-						"sdk/api/companies/list-memberships"
+						"sdk/api/companies/list-memberships",
+						"sdk/api/companies/list-waitlist-entries"
 					]
 				},
 				{
