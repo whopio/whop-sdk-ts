@@ -1,0 +1,31 @@
+query listAffiliates(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$direction: Direction
+	$first: Int
+	$last: Int
+	$order: AffiliatesSortableColumns
+) {
+	company(id: $companyId) {
+		affiliates(
+			after: $after
+			before: $before
+			direction: $direction
+			first: $first
+			last: $last
+			order: $order
+		) {
+			totalCount
+			pageInfo {
+				startCursor
+				hasPreviousPage
+				hasNextPage
+				endCursor
+			}
+			nodes {
+				...AffiliateWithUser
+			}
+		}
+	}
+}

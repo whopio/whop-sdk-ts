@@ -1,0 +1,5 @@
+mutation updateAffiliate($input: UpdateAffiliateInput!) {
+	updateAffiliate(input: $input) {
+		...BaseAffiliate
+	}
+}
