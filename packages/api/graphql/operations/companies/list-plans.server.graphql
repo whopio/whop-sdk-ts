@@ -1,0 +1,37 @@
+query listPlans(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$filter: PlanFilters
+	$first: Int
+	$last: Int
+) {
+	company(id: $companyId) {
+		plans(
+			after: $after
+			before: $before
+			filter: $filter
+			first: $first
+			last: $last
+		) {
+			totalCount
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			nodes {
+				...BasePlan
+				accessPass {
+					id
+					title
+					route
+					logo {
+						sourceUrl
+					}
+				}
+			}
+		}
+	}
+}
