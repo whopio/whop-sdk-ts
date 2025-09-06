@@ -1,0 +1,114 @@
+---
+title: List Access Passes
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.accessPasses.listAccessPasses({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	visibility:
+		"all" /* Valid values: all | archived | hidden | not_archived | not_quick_link | quick_link | visible */,
+
+	order:
+		"active_memberships_count" /* Valid values: active_memberships_count | created_at | usd_gmv | usd_gmv_30_days */,
+
+	last: 10,
+
+	first: 10,
+
+	direction: "asc" /* Valid values: asc | desc */,
+
+	conditions: ["has_plans" /* Valid values: has_plans */],
+
+	before: "pageInfo.startCursor",
+
+	after: "pageInfo.endCursor",
+
+	accessPassTypes: [
+		"api_only" /* Valid values: api_only | app | experience_upsell | regular */,
+	],
+});
+
+```
+
+Example output:
+
+```typescript
+const response = {
+	// All of the access passes connected to the company.
+	accessPasses: {
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+		},
+
+		// A list of nodes.
+		nodes: [
+			{
+				// The internal ID of the public access pass.
+				id: "xxxxxxxxxxx",
+
+				// When the public access pass was created.
+				createdAt: 1716931200,
+
+				// The route of the access pass.
+				route: "some string",
+
+				// The title of the access pass. Use for Whop 4.0.
+				title: "some string",
+
+				// The headline of the access pass.
+				headline: "some string",
+
+				// A short description of what the company offers or does.
+				shortenedDescription: "some string",
+
+				// Whether this product is Whop verified.
+				verified: true,
+
+				// This access pass will/will not be displayed publicly.
+				visibility:
+					"archived" /* Valid values: archived | hidden | quick_link | visible */,
+
+				// The number of active users for this access pass.
+				activeUsersCount: 10,
+
+				// The average of all reviews for this access pass.
+				reviewsAverage: 10,
+
+				// The logo for the access pass.
+				logo: {
+					// The original URL of the attachment, such as a direct link to S3. This should
+					// never be displayed on the client and always passed to an Imgproxy transformer.
+					sourceUrl: "some string",
+				},
+
+				// The banner image for the access pass.
+				bannerImage: {
+					// The original URL of the attachment, such as a direct link to S3. This should
+					// never be displayed on the client and always passed to an Imgproxy transformer.
+					sourceUrl: "some string",
+				},
+			},
+		],
+	},
+};
+
+```

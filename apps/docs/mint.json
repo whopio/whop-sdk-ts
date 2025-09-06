@@ -223,7 +223,10 @@
 			"pages": [
 				{
 					"group": "Access Passes",
-					"pages": ["sdk/api/access-passes/get-access-pass"]
+					"pages": [
+						"sdk/api/access-passes/get-access-pass",
+						"sdk/api/access-passes/list-access-passes"
+					]
 				},
 				{
 					"group": "Access",
