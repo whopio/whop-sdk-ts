@@ -25,7 +25,4 @@ fragment BaseAccessPass on AccessPass {
 	logo {
 		sourceUrl
 	}
-	bannerImage {
-		sourceUrl
-	}
 }
