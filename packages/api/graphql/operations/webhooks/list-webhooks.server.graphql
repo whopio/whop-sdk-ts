@@ -1,0 +1,7 @@
+query listWebhooks($companyId: ID!) {
+	company(id: $companyId) {
+		webhooks {
+			...BaseWebhook
+		}
+	}
+}

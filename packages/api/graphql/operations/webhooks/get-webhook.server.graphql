@@ -1,0 +1,7 @@
+query getWebhook($webhookId: ID!, $companyId: ID!) {
+	company(id: $companyId) {
+		webhook(id: $webhookId) {
+			...BaseWebhook
+		}
+	}
+}
