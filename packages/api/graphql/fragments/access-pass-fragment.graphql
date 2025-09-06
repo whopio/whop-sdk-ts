@@ -10,3 +10,19 @@ fragment AccessPassFragment on PublicAccessPass {
 		sourceUrl
 	}
 }
+
+fragment BaseAccessPass on AccessPass {
+	id
+	createdAt
+	route
+	title
+	headline
+	shortenedDescription
+	verified
+	visibility
+	activeUsersCount
+	reviewsAverage
+	logo {
+		sourceUrl
+	}
+}
