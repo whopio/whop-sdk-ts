@@ -223,10 +223,7 @@
 			"pages": [
 				{
 					"group": "Access Passes",
-					"pages": [
-						"sdk/api/access-passes/get-access-pass",
-						"sdk/api/access-passes/list-access-passes"
-					]
+					"pages": ["sdk/api/access-passes/get-access-pass"]
 				},
 				{
 					"group": "Access",
@@ -255,6 +252,7 @@
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-company",
 						"sdk/api/companies/get-waitlist-entries-for-company",
+						"sdk/api/companies/list-access-passes",
 						"sdk/api/companies/list-members",
 						"sdk/api/companies/list-memberships"
 					]
