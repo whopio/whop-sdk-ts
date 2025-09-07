@@ -251,10 +251,11 @@
 						"sdk/api/companies/get-company-authorized-users",
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-company",
-						"sdk/api/companies/get-waitlist-entries-for-company",
 						"sdk/api/companies/list-access-passes",
 						"sdk/api/companies/list-members",
-						"sdk/api/companies/list-memberships"
+						"sdk/api/companies/list-memberships",
+						"sdk/api/companies/list-plans",
+						"sdk/api/companies/list-waitlist-entries"
 					]
 				},
 				{
@@ -326,7 +327,8 @@
 					"pages": [
 						"sdk/api/promo-codes/create-promo-code",
 						"sdk/api/promo-codes/delete-promo-code",
-						"sdk/api/promo-codes/get-promo-code"
+						"sdk/api/promo-codes/get-promo-code",
+						"sdk/api/promo-codes/list-promo-codes"
 					]
 				},
 				{
@@ -346,6 +348,8 @@
 					"pages": [
 						"sdk/api/webhooks/create-webhook",
 						"sdk/api/webhooks/delete-webhook",
+						"sdk/api/webhooks/get-webhook",
+						"sdk/api/webhooks/list-webhooks",
 						"sdk/api/webhooks/test-webhook",
 						"sdk/api/webhooks/update-webhook"
 					]
