@@ -253,6 +253,7 @@
 						"sdk/api/companies/get-company",
 						"sdk/api/companies/list-members",
 						"sdk/api/companies/list-memberships",
+						"sdk/api/companies/list-plans",
 						"sdk/api/companies/list-waitlist-entries"
 					]
 				},
