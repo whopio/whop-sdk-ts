@@ -1,0 +1,29 @@
+query listPromoCodes(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+	$filters: PromoCodeFilters
+) {
+	company(id: $companyId) {
+		promoCodes(
+			after: $after
+			before: $before
+			first: $first
+			last: $last
+			filter: $filters
+		) {
+			totalCount
+			pageInfo {
+				startCursor
+				hasPreviousPage
+				hasNextPage
+				endCursor
+			}
+			nodes {
+				...BasePromoCode
+			}
+		}
+	}
+}
