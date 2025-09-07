@@ -1,5 +1,15 @@
 # @whop/api
 
+## 0.0.47
+
+### Patch Changes
+
+- e81ebc1: deprecate getWaitlistEntriesForCompany and add listWaitlistEntries
+- b575cce: Add listPlans query
+- fd0c658: Add listAccessPasses query
+- 1a37a3b: Add getWebhook and listWebhooks queries
+- b4c286d: Add listPromoCodes query
+
 ## 0.0.46
 
 ### Patch Changes
