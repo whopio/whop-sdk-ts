@@ -2,6 +2,13 @@
 title: Create Promo Code
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `promo_code:create`
+ - _`access_pass:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -53,10 +60,10 @@ const result = await whopSdk.promoCodes.createPromoCode({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the promo.
 	id: "xxxxxxxxxxx",
 

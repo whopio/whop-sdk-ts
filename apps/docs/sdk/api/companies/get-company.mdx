@@ -3,6 +3,8 @@ title: Get Company
 description: Fetches a company based on the ID
 ---
 
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +15,10 @@ const result = await whopSdk.companies.getCompany({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID (tag) of the company.
 	id: "xxxxxxxxxxx",
 

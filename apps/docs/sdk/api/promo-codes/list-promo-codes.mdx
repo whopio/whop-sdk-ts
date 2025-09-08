@@ -3,6 +3,13 @@ title: List Promo Codes
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `promo_code:basic:read`
+ - _`access_pass:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -38,10 +45,10 @@ const result = await whopSdk.promoCodes.listPromoCodes({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of a company's promo codes, with searching capabilities.
 	promoCodes: {
 		// The total number of items in this connection.

@@ -3,6 +3,12 @@ title: List Webhooks
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_webhook`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +19,10 @@ const result = await whopSdk.webhooks.listWebhooks({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The webhooks that have been set by a company.
 	// Roles: owner
 	webhooks: [

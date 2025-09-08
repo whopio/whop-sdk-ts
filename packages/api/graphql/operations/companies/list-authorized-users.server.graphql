@@ -1,4 +1,4 @@
-query getCompanyAuthorizedUsers($companyId: ID!) {
+query listAuthorizedUsers($companyId: ID!) {
 	company(id: $companyId) {
 		authorizedUsers {
 			...BaseAuthorizedUser

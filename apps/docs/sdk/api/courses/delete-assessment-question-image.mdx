@@ -2,6 +2,12 @@
 title: Delete Assessment Question Image
 ---
 
+
+### Required Permissions
+ - `courses:update`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -12,9 +18,9 @@ const result = await whopSdk.courses.deleteAssessmentQuestionImage({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = true;
+const result = true;
 
 ```

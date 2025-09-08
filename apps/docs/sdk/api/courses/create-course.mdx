@@ -2,6 +2,12 @@
 title: Create Course
 ---
 
+
+### Required Permissions
+ - `courses:update`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -21,10 +27,10 @@ const result = await whopSdk.courses.createCourse({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// Whether the course will award its students a PDF certificate after completing all lessons
 	certificateAfterCompletionEnabled: true,
 

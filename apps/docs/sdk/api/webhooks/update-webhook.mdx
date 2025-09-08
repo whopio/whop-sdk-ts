@@ -2,6 +2,12 @@
 title: Update Webhook
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_webhook`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -26,10 +32,10 @@ const result = await whopSdk.webhooks.updateWebhook({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the webhook
 	id: "xxxxxxxxxxx",
 
