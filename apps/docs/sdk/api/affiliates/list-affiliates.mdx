@@ -1,0 +1,119 @@
+---
+title: List Affiliates
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `affiliate:basic:read`
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.affiliates.listAffiliates({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	direction: "asc" /* Valid values: asc | desc */,
+
+	first: 10,
+
+	last: 10,
+
+	order:
+		"cached_total_referrals" /* Valid values: cached_total_referrals | cached_total_rewards | created_at | id */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The affiliates for the company
+	affiliates: {
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+		},
+
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the affiliate
+				id: "xxxxxxxxxxx",
+
+				// The status of the affiliate
+				status: "active" /* Valid values: active | archived | deleted */,
+
+				// The total active members of the affiliate
+				activeMembersCount: 10,
+
+				// The type of this affiliate
+				affiliateType:
+					"custom" /* Valid values: custom | global | marketplace | passholder */,
+
+				// The total count of all plans this member is an affiliate for
+				totalPlanCount: 10,
+
+				// The total earnings of the affiliate from the users they referred
+				totalReferralEarnings: "some string",
+
+				// The total referrals of the affiliate
+				totalReferrals: 10,
+
+				// The total revenue of the affiliate from their referrals
+				totalRevenue: "some string",
+
+				// The user account that performed the action.
+				userAccount: {
+					// The internal ID of the user.
+					id: "xxxxxxxxxxx",
+
+					// The name of the user from their Whop account.
+					name: "some string",
+
+					// The username of the user from their Whop account.
+					username: "some string",
+
+					// The user's profile picture
+					profilePicture: {
+						// The original URL of the attachment, such as a direct link to S3. This should
+						// never be displayed on the client and always passed to an Imgproxy transformer.
+						sourceUrl: "some string",
+					},
+
+					// Whether or not the user's phone is verified
+					phoneVerified: true,
+
+					// The city the user is from.
+					city: "some string",
+
+					// The country the user is from.
+					country: "some string",
+				},
+			},
+		],
+	},
+};
+
+```

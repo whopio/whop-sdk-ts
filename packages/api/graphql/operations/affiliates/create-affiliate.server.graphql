@@ -1,0 +1,5 @@
+mutation createAffiliate($input: CreateAffiliateInput!) {
+	createAffiliate(input: $input) {
+		...AffiliateWithUser
+	}
+}
