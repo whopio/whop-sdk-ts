@@ -3,6 +3,12 @@ title: Get Company Ledger Account
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `company:balance:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +19,10 @@ const result = await whopSdk.companies.getCompanyLedgerAccount({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ledger account for the company.
 	// Roles: owner
 	ledgerAccount: {

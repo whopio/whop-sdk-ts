@@ -3,6 +3,15 @@ title: List Memberships
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `member:basic:read`
+ - _`access_pass:basic:read` (optional)_
+ - _`plan:basic:read` (optional)_
+ - _`promo_code:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -70,10 +79,10 @@ const result = await whopSdk.companies.listMemberships({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The memberships for the company
 	memberships: {
 		// The total number of items in this connection.

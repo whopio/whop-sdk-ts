@@ -2,6 +2,12 @@
 title: Create Assessment Question
 ---
 
+
+### Required Permissions
+ - `courses:update`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -22,10 +28,10 @@ const result = await whopSdk.courses.createAssessmentQuestion({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the assessment question
 	id: "xxxxxxxxxxx",
 

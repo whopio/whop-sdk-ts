@@ -1,22 +1,29 @@
 ---
-title: Get Company Authorized Users
+title: List Authorized Users
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `company:authorized_user:read`
+ - _`company:authorized_user:email:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
-const result = await whopSdk.companies.getCompanyAuthorizedUsers({
+const result = await whopSdk.companies.listAuthorizedUsers({
 	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
 	companyId: "biz_XXXXXXXX" /* Required! */,
 });
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of a company's added team members..
 	// Roles: admin, owner
 	authorizedUsers: [

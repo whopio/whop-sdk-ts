@@ -4,12 +4,18 @@ import type { PluginFunction, Types } from "@graphql-codegen/plugin-helpers";
 import {
 	type FragmentDefinitionNode,
 	type GraphQLSchema,
-	Kind,
 	type OperationDefinitionNode,
 	concatAST,
 	visit,
 } from "graphql";
-import { generateExampleInput, generateExampleOutput } from "./input";
+import { operationToMdx } from "./operation-to-mdx";
+import {
+	camelCaseToKebabCase,
+	formatCode,
+	kebabCaseToCamelCase,
+	kebabCaseToTitleCase,
+	notEmpty,
+} from "./utils";
 
 const BASE_OUTPUT_PATH = "../../apps/docs/sdk/api";
 
@@ -108,7 +114,7 @@ function writeOperation(
 	const folder = outputPathBits.slice(0, -1).join("/");
 	mkdirSync(folder, { recursive: true });
 
-	const doc = formatOperation(
+	const doc = operationToMdx(
 		value,
 		biome,
 		schema,
@@ -123,114 +129,6 @@ function writeOperation(
 	writeFileSync(path, doc, {
 		encoding: "utf-8",
 	});
-}
-
-function formatOperation(
-	value: OperationDefinitionNode,
-	biome: Biome,
-	schema: GraphQLSchema,
-	availability: { client: boolean; server: boolean },
-	fragments: FragmentDefinitionNode[],
-	group: string,
-) {
-	const inputCode = value.variableDefinitions
-		? generateExampleInput(schema, value)
-		: undefined;
-
-	const description = getFieldDescription(schema, value) ?? "";
-
-	const codeExample = `
-	import { whopSdk } from "@/lib/whop-sdk";
-
-	const result = await whopSdk.${group}.${value.name?.value}(${inputCode ?? ""});
-	`;
-
-	const formatted = formatCode(codeExample, biome);
-
-	const availabilityNotice =
-		!availability.client || !availability.server
-			? `<Note>This operation is only available on the ${availability.server ? "server" : "client"}.</Note>`
-			: "";
-
-	const exampleOutputCode = `const response = ${generateExampleOutput(schema, value, fragments)}`;
-	const exampleOutput = formatCode(exampleOutputCode, biome);
-
-	const file = `---
-title: ${camelCaseToTitleCase(value.name?.value ?? "")}${description}
----
-${availabilityNotice}
-\`\`\`typescript
-${formatted}
-\`\`\`
-
-Example output:
-
-\`\`\`typescript
-${exampleOutput}
-\`\`\`
-`;
-
-	return file;
-}
-
-function getFieldDescription(
-	schema: GraphQLSchema,
-	operation: OperationDefinitionNode,
-) {
-	const firstSelection = operation.selectionSet.selections.at(0);
-	if (firstSelection?.kind === Kind.FIELD) {
-		const field = schema.getQueryType()?.getFields()[firstSelection.name.value];
-		if (field?.description) {
-			return `\ndescription: ${field.description}`;
-		}
-	}
-}
-
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-	return value !== null && value !== undefined;
-}
-
-function formatCode(code: string, biome: Biome, extension = "ts") {
-	const formatted = biome.formatContent(code, {
-		filePath: `file.${extension}`,
-	});
-
-	const result = biome.lintContent(formatted.content, {
-		filePath: `file.${extension}`,
-		fixFileMode: "SafeAndUnsafeFixes",
-	});
-
-	return result.content;
-}
-
-function camelCaseToSnakeCase(value: string) {
-	return splitCamelCase(value).join("_").toLowerCase();
-}
-
-function camelCaseToTitleCase(value: string) {
-	return splitCamelCase(value)
-		.join(" ")
-		.replace(/^./, (str) => str.toUpperCase());
-}
-
-function camelCaseToKebabCase(value: string) {
-	return splitCamelCase(value).join("-").toLowerCase();
-}
-
-function splitCamelCase(value: string) {
-	const split = value.split(/([A-Z])/g);
-	const output: string[] = [];
-
-	for (let i = 0; i < split.length; i++) {
-		const j = output.length - 1;
-		if (i === 0 || output[j].length > 1) {
-			output.push(split[i]);
-		} else {
-			output[j] += split[i];
-		}
-	}
-
-	return output;
 }
 
 function updateMintJson(
@@ -250,16 +148,6 @@ function updateMintJson(
 		"json",
 	);
 	writeFileSync(mintJsonPath, formattedJson);
-}
-
-function kebabCaseToTitleCase(value: string) {
-	return value
-		.replace(/-/g, " ")
-		.replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-function kebabCaseToCamelCase(str: string) {
-	return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 function reformatMintJson(groupedOperations: Record<string, string[]>) {

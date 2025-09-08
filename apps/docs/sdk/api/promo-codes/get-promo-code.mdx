@@ -3,6 +3,8 @@ title: Get Promo Code
 description: Fetches a promo code based on the provided code and plan
 ---
 <Note>This operation is only available on the server.</Note>
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -16,10 +18,10 @@ const result = await whopSdk.promoCodes.getPromoCode({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the promo.
 	id: "xxxxxxxxxxx",
 

@@ -249,10 +249,10 @@
 				{
 					"group": "Companies",
 					"pages": [
-						"sdk/api/companies/get-company-authorized-users",
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-company",
 						"sdk/api/companies/list-access-passes",
+						"sdk/api/companies/list-authorized-users",
 						"sdk/api/companies/list-members",
 						"sdk/api/companies/list-memberships",
 						"sdk/api/companies/list-plans",
