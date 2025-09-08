@@ -262,13 +262,22 @@ function generateSdk(
 		options?: C,
 	) => Promise<R>;`;
 
+	const carryErrorsFunction = `
+	export type WithError<T> = T extends object ? T & { _error?: Error } : T;
+	export function carryErrors<Full, Extracted>(res: Full, data: Extracted): WithError<Extracted> {
+		if (typeof res === "object" && res && "_error" in res && res._error && res._error instanceof Error && typeof data === "object" && data) {
+			(data as any)._error = res._error;
+		}
+		return data as WithError<Extracted>;
+	}`;
+
 	const getSdkFunction = `export function getSdk<C>(requester: Requester<C>) {
 		return { ${groupedSdkObjects} };
 	}`;
 
 	const sdkType = "export type Sdk = ReturnType<typeof getSdk>";
 
-	const code = `${requesterType}\n\n${getSdkFunction}\n\n${sdkType}`;
+	const code = `${requesterType}\n\n${carryErrorsFunction}\n\n${getSdkFunction}\n\n${sdkType}`;
 	return code;
 }
 
@@ -350,7 +359,7 @@ function hashFunction(str: string) {
 function getThenChain(operationDef: OperationDefinitionNode): string {
 	const name = getSelectionName(operationDef);
 	if (!name) return "";
-	return `.then((res) => res.${name})`;
+	return `.then((res) => carryErrors(res, res.${name}))`;
 }
 
 function getOutputType(
@@ -358,8 +367,8 @@ function getOutputType(
 	base: string,
 ): string {
 	const name = getSelectionName(operationDef);
-	if (!name) return base;
-	return `${base}["${name}"]`;
+	if (!name) return `WithError<${base}>`;
+	return `WithError<${base}["${name}"]>`;
 }
 
 function getSelectionName(
