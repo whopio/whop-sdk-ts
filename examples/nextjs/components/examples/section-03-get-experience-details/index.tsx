@@ -18,16 +18,11 @@ export async function SectionGetExperienceDetails({
 			experienceId: experienceId,
 		});
 
-	const payments = await whopSdk.payments.listReceiptsForCompany({
-		companyId: thisExperience.company.id,
-	});
-
 	return (
 		<div>
 			Experience ID: <code>{experienceId}</code>
 			<pre>{JSON.stringify(thisExperience, null, 2)}</pre>
 			<pre>{JSON.stringify(accessPasses, null, 2)}</pre>
-			<pre>{JSON.stringify(payments, null, 2)}</pre>
 		</div>
 	);
 }
