@@ -1,0 +1,66 @@
+---
+title: Update Affiliate
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `affiliate:update`
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.affiliates.updateAffiliate({
+	// The amount the affiliate will earn (either amount or percent 1-100)
+	fee: "some string",
+
+	// The ID (tag) of the affiliate.
+	id: "xxxxxxxxxxx" /* Required! */,
+
+	// Whether or not the affiliate will only get one payout or it will be recurring.
+	onlyOnePayout: true,
+
+	// The type of payout.
+	payoutType: "flat_fee" /* Valid values: flat_fee | percentage */,
+
+	// The IDs of the plans that the affiliate can refer.
+	planId: "some string" /* Required! */,
+
+	// Sets the affiliate as active/inactive.
+	status: "active" /* Valid values: active | archived | deleted */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The ID of the affiliate
+	id: "xxxxxxxxxxx",
+
+	// The status of the affiliate
+	status: "active" /* Valid values: active | archived | deleted */,
+
+	// The total active members of the affiliate
+	activeMembersCount: 10,
+
+	// The type of this affiliate
+	affiliateType:
+		"custom" /* Valid values: custom | global | marketplace | passholder */,
+
+	// The total count of all plans this member is an affiliate for
+	totalPlanCount: 10,
+
+	// The total earnings of the affiliate from the users they referred
+	totalReferralEarnings: "some string",
+
+	// The total referrals of the affiliate
+	totalReferrals: 10,
+
+	// The total revenue of the affiliate from their referrals
+	totalRevenue: "some string",
+};
+
+```

@@ -235,6 +235,15 @@
 					]
 				},
 				{
+					"group": "Affiliates",
+					"pages": [
+						"sdk/api/affiliates/create-affiliate",
+						"sdk/api/affiliates/get-affiliate",
+						"sdk/api/affiliates/list-affiliates",
+						"sdk/api/affiliates/update-affiliate"
+					]
+				},
+				{
 					"group": "Apps",
 					"pages": ["sdk/api/apps/create-app-build"]
 				},
