@@ -1,3 +1,4 @@
+# /forums/create_post
 mutation createForumPost($input: CreateForumPostInput!) {
 	createForumPost(input: $input) {
 		...ForumPostFragment

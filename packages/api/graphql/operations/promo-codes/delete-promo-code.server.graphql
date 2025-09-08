@@ -1,3 +1,4 @@
+# /promo_codes/delete
 mutation deletePromoCode($input: DeletePromoCodeInput!) {
 	deletePromoCode(input: $input)
 }

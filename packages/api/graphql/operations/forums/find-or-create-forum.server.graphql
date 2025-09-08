@@ -1,3 +1,4 @@
+# /forums/create_forum
 mutation findOrCreateForum($input: CreateForumInput!) {
 	createForum(input: $input) {
 		id

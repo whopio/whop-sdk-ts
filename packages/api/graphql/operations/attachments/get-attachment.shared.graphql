@@ -1,3 +1,4 @@
+# /attachments/:id/
 query getAttachment($id: ID!) {
 	attachment(id: $id) {
 		...Attachment

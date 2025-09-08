@@ -1,3 +1,4 @@
+# /access/check_access_pass
 query checkIfUserHasAccessToAccessPass($accessPassId: ID!, $userId: ID) {
 	hasAccessToAccessPass(accessPassId: $accessPassId, userId: $userId) {
 		hasAccess

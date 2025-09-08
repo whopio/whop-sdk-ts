@@ -1,3 +1,4 @@
+# /courses/delete_assessment_question_image
 mutation deleteAssessmentQuestionImage(
 	$input: DeleteAssessmentQuestionImageInput!
 ) {

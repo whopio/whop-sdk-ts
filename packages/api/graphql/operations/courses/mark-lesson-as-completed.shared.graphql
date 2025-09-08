@@ -1,3 +1,4 @@
+# /courses/mark_lesson_as_completed
 mutation markLessonAsCompleted($input: MarkLessonAsCompletedInput!) {
 	markLessonAsCompleted(input: $input)
 }

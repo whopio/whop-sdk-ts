@@ -1,3 +1,4 @@
+# /courses/delete_lesson_attachment
 mutation deleteLessonAttachment($input: DeleteLessonAttachmentInput!) {
 	deleteLessonAttachment(input: $input)
 }

@@ -1,3 +1,4 @@
+# /courses/:courseId/lessons/:lessonId
 query getLesson($courseId: ID!, $lessonId: ID!) {
 	course(id: $courseId) {
 		lesson(id: $lessonId) {

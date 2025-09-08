@@ -1,3 +1,4 @@
+# /courses/create_course
 mutation createCourse($input: CreateCourseInput!) {
 	createCourse(input: $input) {
 		...BasicCourse
