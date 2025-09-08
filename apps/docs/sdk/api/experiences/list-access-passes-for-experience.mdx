@@ -3,6 +3,8 @@ title: List Access Passes For Experience
 description: Fetch an experience.
 ---
 <Note>This operation is only available on the server.</Note>
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +15,10 @@ const result = await whopSdk.experiences.listAccessPassesForExperience({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The unique ID representing this experience
 	experienceId: "xxxxxxxxxxx",
 

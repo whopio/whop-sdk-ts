@@ -1,14 +1,26 @@
 fragment BasePromoCode on PromoCode {
 	id
 	code
-	createdAt
 	promoType
-	baseCurrency
 	duration
+	createdAt
+	expirationDatetime
+	baseCurrency
 	amountOff
 	discountOff
 	existingMembershipsOnly
 	numberOfIntervals
+	status
+	stock
+	unlimitedStock
+	uses
+	onePerCustomer
+	churnedUsersOnly
+	newUsersOnly
+	accessPass {
+		id
+		title
+	}
 }
 
 fragment BasePublicPromoCode on PublicPromoCode {
