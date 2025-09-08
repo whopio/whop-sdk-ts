@@ -1,0 +1,17 @@
+fragment BaseAffiliate on Affiliate {
+	id
+	status
+	activeMembersCount
+	affiliateType
+	totalPlanCount
+	totalReferralEarnings
+	totalReferrals
+	totalRevenue
+}
+
+fragment AffiliateWithUser on Affiliate {
+	...BaseAffiliate
+	userAccount {
+		...BasePublicProfileUser
+	}
+}
