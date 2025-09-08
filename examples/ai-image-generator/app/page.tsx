@@ -88,7 +88,7 @@ export default function Page() {
 					<p>
 						Need help? Visit the{" "}
 						<a
-							href="https://dev.whop.com"
+							href="https://docs.whop.com"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-blue-500 hover:text-blue-600 underline"
