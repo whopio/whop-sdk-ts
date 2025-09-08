@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.48
+
+### Patch Changes
+
+- a6079b9: Add getAffiliate query, listAffiliates query, createAffiliate mutation and updateAffiliate mutation
+
 ## 0.0.47
 
 ### Patch Changes
