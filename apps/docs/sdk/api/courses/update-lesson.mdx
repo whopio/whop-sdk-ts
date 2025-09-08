@@ -2,6 +2,12 @@
 title: Update Lesson
 ---
 
+
+### Required Permissions
+ - `courses:update`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -31,10 +37,10 @@ const result = await whopSdk.courses.updateLesson({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the lesson
 	id: "xxxxxxxxxxx",
 

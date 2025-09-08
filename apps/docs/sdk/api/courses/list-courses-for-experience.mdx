@@ -3,6 +3,12 @@ title: List Courses For Experience
 description: Fetch an experience.
 ---
 
+
+### Required Permissions
+ - `courses:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -17,10 +23,10 @@ const result = await whopSdk.courses.listCoursesForExperience({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The courses for the experience
 	courses: {
 		// A list of nodes.

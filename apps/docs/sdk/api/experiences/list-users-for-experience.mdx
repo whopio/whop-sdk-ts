@@ -3,6 +3,8 @@ title: List Users For Experience
 description: Fetch an experience.
 ---
 
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -23,10 +25,10 @@ const result = await whopSdk.experiences.listUsersForExperience({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The users that have access to this experience. This field will return nil if
 	// you aren't authorized to view this experience's users. You must have a
 	// membership or be a team member for the experience to view the user list.

@@ -3,6 +3,12 @@ title: Get Lesson
 description: A course from a courses app experience
 ---
 
+
+### Required Permissions
+ - `courses:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -15,10 +21,10 @@ const result = await whopSdk.courses.getLesson({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// Get a specific lesson by ID
 	lesson: {
 		// The ID of the lesson

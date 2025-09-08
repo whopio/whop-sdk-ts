@@ -2,6 +2,12 @@
 title: Test Webhook
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_webhook`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -16,10 +22,10 @@ const result = await whopSdk.webhooks.testWebhook({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The body of the webhook response
 	body: { any: "json" },
 

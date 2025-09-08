@@ -3,6 +3,12 @@ title: Get User Lesson Interactions
 description: A course from a courses app experience
 ---
 
+
+### Required Permissions
+ - `courses:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +19,10 @@ const result = await whopSdk.courses.getUserLessonInteractions({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The chapters in this course
 	chapters: [
 		{

@@ -3,6 +3,13 @@ title: List Plans
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `plan:basic:read`
+ - _`access_pass:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -52,10 +59,10 @@ const result = await whopSdk.companies.listPlans({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of the plans connected to the company.
 	plans: {
 		// The total number of items in this connection.

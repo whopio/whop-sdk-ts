@@ -3,6 +3,12 @@ title: Get Course
 description: A course from a courses app experience
 ---
 
+
+### Required Permissions
+ - `courses:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +19,10 @@ const result = await whopSdk.courses.getCourse({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// Whether the course will award its students a PDF certificate after completing all lessons
 	certificateAfterCompletionEnabled: true,
 
