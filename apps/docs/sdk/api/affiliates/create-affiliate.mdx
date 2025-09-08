@@ -1,0 +1,95 @@
+---
+title: Create Affiliate
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `affiliate:create`
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.affiliates.createAffiliate({
+	// The fee that the affiliate will receive for each referral (either a percentage or a flat fee).
+	fee: "some string",
+
+	// Whether the affiliate will only receive one payout.
+	onlyOnePayout: true,
+
+	// Whether the fee is a percentage or a flat fee.
+	payoutType:
+		"flat_fee" /* Valid values: flat_fee | percentage */ /* Required! */,
+
+	// The ID of the plan that the affiliate can refer.
+	planId: "xxxxxxxxxxx",
+
+	// The IDs of the plans that the affiliate can refer.
+	planIds: ["xxxxxxxxxxx"],
+
+	// The username of the user who will become an affiliate
+	username: "some string" /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The ID of the affiliate
+	id: "xxxxxxxxxxx",
+
+	// The status of the affiliate
+	status: "active" /* Valid values: active | archived | deleted */,
+
+	// The total active members of the affiliate
+	activeMembersCount: 10,
+
+	// The type of this affiliate
+	affiliateType:
+		"custom" /* Valid values: custom | global | marketplace | passholder */,
+
+	// The total count of all plans this member is an affiliate for
+	totalPlanCount: 10,
+
+	// The total earnings of the affiliate from the users they referred
+	totalReferralEarnings: "some string",
+
+	// The total referrals of the affiliate
+	totalReferrals: 10,
+
+	// The total revenue of the affiliate from their referrals
+	totalRevenue: "some string",
+
+	// The user account that performed the action.
+	userAccount: {
+		// The internal ID of the user.
+		id: "xxxxxxxxxxx",
+
+		// The name of the user from their Whop account.
+		name: "some string",
+
+		// The username of the user from their Whop account.
+		username: "some string",
+
+		// The user's profile picture
+		profilePicture: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
+
+		// Whether or not the user's phone is verified
+		phoneVerified: true,
+
+		// The city the user is from.
+		city: "some string",
+
+		// The country the user is from.
+		country: "some string",
+	},
+};
+
+```
