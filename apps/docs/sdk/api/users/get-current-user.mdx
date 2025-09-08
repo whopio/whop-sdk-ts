@@ -3,6 +3,8 @@ title: Get Current User
 description: Returns the current user and company.
 ---
 
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -10,10 +12,10 @@ const result = await whopSdk.users.getCurrentUser();
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The user the viewer is in scope of.
 	user: {
 		// The internal ID of the user

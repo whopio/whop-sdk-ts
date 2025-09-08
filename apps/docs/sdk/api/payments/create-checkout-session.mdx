@@ -2,6 +2,8 @@
 title: Create Checkout Session
 ---
 <Note>This operation is only available on the server.</Note>
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -21,10 +23,10 @@ const result = await whopSdk.payments.createCheckoutSession({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the checkout session
 	id: "xxxxxxxxxxx",
 

@@ -3,6 +3,8 @@ title: List Messages From Chat
 description: Fetch feed posts for the current user
 ---
 
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +15,10 @@ const result = await whopSdk.messages.listMessagesFromChat({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// List of posts
 	posts: [
 		{

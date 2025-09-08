@@ -2,6 +2,12 @@
 title: Update Chapter
 ---
 
+
+### Required Permissions
+ - `courses:update`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -15,10 +21,10 @@ const result = await whopSdk.courses.updateChapter({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the chapter. Looks like chap_XXX
 	id: "xxxxxxxxxxx",
 

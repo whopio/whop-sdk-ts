@@ -2,6 +2,8 @@
 title: Charge User
 ---
 <Note>This operation is only available on the server.</Note>
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -31,10 +33,10 @@ const result = await whopSdk.payments.chargeUser({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The status of the charge attempt
 	status: "needs_action" /* Valid values: needs_action | success */,
 

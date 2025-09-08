@@ -3,6 +3,13 @@ title: List Waitlist Entries
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `plan:waitlist:read`
+ - _`plan:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -42,10 +49,10 @@ const result = await whopSdk.companies.listWaitlistEntries({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The waitlist entries for the company
 	entries: {
 		// The total number of items in this connection.

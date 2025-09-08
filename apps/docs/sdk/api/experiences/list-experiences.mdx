@@ -3,6 +3,8 @@ title: List Experiences
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -23,10 +25,10 @@ const result = await whopSdk.experiences.listExperiences({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of the experiences connected to the company.
 	experiencesV2: {
 		// A list of nodes.

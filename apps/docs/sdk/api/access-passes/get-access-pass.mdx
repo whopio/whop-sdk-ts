@@ -3,6 +3,8 @@ title: Get Access Pass
 description: Fetches an access pass based on the ID or the route
 ---
 
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -13,10 +15,10 @@ const result = await whopSdk.accessPasses.getAccessPass({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The internal ID of the public access pass.
 	id: "xxxxxxxxxxx",
 

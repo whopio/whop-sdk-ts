@@ -2,6 +2,12 @@
 title: Delete Promo Code
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `promo_code:delete`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -12,9 +18,9 @@ const result = await whopSdk.promoCodes.deletePromoCode({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = true;
+const result = true;
 
 ```

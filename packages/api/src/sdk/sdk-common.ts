@@ -86,8 +86,15 @@ export async function graphqlFetch<R, V>(
 		}
 
 		const data = await response.json();
-		if (data.errors) {
+
+		// Only throw in the SDK if we didn't receive any data.
+		if (data.errors && !data.data) {
 			throw new GQLError(data.errors);
+		}
+
+		// Otherwise, we try and attach the errors to the response object so they are still visible.
+		if (data.errors && typeof data.data === "object" && data.data) {
+			data.data._error = new GQLError(data.errors);
 		}
 
 		return data.data;
