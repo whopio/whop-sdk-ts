@@ -1,5 +1,5 @@
 mutation createAffiliate($input: CreateAffiliateInput!) {
 	createAffiliate(input: $input) {
-		...BaseAffiliate
+		...AffiliateWithUser
 	}
 }
