@@ -2,6 +2,12 @@
 title: Delete Webhook
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_webhook`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -12,9 +18,9 @@ const result = await whopSdk.webhooks.deleteWebhook({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = true;
+const result = true;
 
 ```

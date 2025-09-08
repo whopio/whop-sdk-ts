@@ -1,0 +1,18 @@
+export const ID_PREFIXES = {
+	accessPassId: "prod",
+	experienceId: "exp",
+	forumExperienceId: "exp",
+	companyId: "biz",
+	senderUserId: "user",
+	userId: "user",
+	parentId: "post",
+	companyTeamId: "biz",
+	appId: "app",
+	feedId: "feed",
+	ledgerAccountId: "ldgr",
+	chatExperienceId: "exp",
+	courseId: "cors",
+	lessonId: "lesn",
+	chapterId: "chap",
+	muxAssetId: "mux",
+};

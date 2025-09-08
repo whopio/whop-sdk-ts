@@ -2,6 +2,12 @@
 title: Create App Build
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_builds`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -39,10 +45,10 @@ const result = await whopSdk.apps.createAppBuild({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// The ID of the app build. It will look like apbu_xxxxx.
 	id: "xxxxxxxxxxx",
 

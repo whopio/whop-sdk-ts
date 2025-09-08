@@ -3,6 +3,17 @@ title: List Receipts For Company
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `payment:basic:read`
+ - _`access_pass:basic:read` (optional)_
+ - _`member:basic:read` (optional)_
+ - _`member:email:read` (optional)_
+ - _`plan:basic:read` (optional)_
+ - _`promo_code:basic:read` (optional)_
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -60,10 +71,10 @@ const result = await whopSdk.payments.listReceiptsForCompany({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of a company's payments, with searching capabilities..
 	// Roles: owner, admin
 	receipts: {

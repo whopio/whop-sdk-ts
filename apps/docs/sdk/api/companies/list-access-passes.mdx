@@ -3,6 +3,12 @@ title: List Access Passes
 description: Fetch a company
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `access_pass:basic:read`
+
+### Usage
+
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
@@ -35,10 +41,10 @@ const result = await whopSdk.companies.listAccessPasses({
 
 ```
 
-Example output:
+### Example output
 
 ```typescript
-const response = {
+const result = {
 	// All of the access passes connected to the company.
 	accessPasses: {
 		// The total number of items in this connection.
