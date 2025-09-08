@@ -1,0 +1,7 @@
+query getAffiliate($affiliateId: ID!, $companyId: ID!) {
+	company(id: $companyId) {
+		affiliate(id: $affiliateId) {
+			...AffiliateWithUser
+		}
+	}
+}
