@@ -61,6 +61,34 @@ const result = {
 
 	// The total revenue of the affiliate from their referrals
 	totalRevenue: "some string",
+
+	// The user account that performed the action.
+	userAccount: {
+		// The internal ID of the user.
+		id: "xxxxxxxxxxx",
+
+		// The name of the user from their Whop account.
+		name: "some string",
+
+		// The username of the user from their Whop account.
+		username: "some string",
+
+		// The user's profile picture
+		profilePicture: {
+			// The original URL of the attachment, such as a direct link to S3. This should
+			// never be displayed on the client and always passed to an Imgproxy transformer.
+			sourceUrl: "some string",
+		},
+
+		// Whether or not the user's phone is verified
+		phoneVerified: true,
+
+		// The city the user is from.
+		city: "some string",
+
+		// The country the user is from.
+		country: "some string",
+	},
 };
 
 ```
