@@ -1,0 +1,83 @@
+---
+title: Create App
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:create_app`
+ - _`developer:manage_api_key` (optional)_
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.apps.createApp({
+	// The base URL of the app to be created
+	baseUrl: "some string",
+
+	// The name of the app to be created
+	name: "some string" /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The ID of the app
+	id: "xxxxxxxxxxx",
+
+	// The name of the app
+	name: "some string",
+
+	// The base url of the app
+	baseUrl: "some string",
+
+	// The path for the hub view of the app
+	experiencePath: "some string",
+
+	// The API keys for the app.
+	// Roles: owner, admin
+	apiKeys: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of this API key
+				id: "xxxxxxxxxxx",
+
+				// This is the API key used to authenticate requests
+				token: "some string",
+
+				// When this API key was created at
+				createdAt: 1716931200,
+			},
+		],
+	},
+
+	// The company that owns the app
+	company: {
+		// The ID (tag) of the company.
+		id: "xxxxxxxxxxx",
+	},
+
+	// The agent users that are owned by this application.
+	agentUsers: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The internal ID of the user
+				id: "xxxxxxxxxxx",
+
+				// The name of the user
+				name: "some string",
+
+				// The Whop username for this user
+				username: "some string",
+			},
+		],
+	},
+};
+
+```
