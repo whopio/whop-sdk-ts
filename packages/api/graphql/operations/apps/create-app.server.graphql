@@ -1,0 +1,25 @@
+mutation createApp($input: CreateAppInput!) {
+	createApp(input: $input) {
+		id
+		name
+		baseUrl
+		experiencePath
+		apiKeys {
+			nodes {
+				id
+				token
+				createdAt
+			}
+		}
+		company {
+			id
+		}
+		agentUsers {
+			nodes {
+				id
+				name
+				username
+			}
+		}
+	}
+}
