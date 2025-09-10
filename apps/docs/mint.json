@@ -248,6 +248,8 @@
 					"pages": [
 						"sdk/api/apps/create-app-build",
 						"sdk/api/apps/create-app",
+						"sdk/api/apps/get-app",
+						"sdk/api/apps/list-apps",
 						"sdk/api/apps/promote-app-build",
 						"sdk/api/apps/unassign-app-build",
 						"sdk/api/apps/update-app-permissions",
