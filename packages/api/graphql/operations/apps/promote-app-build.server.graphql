@@ -1,0 +1,3 @@
+mutation promoteAppBuild($input: PromoteAppBuildToProductionInput!) {
+	promoteAppBuildToProduction(input: $input)
+}

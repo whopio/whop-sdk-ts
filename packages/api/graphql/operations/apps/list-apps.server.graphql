@@ -1,0 +1,29 @@
+query listApps(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+) {
+	company(id: $companyId) {
+		apps(after: $after, before: $before, first: $first, last: $last) {
+			totalCount
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			nodes {
+				...BaseApp
+				stats {
+					...BaseAppStats
+				}
+				accessPass {
+					id
+					marketplaceStatus
+				}
+			}
+		}
+	}
+}
