@@ -1,0 +1,21 @@
+mutation createApp($input: CreateAppInput!) {
+	createApp(input: $input) {
+		...BaseApp
+		apiKeys {
+			nodes {
+				...BaseAppApiKey
+			}
+		}
+		agentUsers {
+			nodes {
+				...BaseAppAgentUser
+			}
+		}
+		company {
+			id
+		}
+		accessPass {
+			id
+		}
+	}
+}

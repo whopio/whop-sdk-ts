@@ -1,0 +1,36 @@
+fragment BaseApp on App {
+	id
+	name
+	description
+	status
+	icon {
+		source {
+			url
+		}
+	}
+	usingDefaultIcon
+	baseUrl
+	baseDevUrl
+	experiencePath
+	discoverPath: viewPath(viewType: discover)
+	dashboardPath: viewPath(viewType: dashboard)
+}
+
+fragment BaseAppApiKey on PrivateApiKey {
+	id
+	token
+	createdAt
+}
+
+fragment BaseAppAgentUser on User {
+	id
+	name
+	username
+}
+
+fragment BaseAppStats on PublicAppStats {
+	dau
+	mau
+	timeSpentLast24HoursInSeconds
+	wau
+}
