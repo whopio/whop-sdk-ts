@@ -1,0 +1,88 @@
+---
+title: Get Member
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `member:basic:read`
+ - _`member:email:read` (optional)_
+ - _`member:phone:read` (optional)_
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.companies.getMember({
+	companyMemberId: "xxxxxxxxxxx" /* Required! */,
+
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The company member for a given user
+	member: {
+		// The ID of the member
+		id: "xxxxxxxxxxx",
+
+		// When the member was created
+		createdAt: 1716931200,
+
+		// The timestamp (in milliseconds since epoch) of when the access pass member was last updated
+		updatedAtMs: "9999999",
+
+		// When the member joined the company
+		joinedAt: 1716931200,
+
+		// The status of the member
+		status: "drafted" /* Valid values: drafted | joined | left */,
+
+		// The phone number for the member, if available.
+		phone: "some string",
+
+		// The access level of the access pass member. If its admin, the member is an
+		// authorized user of the access pass. If its customer, the member has a valid
+		// membership to the access pass. If its no_access, the member does not have
+		// access to the access pass.
+		accessLevel: "admin" /* Valid values: admin | customer | no_access */,
+
+		// How much they have spent on the company's passes.
+		totalSpent: 10,
+
+		// How much they have spent on the company's passes.
+		usdTotalSpent: "some string",
+
+		// An estimated MRR for the member.
+		mrr: "some string",
+
+		// The user for this member, if any.
+		user: {
+			// The internal ID of the user account.
+			id: "xxxxxxxxxxx",
+
+			// The digital mailing address of the user.
+			email: "some string",
+
+			// The user's full name.
+			name: "some string",
+
+			// The whop username.
+			username: "some string",
+		},
+
+		// The image for the member, derived from either the User or the Company Buyer.
+		imageSrcset: {
+			// Image url with requested image resolution.
+			original: "some string",
+		},
+	},
+};
+
+```

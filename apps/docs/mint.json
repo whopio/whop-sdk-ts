@@ -274,6 +274,7 @@
 					"pages": [
 						"sdk/api/companies/get-company-ledger-account",
 						"sdk/api/companies/get-company",
+						"sdk/api/companies/get-member",
 						"sdk/api/companies/list-access-passes",
 						"sdk/api/companies/list-authorized-users",
 						"sdk/api/companies/list-members",
