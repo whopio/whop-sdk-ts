@@ -1,0 +1,5 @@
+mutation createAccessPass($input: CreateAccessPassInput!) {
+	createAccessPass(input: $input) {
+		...BaseAccessPass
+	}
+}
