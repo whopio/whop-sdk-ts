@@ -22,7 +22,23 @@ fragment BaseAccessPass on AccessPass {
 	visibility
 	activeUsersCount
 	reviewsAverage
+	creatorPitch
+	updatedAtMs
+	showOffers
+	redirectPurchaseUrl
+	customCta
+	customCtaUrl
+	globalAffiliatePercentage
+	globalAffiliateStatus
+	memberAffiliatePercentage
+	memberAffiliateStatus
+	showMemberCount
 	logo {
 		sourceUrl
+	}
+	bannerImage {
+		source {
+			url
+		}
 	}
 }
