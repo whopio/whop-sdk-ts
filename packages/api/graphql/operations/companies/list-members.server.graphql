@@ -26,19 +26,7 @@ query listMembers(
 				endCursor
 			}
 			nodes {
-				id
-				createdAt
-				status
-				phone
-				user {
-					id
-					email
-					name
-					username
-				}
-				imageSrcset(style: s128) {
-					original
-				}
+				...BaseCompanyMember
 			}
 		}
 	}
