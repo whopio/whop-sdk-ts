@@ -1,5 +1,13 @@
 # @whop/api
 
+## 0.0.49
+
+### Patch Changes
+
+- aefdb83: Add create/update/delete access pass mutations
+- b07878f: fix: add the optional included error into all responses for debugging help
+- db87a21: Add create/update/get/list app and promote/unassign app build
+
 ## 0.0.48
 
 ### Patch Changes
