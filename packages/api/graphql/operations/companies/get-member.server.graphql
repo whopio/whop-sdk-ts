@@ -1,0 +1,7 @@
+query getMember($companyMemberId: ID!, $companyId: ID!) {
+	company(id: $companyId) {
+		companyMember(id: $companyMemberId) {
+			...BaseCompanyMember
+		}
+	}
+}
