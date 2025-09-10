@@ -1,25 +1,21 @@
 mutation createApp($input: CreateAppInput!) {
 	createApp(input: $input) {
-		id
-		name
-		baseUrl
-		experiencePath
+		...BaseApp
 		apiKeys {
 			nodes {
-				id
-				token
-				createdAt
+				...BaseAppApiKey
+			}
+		}
+		agentUsers {
+			nodes {
+				...BaseAppAgentUser
 			}
 		}
 		company {
 			id
 		}
-		agentUsers {
-			nodes {
-				id
-				name
-				username
-			}
+		accessPass {
+			id
 		}
 	}
 }
