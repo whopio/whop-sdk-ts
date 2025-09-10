@@ -1,0 +1,40 @@
+---
+title: Update App Permissions
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:update_app_authorization`
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.apps.updateAppPermissions({
+	// The ID of the app the permission requirements are being updated for
+	appId: "app_XXXXXXXX" /* Required! */,
+
+	// The permissions that the app will request off of users when a user installs the app.
+	requestedPermissions: [
+		{
+			// The action that the app will request off of users when a user installs the app.
+			action: "some string" /* Required! */,
+
+			// Whether the action is required for the app to function.
+			isRequired: true /* Required! */,
+
+			// The reason for requesting the action.
+			justification: "some string" /* Required! */,
+		},
+	] /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = true;
+
+```

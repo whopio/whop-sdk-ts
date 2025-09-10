@@ -1,0 +1,29 @@
+---
+title: Unassign App Build
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:manage_builds`
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.apps.unassignAppBuild({
+	// The ID of the app to unassign the production build from.
+	appId: "app_XXXXXXXX" /* Required! */,
+
+	// What platform should be unassigned
+	platform: "android" /* Valid values: android | ios | web */ /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = true;
+
+```

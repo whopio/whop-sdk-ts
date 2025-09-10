@@ -1,0 +1,124 @@
+---
+title: Create App
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `developer:create_app`
+ - _`access_pass:basic:read` (optional)_
+ - _`developer:manage_api_key` (optional)_
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.apps.createApp({
+	// The base URL of the app to be created
+	baseUrl: "some string",
+
+	// The name of the app to be created
+	name: "some string" /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The ID of the app
+	id: "xxxxxxxxxxx",
+
+	// The name of the app
+	name: "some string",
+
+	// The description of the app
+	description: "some string",
+
+	// If the status is live, the app is visible on Whop discovery. In order to be
+	// live, you need to set the name, icon, and description. Being unlisted or
+	// hidden means it's not visible on Whop but you can still install the app via
+	// direct link. To remove the app from whop discovery, you should set the status to unlisted.
+	status: "hidden" /* Valid values: hidden | live | unlisted */,
+
+	// The icon for the app. This icon is shown on discovery, on the product page, on
+	// checkout, and as a default icon for the experiences.
+	icon: {
+		// The source of the attachment
+		source: {
+			// The URL to access the attachment
+			url: "some string",
+		},
+	},
+
+	// Whether the app is using the default icon. We have this b/c icon is null
+	// false, but we need to tell the user if they are using the default icon so they change it.
+	usingDefaultIcon: true,
+
+	// The base url of the app
+	baseUrl: "some string",
+
+	// The developer base url of the app
+	baseDevUrl: "some string",
+
+	// The path for the hub view of the app
+	experiencePath: "some string",
+
+	// The path part for a specific view of the app. This is the template part of the
+	// url after the base domain. Eg: /experiences/[experienceId]
+	discoverPath: "some string",
+
+	// The path part for a specific view of the app. This is the template part of the
+	// url after the base domain. Eg: /experiences/[experienceId]
+	dashboardPath: "some string",
+
+	// The API keys for the app.
+	// Roles: owner, admin
+	apiKeys: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of this API key
+				id: "xxxxxxxxxxx",
+
+				// This is the API key used to authenticate requests
+				token: "some string",
+
+				// When this API key was created at
+				createdAt: 1716931200,
+			},
+		],
+	},
+
+	// The agent users that are owned by this application.
+	agentUsers: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The internal ID of the user
+				id: "xxxxxxxxxxx",
+
+				// The name of the user
+				name: "some string",
+
+				// The Whop username for this user
+				username: "some string",
+			},
+		],
+	},
+
+	// The company that owns the app
+	company: {
+		// The ID (tag) of the company.
+		id: "xxxxxxxxxxx",
+	},
+
+	// The access pass that is used to sell the app
+	accessPass: {
+		// The internal ID of the public access pass.
+		id: "xxxxxxxxxxx",
+	},
+};
+
+```

@@ -1,0 +1,29 @@
+query getApp($appId: ID!, $companyId: ID!) {
+	company(id: $companyId) {
+		app(id: $appId) {
+			...BaseApp
+			stats {
+				...BaseAppStats
+			}
+			apiKeys {
+				nodes {
+					...BaseAppApiKey
+				}
+			}
+			agentUsers {
+				nodes {
+					...BaseAppAgentUser
+				}
+			}
+			accessPass {
+				id
+				marketplaceStatus
+				activeMembershipsCount
+				marketplaceCategory(level: 1) {
+					id
+					name
+				}
+			}
+		}
+	}
+}
