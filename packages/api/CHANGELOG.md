@@ -1,5 +1,11 @@
 # @whop/api
 
+## 0.0.50
+
+### Patch Changes
+
+- 2170cf8: Add getMember query
+
 ## 0.0.49
 
 ### Patch Changes
