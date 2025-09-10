@@ -1,0 +1,3 @@
+mutation deleteAccessPass($input: DeleteAccessPassInput!) {
+	deleteAccessPass(input: $input)
+}
