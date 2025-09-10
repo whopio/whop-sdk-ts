@@ -1,0 +1,3 @@
+mutation unassignAppBuild($input: UnassignProductionAppBuildInput!) {
+	unassignProductionAppBuild(input: $input)
+}
