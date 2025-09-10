@@ -53,6 +53,10 @@ const result = await whopSdk.companies.listMembers({
 		// The promo code IDs to filter the members by
 		promoCodeIds: ["xxxxxxxxxxx"],
 
+		// The name, username, or email to filter the members by. The email filter will
+		// only apply if the current actor has the `member:email:read` permission.
+		query: "some string",
+
 		// The start date to filter the members by
 		startDate: 1716931200,
 
@@ -99,11 +103,32 @@ const result = {
 				// When the member was created
 				createdAt: 1716931200,
 
+				// The timestamp (in milliseconds since epoch) of when the access pass member was last updated
+				updatedAtMs: "9999999",
+
+				// When the member joined the company
+				joinedAt: 1716931200,
+
 				// The status of the member
 				status: "drafted" /* Valid values: drafted | joined | left */,
 
 				// The phone number for the member, if available.
 				phone: "some string",
+
+				// The access level of the access pass member. If its admin, the member is an
+				// authorized user of the access pass. If its customer, the member has a valid
+				// membership to the access pass. If its no_access, the member does not have
+				// access to the access pass.
+				accessLevel: "admin" /* Valid values: admin | customer | no_access */,
+
+				// How much they have spent on the company's passes.
+				totalSpent: 10,
+
+				// How much they have spent on the company's passes.
+				usdTotalSpent: "some string",
+
+				// An estimated MRR for the member.
+				mrr: "some string",
 
 				// The user for this member, if any.
 				user: {
