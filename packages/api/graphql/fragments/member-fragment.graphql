@@ -1,0 +1,21 @@
+fragment BaseCompanyMember on CompanyMember {
+	id
+	createdAt
+	updatedAtMs
+	joinedAt
+	status
+	phone
+	accessLevel
+	totalSpent
+	usdTotalSpent
+	mrr
+	user {
+		id
+		email
+		name
+		username
+	}
+	imageSrcset(style: s128) {
+		original
+	}
+}
