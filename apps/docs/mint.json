@@ -224,7 +224,12 @@
 			"pages": [
 				{
 					"group": "Access Passes",
-					"pages": ["sdk/api/access-passes/get-access-pass"]
+					"pages": [
+						"sdk/api/access-passes/create-access-pass",
+						"sdk/api/access-passes/delete-access-pass",
+						"sdk/api/access-passes/get-access-pass",
+						"sdk/api/access-passes/update-access-pass"
+					]
 				},
 				{
 					"group": "Access",
