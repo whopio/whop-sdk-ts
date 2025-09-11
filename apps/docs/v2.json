@@ -3514,7 +3514,7 @@
 					},
 					"accepted_payment_methods": {
 						"type": "array",
-						"description": "An array of payment methods that are currently accepted for this Plan. These are the high-level payment processors that are eligible to be used. This list is dynamically generated based on the plan amount, plan currency, the status of the account's connected payout accounts, and any processor specific enable/disable toggles.",
+						"description": "An array of payment methods that are currently accepted for this Plan. These are the high-level payment processors that are eligible to be used. This list is dynamically generated based on the plan amount, plan currency, the status of the account's connected payout accounts, and any processor specific enable/disable toggles. The acceptable values are: stripe, coinbase, free, paypal, sezzle, splitit, platform_balance, multi_psp",
 						"items": {
 							"type": "array",
 							"enum": [
