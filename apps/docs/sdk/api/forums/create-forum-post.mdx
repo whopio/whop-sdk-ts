@@ -2,16 +2,16 @@
 title: Create Forum Post
 ---
 <Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `forum:post:create`
+
 ### Usage
 
 ```typescript
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.forums.createForumPost({
-	// The access pass (whop) to create this post in (leave empty if providing a
-	// forum experience ID). This will look like prod_xxxx.
-	accessPassId: "prod_XXXXXXXX",
-
 	// The attachments for this post, such as videos or images.
 	attachments: [
 		{
@@ -29,9 +29,8 @@ const result = await whopSdk.forums.createForumPost({
 	// The content of the post. This is the main body of the post. Hidden if paywalled.
 	content: "some string" /* Required! */,
 
-	// The ID of the forum experience to send the message in. (leave empty if
-	// creating a new experience). This will look like exp_xxxx.
-	forumExperienceId: "some string",
+	// The ID of the forum experience to send the message in. This will look like exp_xxxx.
+	forumExperienceId: "some string" /* Required! */,
 
 	// This is used to determine if the post should be sent as a 'mention'
 	// notification to all of the users who are in the experience. This means that
