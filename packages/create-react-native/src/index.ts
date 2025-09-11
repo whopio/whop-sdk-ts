@@ -220,42 +220,6 @@ async function main(): Promise<void> {
 
 		console.log(chalk.green("✅ Template files copied successfully!\n"));
 
-		// Environment variables setup
-		console.log(chalk.cyan.bold("🔧 Environment Setup"));
-		console.log(chalk.yellow("To get your environment variables:"));
-		console.log(chalk.underline.blue("https://whop.com/dashboard/developer"));
-		console.log(chalk.gray("1. Go to the link above"));
-		console.log(chalk.gray("2. Create a new app or select an existing one"));
-		console.log(
-			chalk.gray("3. Copy the environment variables from the app settings\n"),
-		);
-
-		// Pause before opening editor so user can read instructions
-		await inquirer.prompt([
-			{
-				type: "input",
-				name: "continue",
-				message:
-					"Press Enter to continue and open the editor for pasting your environment variables...",
-				default: "",
-			},
-		]);
-
-		const envAnswers = await inquirer.prompt<EnvironmentAnswers>([
-			{
-				type: "editor",
-				name: "envVariables",
-				message: "Paste your environment variables here:",
-				validate: validateEnvironmentVariables,
-				waitUserInput: false,
-			},
-		]);
-
-		// Create .env.local file
-		const envPath = path.join(targetPath, ".env.local");
-		await fs.writeFile(envPath, envAnswers.envVariables.trim());
-		console.log(chalk.green("✅ Environment variables saved to .env.local\n"));
-
 		// Success message and instructions
 		console.log(chalk.green.bold("🎉 Project created successfully!"));
 		console.log(chalk.cyan(`📦 Project: ${normalizedProjectName}`));
@@ -264,7 +228,8 @@ async function main(): Promise<void> {
 		console.log(chalk.yellow.bold("📋 Next Steps:"));
 		console.log(chalk.white(`1. cd ${normalizedProjectName}`));
 		console.log(chalk.white("2. pnpm install"));
-		console.log(chalk.white("3. pnpm ship"));
+		console.log(chalk.white("3. Set up environment variables (required)"));
+		console.log(chalk.white("4. pnpm ship"));
 		console.log(
 			chalk.gray("   This will build and deploy your app to see it working!\n"),
 		);
@@ -275,6 +240,18 @@ async function main(): Promise<void> {
 		console.log(chalk.white("• pnpm clean    - Clean build files"));
 		console.log(
 			chalk.white("• pnpm ship     - Build and upload in one command\n"),
+		);
+
+		// Environment variables setup
+		console.log(chalk.blue("🔧 Environment Setup"));
+		console.log(chalk.yellow("To get your environment variables:"));
+		console.log(chalk.underline.blue("https://whop.com/dashboard/developer"));
+		console.log(chalk.gray("1. Go to the link above"));
+		console.log(chalk.gray("2. Create a new app or select an existing one"));
+		console.log(
+			chalk.gray(
+				"3. Copy the environment variables from the app settings to your .env file\n",
+			),
 		);
 
 		console.log(chalk.green("Happy coding! 🚀"));
