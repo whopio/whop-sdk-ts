@@ -266,15 +266,21 @@ async function main(): Promise<void> {
 		console.log(chalk.white("2. pnpm install"));
 		console.log(chalk.white("3. pnpm ship"));
 		console.log(
-			chalk.gray("   This will build and deploy your app to see it working!\n"),
+			chalk.gray("   This will build and deploy your app to see it working!"),
 		);
+		console.log(chalk.white("5. pnpm preview\n"));
 
 		console.log(chalk.blue("🔗 Useful Commands:"));
 		console.log(chalk.white("• pnpm build    - Build your app"));
 		console.log(chalk.white("• pnpm upload   - Upload to Whop"));
 		console.log(chalk.white("• pnpm clean    - Clean build files"));
 		console.log(
-			chalk.white("• pnpm ship     - Build and upload in one command\n"),
+			chalk.white("• pnpm ship     - Build and upload in one command"),
+		);
+		console.log(
+			chalk.white(
+				"• pnpm preview  - Install app into your whop and preview it on your phone\n",
+			),
 		);
 
 		console.log(chalk.green("Happy coding! 🚀"));

@@ -5,7 +5,8 @@
 		"build": "whop-react-native build",
 		"upload": "whop-react-native upload",
 		"clean": "whop-react-native clean",
-		"ship": "whop-react-native ship"
+		"ship": "whop-react-native ship",
+		"preview": "whop-react-native install"
 	},
 	"dependencies": {
 		"@whop/react-native": "{{whopReactNativeVersion}}",
