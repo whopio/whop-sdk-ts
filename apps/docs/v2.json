@@ -1522,9 +1522,9 @@
 							"type": "string",
 							"enum": [
 								"active",
-								"completed",
 								"trialing",
 								"past_due",
+								"completed",
 								"unresolved",
 								"canceled",
 								"expired"
@@ -2025,6 +2025,14 @@
 						}
 					},
 					{
+						"name": "checkout_session_id",
+						"in": "query",
+						"description": "The ID of the Checkout Session that was used to make the Payment, if any.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
 						"name": "expand",
 						"in": "query",
 						"description": "Whether or not to expand the User, Membership, Plan, or Product on the returned Payment. Pass an array with each object(s) you want to expand, e.g. `[product, plan, membership, user]`",
@@ -2063,6 +2071,57 @@
 					}
 				},
 				"deprecated": false
+			}
+		},
+		"/v2/payments/{receipt_id}/refund": {
+			"post": {
+				"tags": ["Payments"],
+				"summary": "Refund a payment",
+				"description": "Refund a specific Payment, using its unique ID. Refunds are irreversible, so be careful when issuing them.",
+				"operationId": "refund_payment",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "receipt_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/refund_payment"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Refund a payment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Payment"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "refund_payment"
 			}
 		},
 		"/v2/payment_fees": {
@@ -3292,6 +3351,10 @@
 						"description": "The time at which the Product was created. Measured in seconds since the Unix epoch.",
 						"format": "int32"
 					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Product is for, which will look like `biz_*************`"
+					},
 					"experiences": {
 						"type": "array",
 						"description": "The Experiences that are included in this Product",
@@ -3368,6 +3431,10 @@
 						"type": "integer",
 						"description": "The time at which the Product was created. Measured in seconds since the Unix epoch.",
 						"format": "int32"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Product is for, which will look like `biz_*************`"
 					}
 				}
 			},
@@ -3377,6 +3444,10 @@
 					"id": {
 						"type": "string",
 						"description": "The ID of the Plan, which will look like `plan_*************`"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Plan is for, which will look like `biz_*************`"
 					},
 					"product": {
 						"type": "string",
@@ -3443,9 +3514,19 @@
 					},
 					"accepted_payment_methods": {
 						"type": "array",
-						"description": "An array of payment methods that are accepted for this Plan",
+						"description": "An array of payment methods that are currently accepted for this Plan. These are the high-level payment processors that are eligible to be used. This list is dynamically generated based on the plan amount, plan currency, the status of the account's connected payout accounts, and any processor specific enable/disable toggles. The acceptable values are: stripe, coinbase, free, paypal, sezzle, splitit, platform_balance, multi_psp",
 						"items": {
-							"type": "array"
+							"type": "array",
+							"enum": [
+								"stripe",
+								"coinbase",
+								"free",
+								"paypal",
+								"sezzle",
+								"splitit",
+								"platform_balance",
+								"multi_psp"
+							]
 						}
 					},
 					"stock": {
@@ -3468,10 +3549,133 @@
 					},
 					"card_payments": {
 						"type": "boolean",
-						"description": "Deprecated. Please use `accepted_payment_methods` instead."
+						"description": "Whether or not card payments are allowed for this plan."
+					},
+					"custom_fields": {
+						"type": "array",
+						"description": "An array of Custom Field objects that collect additional information from customers during checkout, commonly used with checkout questions.",
+						"items": {
+							"$ref": "#/components/schemas/CustomField"
+						}
+					},
+					"description": {
+						"type": "string",
+						"description": "A short description of the Plan"
+					},
+					"allow_multiple_quantity": {
+						"type": "boolean",
+						"description": "Marks whether customers can purchase multiple quantity of the Plan."
+					},
+					"coinbase_commerce_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"splitit_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Splitit payments are allowed. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"platform_balance_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Platform Balance payments are allowed. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"expiration_days": {
+						"type": "integer",
+						"description": "The interval at which the Plan charges (expiration plans).",
+						"format": "int32"
+					},
+					"grace_period_days": {
+						"type": "integer",
+						"description": "The time period (in days) after a Membership expires where the customer can still top-up.",
+						"format": "int32"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a user. Used most likely for free trial plans. Default is false"
+					},
+					"refillable": {
+						"type": "boolean",
+						"description": "Marks whether an expiration Plan can/can't be topped-up."
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"paypal_accepted": {
+						"type": "boolean",
+						"description": "Marks whether paypal payments are/aren't accepted."
+					},
+					"split_pay_required_payments": {
+						"type": "integer",
+						"description": "The number of payments required before pausing the subscription.",
+						"format": "int32"
+					},
+					"ach_payments": {
+						"type": "boolean",
+						"description": "Whether or not ACH payments are accepted"
+					},
+					"cancel_collab_passes": {
+						"type": "boolean",
+						"description": "Whether or not to cancel dependant collab passes if a user loses access to this one. Default is true"
+					},
+					"cancel_discount_intervals": {
+						"type": "integer",
+						"description": "Number of billing periods to offer the cancel discount for",
+						"format": "int32"
+					},
+					"cancel_discount_percentage": {
+						"type": "integer",
+						"description": "Cancel discount percentage",
+						"format": "int32"
+					},
+					"offer_cancel_discount": {
+						"type": "boolean",
+						"description": "Whether or not to offer a discount on cancellation"
+					},
+					"one_per_company": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a company. Used most likely for free trial plans. Default is false"
+					},
+					"override_tax_type": {
+						"type": "string",
+						"description": "Overrides the default tax behavior"
 					}
 				},
 				"description": "Plan model"
+			},
+			"CustomField": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The unique ID of the Custom Field, which will look like `cf_*************`"
+					},
+					"field_type": {
+						"type": "string",
+						"description": "The type of the Custom Field (text only currently)"
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Custom Field shown to customers (the question)"
+					},
+					"order": {
+						"type": "integer",
+						"description": "The display order of the Custom Field in checkout forms",
+						"format": "int32"
+					},
+					"placeholder": {
+						"type": "string",
+						"description": "The placeholder text shown in the Custom Field (example answer to the question)"
+					},
+					"required": {
+						"type": "boolean",
+						"description": "Whether customers must fill this field to complete checkout"
+					}
+				}
 			},
 			"oauth_update_company_plan": {
 				"type": "object",
@@ -3496,11 +3700,11 @@
 					},
 					"card_payments": {
 						"type": "boolean",
-						"description": "Deprecated. Please use `accepted_payment_methods` instead."
+						"description": "Whether or not card payments are allowed for this plan."
 					},
 					"coinbase_commerce_accepted": {
 						"type": "boolean",
-						"description": "Whether or not Coinbase Commerce payments are accepted."
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
 					},
 					"expiration_days": {
 						"type": "integer",
@@ -3561,6 +3765,10 @@
 						"type": "string",
 						"description": "The ID of the Membership, which will look like `mem_*************`"
 					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Membership is for, which will look like `biz_*************`"
+					},
 					"product": {
 						"type": "string",
 						"description": "The Product attached to this Membership. By default this will just be the ID of the Product, but you can expand it to get more information about the Product by passing `[product]` in the `expand` parameter."
@@ -3613,7 +3821,18 @@
 					"payment_processor": {
 						"type": "string",
 						"description": "The payment processor used to pay for the Membership.",
-						"enum": ["free", "stripe", "coinbase", "crypto", "paypal", "apple"]
+						"enum": [
+							"free",
+							"stripe",
+							"coinbase",
+							"crypto",
+							"paypal",
+							"apple",
+							"multi_psp",
+							"sezzle",
+							"splitit",
+							"platform_balance"
+						]
 					},
 					"license_key": {
 						"type": "string",
@@ -3624,6 +3843,11 @@
 						"properties": {},
 						"description": "The metadata of the Membership"
 					},
+					"acquisition_data": {
+						"type": "object",
+						"properties": {},
+						"description": "The UTM data of the Membership, which is used to track where the user came from when they purchased the Membership"
+					},
 					"quantity": {
 						"type": "integer",
 						"description": "The amount of items included in the Membership",
@@ -3632,6 +3856,13 @@
 					"wallet_address": {
 						"type": "string",
 						"description": "The crypto wallet address used to pay for the Membership (if paid through the one-time ETH or renewal WETH Whop contracts)"
+					},
+					"custom_field_responses": {
+						"type": "array",
+						"description": "Questions and answers collected from the User at checkout",
+						"items": {
+							"$ref": "#/components/schemas/CustomFieldResponse"
+						}
 					},
 					"custom_fields_responses": {
 						"type": "object",
@@ -3696,6 +3927,11 @@
 					"phone_number": {
 						"type": "string",
 						"description": "The phone number of the User attached to this Membership, if its allowed to be shared."
+					},
+					"split_pay_required_payments": {
+						"type": "integer",
+						"description": "The number of payments required to complete a split pay purchase, if applicable.",
+						"format": "int32"
 					}
 				},
 				"description": "Membership model"
@@ -3880,7 +4116,8 @@
 							"tzs",
 							"ttd",
 							"uzs",
-							"rub"
+							"rub",
+							"btc"
 						]
 					},
 					"code": {
@@ -3953,6 +4190,33 @@
 					}
 				},
 				"description": "PromoCode model"
+			},
+			"CustomFieldResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The unique ID of the custom field response."
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "Timestamp when the response was created.",
+						"format": "int32"
+					},
+					"updated_at": {
+						"type": "integer",
+						"description": "Timestamp when the response was last updated.",
+						"format": "int32"
+					},
+					"question": {
+						"type": "string",
+						"description": "The question the user was asked."
+					},
+					"answer": {
+						"type": "string",
+						"description": "The user's response to the custom field question."
+					}
+				}
 			},
 			"Discord": {
 				"type": "object",
@@ -4094,11 +4358,11 @@
 					},
 					"card_payments": {
 						"type": "boolean",
-						"description": "Deprecated. Please use `accepted_payment_methods` instead."
+						"description": "Whether or not card payments are allowed for this plan."
 					},
 					"coinbase_commerce_accepted": {
 						"type": "boolean",
-						"description": "Whether or not Coinbase Commerce payments are accepted."
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
 					},
 					"expiration_days": {
 						"type": "integer",
@@ -4303,7 +4567,8 @@
 							"tzs",
 							"ttd",
 							"uzs",
-							"rub"
+							"rub",
+							"btc"
 						]
 					},
 					"billing_period": {
@@ -4313,11 +4578,11 @@
 					},
 					"card_payments": {
 						"type": "boolean",
-						"description": "Deprecated. Please use `accepted_payment_methods` instead."
+						"description": "Whether or not card payments are allowed for this plan."
 					},
 					"coinbase_commerce_accepted": {
 						"type": "boolean",
-						"description": "Whether or not Coinbase Commerce payments are accepted."
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
 					},
 					"expiration_days": {
 						"type": "integer",
@@ -4406,6 +4671,81 @@
 						"type": "integer",
 						"description": "The number of split pay required payments",
 						"format": "int32"
+					},
+					"ach_payments": {
+						"type": "boolean",
+						"description": "Whether or not ACH payments are accepted"
+					},
+					"cancel_collab_passes": {
+						"type": "boolean",
+						"description": "Whether or not to cancel dependant collab passes if a user loses access to this one. Default is true"
+					},
+					"cancel_discount_intervals": {
+						"type": "integer",
+						"description": "Number of billing periods to offer the cancel discount for",
+						"format": "int32"
+					},
+					"cancel_discount_percentage": {
+						"type": "integer",
+						"description": "Cancel discount percentage",
+						"format": "int32"
+					},
+					"custom_fields": {
+						"type": "array",
+						"description": "An array of Custom Field objects that collect additional information from customers during checkout, commonly used with checkout questions.",
+						"items": {
+							"required": ["field_type", "name"],
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of the Custom Field shown to customers (the question)"
+								},
+								"field_type": {
+									"type": "string",
+									"description": "The type of the Custom Field (text only currently)",
+									"enum": ["text"]
+								},
+								"placeholder": {
+									"type": "string",
+									"description": "The placeholder text shown in the Custom Field (example answer to the question)"
+								},
+								"required": {
+									"type": "boolean",
+									"description": "Whether customers must fill this field to complete checkout",
+									"default": false
+								},
+								"order": {
+									"type": "integer",
+									"description": "The display order of the Custom Field in checkout forms",
+									"format": "int32"
+								}
+							}
+						}
+					},
+					"description": {
+						"type": "string",
+						"description": "A short description of the Plan"
+					},
+					"mimic_plan_id": {
+						"type": "string",
+						"description": "The ID of a plan you want to copy the data from, which will look like `plan_*************`"
+					},
+					"offer_cancel_discount": {
+						"type": "boolean",
+						"description": "Whether or not to offer a discount on cancellation"
+					},
+					"one_per_company": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a company. Used most likely for free trial plans. Default is false"
+					},
+					"override_tax_type": {
+						"type": "string",
+						"description": "Overrides the default tax behavior"
+					},
+					"set_as_default": {
+						"type": "boolean",
+						"description": "Sets this plan as the default for the company"
 					}
 				},
 				"description": "Create a plan"
@@ -4471,6 +4811,10 @@
 					"membership": {
 						"type": "string",
 						"description": "The Membership this Payment part of. By default this will just be the ID of the Membership, but you can expand it to get more information about the Membership by passing `[membership]` in the `expand` parameter."
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Payment is for, which will look like `biz_*************`"
 					},
 					"affiliate_reward": {
 						"type": "number",
@@ -4586,6 +4930,31 @@
 						"type": "object",
 						"properties": {},
 						"description": "The metadata attached to the receipt's Membership."
+					},
+					"payment_method_type": {
+						"type": "string",
+						"description": "The type of payment method that was used to make the purchase."
+					},
+					"billing_reason": {
+						"type": "string",
+						"description": "The reason why the payment was made, ex whether or not it was a one time purchase, initial subscription purchase, or a recurring payment on an existing subscription.",
+						"enum": [
+							"subscription_create",
+							"subscription_cycle",
+							"subscription_update",
+							"one_time",
+							"manual",
+							"subscription"
+						]
+					},
+					"checkout_request_id": {
+						"type": "string",
+						"description": "The ID of the Checkout Request that was used to make the Payment, if any."
+					},
+					"acquisition_data": {
+						"type": "object",
+						"properties": {},
+						"description": "The UTM data of the Payment, which is used to track where the user came from when they made the Payment"
 					}
 				},
 				"description": "Payment model"
@@ -4622,6 +4991,17 @@
 						"description": "The country of the address"
 					}
 				}
+			},
+			"refund_payment": {
+				"type": "object",
+				"properties": {
+					"partial_amount": {
+						"type": "number",
+						"description": "The amount that was partially paid for the Payment.",
+						"format": "float"
+					}
+				},
+				"description": "Refund a payment"
 			},
 			"PaymentFee": {
 				"type": "object",
@@ -4666,12 +5046,45 @@
 				"description": "PaymentFee model"
 			},
 			"create_checkout_session": {
-				"required": ["plan_id"],
 				"type": "object",
 				"properties": {
 					"plan_id": {
 						"type": "string",
 						"description": "The ID of the plan that the checkout session is associated with, which will look like `plan_*************`"
+					},
+					"price": {
+						"required": ["currency", "plan_type", "product_id"],
+						"type": "object",
+						"properties": {
+							"product_id": {
+								"type": "string",
+								"description": "The ID of the product to attach the plan to"
+							},
+							"initial_price": {
+								"type": "number",
+								"description": "Initial price (ex. 10.00)",
+								"format": "float"
+							},
+							"renewal_price": {
+								"type": "number",
+								"description": "Renewal price in cents (ex. 5.00)",
+								"format": "float"
+							},
+							"billing_period": {
+								"type": "integer",
+								"description": "Billing period in days (ex. 30)",
+								"format": "int32"
+							},
+							"plan_type": {
+								"type": "string",
+								"description": "Plan type (ex. one_time, renewal)",
+								"enum": ["one_time", "renewal"]
+							},
+							"currency": {
+								"type": "string",
+								"description": "Currency (ex. usd, eur, cad)"
+							}
+						}
 					},
 					"affiliate_code": {
 						"type": "string",
@@ -4716,6 +5129,10 @@
 					"purchase_url": {
 						"type": "string",
 						"description": "The URL that the customer can use to purchase with this checkout session."
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Checkout Session is for, which will look like `biz_*************`"
 					}
 				},
 				"description": "CheckoutSession model"
@@ -4847,7 +5264,8 @@
 							"tzs",
 							"ttd",
 							"uzs",
-							"rub"
+							"rub",
+							"btc"
 						]
 					},
 					"code": {
@@ -4960,10 +5378,15 @@
 								"membership_metadata_updated",
 								"payment_succeeded",
 								"payment_failed",
+								"payment_pending",
 								"refund_created",
 								"refund_updated",
 								"dispute_created",
 								"dispute_updated",
+								"dispute_alert_created",
+								"resolution_created",
+								"resolution_updated",
+								"resolution_decided",
 								"membership_cancel_at_period_end_changed",
 								"payment_affiliate_reward_created",
 								"membership_experience_claimed",
@@ -4971,6 +5394,7 @@
 								"app_membership_went_invalid",
 								"app_payment_succeeded",
 								"app_payment_failed",
+								"app_payment_pending",
 								"app_membership_cancel_at_period_end_changed"
 							]
 						}
