@@ -250,7 +250,7 @@ async function main(): Promise<void> {
 		console.log(chalk.gray("2. Create a new app or select an existing one"));
 		console.log(
 			chalk.gray(
-				"3. Copy the environment variables from the app settings to your .env file\n",
+				"3. Copy the environment variables from the app settings to your .env.local file\n",
 			),
 		);
 
