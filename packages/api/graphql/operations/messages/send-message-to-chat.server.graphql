@@ -1,3 +1,13 @@
-mutation sendMessageToChat($experienceId: ID!, $message: String!) {
-	sendMessage(input: { message: $message, experienceId: $experienceId })
+mutation sendMessageToChat(
+	$experienceId: ID!
+	$message: String!
+	$attachments: [AttachmentInput!]
+) {
+	sendMessage(
+		input: {
+			message: $message
+			experienceId: $experienceId
+			attachments: $attachments
+		}
+	)
 }
