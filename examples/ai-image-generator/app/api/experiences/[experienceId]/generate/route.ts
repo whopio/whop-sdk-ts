@@ -125,6 +125,9 @@ export async function POST(
 		});
 
 		const forumId = forum?.id;
+		if (!forumId) {
+			throw new Error("Failed to find or create forum");
+		}
 
 		const post = await whopSdk.forums.createForumPost({
 			forumExperienceId: forumId,
