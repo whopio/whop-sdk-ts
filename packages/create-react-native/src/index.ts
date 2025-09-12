@@ -228,7 +228,7 @@ async function main(): Promise<void> {
 		console.log(chalk.yellow.bold("📋 Next Steps:"));
 		console.log(chalk.white(`1. cd ${normalizedProjectName}`));
 		console.log(chalk.white("2. pnpm install"));
-		console.log(chalk.white("3. Set up environment variables (required)"));
+		console.log(chalk.white("3. Copy .env.example to .env.local and fill in your values"));
 		console.log(chalk.white("4. pnpm ship"));
 		console.log(
 			chalk.gray("   This will build and deploy your app to see it working!\n"),
