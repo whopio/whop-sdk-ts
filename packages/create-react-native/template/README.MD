@@ -12,7 +12,7 @@ pnpm install
 
 > There is an `.env.example` in the root directory you can use for reference
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 ```
