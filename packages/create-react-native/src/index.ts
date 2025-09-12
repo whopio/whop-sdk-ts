@@ -17,10 +17,6 @@ interface ProjectAnswers {
 	projectName: string;
 }
 
-interface EnvironmentAnswers {
-	envVariables: string;
-}
-
 interface TemplateData {
 	projectName: string;
 	reactVersion: string;
@@ -92,19 +88,6 @@ function validateProjectName(name: string): boolean | string {
 	// Check for invalid characters that slugify can't handle well
 	if (!/^[a-zA-Z0-9\s\-_.]+$/.test(name)) {
 		return "Project name contains invalid characters. Use only letters, numbers, spaces, hyphens, underscores, and dots.";
-	}
-
-	return true;
-}
-
-function validateEnvironmentVariables(envVars: string): boolean | string {
-	if (!envVars || envVars.trim().length === 0) {
-		return "Environment variables are required";
-	}
-
-	// Basic validation - should contain at least one = sign
-	if (!envVars.includes("=")) {
-		return "Environment variables should be in KEY=VALUE format";
 	}
 
 	return true;
@@ -228,7 +211,9 @@ async function main(): Promise<void> {
 		console.log(chalk.yellow.bold("📋 Next Steps:"));
 		console.log(chalk.white(`1. cd ${normalizedProjectName}`));
 		console.log(chalk.white("2. pnpm install"));
-		console.log(chalk.white("3. Copy .env.example to .env.local and fill in your values"));
+		console.log(
+			chalk.white("3. Copy .env.example to .env.local and fill in your values"),
+		);
 		console.log(chalk.white("4. pnpm ship"));
 		console.log(
 			chalk.gray("   This will build and deploy your app to see it working!\n"),
