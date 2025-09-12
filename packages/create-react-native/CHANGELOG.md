@@ -1,5 +1,14 @@
 # @whop/create-react-native
 
+## 0.0.4
+
+### Patch Changes
+
+- 2bcf1fc: Remove cli env step
+- cdfb691: Add preview command
+- 73948a2: Add react-native-reanimated
+- a8840cf: Add readme
+
 ## 0.0.3
 
 ### Patch Changes
