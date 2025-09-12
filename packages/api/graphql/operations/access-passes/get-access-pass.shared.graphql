@@ -1,3 +1,4 @@
+# /access_passes/:accessPassId
 query getAccessPass($accessPassId: ID!) {
 	accessPass: publicAccessPass(id: $accessPassId) {
 		...AccessPassFragment

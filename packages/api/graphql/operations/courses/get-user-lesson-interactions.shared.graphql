@@ -1,3 +1,4 @@
+# /courses/:courseId/user_lesson_interactions
 query getUserLessonInteractions($courseId: ID!) {
 	course(id: $courseId) {
 		chapters {

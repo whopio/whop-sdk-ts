@@ -1,3 +1,4 @@
+# /experiences/:experienceId/users
 query listUsersForExperience(
 	$experienceId: ID!
 	$after: String
@@ -16,6 +17,7 @@ query listUsersForExperience(
 		) {
 			nodes {
 				id
+				name
 				username
 				profilePicture {
 					sourceUrl

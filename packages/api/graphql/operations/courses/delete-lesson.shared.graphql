@@ -1,3 +1,4 @@
+# /courses/delete_lesson
 mutation deleteLesson($input: DeleteLessonInput!) {
 	deleteLesson(input: $input)
 }

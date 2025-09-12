@@ -1,3 +1,4 @@
+# /courses/update_lesson_order
 mutation updateLessonOrder($input: UpdateLessonOrderInput!) {
 	updateLessonOrder(input: $input) {
 		...FullCourseLesson

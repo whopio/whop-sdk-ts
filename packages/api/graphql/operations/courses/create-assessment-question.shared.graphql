@@ -1,3 +1,4 @@
+# /courses/create_assessment_question
 mutation createAssessmentQuestion($input: CreateAssessmentQuestionInput!) {
 	createAssessmentQuestion(input: $input) {
 		...CourseAssessmentQuestion

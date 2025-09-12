@@ -1,3 +1,4 @@
+# /courses/?experienceId
 query listCoursesForExperience(
 	$experienceId: ID!
 	$first: Int

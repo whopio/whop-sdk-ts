@@ -1,3 +1,4 @@
+# /access/check_experience
 query checkIfUserHasAccessToExperience($experienceId: ID!, $userId: ID) {
 	hasAccessToExperience(experienceId: $experienceId, userId: $userId) {
 		hasAccess

@@ -1,3 +1,4 @@
+# /companies/:companyId/ledger_account
 query getCompanyLedgerAccount($companyId: ID!) {
 	company(id: $companyId) {
 		ledgerAccount {

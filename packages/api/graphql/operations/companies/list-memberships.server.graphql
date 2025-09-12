@@ -1,3 +1,4 @@
+# /companies/:companyId/memberships
 query listMemberships(
 	$companyId: ID!
 	$after: String

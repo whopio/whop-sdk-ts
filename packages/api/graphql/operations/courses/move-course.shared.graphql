@@ -1,3 +1,4 @@
+# /courses/move_course
 mutation moveCourse($input: MoveCourseInput!) {
 	moveCourse(input: $input)
 }

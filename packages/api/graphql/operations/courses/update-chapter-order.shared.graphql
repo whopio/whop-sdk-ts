@@ -1,3 +1,4 @@
+# /courses/update_chapter_order
 mutation updateChapterOrder($input: UpdateChapterOrderInput!) {
 	updateChapterOrder(input: $input) {
 		...BasicCourseChapter

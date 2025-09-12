@@ -1,3 +1,4 @@
+# /companies/:companyId/authorized_users
 query listAuthorizedUsers($companyId: ID!) {
 	company(id: $companyId) {
 		authorizedUsers {
