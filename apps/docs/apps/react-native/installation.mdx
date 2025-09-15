@@ -34,10 +34,7 @@ To preview your app you will need to deploy a [development build](/apps/react-na
 
 ### 1. Configure environment variables
 
-> There is an `.env.example` in the root directory you can use for reference
-```bash
-cp .env.example .env.local
-```
+Create a `.env.local` file in the root directory and fill in your values:
 
 ```
 WHOP_API_KEY=your_api_key
@@ -53,6 +50,8 @@ Get these credentials from the [Whop Developer Dashboard](https://whop.com/dashb
 
 ### 2. Deploy a development build 
 
+Use the `ship` command to build and upload a development build of your app:
+
 ```bash
 pnpm ship
 ```
@@ -63,7 +62,11 @@ pnpm ship
   your app to react native.
 </Info>
 
-### 3. Install your app into your whop and preview it on your phone
+See the [Deploying](/apps/react-native/deploying) page for more information.
+
+### 3. Preview on your phone
+
+Use the `preview` command to install your app into your whop and preview it on your phone:
 
 ```bash
 pnpm preview
@@ -72,3 +75,5 @@ pnpm preview
 <Warning>
   To preview your app, you must **SHAKE YOUR PHONE**. This enables "dev mode" and allows you to see the latest 'non production' react native builds.
 </Warning>
+
+See the [Troubleshooting](/apps/react-native/troubleshooting) page if you're having issues.

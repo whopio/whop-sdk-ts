@@ -192,7 +192,8 @@
 				"apps/react-native/using-libraries",
 				"apps/react-native/styling",
 				"apps/react-native/deploying",
-				"apps/react-native/advanced"
+				"apps/react-native/advanced",
+				"apps/react-native/troubleshooting"
 			]
 		},
 		{
