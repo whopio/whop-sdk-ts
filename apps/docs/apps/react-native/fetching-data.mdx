@@ -1,5 +1,5 @@
 ---
-title: "Fetching data"
+title: "Fetching Data"
 ---
 
 ---
@@ -26,6 +26,10 @@ export function MyComponent() {
   return <Text>{user?.name}</Text>;
 }
 ```
+
+<Warning>
+  Some operations are only available on the server, so make sure you call those from your api. Check out the [SDK reference](/sdk/api/access-passes/create-access-pass) to see which ones have the "server only" flag.
+</Warning>
 
 ## Making authenticated requests
 
