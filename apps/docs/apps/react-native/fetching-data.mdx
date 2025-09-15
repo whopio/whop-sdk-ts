@@ -1,0 +1,48 @@
+---
+title: "Fetching Data"
+---
+
+---
+
+## Whop SDK
+
+The whop sdk is available for use in the react native app out of the box. Using this you can fetch data within the scope of the current user.
+
+<Info>
+  We recommend using the [useQuery](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) hook from [@tanstack/react-query](https://tanstack.com/query/latest) to fetch
+  data.
+</Info>
+
+```tsx
+import { whopSdk } from "@whop/react-native";
+import { useQuery } from "@tanstack/react-query";
+
+export function MyComponent() {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => whopSdk.users.getCurrentUser(),
+  });
+
+  return <Text>{user?.name}</Text>;
+}
+```
+
+<Warning>
+  Some operations are only available on the server, so make sure you call those from your api. Check out the [SDK reference](/sdk/installation) to see which ones have the "server only" flag.
+</Warning>
+
+## Making authenticated requests
+
+You can make authenticated requests to your api by using the same proxy infrastructure used for existing web apps.
+
+1. Set your api origin as the `Base Domain` in the [developer dashboard](https://whop.com/dashboard/developer)
+2. Make a normal fetch request from your react native app using the `apiOrigin` from `__internal_execSync("getAppApiOrigin", {})`
+
+```tsx
+const apiOrigin = __internal_execSync("getAppApiOrigin", {});
+
+// Assuming your server has this api endpoint:
+fetch(`${apiOrigin}/api/v1/users/me`).then((res) => res.json());
+```
+
+3. On your server use the standard `verifyUserToken` function from the SDK to verify the request. Auth between react native apps and whop iframe apps is exactly the same meaning you can _reuse_ your backend.
