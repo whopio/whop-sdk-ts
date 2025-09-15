@@ -1,0 +1,51 @@
+---
+title: "Deploying"
+---
+
+---
+
+## Deploy a development build
+
+Use the `ship` command to build and upload a development build of your app:
+
+```bash
+pnpm ship
+```
+
+ - `--ios` Build for iOS
+ - `--android` Build for Android
+ - `--web` Build for web	
+
+<Info>
+  Only owners and admins of the the app can see development builds.
+</Info>
+
+If you prefer to separate the build and upload steps, you can use the following commands:
+
+```bash
+pnpm build
+pnpm upload
+```
+
+## Promote to production
+
+Once you're happy with your app go to your [developer dashboard](https://whop.com/dashboard/developer) and click "Promote to production" on your latest development build.
+
+<Frame>
+![Promote to production](/images/promote-build.png)
+</Frame>
+
+After going through an automated review, the app will be pushed instantly to all users of your app on iOS, Android, and web.
+
+<Info>
+  ProTip: the `pnpm ship` command prints out a link you can use to promote your
+  app to production.
+</Info>
+
+## Rollback
+
+From the builds screen you can also instant rollback to a previous production build which will be pushed live to all users across whop.
+
+<Frame>
+![Rollback](/images/rollback-build.png)
+</Frame>
