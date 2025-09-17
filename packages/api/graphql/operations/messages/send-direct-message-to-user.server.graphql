@@ -1,3 +1,13 @@
-mutation sendDirectMessageToUser($toUserIdOrUsername: ID!, $message: String!) {
-	sendMessage(input: { message: $message, toUserId: $toUserIdOrUsername })
+mutation sendDirectMessageToUser(
+	$toUserIdOrUsername: ID!
+	$message: String!
+	$attachments: [AttachmentInput!]
+) {
+	sendMessage(
+		input: {
+			message: $message
+			toUserId: $toUserIdOrUsername
+			attachments: $attachments
+		}
+	)
 }
