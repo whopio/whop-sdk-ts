@@ -1,0 +1,218 @@
+---
+title: "Fetching Data"
+---
+
+---
+
+## Whop SDK
+
+The whop sdk is available for use in the react native app out of the box. Using this you can fetch data within the scope of the current user.
+
+<Info>
+  We recommend using the [useQuery](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) hook from [@tanstack/react-query](https://tanstack.com/query/latest) to fetch
+  data.
+</Info>
+
+```tsx
+import { whopSdk } from "@whop/react-native";
+import { useQuery } from "@tanstack/react-query";
+
+export function MyComponent() {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => whopSdk.users.getCurrentUser(),
+  });
+
+  return <Text>{user?.name}</Text>;
+}
+```
+
+<Warning>
+  Some operations are only available on the server, so make sure you call those from your api. Check out the [SDK reference](/sdk/installation) to see which ones have the "server only" flag.
+</Warning>
+
+## Making authenticated requests
+
+You can make authenticated requests to your API by using the same proxy infrastructure used for existing web apps.
+
+1. Set your API origin as the `Base URL` in the [developer dashboard](https://whop.com/dashboard/developer)
+<Frame>
+![Base URL](/images/app-settings-base-url.png)
+</Frame>
+
+2. Create your API endpoint
+```ts app/api/user/route.ts
+import { whopSdk } from "@/lib/whop";
+
+export async function GET(request: Request) {
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const user = await whopSdk.users.getUser({ userId });
+
+  return Response.json(user, { status: 200 });
+}
+```
+See the [Set up the API client](/sdk/whop-api-client) page for how to configure the SDK.
+
+3. Make a fetch request to your API endpoint from your react native app using the returned `apiOrigin` from `__internal_execSync("getAppApiOrigin", {})`
+
+<Note>
+  It's important to use the `apiOrigin` to make authenticated requests to your API endpoints.
+</Note>
+
+<CodeGroup>
+```tsx TanStack Query
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function User() {
+  const { data: user, isPending } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => fetch(`${apiOrigin}/api/user`).then((res) => res.json()),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  return <Text>{user?.name}</Text>;
+}
+```
+
+```tsx SWR
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+import useSWR from "swr";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+export function User() {
+  const { data: user, isLoading } = useSWR(`${apiOrigin}/api/user`, fetcher);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  return <Text>{user?.name}</Text>;
+}
+```
+</CodeGroup>
+
+## Examples
+
+### Check for access to an experience
+<CodeGroup>
+```tsx protected-component.tsx
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function ProtectedComponent({ experienceId }: { experienceId: string }) {
+  const { data: access, isPending } = useQuery({
+    queryKey: ["access", experienceId],
+    queryFn: () =>
+      fetch(
+        `${apiOrigin}/api/access/experience?experienceId=${experienceId}`,
+      ).then((res) => res.json()),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!access?.hasAccess) {
+    return <Text>Forbidden</Text>;
+  }
+
+  return <Text>{JSON.stringify(access)}</Text>;
+}
+```
+
+```tsx route.ts
+// app/api/access/experience/route.ts
+
+import { whopSdk } from "@/lib/whop";
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const experienceId = searchParams.get("experienceId");
+  if (!experienceId) {
+    return new Response("Experience ID is required", { status: 400 });
+  }
+
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const access = await whopSdk.access.checkIfUserHasAccessToExperience({
+    experienceId,
+    userId,
+  });
+
+  return Response.json(access, { status: 200 });
+}
+```
+</CodeGroup>
+
+### Check for access to a company
+<CodeGroup>
+```tsx protected-component.tsx
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function ProtectedComponent({ companyId }: { companyId: string }) {
+  const { data: access, isPending } = useQuery({
+    queryKey: ["access", companyId],
+    queryFn: () =>
+      fetch(`${apiOrigin}/api/access/company?companyId=${companyId}`).then(
+        (res) => res.json(),
+      ),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (access?.accessLevel !== "admin") {
+    return <Text>Forbidden</Text>;
+  }
+
+  return <Text>{JSON.stringify(access)}</Text>;
+}
+```
+
+```tsx route.ts
+// app/api/access/company/route.ts
+
+import { whopSdk } from "@/lib/whop";
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const companyId = searchParams.get("companyId");
+  if (!companyId) {
+    return new Response("Company ID is required", { status: 400 });
+  }
+
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const access = await whopSdk.access.checkIfUserHasAccessToCompany({
+    companyId,
+    userId,
+  });
+
+  return Response.json(access, { status: 200 });
+}
+```
+</CodeGroup>

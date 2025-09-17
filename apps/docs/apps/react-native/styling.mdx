@@ -1,0 +1,84 @@
+---
+title: "Styling"
+---
+
+---
+
+## Color themes
+
+React native by default exposes a `useColorScheme` hook that you can use to get the current color scheme of the device. This works correctly out of the box on whop react native apps too!.
+
+While we are still building our UI kit, you can use the following `useColors` hook as inspiration to build your own dynamic color scheme:
+
+```bash
+# Install the radix ui colors package
+pnpm i @radix-ui/colors
+```
+
+```tsx Usage
+function MyComponent() {
+  const colors = useColors();
+
+  return <View style={{ backgroundColor: colors.gray1 }} />;
+}
+```
+
+Hook implementation to copy:
+
+```tsx use-colors.ts expandable
+import {
+  amber,
+  amberA,
+  amberDark,
+  amberDarkA,
+  blue,
+  blueA,
+  blueDark,
+  blueDarkA,
+  gray,
+  grayA,
+  grayDark,
+  grayDarkA,
+  green,
+  greenA,
+  greenDark,
+  greenDarkA,
+  red,
+  redA,
+  redDark,
+  redDarkA,
+} from "@radix-ui/colors";
+import { useColorScheme } from "react-native";
+
+export function useColors() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
+
+  // Create all the color groups
+  const _grayA = isDark ? grayDarkA : grayA;
+  const _gray = isDark ? grayDark : gray;
+  const _blueA = isDark ? blueDarkA : blueA;
+  const _blue = isDark ? blueDark : blue;
+  const _redA = isDark ? redDarkA : redA;
+  const _red = isDark ? redDark : red;
+  const _amberA = isDark ? amberDarkA : amberA;
+  const _amber = isDark ? amberDark : amber;
+  const _greenA = isDark ? greenDarkA : greenA;
+  const _green = isDark ? greenDark : green;
+
+  // Merge them
+  return {
+    transparent: "transparent" as const,
+    ..._grayA,
+    ..._gray,
+    ..._blueA,
+    ..._blue,
+    ..._redA,
+    ..._red,
+    ..._amberA,
+    ..._amber,
+    ..._greenA,
+    ..._green,
+  };
+}
+```
