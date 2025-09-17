@@ -3,4 +3,95 @@ title: "Webhooks"
 description: "Use webhooks to get notified when specific events happen relating to your app."
 ---
 
-Access your webhooks from the app detail screen in your [dashboard](https://whop.com/dashboard/developer/).
+---
+
+## Create a webhook
+
+<Steps>
+  <Step title="Go to your app's webhook settings">
+    1. Go to the [developer dashboard](https://whop.com/dashboard/developer)
+    2. Create a new app or select an existing one
+    3. Click on **Webhooks** 
+
+	 <Frame>
+		![Webhook Settings](/images/app-webhooks.png)
+	 </Frame>
+  </Step>
+
+  <Step title="Create a webhook">
+    1. Click on **Create webhook**
+    2. Set your endpoint URL
+    
+    <Frame>
+      ![Webhook URL](/images/create-webhook-url.png)
+    </Frame>
+
+	 <Note>
+		When testing locally, you'll need to tunnel your requests to your localhost endpoint. You can use [ngrok](https://ngrok.com/) to do this.
+	 </Note>
+
+    3. Select the events you want to receive and click on **Save**
+    
+    <Frame>
+      ![Webhook Events](/images/create-webhook-select-events.png)
+    </Frame>
+  </Step>
+
+  <Step title="Copy your webhook secret">
+    Copy the webhook secret by clicking on it and safely store it in your environment variables.
+    
+    <Frame>
+      ![Webhook Secret](/images/webhook-copy-secret.png)
+    </Frame>
+  </Step>
+</Steps>
+
+## Handle webhook events
+
+Set up a webhook route to handle the selected events:
+
+```typescript app/api/webhook/whop/route.ts
+import { makeWebhookValidator, type PaymentWebhookData } from "@whop/api";
+import { after } from "next/server";
+
+const validateWebhook = makeWebhookValidator({
+  webhookSecret: process.env.WHOP_WEBHOOK_SECRET,
+});
+
+export async function POST(request: Request) {
+  // Validate the webhook to ensure it's from Whop
+  const webhook = await validateWebhook(request);
+
+  // Handle the webhook event
+  if (webhook.action === "payment.succeeded") {
+    after(handlePaymentSucceededWebhook(webhook.data));
+  }
+
+  // Make sure to return a 2xx status code quickly. Otherwise the webhook will be retried.
+  return new Response("OK", { status: 200 });
+}
+
+async function handlePaymentSucceededWebhook(data: PaymentWebhookData) {
+  const { id, user_id, subtotal, amount_after_fees, metadata, ... } = data;
+
+  // ...
+}
+```
+
+## Test webhook events
+
+You can send dummy webhook events to your endpoint for testing purposes.
+
+<Steps>
+  <Step title="Open the test webhook popup">
+    <Frame>
+      ![Test Webhook Popup](/images/test-webhook-dropdown.png)
+    </Frame>
+  </Step>
+
+  <Step title="Select and send the event you want to test">
+    <Frame>
+      ![Test Webhook](/images/test-webhook-send-event.png)
+    </Frame>
+  </Step>
+</Steps>
