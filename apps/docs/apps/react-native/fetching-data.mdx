@@ -33,16 +33,130 @@ export function MyComponent() {
 
 ## Making authenticated requests
 
-You can make authenticated requests to your api by using the same proxy infrastructure used for existing web apps.
+You can make authenticated requests to your API by using the same proxy infrastructure used for existing web apps.
 
-1. Set your api origin as the `Base Domain` in the [developer dashboard](https://whop.com/dashboard/developer)
-2. Make a normal fetch request from your react native app using the `apiOrigin` from `__internal_execSync("getAppApiOrigin", {})`
+1. Set your API origin as the `Base URL` in the [developer dashboard](https://whop.com/dashboard/developer)
+<Frame>
+![Base URL](/images/app-settings-base-url.png)
+</Frame>
 
-```tsx
-const apiOrigin = __internal_execSync("getAppApiOrigin", {});
+2. Create your API endpoint
+```ts app/api/user/route.ts
+import { whopSdk } from "@/lib/whop";
 
-// Assuming your server has this api endpoint:
-fetch(`${apiOrigin}/api/v1/users/me`).then((res) => res.json());
+export async function GET(request: Request) {
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const user = await whopSdk.users.getUser({ userId });
+
+  return Response.json(user, { status: 200 });
+}
+```
+See the [Set up the API client](/sdk/whop-api-client) page for how to configure the SDK.
+
+3. Make a fetch request to your API endpoint from your react native app using the returned `apiOrigin` from `__internal_execSync("getAppApiOrigin", {})`
+
+<Note>
+  It's important to use the `apiOrigin` to make authenticated requests to your API endpoints.
+</Note>
+
+<CodeGroup>
+```tsx TanStack Query
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function User() {
+  const { data: user, isPending } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => fetch(`${apiOrigin}/api/user`).then((res) => res.json()),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  return <Text>{user?.name}</Text>;
+}
 ```
 
-3. On your server use the standard `verifyUserToken` function from the SDK to verify the request. Auth between react native apps and whop iframe apps is exactly the same meaning you can _reuse_ your backend.
+```tsx SWR
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+import useSWR from "swr";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+export function User() {
+  const { data: user, isLoading } = useSWR(`${apiOrigin}/api/user`, fetcher);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  return <Text>{user?.name}</Text>;
+}
+```
+</CodeGroup>
+
+## Examples
+
+### Check for access to an experience
+<CodeGroup>
+```tsx protected-component.tsx
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function ProtectedComponent({ experienceId }: { experienceId: string }) {
+  const { data: access, isPending } = useQuery({
+    queryKey: ["access", experienceId],
+    queryFn: () =>
+      fetch(`${apiOrigin}/api/access?experienceId=${experienceId}`).then(
+        (res) => res.json(),
+      ),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!access?.hasAccess) {
+    return <Text>Forbidden</Text>;
+  }
+
+  return <Text>{JSON.stringify(access)}</Text>;
+}
+```
+
+```tsx route.ts
+// app/api/access/route.ts
+
+import { whopSdk } from "@/lib/whop";
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const experienceId = searchParams.get("experienceId");
+  if (!experienceId) {
+    return new Response("Experience ID is required", { status: 400 });
+  }
+
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const access = await whopSdk.access.checkIfUserHasAccessToExperience({
+    experienceId,
+    userId,
+  });
+
+  return Response.json(access, { status: 200 });
+}
+```
+</CodeGroup>
