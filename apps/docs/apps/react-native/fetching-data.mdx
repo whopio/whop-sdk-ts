@@ -118,9 +118,9 @@ export function ProtectedComponent({ experienceId }: { experienceId: string }) {
   const { data: access, isPending } = useQuery({
     queryKey: ["access", experienceId],
     queryFn: () =>
-      fetch(`${apiOrigin}/api/access?experienceId=${experienceId}`).then(
-        (res) => res.json(),
-      ),
+      fetch(
+        `${apiOrigin}/api/access/experience?experienceId=${experienceId}`,
+      ).then((res) => res.json()),
   });
 
   if (isPending) {
@@ -136,7 +136,7 @@ export function ProtectedComponent({ experienceId }: { experienceId: string }) {
 ```
 
 ```tsx route.ts
-// app/api/access/route.ts
+// app/api/access/experience/route.ts
 
 import { whopSdk } from "@/lib/whop";
 import { NextRequest } from "next/server";
@@ -153,6 +153,62 @@ export async function GET(request: NextRequest) {
 
   const access = await whopSdk.access.checkIfUserHasAccessToExperience({
     experienceId,
+    userId,
+  });
+
+  return Response.json(access, { status: 200 });
+}
+```
+</CodeGroup>
+
+### Check for access to a company
+<CodeGroup>
+```tsx protected-component.tsx
+import { useQuery } from "@tanstack/react-query";
+import { __internal_execSync } from "@whop/react-native";
+import { Text } from "react-native";
+
+const { apiOrigin } = __internal_execSync("getAppApiOrigin", {});
+
+export function ProtectedComponent({ companyId }: { companyId: string }) {
+  const { data: access, isPending } = useQuery({
+    queryKey: ["access", companyId],
+    queryFn: () =>
+      fetch(`${apiOrigin}/api/access/company?companyId=${companyId}`).then(
+        (res) => res.json(),
+      ),
+  });
+
+  if (isPending) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (access?.accessLevel !== "admin") {
+    return <Text>Forbidden</Text>;
+  }
+
+  return <Text>{JSON.stringify(access)}</Text>;
+}
+```
+
+```tsx route.ts
+// app/api/access/company/route.ts
+
+import { whopSdk } from "@/lib/whop";
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const companyId = searchParams.get("companyId");
+  if (!companyId) {
+    return new Response("Company ID is required", { status: 400 });
+  }
+
+  const { userId } = await whopSdk.verifyUserToken(request.headers);
+
+  const access = await whopSdk.access.checkIfUserHasAccessToCompany({
+    companyId,
     userId,
   });
 
