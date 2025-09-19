@@ -180,7 +180,8 @@
 				"apps/getting-started",
 				"apps/building-apps",
 				"apps/tutorials",
-				"apps/get-api-key"
+				"apps/get-api-key",
+				"apps/permissions"
 			]
 		},
 		{
