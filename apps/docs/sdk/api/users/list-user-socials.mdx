@@ -1,0 +1,82 @@
+---
+title: List User Socials
+description: Fetch a specific user.
+---
+<Note>This operation is only available on the server.</Note>
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.users.listUserSocials({
+	// ID of the user by tag or the username.
+	userId: "user_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The social links for the user.
+	socialLinks: {
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID
+				id: "xxxxxxxxxxx",
+
+				// The profile picture URL from the social platform
+				profilePic: "some string",
+
+				// The URL
+				url: "some string",
+
+				// The username from the social platform
+				username: "some string",
+
+				// The website
+				website:
+					"facebook" /* Valid values: facebook | instagram | linkedin | tiktok | twitch | website | x | youtube */,
+
+				// The account ID from the social platform
+				accountId: "some string",
+
+				// The full name from the social platform
+				fullName: "some string",
+
+				// Whether the account has been verified
+				verified: true,
+			},
+		],
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+		},
+
+		// The total number of items in this connection.
+		totalCount: 10,
+	},
+};
+
+```
