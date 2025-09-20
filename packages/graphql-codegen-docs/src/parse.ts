@@ -27,6 +27,7 @@ import {
 	type BaseType,
 	EnumType,
 	ErrorType,
+	MapType,
 	ObjectField,
 	ObjectType,
 	PrimitiveType,
@@ -420,6 +421,8 @@ function parseScalarTypeDefinition(node: ScalarTypeDefinitionNode): BaseType {
 		case "UrlString":
 		case "StringFloat":
 			return new PrimitiveType("string");
+		case "Requirements":
+			return new MapType("string", "unknown");
 		default: {
 			const regularScalar = parsePrimitiveType(node.name.value, null);
 			if (regularScalar) {

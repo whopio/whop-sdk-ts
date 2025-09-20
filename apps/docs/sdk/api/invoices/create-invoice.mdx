@@ -1,0 +1,231 @@
+---
+title: Create Invoice
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `invoice:create`
+ - _`member:basic:read` (optional)_
+ - _`plan:basic:read` (optional)_
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.invoices.createInvoice({
+	// The properties of the access pass to create for this invoice. Include this if
+	// you want to create an invoice for a new product.
+	accessPass: {
+		// The ID of the product tax code to apply to this access pass.
+		productTaxCodeId: "xxxxxxxxxxx",
+
+		// The title of the access pass.
+		title: "some string" /* Required! */,
+	},
+
+	// The access pass ID to create this invoice for. Include this if you want to create an invoice for an existing product.
+	accessPassId: "prod_XXXXXXXX",
+
+	// Whether or not to charge the customer a buyer fee.
+	chargeBuyerFee: true,
+
+	// The method of collection for this invoice. If using charge_automatically, you must provide a payment_token.
+	collectionMethod:
+		"charge_automatically" /* Valid values: charge_automatically | send_invoice */ /* Required! */,
+
+	// The name of the customer to create this invoice for. This is required if you
+	// want to create an invoice for a customer who does not have a member of your company yet.
+	customerName: "some string",
+
+	// The date the invoice is due, if applicable.
+	dueDate: 1716931200 /* Required! */,
+
+	// The email address to create this invoice for. This is required if you want to
+	// create an invoice for a user who does not have a member of your company yet.
+	emailAddress: "some string",
+
+	// The member ID to create this invoice for. Include this if you want to create
+	// an invoice for an existing member. If you do not have a member ID, you must
+	// provide an email_address and customer_name.
+	memberId: "xxxxxxxxxxx",
+
+	// The payment token ID to use for this invoice. If using charge_automatically, you must provide a payment_token.
+	paymentTokenId: "xxxxxxxxxxx",
+
+	// The properties of the plan to create for this invoice.
+	plan: {
+		// Whether or not ACH payments are accepted
+		achPayments: true,
+
+		// The respective currency identifier for the plan.
+		baseCurrency:
+			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+
+		// The interval at which the plan charges (renewal plans).
+		billingPeriod: 10,
+
+		// Whether or not card payments are accepted
+		cardPayments: true,
+
+		// Marks whether coinbase commerce payments are/aren't accepted.
+		coinbaseCommerceAccepted: true,
+
+		// An array of custom field objects.
+		customFields: [
+			{
+				// The type of the custom field.
+				fieldType: "text" /* Valid values: text */ /* Required! */,
+
+				// The ID of the custom field (if being updated)
+				id: "xxxxxxxxxxx",
+
+				// The name of the custom field.
+				name: "some string" /* Required! */,
+
+				// The order of the field.
+				order: 10,
+
+				// The placeholder value of the field.
+				placeholder: "some string",
+
+				// Whether or not the field is required.
+				required: true,
+			},
+		],
+
+		// The description of the plan.
+		description: "some string",
+
+		// The interval at which the plan charges (expiration plans).
+		expirationDays: 10,
+
+		// An additional amount charged upon first purchase.
+		initialPrice: "some string",
+
+		// A personal description or notes section for the business.
+		internalNotes: "some string",
+
+		// Whether or not to offer a discount to cancel a subscription.
+		offerCancelDiscount: true,
+
+		// Marks whether paypal payments are/aren't accepted.
+		paypalAccepted: true,
+
+		// Indicates if the plan is a one time payment or recurring.
+		planType: "one_time" /* Valid values: one_time | renewal */,
+
+		// Marks whether platform balance payments are/aren't accepted.
+		platformBalanceAccepted: true,
+
+		// The URL to redirect the customer to after purchase.
+		redirectUrl: "some string",
+
+		// This is the release method the business uses to sell this plan.
+		releaseMethod: "buy_now" /* Valid values: buy_now | raffle | waitlist */,
+
+		// Configurable settings on how this plan is released.
+		releaseMethodSettings: {
+			// When the raffle will expire
+			expiresAt: 1716931200,
+
+			// The maximum number of entries allowed for the raffle or waitlist
+			maxEntries: 10,
+
+			// If this is enabled, the raffle will get entries based off of how many NFTs the user owns
+			nftWeightedEntries: true,
+
+			// When the raffle will start
+			startsAt: 1716931200,
+		},
+
+		// The amount the customer is charged every billing period.
+		renewalPrice: "some string",
+
+		// The requirements for the plan.
+		requirements: {} /* { [key: string]: unknown } */,
+
+		// The number of payments required before pausing the subscription.
+		splitPayRequiredPayments: 10,
+
+		// Marks whether payments using splitit, a payment processor, are/aren't accepted for the plan.
+		splititAccepted: true,
+
+		// The number of units available for purchase.
+		stock: 10,
+
+		// The number of free trial days added before a renewal plan.
+		trialPeriodDays: 10,
+
+		// Limits/doesn't limit the number of units available for purchase.
+		unlimitedStock: true,
+
+		// Shows or hides the plan from public/business view.
+		visibility:
+			"archived" /* Valid values: archived | hidden | quick_link | visible */,
+	} /* Required! */,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The invoice that was created for this invoice.
+	invoice: {
+		// The ID of the invoice.
+		id: "xxxxxxxxxxx",
+
+		// The date the invoice was created.
+		createdAt: 1716931200,
+
+		// The status of the invoice.
+		status: "open" /* Valid values: open | paid | past_due | void */,
+
+		// The number of the invoice.
+		number: "some string",
+
+		// The date the invoice is due.
+		dueDate: 1716931200,
+
+		// The plan that the invoice was created for.
+		currentPlan: {
+			// The internal ID of the plan.
+			id: "xxxxxxxxxxx",
+
+			// The formatted price (including currency) for the plan.
+			formattedPrice: "some string",
+
+			// The respective currency identifier for the plan.
+			baseCurrency:
+				"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+		},
+
+		// The member that the invoice was created for.
+		member: {
+			// The internal ID of the user account for the member.
+			id: "xxxxxxxxxxx",
+
+			// The digital mailing address of the member.
+			email: "some string",
+
+			// The written name of the member.
+			name: "some string",
+
+			// The whop username of the member.
+			username: "some string",
+		},
+
+		// The email address that the invoice was created for.
+		emailAddress: "some string",
+
+		// The token to fetch the invoice.
+		fetchInvoiceToken: "some string",
+	},
+
+	// The ID of the checkout job that was created for this invoice.
+	checkoutJobId: "xxxxxxxxxxx",
+};
+
+```

@@ -178,6 +178,23 @@ export class EnumType extends BaseType {
 	}
 }
 
+export class MapType extends BaseType {
+	constructor(
+		readonly keyType: string,
+		readonly valueType: string,
+	) {
+		super();
+	}
+
+	toCode(): string {
+		return `{} /* { [key: ${this.keyType}]: ${this.valueType} } */`;
+	}
+
+	getPermissions(): Permission[] {
+		return [];
+	}
+}
+
 export class ObjectType extends BaseType {
 	fields: ObjectField[];
 
