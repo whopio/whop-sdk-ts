@@ -1,3 +1,4 @@
+# /experiences/:experienceId/access_passes
 query listAccessPassesForExperience($experienceId: ID!) {
 	experience: publicExperience(id: $experienceId) {
 		experienceId: id

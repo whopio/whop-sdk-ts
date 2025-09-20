@@ -1,3 +1,4 @@
+# /companies/:companyId/access_passes
 query listAccessPasses(
 	$companyId: ID!
 	$visibility: VisibilityFilter

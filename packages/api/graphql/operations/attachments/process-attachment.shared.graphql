@@ -1,3 +1,4 @@
+# /attachments/process
 mutation processAttachment($input: AnalyzeAttachmentInput!) {
 	mediaAnalyzeAttachment(input: $input)
 }

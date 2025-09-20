@@ -1,3 +1,4 @@
+# /access/check_company
 query checkIfUserHasAccessToCompany($companyId: ID!, $userId: ID) {
 	hasAccessToCompany(companyId: $companyId, userId: $userId) {
 		hasAccess

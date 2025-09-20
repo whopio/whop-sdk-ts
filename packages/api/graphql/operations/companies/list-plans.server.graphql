@@ -1,3 +1,4 @@
+# /companies/:companyId/plans
 query listPlans(
 	$companyId: ID!
 	$after: String

@@ -1,3 +1,4 @@
+# /companies/:companyId/waitlist_entries
 query listWaitlistEntries(
 	$companyId: ID!
 	$after: String

@@ -1,3 +1,4 @@
+# /courses/?companyId
 query listCoursesForCompany($companyId: ID!, $first: Int, $after: String) {
 	company(id: $companyId) {
 		courses(first: $first, after: $after) {

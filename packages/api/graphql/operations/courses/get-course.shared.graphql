@@ -1,3 +1,4 @@
+# /courses/:courseId
 query getCourse($courseId: ID!) {
 	course(id: $courseId) {
 		...BasicCourse

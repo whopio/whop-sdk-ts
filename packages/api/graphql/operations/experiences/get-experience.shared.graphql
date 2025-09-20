@@ -1,9 +1,6 @@
+# /experiences/:experienceId
 query getExperience($experienceId: ID!) {
 	experience: publicExperience(id: $experienceId) {
 		...PublicExperienceFragment
-		upsellType
-		upsellPlan {
-			...BasePublicPlan
-		}
 	}
 }

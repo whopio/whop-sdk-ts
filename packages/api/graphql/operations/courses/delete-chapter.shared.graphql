@@ -1,3 +1,4 @@
+# /courses/delete_chapter
 mutation deleteChapter($input: DeleteChapterInput!) {
 	deleteChapter(input: $input)
 }
