@@ -1,5 +1,12 @@
 # @whop/api
 
+## 0.0.51
+
+### Patch Changes
+
+- ef8f1d7: Add attachments to sendMessageToChat mutation
+- 8b2a97d: Add listUserSocials query
+
 ## 0.0.50
 
 ### Patch Changes
