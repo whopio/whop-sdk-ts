@@ -1,0 +1,112 @@
+---
+title: List Invoices
+description: Fetch a company
+---
+<Note>This operation is only available on the server.</Note>
+
+### Required Permissions
+ - `invoice:basic:read`
+ - _`member:basic:read` (optional)_
+ - _`plan:basic:read` (optional)_
+
+### Usage
+
+```typescript
+import { whopSdk } from "@/lib/whop-sdk";
+
+const result = await whopSdk.invoices.listInvoices({
+	// ID of the company, either the tag (biz_xxx) or the page route (whop-dev)
+	companyId: "biz_XXXXXXXX" /* Required! */,
+
+	after: "pageInfo.endCursor",
+
+	before: "pageInfo.startCursor",
+
+	first: 10,
+
+	last: 10,
+});
+
+```
+
+### Example output
+
+```typescript
+const result = {
+	// The invoices for the company
+	invoices: {
+		// The total number of items in this connection.
+		totalCount: 10,
+
+		// Information to aid in pagination.
+		pageInfo: {
+			// When paginating forwards, the cursor to continue.
+			endCursor: "some string",
+
+			// When paginating forwards, are there more items?
+			hasNextPage: true,
+
+			// When paginating backwards, are there more items?
+			hasPreviousPage: true,
+
+			// When paginating backwards, the cursor to continue.
+			startCursor: "some string",
+		},
+
+		// A list of nodes.
+		nodes: [
+			{
+				// The ID of the invoice.
+				id: "xxxxxxxxxxx",
+
+				// The date the invoice was created.
+				createdAt: 1716931200,
+
+				// The status of the invoice.
+				status: "open" /* Valid values: open | paid | past_due | void */,
+
+				// The number of the invoice.
+				number: "some string",
+
+				// The date the invoice is due.
+				dueDate: 1716931200,
+
+				// The plan that the invoice was created for.
+				currentPlan: {
+					// The internal ID of the plan.
+					id: "xxxxxxxxxxx",
+
+					// The formatted price (including currency) for the plan.
+					formattedPrice: "some string",
+
+					// The respective currency identifier for the plan.
+					baseCurrency:
+						"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
+				},
+
+				// The member that the invoice was created for.
+				member: {
+					// The internal ID of the user account for the member.
+					id: "xxxxxxxxxxx",
+
+					// The digital mailing address of the member.
+					email: "some string",
+
+					// The written name of the member.
+					name: "some string",
+
+					// The whop username of the member.
+					username: "some string",
+				},
+
+				// The email address that the invoice was created for.
+				emailAddress: "some string",
+
+				// The token to fetch the invoice.
+				fetchInvoiceToken: "some string",
+			},
+		],
+	},
+};
+
+```

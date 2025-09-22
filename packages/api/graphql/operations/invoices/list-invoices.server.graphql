@@ -1,0 +1,22 @@
+query listInvoices(
+	$companyId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+) {
+	company(id: $companyId) {
+		invoices(after: $after, before: $before, first: $first, last: $last) {
+			totalCount
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			nodes {
+				...BaseInvoice
+			}
+		}
+	}
+}
