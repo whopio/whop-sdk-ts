@@ -1,0 +1,85 @@
+---
+title: Experience View
+---
+
+The experience view is what users see when they install your app into their Whop and click into it. This is the core functionality of your app - where users interact with your features and services.
+
+<Frame>
+  ![Experience View](/images/app-experience-view.jpeg)
+</Frame>
+
+## Configure
+
+<Steps>
+  <Step title="Go to your app's hosting settings">
+    1. Go to the [developer dashboard](https://whop.com/dashboard/developer)
+    2. Create a new app or select an existing one
+    3. Scroll down to the **Hosting** section
+
+  <Frame>
+   	![App Settings](/images/app-settings-hosting.png)
+  </Frame>
+</Step>
+
+  <Step title="Enter your path">
+    Enter your path for the experience view. The recommended default path is `/experiences/[experienceId]`.
+
+    <Frame>
+   	![Experience View Path](/images/experience-view-path.png)
+    </Frame>
+
+    - `[experienceId]` is used to provide the accessed experience ID: `/experiences/[experienceId] -> /experiences/exp_***`
+    - `[restPath]` is used for deep linking to specific sections of your app: `/experiences/[experienceId]/[restPath] -> /experiences/exp_***/posts/1`
+  </Step>
+</Steps>
+
+## Preview
+
+<Steps>
+  <Step title="Install your app">
+    Click the install button or copy the installation link and visit it in your browser. You will be prompted to install your app into your whop.
+    
+    <Frame>
+   	![Install App Button](/images/app-settings-install-app-button.png)
+    </Frame>
+
+    If you've already installed your app, you can access it from your whop.
+    
+    <Frame>
+   	![Whop Sidebar Apps Section](/images/whop-experiences.png)
+    </Frame>
+  </Step>
+
+  <Step title="Set the environment">
+    1. Open the dev tools by clicking the **cog** button
+    2. Set the environment to **localhost**
+
+    <video
+      controls
+      className="rounded-xl"
+      src="/how-to-videos/experience-app-preview-set-localhost.mp4"
+    ></video>
+  </Step>
+</Steps>
+
+## Validate access
+
+Check if a user has access to an experience by using the SDK method [checkIfUserHasAccessToExperience](/sdk/api/access/check-if-user-has-access-to-experience).
+
+```ts
+  const access = await whopSdk.access.checkIfUserHasAccessToExperience({
+    experienceId: "exp_***",
+    userId: "user_***",
+  });
+
+  // No access
+  // ^? { hasAccess: false, accessLevel: "no_access" }
+
+  // Customer access
+  // ^? { hasAccess: true, accessLevel: "customer" }
+
+  // Admin access
+  // ^? { hasAccess: true, accessLevel: "admin" }
+```
+
+See [Validate experience access](/sdk/validate-access#validate-experience-access) for more information.
