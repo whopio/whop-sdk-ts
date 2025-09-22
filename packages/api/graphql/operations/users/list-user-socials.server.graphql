@@ -1,0 +1,29 @@
+query listUserSocials(
+	$userId: ID!
+	$after: String
+	$before: String
+	$first: Int
+	$last: Int
+) {
+	publicUser(id: $userId) {
+		socialLinks(after: $after, before: $before, first: $first, last: $last) {
+			nodes {
+				id
+				profilePic
+				url
+				username
+				website
+				accountId
+				fullName
+				verified
+			}
+			pageInfo {
+				endCursor
+				hasNextPage
+				hasPreviousPage
+				startCursor
+			}
+			totalCount
+		}
+	}
+}

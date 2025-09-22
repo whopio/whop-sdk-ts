@@ -180,7 +180,8 @@
 				"apps/getting-started",
 				"apps/building-apps",
 				"apps/tutorials",
-				"apps/get-api-key"
+				"apps/get-api-key",
+				"apps/permissions"
 			]
 		},
 		{
@@ -383,6 +384,7 @@
 						"sdk/api/users/get-current-user",
 						"sdk/api/users/get-user-ledger-account",
 						"sdk/api/users/get-user",
+						"sdk/api/users/list-user-socials",
 						"sdk/api/users/mute-user",
 						"sdk/api/users/unban-user",
 						"sdk/api/users/unmute-user"
