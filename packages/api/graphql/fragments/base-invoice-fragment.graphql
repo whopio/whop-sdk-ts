@@ -1,0 +1,20 @@
+fragment BaseInvoice on Invoice {
+	id
+	createdAt
+	status
+	number
+	dueDate
+	currentPlan {
+		id
+		formattedPrice
+		baseCurrency
+	}
+	member {
+		id
+		email
+		name
+		username
+	}
+	emailAddress
+	fetchInvoiceToken
+}
