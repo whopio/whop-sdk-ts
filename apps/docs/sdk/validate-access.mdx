@@ -3,7 +3,9 @@ title: Validate access
 description: Use this API to ensure users have access to use your app
 ---
 
-Validate access to an embedded web app:
+## Validate experience access
+
+Check if a user has access to an experience by using the SDK method [checkIfUserHasAccessToExperience](/sdk/api/access/check-if-user-has-access-to-experience).
 
 <CodeGroup>
 
@@ -45,6 +47,40 @@ if (accessLevel === "customer") {
 }
 
 return <div>You do not have access to this experience</div>;
+```
+
+</CodeGroup>
+
+## Validate company access
+
+Check if a user is an authorized member of a company by using the SDK method [checkIfUserHasAccessToCompany](/sdk/api/access/check-if-user-has-access-to-company).
+
+<CodeGroup>
+
+```javascript Next.js
+import { whopSdk } from "@/lib/whop-sdk";
+import { headers } from "next/headers";
+
+// The headers contains the user token
+const headersList = await headers();
+
+// The companyId is a path param
+// This can be configured in the Whop Dashboard, when you define your app
+const { companyId } = await params;
+
+// The user token is in the headers
+const { userId } = await whopSdk.verifyUserToken(headersList);
+
+const result = await whopSdk.access.checkIfUserHasAccessToCompany({
+  userId,
+  companyId,
+});
+
+if (!result.hasAccess) {
+  return <div>You are not an authorized member of this company</div>;
+}
+
+return <div>You are an admin of this company</div>;
 ```
 
 </CodeGroup>
