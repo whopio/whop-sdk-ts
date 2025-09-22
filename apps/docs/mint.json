@@ -178,10 +178,17 @@
 			"pages": [
 				"apps/introduction",
 				"apps/getting-started",
-				"apps/building-apps",
-				"apps/tutorials",
 				"apps/get-api-key",
-				"apps/permissions"
+				{
+					"group": "App Views",
+					"pages": [
+						"apps/app-views/experience-view",
+						"apps/app-views/dashboard-view",
+						"apps/app-views/discover-view"
+					]
+				},
+				"apps/permissions",
+				"apps/tutorials"
 			]
 		},
 		{
@@ -216,6 +223,7 @@
 				"apps/features/post-to-feed",
 				"apps/features/upload-media",
 				"apps/features/webhooks",
+				"apps/features/affiliate-commissions",
 				"apps/features/oauth-guide"
 			]
 		},
