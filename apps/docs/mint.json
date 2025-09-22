@@ -346,6 +346,14 @@
 					]
 				},
 				{
+					"group": "Invoices",
+					"pages": [
+						"sdk/api/invoices/create-invoice",
+						"sdk/api/invoices/get-invoice",
+						"sdk/api/invoices/list-invoices"
+					]
+				},
+				{
 					"group": "Messages",
 					"pages": [
 						"sdk/api/messages/find-or-create-chat",
