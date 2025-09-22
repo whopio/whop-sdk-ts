@@ -1,0 +1,8 @@
+mutation createInvoice($input: CreateInvoiceInput!) {
+	createInvoice(input: $input) {
+		invoice {
+			...BaseInvoice
+		}
+		checkoutJobId
+	}
+}
