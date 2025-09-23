@@ -1,0 +1,3 @@
+mutation createInvoice($input: VoidInvoiceInput!) {
+	voidInvoice(input: $input)
+}

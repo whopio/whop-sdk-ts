@@ -1,7 +1,5 @@
-query getInvoice($invoiceId: ID!, $companyId: ID!) {
-	company(id: $companyId) {
-		invoice(id: $invoiceId) {
-			...BaseInvoice
-		}
+query getInvoice($invoiceId: ID!) {
+	retrieveInvoice(id: $invoiceId) {
+		...BaseInvoice
 	}
 }
