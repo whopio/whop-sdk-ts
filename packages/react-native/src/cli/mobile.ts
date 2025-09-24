@@ -195,6 +195,7 @@ export async function createMobileBuild(
 				({
 					"experience-view": "hub" as const,
 					"discover-view": "discover" as const,
+					"dashboard-view": "dashboard" as const,
 				})[view],
 		),
 	});
