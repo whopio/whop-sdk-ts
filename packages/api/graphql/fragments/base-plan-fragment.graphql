@@ -34,4 +34,9 @@ fragment BasePlan on Plan {
 	stock
 	visibility
 	planType
+	title
+	description
+	name
+	formattedPrice
+	formattedBillingPeriod
 }
