@@ -208,7 +208,7 @@ export async function createMobileBuild(
 
 	console.log(`\n ✔︎ [${platform}] deployed as development build ✔︎
    - build id: ${build.id}
-   - view types: ${viewTypes.join(", ")}
+   - view types: ${build.supportedAppViewTypes.join(", ")}
    - promote to production here: ${dashboardUrl}\n`);
 
 	return build;
