@@ -65,6 +65,7 @@ export async function bundle(root: string, platform: "ios" | "android") {
 				"./whop-react-native-babel-transformer.js",
 			),
 		},
+		cacheStores: [],
 		watchFolders: [root, path.resolve(root, "node_modules"), bableNodeModules],
 		reporter: new CustomReporter(),
 		resolver: {
