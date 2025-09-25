@@ -1,11 +1,12 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { mkdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { getDefaultConfig } from "@react-native/metro-config";
+import { getDefaultConfig, mergeConfig } from "@react-native/metro-config";
 import { findUp } from "find-up";
 import JSZip from "jszip";
 import { type ReportableEvent, type Reporter, runBuild } from "metro";
 import { getChecksum, uploadFile } from "./file";
+import { loadMetroConfig } from "./load-metro-config";
 import { APP_ID, COMPANY_ID, whopSdk } from "./sdk";
 import { getSupportedAppViewTypes } from "./valid-view-type";
 
@@ -38,9 +39,8 @@ export async function bundle(root: string, platform: "ios" | "android") {
 		platform,
 		"main_js_bundle",
 	);
-	await mkdir(path.dirname(outputFile), { recursive: true });
 
-	const defaultConfig = getDefaultConfig(root);
+	await mkdir(path.dirname(outputFile), { recursive: true });
 
 	const babelLocation = require.resolve("@babel/runtime/package");
 
@@ -48,43 +48,41 @@ export async function bundle(root: string, platform: "ios" | "android") {
 		cwd: babelLocation,
 		type: "directory",
 	});
+
 	if (!bableNodeModules) {
 		throw new Error("babel node_modules parent folder not found");
 	}
 
-	await runBuild(
-		{
-			...defaultConfig,
-			projectRoot: root,
-			transformer: {
-				...defaultConfig.transformer,
-				babelTransformerPath: require.resolve(
-					"./whop-react-native-babel-transformer.js",
-				),
-			},
-			watchFolders: [
-				root,
-				path.resolve(root, "node_modules"),
+	const defaultConfig = getDefaultConfig(root);
+	const projectConfig = await loadMetroConfig(root);
+
+	const defaultMetroConfig = mergeConfig(defaultConfig, projectConfig);
+
+	const metroConfig = mergeConfig(defaultMetroConfig, {
+		projectRoot: root,
+		transformer: {
+			babelTransformerPath: require.resolve(
+				"./whop-react-native-babel-transformer.js",
+			),
+		},
+		watchFolders: [root, path.resolve(root, "node_modules"), bableNodeModules],
+		reporter: new CustomReporter(),
+		resolver: {
+			nodeModulesPaths: [
+				...(defaultMetroConfig.resolver?.nodeModulesPaths ?? []),
 				bableNodeModules,
 			],
-			reporter: new CustomReporter(),
-			resolver: {
-				...defaultConfig.resolver,
-				nodeModulesPaths: [
-					...(defaultConfig.resolver?.nodeModulesPaths ?? []),
-					bableNodeModules,
-				],
-			},
 		},
-		{
-			dev: false,
-			entry: `build/entrypoints/${platform}/index.js`,
-			minify: false,
-			platform: platform,
-			sourceMap: false,
-			out: outputFile,
-		},
-	);
+	});
+
+	await runBuild(metroConfig, {
+		dev: false,
+		entry: `build/entrypoints/${platform}/index.js`,
+		minify: false,
+		platform: platform,
+		sourceMap: false,
+		out: outputFile,
+	});
 
 	await rename(
 		`${outputFile}.js`,
