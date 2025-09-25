@@ -2,4 +2,4 @@
 "@whop/react-native": patch
 ---
 
-Add dashboard view to createAppBuild as supported app view type
+Include dashboard view in builds
