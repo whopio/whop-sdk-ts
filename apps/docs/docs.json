@@ -186,6 +186,10 @@
 						]
 					},
 					{
+						"tab": "API Reference",
+						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml"
+					},
+					{
 						"tab": "SDK Reference",
 						"groups": [
 							{
@@ -377,10 +381,6 @@
 								"pages": ["sdk/iframe-setup", "sdk/external-url"]
 							}
 						]
-					},
-					{
-						"tab": "API Reference",
-						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml"
 					}
 				]
 			},
