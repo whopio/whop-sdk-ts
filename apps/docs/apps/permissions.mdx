@@ -43,6 +43,44 @@ Creators will now need to approve the permissions you requested before installin
 	![Permissions Prompt](/images/app-permissions-oauth.png)
 </Frame>
 
+## Configure your permissions
+
+You can update your currently granted permissions or re-approve them in your [Authorized apps](https://whop.com/dashboard/settings/authorized-apps) settings.
+
+To manually navigate to the settings, go to: `Dashboard -> Settings -> Authorized apps`
+
+<video controls className="rounded-xl" src="/how-to-videos/configure-app-permissions.mp4" />
+
+## Configure your SDK
+
+Update your `SDK` configuration by removing the `onBehalfOfUserId` and `companyId` properties.
+
+```js lib/whop-sdk.ts
+import { WhopServerSdk } from "@whop/api";
+
+export const whopSdk = WhopServerSdk({
+	// Add your app id here - this is required.
+	// You can get this from the Whop dashboard after creating an app section.
+	appId: process.env.NEXT_PUBLIC_WHOP_APP_ID ?? "fallback",
+
+	// Add your app api key here - this is required.
+	// You can get this from the Whop dashboard after creating an app section.
+	appApiKey: process.env.WHOP_API_KEY ?? "fallback",
+
+	// This will make api requests on behalf of this user. // [!code --:5]
+	// This is optional, however most api requests need to be made on behalf of a user.
+	// You can create an agent user for your app, and use their userId here.
+	// You can also apply a different userId later with the `withUser` function.
+	onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
+
+	// This is the companyId that will be used for the api requests. // [!code --:5]
+	// When making api requests that query or mutate data about a company, you need to specify the companyId.
+	// This is optional, however if not specified certain requests will fail.
+	// This can also be applied later with the `withCompany` function.
+	companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
+});
+```
+
 ## Examples
 
 ### Get a member's email address
@@ -69,10 +107,25 @@ Creators will now need to approve the permissions you requested before installin
   <Accordion title="How many permissions can I request?">
     You can request as many permissions as you want.
   </Accordion>
+
+  <Accordion title="How do I know which permissions I need?">
+    You can find the required permissions for each SDK method documented in the [SDK reference](/sdk/installation).
+	 <Frame>
+		![SDK Reference Permissions](/images/sdk-reference-required-permissions.png)
+	 </Frame>
+  </Accordion>
+
   <Accordion title="Can I request additional permissions afterwards?">
     Yes. You can request additional permissions and the creator will be asked to re-approve them.
+
     <Note>
       Keep in mind that until the permissions are re-approved, API requests requiring the **newly requested** permissions will fail. Make sure to handle these errors gracefully in your code.
     </Note>
+
+	 <Warning>
+		When developing your app, make sure you re-approve the permissions yourself in your [Authorized apps](https://whop.com/dashboard/settings/authorized-apps) settings.
+		
+		See [Configure your permissions](/apps/permissions#configure-your-permissions) for more information.
+	 </Warning>
   </Accordion>
 </AccordionGroup>
