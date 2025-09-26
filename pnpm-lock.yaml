@@ -694,8 +694,8 @@ importers:
         specifier: 3.10.1
         version: 3.10.1
       lottie-react-native:
-        specifier: 7.3.2
-        version: 7.3.2(react-native@0.80.0(@babel/core@7.28.0)(@types/react@19.1.5)(react@19.1.0))(react@19.1.0)
+        specifier: 7.3.4
+        version: 7.3.4(react-native@0.80.0(@babel/core@7.28.0)(@types/react@19.1.5)(react@19.1.0))(react@19.1.0)
       metro:
         specifier: 0.83.0
         version: 0.83.0
@@ -9034,10 +9034,10 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
-  lottie-react-native@7.3.2:
-    resolution: {integrity: sha512-uKVGXiG3+6GvSVnVSgM1cNQTPxfylg94gc2lGHhsXvjK0NVkxF/S3qDNESJ59K5uDg4AjXlP5+tf/UhA9CEZOA==}
+  lottie-react-native@7.3.4:
+    resolution: {integrity: sha512-XUh7eGFb7ID8JRdU6U4N4cYQeYmjtdQRvd8ZXJ6xrdSsn5gZD0c79ITOREPcwJg4YupBFHgyV1GXdAHQP+KYUQ==}
     peerDependencies:
-      '@lottiefiles/dotlottie-react': ^0.6.5
+      '@lottiefiles/dotlottie-react': ^0.13.5
       react: '*'
       react-native: '>=0.46'
       react-native-windows: '>=0.63.x'
@@ -21810,7 +21810,7 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lottie-react-native@7.3.2(react-native@0.80.0(@babel/core@7.28.0)(@types/react@19.1.5)(react@19.1.0))(react@19.1.0):
+  lottie-react-native@7.3.4(react-native@0.80.0(@babel/core@7.28.0)(@types/react@19.1.5)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.80.0(@babel/core@7.28.0)(@types/react@19.1.5)(react@19.1.0)
