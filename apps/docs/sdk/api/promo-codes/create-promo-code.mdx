@@ -29,6 +29,9 @@ const result = await whopSdk.promoCodes.createPromoCode({
 	// The specific code used to apply the promo at checkout.
 	code: "some string" /* Required! */,
 
+	// The id of the company to create the promo code for.
+	companyId: "biz_XXXXXXXX",
+
 	// Whether this promo code is for existing memberships only (cancelations)
 	existingMembershipsOnly: true,
 
