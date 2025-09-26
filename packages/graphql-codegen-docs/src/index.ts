@@ -135,12 +135,12 @@ function updateMintJson(
 	groupedOperations: Record<string, string[]>,
 	biome: Biome,
 ) {
-	const mintJsonPath = `${BASE_OUTPUT_PATH}/../../mint.json`;
+	const mintJsonPath = `${BASE_OUTPUT_PATH}/../../docs.json`;
 	const mintJson = readFileSync(mintJsonPath, "utf-8");
 	const mintJsonObject = JSON.parse(mintJson);
-	const navigation = mintJsonObject.navigation.find(
-		(o: { group: string }) => o.group === "Resources",
-	);
+	const navigation = mintJsonObject.navigation.versions[0].tabs
+		.find((t: { tab: string }) => t.tab === "SDK Reference")
+		.groups.find((o: { group: string }) => o.group === "Resources");
 	navigation.pages = reformatMintJson(groupedOperations);
 	const formattedJson = formatCode(
 		JSON.stringify(mintJsonObject, null, 2),
