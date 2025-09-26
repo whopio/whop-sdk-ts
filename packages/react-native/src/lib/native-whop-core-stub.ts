@@ -213,6 +213,9 @@ const syncHandlers: ExecSyncApi = {
 			buildType: "appstore",
 		};
 	},
+	setScreenOrientationMode() {
+		return {};
+	},
 };
 
 let iframeModulePromise: Promise<typeof import("@whop/iframe")> | null = null;
