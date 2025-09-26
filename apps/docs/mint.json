@@ -121,6 +121,7 @@
 				"payments/create-a-whop",
 				"payments/create-a-product",
 				"payments/create-checkout-link",
+				"payments/send-an-invoice",
 				"payments/checkout-embed",
 				"payments/set-up-payouts"
 			]
