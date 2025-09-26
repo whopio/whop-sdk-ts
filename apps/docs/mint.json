@@ -121,7 +121,6 @@
 				"payments/create-a-whop",
 				"payments/create-a-product",
 				"payments/create-checkout-link",
-				"payments/send-an-invoice",
 				"payments/checkout-embed",
 				"payments/set-up-payouts"
 			]
@@ -129,6 +128,7 @@
 		{
 			"group": "Manage payments",
 			"pages": [
+				"payments/send-an-invoice",
 				"payments/refund-customer",
 				"payments/taxes",
 				"payments/payment-declines",
