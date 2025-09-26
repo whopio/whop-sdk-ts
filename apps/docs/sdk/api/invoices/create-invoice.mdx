@@ -34,6 +34,9 @@ const result = await whopSdk.invoices.createInvoice({
 	collectionMethod:
 		"charge_automatically" /* Valid values: charge_automatically | send_invoice */ /* Required! */,
 
+	// The company ID to create this invoice for.
+	companyId: "biz_XXXXXXXX",
+
 	// The name of the customer to create this invoice for. This is required if you
 	// want to create an invoice for a customer who does not have a member of your company yet.
 	customerName: "some string",
