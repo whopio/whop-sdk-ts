@@ -24,6 +24,13 @@ const result = await whopSdk.accessPasses.createAccessPass({
 		id: "xxxxxxxxxxx",
 	},
 
+	// The business type of the access pass.
+	businessType:
+		"agency" /* Valid values: agency | brick_and_mortar | coaching | coaching_and_courses | community | course | education_program | events | newsletter | other | paid_group | physical_products | saas | software */,
+
+	// The ID of the company to create the access pass for.
+	companyId: "biz_XXXXXXXX",
+
 	// The creator pitch for the access pass.
 	creatorPitch: "some string",
 
@@ -56,6 +63,10 @@ const result = await whopSdk.accessPasses.createAccessPass({
 
 	// The URLs of the images to upload to the access pass.
 	imageUrls: ["some string"],
+
+	// The industry type of the access pass.
+	industryType:
+		"accessories" /* Valid values: accessories | agencies | ai | ai_agency | amazon_fba | auto_repair_shop | beauty_and_personal_care | bootcamps | business | careers | clipping | clipping_agency | clothing | coaching_agency | coffee_shop | concerts | convention | customer_support_agency | dating | design_agency | development_agency | ecommerce | electronics_and_gadgets | fitness | fitness_gear | food_and_beverages | gym | health_and_wellness | home_goods | home_services | hotel_lodging | kindle_book_publishing | marketing_agency | masterminds | medical_dentist_office | meetups | other | parties | personal_development | personal_finance | public_speaking | real_estate | recruiting_agency | reselling | restaurant | retail_store | sales | sales_agency | salon_spa | social_media | software | spirituality | sports_betting | supplements | trading | travel | vas | video_games | webinars */,
 
 	// The logo for the access pass in png, jpeg, or gif format
 	logo: {
