@@ -1,0 +1,13 @@
+query getPlan($publicPlanId: ID) {
+	plan: publicPlan(id: $publicPlanId) {
+		...BasePublicPlan
+		accessPass {
+			id
+			title
+			route
+			logo {
+				sourceUrl
+			}
+		}
+	}
+}

@@ -15,6 +15,11 @@ fragment BasePublicPlan on PublicPlan {
 	stock
 	visibility
 	planType
+	title
+	description
+	name
+	formattedPrice
+	formattedBillingPeriod
 }
 
 fragment BasePlan on Plan {
@@ -39,4 +44,12 @@ fragment BasePlan on Plan {
 	name
 	formattedPrice
 	formattedBillingPeriod
+	accessPass {
+		id
+		title
+		route
+		logo {
+			sourceUrl
+		}
+	}
 }

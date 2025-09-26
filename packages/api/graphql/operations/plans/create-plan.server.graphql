@@ -1,0 +1,5 @@
+mutation createPlan($input: CreatePlanInput!) {
+	createPlan(input: $input) {
+		...BasePlan
+	}
+}

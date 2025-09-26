@@ -1,0 +1,5 @@
+mutation updatePlan($input: UpdatePlanInput!) {
+	updatePlan(input: $input) {
+		...BasePlan
+	}
+}

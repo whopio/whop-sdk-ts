@@ -23,14 +23,6 @@ query listPlans(
 			}
 			nodes {
 				...BasePlan
-				accessPass {
-					id
-					title
-					route
-					logo {
-						sourceUrl
-					}
-				}
 			}
 		}
 	}
