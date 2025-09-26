@@ -207,7 +207,6 @@
 		{
 			"group": "Tutorials",
 			"pages": [
-				"apps/tutorials/dashboard-apps",
 				"apps/tutorials/ai-car-customizer",
 				"apps/tutorials/chat-bot",
 				"apps/tutorials/ai-image-generator"
