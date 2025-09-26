@@ -25,6 +25,9 @@ export interface ExecSyncApi {
 		platform: "ios" | "android" | "web";
 		buildType: "appstore" | "testflight" | "debug";
 	};
+	setScreenOrientationMode(params: {
+		targetScreenOrientationMode: "portrait" | "landscape" | "rotate";
+	}): EmptyObject;
 }
 
 export interface ExecAsyncApi extends ExecSyncApi {
