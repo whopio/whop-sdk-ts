@@ -7,7 +7,7 @@
 	},
 	"packageManager": "pnpm@9.15.9",
 	"devDependencies": {
-		"mintlify": "4.2.94"
+		"mintlify": "4.2.127"
 	},
 	"dependencies": {
 		"biome": "0.3.3"
