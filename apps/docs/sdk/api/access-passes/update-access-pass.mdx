@@ -34,6 +34,11 @@ const result = await whopSdk.accessPasses.updateAccessPass({
 	// The custom call to action URL for the access pass.
 	customCtaUrl: "some string",
 
+	// The custom statement descriptor for the access pass i.e. WHOP*SPORTS, must be
+	// between 5 and 22 characters, contain at least one letter, and not contain any
+	// of the following characters: <, >, \, ', "
+	customStatementDescriptor: "some string",
+
 	// The percentage of the revenue that goes to the global affiliate program.
 	globalAffiliatePercentage: 10,
 
