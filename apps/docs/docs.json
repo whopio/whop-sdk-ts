@@ -187,6 +187,7 @@
 					},
 					{
 						"tab": "API Reference",
+						"hidden": true,
 						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml"
 					},
 					{
