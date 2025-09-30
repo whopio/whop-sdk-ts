@@ -14,19 +14,6 @@ title: Create Invoice
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.invoices.createInvoice({
-	// The properties of the access pass to create for this invoice. Include this if
-	// you want to create an invoice for a new product.
-	accessPass: {
-		// The ID of the product tax code to apply to this access pass.
-		productTaxCodeId: "xxxxxxxxxxx",
-
-		// The title of the access pass.
-		title: "some string" /* Required! */,
-	},
-
-	// The access pass ID to create this invoice for. Include this if you want to create an invoice for an existing product.
-	accessPassId: "prod_XXXXXXXX",
-
 	// Whether or not to charge the customer a buyer fee.
 	chargeBuyerFee: true,
 
@@ -164,6 +151,19 @@ const result = await whopSdk.invoices.createInvoice({
 		visibility:
 			"archived" /* Valid values: archived | hidden | quick_link | visible */,
 	} /* Required! */,
+
+	// The properties of the access pass to create for this invoice. Include this if
+	// you want to create an invoice for a new product.
+	product: {
+		// The ID of the product tax code to apply to this access pass.
+		productTaxCodeId: "xxxxxxxxxxx",
+
+		// The title of the access pass.
+		title: "some string" /* Required! */,
+	},
+
+	// The access pass ID to create this invoice for. Include this if you want to create an invoice for an existing product.
+	productId: "xxxxxxxxxxx",
 });
 
 ```
