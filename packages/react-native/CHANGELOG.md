@@ -1,5 +1,19 @@
 # @whop/react-native
 
+## 0.0.22
+
+### Patch Changes
+
+- 534a6ef: Include dashboard view in builds
+- d1c06b9: Load metro and babel configs
+- 027e9b7: Add setScreenOrientationMode api
+- Updated dependencies [e897432]
+- Updated dependencies [ef8f1d7]
+- Updated dependencies [8b2a97d]
+- Updated dependencies [50e7c13]
+- Updated dependencies [ce9b70a]
+  - @whop/api@0.0.51
+
 ## 0.0.21
 
 ### Patch Changes
