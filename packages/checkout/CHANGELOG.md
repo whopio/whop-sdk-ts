@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.41
+
+### Patch Changes
+
+- d9d1b87: feat: add highContrast to themeOptions
+
 ## 0.0.40
 
 ### Patch Changes

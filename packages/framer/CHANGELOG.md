@@ -1,5 +1,12 @@
 # @whop/framer
 
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies [d9d1b87]
+  - @whop/checkout@0.0.41
+
 ## 0.0.21
 
 ### Patch Changes
