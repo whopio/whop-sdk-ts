@@ -1,5 +1,15 @@
 # @whop/api
 
+## 0.0.51
+
+### Patch Changes
+
+- e897432: Add member id and email to waitlist entry
+- ef8f1d7: Add attachments to sendMessageToChat mutation
+- 8b2a97d: Add listUserSocials query
+- 50e7c13: Expose title, name, description, formattedPrice and formattedBillingPeriod on plan
+- ce9b70a: Add support for Whop Invoices API
+
 ## 0.0.50
 
 ### Patch Changes
