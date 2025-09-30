@@ -1,7 +1,7 @@
 {
 	"name": "@whop/checkout",
 	"description": "Embed Whop checkout on any website",
-	"version": "0.0.40",
+	"version": "0.0.41",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/whopio/whop-sdk-ts",
