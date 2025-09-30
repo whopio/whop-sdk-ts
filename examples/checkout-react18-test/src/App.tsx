@@ -77,6 +77,8 @@ function App() {
 						planId="plan_kGbI6jLMfgIAB"
 						onComplete={handleComplete}
 						onStateChange={handleStateChange}
+						theme="light"
+						themeOptions={{ accentColor: "gray", highContrast: true }}
 						styles={{
 							container: {
 								paddingY: "20px",

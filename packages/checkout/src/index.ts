@@ -125,6 +125,10 @@ function getThemeOptionsFromNode(node: HTMLElement) {
 	if (node.dataset.whopCheckoutThemeAccentColor) {
 		themeOptions.accentColor = node.dataset.whopCheckoutThemeAccentColor;
 	}
+	if (node.dataset.whopCheckoutThemeHighContrast) {
+		themeOptions.highContrast =
+			node.dataset.whopCheckoutThemeHighContrast === "true";
+	}
 	return themeOptions;
 }
 
