@@ -52,6 +52,10 @@ query listWaitlistEntries(
 					question
 					answer
 				}
+				member {
+					id
+					email
+				}
 			}
 		}
 	}
