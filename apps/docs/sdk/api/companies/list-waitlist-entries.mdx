@@ -6,6 +6,7 @@ description: Fetch a company
 
 ### Required Permissions
  - `plan:waitlist:read`
+ - _`member:basic:read` (optional)_
  - _`plan:basic:read` (optional)_
 
 ### Usage
@@ -141,6 +142,15 @@ const result = {
 						answer: "some string",
 					},
 				],
+
+				// The member the entry is connected to.
+				member: {
+					// The internal ID of the user account for the member.
+					id: "xxxxxxxxxxx",
+
+					// The digital mailing address of the member.
+					email: "some string",
+				},
 			},
 		],
 	},
