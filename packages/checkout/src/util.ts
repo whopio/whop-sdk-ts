@@ -129,6 +129,7 @@ export interface WhopEmbeddedCheckoutPrefillOptions {
 
 export interface WhopEmbeddedCheckoutThemeOptions {
 	accentColor?: string;
+	highContrast?: boolean;
 }
 
 export function getEmbeddedCheckoutIframeUrl(
@@ -247,10 +248,13 @@ export function getEmbeddedCheckoutIframeUrl(
 	if (themeOptions) {
 		for (const [optionName, optionValue] of Object.entries(themeOptions) as [
 			string,
-			string | undefined,
+			string | boolean | undefined,
 		][]) {
 			if (optionValue)
-				iframeUrl.searchParams.set(`theme.${optionName}`, optionValue);
+				iframeUrl.searchParams.set(
+					`theme.${optionName}`,
+					typeof optionValue === "boolean" ? "1" : optionValue,
+				);
 		}
 	}
 	return iframeUrl.toString();

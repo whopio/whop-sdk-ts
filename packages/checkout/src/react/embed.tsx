@@ -39,6 +39,12 @@ export interface WhopCheckoutEmbedThemeOptions {
 	 * defaults to `blue`
 	 */
 	accentColor?: AccentColor;
+	/**
+	 * **Optional** - Set to true to enable high contrast mode. Only recommended when accent color is set to `gray`
+	 *
+	 * @default false
+	 */
+	highContrast?: boolean;
 }
 
 export { accentColorValues, type AccentColor, isAccentColor };
@@ -200,8 +206,9 @@ const WhopCheckoutEmbedInner = forwardRef<
 					accentColor: isAccentColor(themeOptions?.accentColor)
 						? themeOptions.accentColor
 						: undefined,
+					highContrast: themeOptions?.highContrast ?? false,
 				};
-			}, [themeOptions?.accentColor]);
+			}, [themeOptions?.accentColor, themeOptions?.highContrast]);
 
 		const iframeUrl = useEmbeddedCheckoutIframeUrl(
 			planId,
