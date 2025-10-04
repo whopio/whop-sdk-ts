@@ -15,20 +15,11 @@ const result = await whopSdk.apps.updateApp({
 	// The description of the app for the app store in-depth app view.
 	appStoreDescription: "some string",
 
-	// The base developer url of the app
-	baseDevUrl: "some string",
-
-	// The base preview url of the app
-	basePreviewUrl: "some string",
-
 	// The base production url of the app
 	baseUrl: "some string",
 
 	// The path for the dashboard view of the app
 	dashboardPath: "some string",
-
-	// The default agent user ID for the app
-	defaultAgentUserId: "xxxxxxxxxxx",
 
 	// The description of the app
 	description: "some string",
@@ -38,12 +29,6 @@ const result = await whopSdk.apps.updateApp({
 
 	// The path for the hub view of the app
 	experiencePath: "some string",
-
-	// If the apps experience's should force showing the pre-checkout iframe, and not rely on app connections.
-	forceCheckoutIframe: true,
-
-	// The hub call to action text of the app
-	hubCta: "some string",
 
 	// The icon for the app
 	icon: {
@@ -60,14 +45,8 @@ const result = await whopSdk.apps.updateApp({
 	// The ID of the app
 	id: "xxxxxxxxxxx" /* Required! */,
 
-	// The image for the app
-	image: "some string",
-
 	// The name of the app
 	name: "some string",
-
-	// The product page text of the app
-	productPage: "some string",
 
 	// The scopes that the app will request off of users when a user installs the app.
 	requiredScopes: ["read_user" /* Valid values: read_user */],
