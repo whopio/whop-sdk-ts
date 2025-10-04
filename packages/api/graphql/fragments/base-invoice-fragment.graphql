@@ -9,7 +9,7 @@ fragment BaseInvoice on Invoice {
 		formattedPrice
 		baseCurrency
 	}
-	member {
+	user {
 		id
 		email
 		name
