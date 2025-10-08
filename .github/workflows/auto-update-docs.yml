@@ -52,7 +52,20 @@ jobs:
               else
                 echo "has_changes=true" >> $GITHUB_OUTPUT
               fi
-
+         - name: Check if PR is closed and delete branch
+           if: steps.git-check.outputs.has_changes == 'true'
+           env:
+              GH_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
+           run: |
+              # Check if branch exists remotely
+              if git ls-remote --heads origin auto-update-docs | grep -q auto-update-docs; then
+                # Check if there's a closed PR for this branch
+                PR_STATE=$(gh pr list --head auto-update-docs --state closed --json state --jq '.[0].state' || echo "")
+                if [ "$PR_STATE" = "CLOSED" ]; then
+                  echo "Found closed PR for auto-update-docs branch. Deleting branch to recreate..."
+                  git push origin --delete auto-update-docs
+                fi
+              fi
          - name: Create or Update Pull Request
            if: steps.git-check.outputs.has_changes == 'true'
            id: cpr
@@ -87,7 +100,7 @@ jobs:
          - name: Approve PR (bypass review requirements)
            if: steps.git-check.outputs.has_changes == 'true' && steps.cpr.outputs.pull-request-number
            env:
-              GH_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
+              GH_TOKEN: ${{ secrets.GH_WRITE_TOKEN_SHARKEY }}
               PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
            run: |
               # Wait a moment for the PR to be fully created
