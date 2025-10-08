@@ -233,6 +233,14 @@
 									{
 										"group": "Ledger accounts",
 										"pages": ["GET /ledger_accounts/{id}"]
+									},
+									{
+										"group": "Checkout configurations",
+										"pages": [
+											"GET /checkout_configurations",
+											"POST /checkout_configurations",
+											"GET /checkout_configurations/{id}"
+										]
 									}
 								]
 							},

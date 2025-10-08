@@ -45,21 +45,8 @@ const result = await whopSdk.invoices.createInvoice({
 
 	// The properties of the plan to create for this invoice.
 	plan: {
-		// Whether or not ACH payments are accepted
-		achPayments: true,
-
-		// The respective currency identifier for the plan.
-		baseCurrency:
-			"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
-
 		// The interval at which the plan charges (renewal plans).
 		billingPeriod: 10,
-
-		// Whether or not card payments are accepted
-		cardPayments: true,
-
-		// Marks whether coinbase commerce payments are/aren't accepted.
-		coinbaseCommerceAccepted: true,
 
 		// An array of custom field objects.
 		customFields: [
@@ -96,20 +83,8 @@ const result = await whopSdk.invoices.createInvoice({
 		// A personal description or notes section for the business.
 		internalNotes: "some string",
 
-		// Whether or not to offer a discount to cancel a subscription.
-		offerCancelDiscount: true,
-
-		// Marks whether paypal payments are/aren't accepted.
-		paypalAccepted: true,
-
 		// Indicates if the plan is a one time payment or recurring.
 		planType: "one_time" /* Valid values: one_time | renewal */,
-
-		// Marks whether platform balance payments are/aren't accepted.
-		platformBalanceAccepted: true,
-
-		// The URL to redirect the customer to after purchase.
-		redirectUrl: "some string",
 
 		// This is the release method the business uses to sell this plan.
 		releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
@@ -117,20 +92,8 @@ const result = await whopSdk.invoices.createInvoice({
 		// The amount the customer is charged every billing period.
 		renewalPrice: "some string",
 
-		// The number of payments required before pausing the subscription.
-		splitPayRequiredPayments: 10,
-
-		// Marks whether payments using splitit, a payment processor, are/aren't accepted for the plan.
-		splititAccepted: true,
-
-		// The number of units available for purchase.
-		stock: 10,
-
 		// The number of free trial days added before a renewal plan.
 		trialPeriodDays: 10,
-
-		// Limits/doesn't limit the number of units available for purchase.
-		unlimitedStock: true,
 
 		// Shows or hides the plan from public/business view.
 		visibility:
