@@ -44,7 +44,9 @@ const result = await whopSdk.companies.listWaitlistEntries({
 		startDate: 1716931200,
 
 		// The statuses to filter the entries by
-		statuses: ["any" /* Valid values: any | approved | denied | pending */],
+		statuses: [
+			"any" /* Valid values: any | approved | denied | drafted | pending */,
+		],
 	},
 });
 
@@ -80,11 +82,12 @@ const result = {
 				// The internal ID of the entry.
 				id: "xxxxxxxxxxx",
 
-				// The name of the raffle/waitlist.
+				// The name of waitlist.
 				name: "some string",
 
-				// The status of the entry.
-				status: "any" /* Valid values: any | approved | denied | pending */,
+				// The status of the entry
+				status:
+					"any" /* Valid values: any | approved | denied | drafted | pending */,
 
 				// When the entry was created.
 				createdAt: 1716931200,
@@ -116,7 +119,7 @@ const result = {
 					// The internal ID of the plan.
 					id: "xxxxxxxxxxx",
 
-					// The title of the owning object.
+					// The title of the plan. This will be visible on the product page to customers.
 					title: "some string",
 				},
 

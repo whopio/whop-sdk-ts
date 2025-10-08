@@ -19,31 +19,17 @@ const result = await whopSdk.payments.payUser({
 	currency:
 		"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */ /* Required! */,
 
-	// The ID of the destination (either a User tag, Bot tag, or LedgerAccount tag)
+	// The ID of the destination account which will receive the funds (either a User ID, Company ID, or LedgerAccount ID)
 	destinationId: "xxxxxxxxxxx" /* Required! */,
 
-	// The feed identifier to notify of the transfer.
-	feedId: "feed_XXXXXXXX",
-
-	// The feed type to notify of the transfer.
-	feedType:
-		"chat_feed" /* Valid values: chat_feed | dms_feed | forum_feed | livestream_feed | universal_post | user */,
-
 	// A unique key to ensure idempotence. Use a UUID or similar.
-	idempotenceKey: "some string" /* Required! */,
-
-	// The ledger account id to transfer from.
-	ledgerAccountId: "ldgr_XXXXXXXX" /* Required! */,
+	idempotenceKey: "some string",
 
 	// Notes for the transfer. Maximum of 50 characters.
 	notes: "some string",
 
-	// The reason for the transfer.
-	reason:
-		"bounty_payout" /* Valid values: bounty_payout | content_reward_fixed_payout | content_reward_payout | content_reward_return | creator_to_creator | creator_to_user | pool_top_up | team_member_payout | user_to_creator | user_to_user | wadmin_transferred_funds */,
-
-	// The fee that the client thinks it is being charged for the transfer. Used to verify the fee.
-	transferFee: 10,
+	// The ID of the origin account which will send the funds (either a User ID, Company ID, or LedgerAccount ID)
+	originId: "xxxxxxxxxxx",
 });
 
 ```

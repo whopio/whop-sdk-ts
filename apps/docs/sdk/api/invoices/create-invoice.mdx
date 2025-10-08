@@ -112,22 +112,7 @@ const result = await whopSdk.invoices.createInvoice({
 		redirectUrl: "some string",
 
 		// This is the release method the business uses to sell this plan.
-		releaseMethod: "buy_now" /* Valid values: buy_now | raffle | waitlist */,
-
-		// Configurable settings on how this plan is released.
-		releaseMethodSettings: {
-			// When the raffle will expire
-			expiresAt: 1716931200,
-
-			// The maximum number of entries allowed for the raffle or waitlist
-			maxEntries: 10,
-
-			// If this is enabled, the raffle will get entries based off of how many NFTs the user owns
-			nftWeightedEntries: true,
-
-			// When the raffle will start
-			startsAt: 1716931200,
-		},
+		releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
 
 		// The amount the customer is charged every billing period.
 		renewalPrice: "some string",
