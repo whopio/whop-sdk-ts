@@ -262,6 +262,14 @@
 										]
 									},
 									{
+										"group": "Shipments",
+										"pages": [
+											"GET /shipments",
+											"POST /shipments",
+											"GET /shipments/{id}"
+										]
+									},
+									{
 										"group": "Authorized users",
 										"pages": [
 											"GET /authorized_users",
