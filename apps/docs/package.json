@@ -3,7 +3,8 @@
 	"private": true,
 	"version": "1.0.5",
 	"scripts": {
-		"dev": "mintlify dev"
+		"dev": "mintlify dev",
+		"generate:openapi": "node generate-openapi-sections.js"
 	},
 	"packageManager": "pnpm@9.15.9",
 	"devDependencies": {
