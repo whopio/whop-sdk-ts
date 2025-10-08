@@ -188,7 +188,132 @@
 					{
 						"tab": "API Reference",
 						"hidden": true,
-						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml"
+						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml",
+						"groups": [
+							{
+								"group": "Payments",
+								"pages": [
+									{
+										"group": "Products",
+										"pages": [
+											"GET /products",
+											"POST /products",
+											"GET /products/{id}",
+											"PATCH /products/{id}",
+											"DELETE /products/{id}"
+										]
+									},
+									{
+										"group": "Plans",
+										"pages": [
+											"GET /plans",
+											"POST /plans",
+											"GET /plans/{id}",
+											"PATCH /plans/{id}",
+											"DELETE /plans/{id}"
+										]
+									},
+									{
+										"group": "Invoices",
+										"pages": [
+											"GET /invoices",
+											"POST /invoices",
+											"GET /invoices/{id}",
+											"POST /invoices/{id}/void"
+										]
+									},
+									{
+										"group": "Transfers",
+										"pages": [
+											"GET /transfers",
+											"POST /transfers",
+											"GET /transfers/{id}"
+										]
+									},
+									{
+										"group": "Ledger accounts",
+										"pages": ["GET /ledger_accounts/{id}"]
+									}
+								]
+							},
+							{
+								"group": "Admin",
+								"pages": [
+									{
+										"group": "Companies",
+										"pages": ["GET /companies/{id}"]
+									},
+									{
+										"group": "Memberships",
+										"pages": [
+											"GET /memberships",
+											"GET /memberships/{id}",
+											"PATCH /memberships/{id}",
+											"POST /memberships/{id}/cancel"
+										]
+									},
+									{
+										"group": "Entries",
+										"pages": [
+											"GET /entries",
+											"GET /entries/{id}",
+											"POST /entries/{id}/approve",
+											"POST /entries/{id}/deny"
+										]
+									},
+									{
+										"group": "Authorized users",
+										"pages": [
+											"GET /authorized_users",
+											"GET /authorized_users/{id}"
+										]
+									}
+								]
+							},
+							{
+								"group": "Content",
+								"pages": [
+									{
+										"group": "Forum posts",
+										"pages": [
+											"GET /forum_posts",
+											"POST /forum_posts",
+											"GET /forum_posts/{id}"
+										]
+									},
+									{
+										"group": "Course lesson interactions",
+										"pages": [
+											"GET /course_lesson_interactions",
+											"GET /course_lesson_interactions/{id}"
+										]
+									}
+								]
+							},
+							{
+								"group": "Developer",
+								"pages": [
+									{
+										"group": "Apps",
+										"pages": [
+											"GET /apps",
+											"POST /apps",
+											"GET /apps/{id}",
+											"PATCH /apps/{id}"
+										]
+									},
+									{
+										"group": "App builds",
+										"pages": [
+											"GET /app_builds",
+											"POST /app_builds",
+											"GET /app_builds/{id}",
+											"POST /app_builds/{id}/promote"
+										]
+									}
+								]
+							}
+						]
 					},
 					{
 						"tab": "SDK Reference",

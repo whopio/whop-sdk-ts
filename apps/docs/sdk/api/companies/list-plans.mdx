@@ -41,11 +41,8 @@ const result = await whopSdk.companies.listPlans({
 		// The text that is being searched.
 		query: "some string",
 
-		// If true, it returns raffles that have ended.
-		raffleEnded: true,
-
 		// The release method to filter the scope by.
-		releaseMethod: "buy_now" /* Valid values: buy_now | raffle | waitlist */,
+		releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
 
 		// The visibility to filter the scope by.
 		visibility:
@@ -124,8 +121,7 @@ const result = {
 				paymentLinkDescription: "some string",
 
 				// This is the release method the business uses to sell this plan.
-				releaseMethod:
-					"buy_now" /* Valid values: buy_now | raffle | waitlist */,
+				releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
 
 				// The number of units available for purchase.
 				stock: 10,
@@ -137,7 +133,7 @@ const result = {
 				// Indicates if the plan is a one time payment or recurring.
 				planType: "one_time" /* Valid values: one_time | renewal */,
 
-				// The title of the owning object.
+				// The title of the plan. This will be visible on the product page to customers.
 				title: "some string",
 
 				// The description of the plan.
