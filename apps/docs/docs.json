@@ -320,6 +320,13 @@
 										"pages": ["GET /chat_channels", "GET /chat_channels/{id}"]
 									},
 									{
+										"group": "Support channels",
+										"pages": [
+											"GET /support_channels",
+											"GET /support_channels/{id}"
+										]
+									},
+									{
 										"group": "Course lesson interactions",
 										"pages": [
 											"GET /course_lesson_interactions",
