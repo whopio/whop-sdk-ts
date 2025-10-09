@@ -1,0 +1,96 @@
+---
+title: "Billing portal"
+description: "Give your customers a dedicated portal to manage their memberships and view billing history"
+---
+
+The billing portal is a self-service page where your users can manage their memberships, update payment methods, view billing history, and handle cancellations.
+
+## What's in the portal
+
+Your users get a fully-functional management interface with:
+
+- **View membership details**: Active plans, renewal dates, and billing cycles
+- **Update payment methods**: Add, remove, or change credit cards and other payment methods
+- **View billing history**: Past invoices and receipts
+- **Cancel memberships**: Self-service cancellation (saves you support tickets)
+- **Transfer memberships**: Move memberships between accounts
+- **Manage subscriptions**: Pause or modify recurring billing
+
+<Tip>
+  The billing portal handles all the complexity of subscription management for
+  you. Just grab the URL from the API and make it accessible for your users to
+  manage subscriptions on their own.
+</Tip>
+
+## Getting the billing portal URL
+
+Each membership has a `manage_url` field that you can grab from the API. It's a unique, authenticated link that takes users straight to their billing portal.
+
+When you retrieve a membership through the API, the `manage_url` field contains the billing portal link. The URL looks something like:
+
+```
+https://whop.com/billing/manage/mber_*************/
+```
+
+<Card
+  title="Retrieve Membership API"
+  icon="code"
+  href="https://docs.whop.com/api-reference/memberships/retrieve-membership"
+>
+  Check out the API reference to see how to retrieve memberships and grab the
+  `manage_url` field
+</Card>
+
+<Info>
+  Every billing portal URL is specific to a single membership. Users need to be
+  logged in to access the portal, and if they're not, they'll be automatically
+  prompted to sign in.
+</Info>
+
+## Common use cases
+
+### Handling cancelations
+
+Instead of manually canceling subscriptions, just send users their billing portal link:
+
+<Steps>
+  <Step title="User wants to cancel" titleSize="h3">
+    A user emails you asking to cancel their membership.
+  </Step>
+  <Step title="Send the link" titleSize="h3">
+    Make this url accessible to them in your app, and tell them where to find
+    it.
+  </Step>
+  <Step title="Done" titleSize="h3">
+    They cancel it themselves. No back-and-forth, no manual work for you.
+  </Step>
+</Steps>
+
+### Payment method updates
+
+When a payment fails or a card expires, just point users to the portal to update their payment info.
+
+### Membership transfers
+
+Users can transfer memberships to other accounts directly through the portal.
+
+## Related resources
+
+<CardGroup cols={2}>
+  <Card title="Memberships API" icon="code" href="/api-reference/memberships">
+    Retrieve and manage memberships programmatically
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/apps/features/webhooks">
+    Monitor billing portal actions with webhooks
+  </Card>
+  <Card title="Refunds" icon="rotate-left" href="/payments/refund-customer">
+    Process refunds for your customers
+  </Card>
+  <Card
+    title="Send an invoice"
+    icon="file-invoice"
+    href="/payments/send-an-invoice"
+  >
+    Create and send invoices to customers
+  </Card>
+</CardGroup>

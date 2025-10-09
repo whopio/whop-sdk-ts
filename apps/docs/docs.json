@@ -114,7 +114,8 @@
 									"payments/refund-customer",
 									"payments/taxes",
 									"payments/payment-declines",
-									"payments/financing"
+									"payments/financing",
+									"payments/billing-portal"
 								]
 							},
 							{
