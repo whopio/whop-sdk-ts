@@ -3,30 +3,30 @@ title: "Billing portal"
 description: "Give your customers a dedicated portal to manage their memberships and billing"
 ---
 
-The Whop billing portal is a self-service page where your customers can view and manage their memberships, update payment methods, view billing history, and handle subscription changes — all without contacting support.
+The billing portal is a self-service page where your users can manage their memberships, update payment methods, view billing history, and handle cancellations.
 
-## What customers can do in the billing portal
+## What's in the portal
 
-The billing portal gives your customers full control over their memberships:
+Your users get a fully-functional management interface with:
 
-- **View membership details**: See active plans, renewal dates, and billing cycles
+- **View membership details**: Active plans, renewal dates, and billing cycles
 - **Update payment methods**: Add, remove, or change credit cards and other payment methods
-- **View billing history**: Access past invoices and receipts
-- **Cancel memberships**: Self-service cancellation without contacting support
-- **Transfer memberships**: Move memberships to another account
+- **View billing history**: Past invoices and receipts
+- **Cancel memberships**: Self-service cancellation (saves you support tickets)
+- **Transfer memberships**: Move memberships between accounts
 - **Manage subscriptions**: Pause or modify recurring billing
 
 <Tip>
-  Providing customers with direct access to the billing portal reduces support
-  inquiries and improves customer satisfaction by giving them instant control
-  over their memberships.
+  The billing portal handles all the complexity of subscription management for
+  you. Just grab the URL from the API and make it accessible for your users to
+  manage subscriptions on their own.
 </Tip>
 
-## How to provide the billing portal URL to your customers
+## Getting the billing portal URL
 
-Developers can access the billing portal URL through the Whop API. Each membership has a unique `manage_url` field that links directly to that customer's billing portal.
+Each membership has a `manage_url` field that you can grab from the API. It's a unique, authenticated link that takes users straight to their billing portal.
 
-When you retrieve a membership through the API, the `manage_url` field contains the billing portal link. The URL will look like:
+When you retrieve a membership through the API, the `manage_url` field contains the billing portal link. The URL looks something like:
 
 ```
 https://whop.com/billing/manage/mber_*************/
@@ -37,67 +37,59 @@ https://whop.com/billing/manage/mber_*************/
   icon="code"
   href="https://docs.whop.com/api-reference/memberships/retrieve-membership"
 >
-  View the complete API reference to learn how to retrieve memberships and
-  access the `manage_url` field
+  Check out the API reference to see how to retrieve memberships and grab the
+  `manage_url` field
 </Card>
 
 <Info>
-  The billing portal URL is unique to each membership and is automatically
-  authenticated. Customers who click the link will be securely logged into their
-  membership management page.
+  Each URL is unique to a membership and the user can only access that link if
+  they are logged in and belong to that membership.
 </Info>
 
 ## Common use cases
 
-### Reducing cancellation support tickets
+### Handling cancellations
 
-Instead of handling cancellation requests manually, direct customers to their billing portal:
+Instead of manually canceling subscriptions, just send users their billing portal link:
 
 <Steps>
-  <Step title="Customer requests cancellation" titleSize="h3">
-    A customer emails or messages your support team asking to cancel their
-    membership.
+  <Step title="User wants to cancel" titleSize="h3">
+    A user emails you asking to cancel their membership.
   </Step>
-  <Step title="Send billing portal link" titleSize="h3">
-    Reply with their unique billing portal URL where they can self-serve: *"You
-    can cancel your membership anytime through your billing portal: [link]"*
+  <Step title="Send the link" titleSize="h3">
+    Make this url accessible to them in your app, and tell them where to find
+    it.
   </Step>
-  <Step title="Customer cancels directly" titleSize="h3">
-    The customer visits the portal and cancels their membership themselves — no
-    back-and-forth needed.
+  <Step title="Done" titleSize="h3">
+    They cancel it themselves. No back-and-forth, no manual work for you.
   </Step>
 </Steps>
 
 ### Payment method updates
 
-When a payment fails or a card expires, send customers to the billing portal to update their payment method.
+When a payment fails or a card expires, just point users to the portal to update their payment info.
 
 ### Membership transfers
 
-Customers who want to transfer their membership to another account can do so through the billing portal without requiring administrator intervention.
-
-<Warning>
-  Never share a customer's billing portal URL publicly or with other users. Each
-  URL grants full access to manage that specific membership.
-</Warning>
+Users can transfer memberships to other accounts directly through the portal. No admin work needed.
 
 ## Related resources
 
 <CardGroup cols={2}>
   <Card title="Memberships API" icon="code" href="/api-reference/memberships">
-    Learn how to retrieve and manage memberships programmatically
+    Retrieve and manage memberships programmatically
   </Card>
   <Card title="Webhooks" icon="webhook" href="/apps/features/webhooks">
-    Set up webhooks to monitor billing portal actions
+    Monitor billing portal actions with webhooks
   </Card>
   <Card title="Refunds" icon="rotate-left" href="/payments/refund-customer">
-    Learn how to process refunds for your customers
+    Process refunds for your customers
   </Card>
   <Card
     title="Send an invoice"
     icon="file-invoice"
     href="/payments/send-an-invoice"
   >
-    Create and send invoices to your customers
+    Create and send invoices to customers
   </Card>
 </CardGroup>
