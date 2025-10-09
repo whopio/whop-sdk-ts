@@ -299,6 +299,14 @@
 										]
 									},
 									{
+										"group": "Messages",
+										"pages": ["GET /messages", "GET /messages/{id}"]
+									},
+									{
+										"group": "Chat channels",
+										"pages": ["GET /chat_channels", "GET /chat_channels/{id}"]
+									},
+									{
 										"group": "Course lesson interactions",
 										"pages": [
 											"GET /course_lesson_interactions",
