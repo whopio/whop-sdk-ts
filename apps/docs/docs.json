@@ -215,6 +215,15 @@
 										]
 									},
 									{
+										"group": "Payments",
+										"pages": [
+											"GET /payments",
+											"GET /payments/{id}",
+											"POST /payments/{id}/refund",
+											"POST /payments/{id}/retry"
+										]
+									},
+									{
 										"group": "Invoices",
 										"pages": [
 											"GET /invoices",
@@ -290,6 +299,10 @@
 							{
 								"group": "Content",
 								"pages": [
+									{
+										"group": "Users",
+										"pages": ["GET /users/{id}"]
+									},
 									{
 										"group": "Forum posts",
 										"pages": [
