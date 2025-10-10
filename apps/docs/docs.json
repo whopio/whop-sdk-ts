@@ -313,7 +313,11 @@
 									},
 									{
 										"group": "Messages",
-										"pages": ["GET /messages", "GET /messages/{id}"]
+										"pages": [
+											"GET /messages",
+											"POST /messages",
+											"GET /messages/{id}"
+										]
 									},
 									{
 										"group": "Chat channels",
