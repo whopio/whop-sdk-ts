@@ -220,7 +220,8 @@
 											"GET /payments",
 											"GET /payments/{id}",
 											"POST /payments/{id}/refund",
-											"POST /payments/{id}/retry"
+											"POST /payments/{id}/retry",
+											"POST /payments/{id}/void"
 										]
 									},
 									{
@@ -267,7 +268,9 @@
 											"GET /memberships",
 											"GET /memberships/{id}",
 											"PATCH /memberships/{id}",
-											"POST /memberships/{id}/cancel"
+											"POST /memberships/{id}/cancel",
+											"POST /memberships/{id}/pause",
+											"POST /memberships/{id}/resume"
 										]
 									},
 									{
