@@ -307,6 +307,18 @@
 										"pages": ["GET /users/{id}"]
 									},
 									{
+										"group": "Experiences",
+										"pages": [
+											"GET /experiences",
+											"POST /experiences",
+											"GET /experiences/{id}",
+											"PATCH /experiences/{id}",
+											"DELETE /experiences/{id}",
+											"POST /experiences/{id}/attach",
+											"POST /experiences/{id}/detach"
+										]
+									},
+									{
 										"group": "Forum posts",
 										"pages": [
 											"GET /forum_posts",
