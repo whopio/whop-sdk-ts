@@ -336,7 +336,11 @@
 									},
 									{
 										"group": "Chat channels",
-										"pages": ["GET /chat_channels", "GET /chat_channels/{id}"]
+										"pages": [
+											"GET /chat_channels",
+											"GET /chat_channels/{id}",
+											"PATCH /chat_channels/{id}"
+										]
 									},
 									{
 										"group": "Support channels",
