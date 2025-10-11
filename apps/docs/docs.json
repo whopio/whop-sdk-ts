@@ -342,6 +342,7 @@
 										"group": "Support channels",
 										"pages": [
 											"GET /support_channels",
+											"POST /support_channels",
 											"GET /support_channels/{id}"
 										]
 									},
