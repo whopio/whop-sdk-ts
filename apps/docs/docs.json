@@ -351,6 +351,14 @@
 										]
 									},
 									{
+										"group": "Reactions",
+										"pages": [
+											"GET /reactions",
+											"POST /reactions",
+											"GET /reactions/{id}"
+										]
+									},
+									{
 										"group": "Course lesson interactions",
 										"pages": [
 											"GET /course_lesson_interactions",
