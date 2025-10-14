@@ -9,7 +9,7 @@ description: Fetches an access pass based on the ID or the route
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.accessPasses.getAccessPass({
-	// The ID or route of the access pass to fetch.
+	// The ID or route of the product to fetch.
 	accessPassId: "prod_XXXXXXXX" /* Required! */,
 });
 
@@ -19,10 +19,10 @@ const result = await whopSdk.accessPasses.getAccessPass({
 
 ```typescript
 const result = {
-	// The internal ID of the public access pass.
+	// The internal ID of the public product.
 	id: "xxxxxxxxxxx",
 
-	// The title of the access pass. Use for Whop 4.0.
+	// The title of the product. Use for Whop 4.0.
 	title: "some string",
 
 	// A short description of what the company offers or does.
@@ -31,34 +31,34 @@ const result = {
 	// Whether this product is Whop verified.
 	verified: true,
 
-	// This access pass will/will not be displayed publicly.
+	// This product will/will not be displayed publicly.
 	visibility:
 		"archived" /* Valid values: archived | hidden | quick_link | visible */,
 
-	// The route of the access pass.
+	// The route of the product.
 	route: "some string",
 
-	// The number of active users for this access pass.
+	// The number of active users for this product.
 	activeUsersCount: 10,
 
-	// The logo for the access pass.
+	// The logo for the product.
 	logo: {
 		// The original URL of the attachment, such as a direct link to S3. This should
 		// never be displayed on the client and always passed to an Imgproxy transformer.
 		sourceUrl: "some string",
 	},
 
-	// The banner image for the access pass.
+	// The banner image for the product.
 	bannerImage: {
 		// The original URL of the attachment, such as a direct link to S3. This should
 		// never be displayed on the client and always passed to an Imgproxy transformer.
 		sourceUrl: "some string",
 	},
 
-	// The headline of the access pass.
+	// The headline of the product.
 	headline: "some string",
 
-	// A short type of the company that this access pass belongs to.
+	// A short type of the company that this product belongs to.
 	company: {
 		// The ID (tag) of the company.
 		id: "xxxxxxxxxxx",
@@ -84,10 +84,10 @@ const result = {
 		},
 	},
 
-	// The average of all reviews for this access pass.
+	// The average of all reviews for this product.
 	reviewsAverage: 10,
 
-	// The user that owns the access pass (company owner).
+	// The user that owns the product (company owner).
 	ownerUser: {
 		// The internal ID of the user.
 		id: "xxxxxxxxxxx",
@@ -115,7 +115,7 @@ const result = {
 		country: "some string",
 	},
 
-	// The attachments for the access pass.
+	// The attachments for the product.
 	galleryImages: {
 		// A list of nodes.
 		nodes: [

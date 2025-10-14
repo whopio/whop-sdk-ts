@@ -12,7 +12,7 @@ title: Update Access Pass
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.accessPasses.updateAccessPass({
-	// A banner image for the access pass in png, jpeg format
+	// A banner image for the product in png, jpeg format
 	bannerImage: {
 		// This ID should be used the first time you upload an attachment. It is the ID
 		// of the direct upload that was created when uploading the file to S3 via the
@@ -24,63 +24,63 @@ const result = await whopSdk.accessPasses.updateAccessPass({
 		id: "xxxxxxxxxxx",
 	},
 
-	// The business type of the access pass.
+	// The business type of the product.
 	businessType:
 		"agency" /* Valid values: agency | brick_and_mortar | coaching | coaching_and_courses | community | course | education_program | events | newsletter | other | paid_group | physical_products | saas | software */,
 
 	// Whether or not to collect shipping information at checkout from the customer.
 	collectShippingAddress: true,
 
-	// The custom call to action for the access pass.
+	// The custom call to action for the product.
 	customCta:
 		"apply_now" /* Valid values: apply_now | call_now | complete_order | contact_us | donate_now | get_access | get_offer | join | order_now | purchase | shop_now | sign_up | subscribe */,
 
-	// The custom call to action URL for the access pass.
+	// The custom call to action URL for the product.
 	customCtaUrl: "some string",
 
-	// The custom statement descriptor for the access pass i.e. WHOP*SPORTS, must be
+	// The custom statement descriptor for the product i.e. WHOP*SPORTS, must be
 	// between 5 and 22 characters, contain at least one letter, and not contain any
 	// of the following characters: <, >, \, ', "
 	customStatementDescriptor: "some string",
 
-	// A written description of the access pass.
+	// A written description of the product.
 	description: "some string",
 
 	// The percentage of the revenue that goes to the global affiliate program.
 	globalAffiliatePercentage: 10,
 
-	// The status of the global affiliate program for this access pass.
+	// The status of the global affiliate program for this product.
 	globalAffiliateStatus: "disabled" /* Valid values: disabled | enabled */,
 
-	// The headline of the access pass.
+	// The headline of the product.
 	headline: "some string",
 
-	// The ID (tag) of the access pass
+	// The ID (tag) of the product
 	id: "xxxxxxxxxxx" /* Required! */,
 
-	// The industry type of the access pass.
+	// The industry type of the product.
 	industryType:
 		"accessories" /* Valid values: accessories | agencies | ai | ai_agency | amazon_fba | auto_repair_shop | beauty_and_personal_care | bootcamps | business | careers | clipping | clipping_agency | clothing | coaching_agency | coffee_shop | concerts | convention | customer_support_agency | dating | design_agency | development_agency | ecommerce | electronics_and_gadgets | fitness | fitness_gear | food_and_beverages | gym | health_and_wellness | home_goods | home_services | hotel_lodging | kindle_book_publishing | marketing_agency | masterminds | medical_dentist_office | meetups | other | parties | personal_development | personal_finance | public_speaking | real_estate | recruiting_agency | reselling | restaurant | retail_store | sales | sales_agency | salon_spa | social_media | software | spirituality | sports_betting | supplements | trading | travel | vas | video_games | webinars */,
 
 	// The percentage of the revenue that goes to the member affiliate program.
 	memberAffiliatePercentage: 10,
 
-	// The status of the member affiliate program for this access pass.
+	// The status of the member affiliate program for this product.
 	memberAffiliateStatus: "disabled" /* Valid values: disabled | enabled */,
 
-	// The ID of the product tax code to apply to this access pass.
+	// The ID of the product tax code to apply to this product.
 	productTaxCodeId: "xxxxxxxxxxx",
 
 	// The URL to redirect the customer to after a purchase.
 	redirectPurchaseUrl: "some string",
 
-	// The route of the access pass.
+	// The route of the product.
 	route: "some string",
 
-	// The title of the access pass.
+	// The title of the product.
 	title: "some string",
 
-	// This access pass will/will not be displayed publicly.
+	// This product will/will not be displayed publicly.
 	visibility:
 		"archived" /* Valid values: archived | hidden | quick_link | visible */,
 });
@@ -91,19 +91,19 @@ const result = await whopSdk.accessPasses.updateAccessPass({
 
 ```typescript
 const result = {
-	// The internal ID of the public access pass.
+	// The internal ID of the public product.
 	id: "xxxxxxxxxxx",
 
-	// When the access pass was created.
+	// When the product was created.
 	createdAt: 1716931200,
 
-	// The route of the access pass.
+	// The route of the product.
 	route: "some string",
 
-	// The title of the access pass. Use for Whop 4.0.
+	// The title of the product. Use for Whop 4.0.
 	title: "some string",
 
-	// The headline of the access pass.
+	// The headline of the product.
 	headline: "some string",
 
 	// A short description of what the company offers or does.
@@ -112,58 +112,58 @@ const result = {
 	// Whether this product is Whop verified.
 	verified: true,
 
-	// This access pass will/will not be displayed publicly.
+	// This product will/will not be displayed publicly.
 	visibility:
 		"archived" /* Valid values: archived | hidden | quick_link | visible */,
 
-	// The number of active users for this access pass.
+	// The number of active users for this product.
 	activeUsersCount: 10,
 
-	// The average of all reviews for this access pass.
+	// The average of all reviews for this product.
 	reviewsAverage: 10,
 
-	// The creator pitch for the access pass.
+	// The creator pitch for the product.
 	creatorPitch: "some string",
 
-	// The timestamp (in milliseconds since epoch) of when the access pass was updated
+	// The timestamp (in milliseconds since epoch) of when the product was updated
 	updatedAtMs: "9999999",
 
-	// Whether to show the offers on the access pass.
+	// Whether to show the offers on the product.
 	showOffers: true,
 
 	// The URL to redirect the customer to after a purchase, if applicable.
 	redirectPurchaseUrl: "some string",
 
-	// The custom call to action for the access pass.
+	// The custom call to action for the product.
 	customCta:
 		"apply_now" /* Valid values: apply_now | call_now | complete_order | contact_us | donate_now | get_access | get_offer | join | order_now | purchase | shop_now | sign_up | subscribe */,
 
-	// The custom call to action URL for the access pass, if any.
+	// The custom call to action URL for the product, if any.
 	customCtaUrl: "some string",
 
 	// The percentage of a transaction a user is eligible to earn from the whop marketplace global affiliate program.
 	globalAffiliatePercentage: 10,
 
-	// The status of the global affiliate program for this access pass.
+	// The status of the global affiliate program for this product.
 	globalAffiliateStatus: "disabled" /* Valid values: disabled | enabled */,
 
 	// The percentage of a transaction a user is eligible to earn from the whop marketplace member affiliate program.
 	memberAffiliatePercentage: 10,
 
-	// The status of the member affiliate program for this access pass.
+	// The status of the member affiliate program for this product.
 	memberAffiliateStatus: "disabled" /* Valid values: disabled | enabled */,
 
 	// Whether to show the member count.
 	showMemberCount: true,
 
-	// The logo for the access pass.
+	// The logo for the product.
 	logo: {
 		// The original URL of the attachment, such as a direct link to S3. This should
 		// never be displayed on the client and always passed to an Imgproxy transformer.
 		sourceUrl: "some string",
 	},
 
-	// The banner image for the access pass.
+	// The banner image for the product.
 	bannerImage: {
 		// The source of the attachment
 		source: {
