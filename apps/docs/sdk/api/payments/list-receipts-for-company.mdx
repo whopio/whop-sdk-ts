@@ -81,7 +81,7 @@ const result = {
 		// A list of nodes.
 		nodes: [
 			{
-				// The receipt ID
+				// The payment ID
 				id: "xxxxxxxxxxx",
 
 				// The address of the user who made the payment.
@@ -108,7 +108,7 @@ const result = {
 					country: "some string",
 				},
 
-				// The final converted amount of the receipt in USD.
+				// The final converted amount of the payment in USD.
 				settledUsdAmount: 10,
 
 				// The billing reason
@@ -121,11 +121,11 @@ const result = {
 				currency:
 					"aed" /* Valid values: aed | all | amd | ape | ars | aud | bam | bgn | bhd | bob | brl | bsd | btc | cad | chf | clp | cop | crc | czk | dkk | dop | dzd | egp | etb | eth | eur | gbp | ghs | gmd | gtq | gyd | hkd | huf | idr | ils | inr | jmd | jod | jpy | kes | khr | krw | kwd | lkr | mad | mdl | mga | mkd | mnt | mop | mur | mxn | myr | nad | ngn | nok | nzd | omr | pen | php | pkr | pln | pyg | qar | ron | rsd | rub | rwf | sar | sek | sgd | thb | tnd | try | ttd | twd | tzs | usd | uyu | uzs | vnd | xcd | xof | zar */,
 
-				// The current state of the receipt.
+				// The current state of the payment.
 				status:
 					"draft" /* Valid values: draft | open | paid | pending | uncollectible | unresolved | void */,
 
-				// The datetime the receipt was created
+				// The datetime the payment was created
 				createdAt: 1716931200,
 
 				// The total of the payment amount.
@@ -144,7 +144,7 @@ const result = {
 				// When an alert came in that this transaction will be disputed
 				disputeAlertedAt: 1716931200,
 
-				// The final amount of this receipt.
+				// The final amount of this payment.
 				finalAmount: 10,
 
 				// The final amount to show to the creator (excluding buyer fees).
@@ -156,7 +156,7 @@ const result = {
 				// The payment refund amount(if applicable).
 				refundedAmount: 10,
 
-				// The friendly status of the receipt.
+				// The friendly status of the payment.
 				friendlyStatus:
 					"auto_refunded" /* Valid values: auto_refunded | canceled | dispute_warning | drafted | failed | incomplete | open_dispute | open_resolution | partially_refunded | past_due | pending | price_too_low | refunded | succeeded | uncollectible | unresolved */,
 
@@ -169,10 +169,10 @@ const result = {
 				// Whether the payment can be retried.
 				retryable: true,
 
-				// The datetime the receipt was paid
+				// The datetime the payment was paid
 				paidAt: 1716931200,
 
-				// How much the receipt is for after fees
+				// How much the payment is for after fees
 				amountAfterFees: 10,
 
 				// Whether the charge was skipped because the price was too low.
@@ -184,7 +184,7 @@ const result = {
 				// Whether this payment was auto refunded or not
 				autoRefunded: true,
 
-				// The member attached to this receipt.
+				// The member attached to this payment.
 				member: {
 					// The header to show on the customers page
 					header: "some string",
@@ -223,7 +223,7 @@ const result = {
 					},
 				},
 
-				// The plan attached to this receipt.
+				// The plan attached to this payment.
 				plan: {
 					// The internal ID of the plan.
 					id: "xxxxxxxxxxx",
@@ -244,7 +244,7 @@ const result = {
 					paymentLinkDescription: "some string",
 				},
 
-				// The membership attached to this receipt.
+				// The membership attached to this payment.
 				membership: {
 					// The internal ID of the membership.
 					id: "xxxxxxxxxxx",
@@ -254,7 +254,7 @@ const result = {
 						"active" /* Valid values: active | canceled | completed | drafted | expired | past_due | trialing | unresolved */,
 				},
 
-				// The promo code used for this receipt.
+				// The promo code used for this payment.
 				promoCode: {
 					// The ID of the promo.
 					id: "xxxxxxxxxxx",
@@ -276,7 +276,7 @@ const result = {
 					numberOfIntervals: 10,
 				},
 
-				// The access pass attached to this receipt.
+				// The access pass attached to this payment.
 				accessPass: {
 					// The internal ID of the public product.
 					id: "xxxxxxxxxxx",
