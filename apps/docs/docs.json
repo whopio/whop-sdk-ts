@@ -201,8 +201,7 @@
 											"POST /products",
 											"GET /products/{id}",
 											"PATCH /products/{id}",
-											"DELETE /products/{id}",
-											"GET /products/{id}/access/{user_id}"
+											"DELETE /products/{id}"
 										]
 									},
 									{
@@ -261,10 +260,7 @@
 								"pages": [
 									{
 										"group": "Companies",
-										"pages": [
-											"GET /companies/{id}",
-											"GET /companies/{id}/access/{user_id}"
-										]
+										"pages": ["GET /companies/{id}"]
 									},
 									{
 										"group": "Memberships",
@@ -308,7 +304,10 @@
 								"pages": [
 									{
 										"group": "Users",
-										"pages": ["GET /users/{id}"]
+										"pages": [
+											"GET /users/{id}",
+											"GET /users/{id}/access/{resource_id}"
+										]
 									},
 									{
 										"group": "Experiences",
@@ -318,7 +317,6 @@
 											"GET /experiences/{id}",
 											"PATCH /experiences/{id}",
 											"DELETE /experiences/{id}",
-											"GET /experiences/{id}/access/{user_id}",
 											"POST /experiences/{id}/attach",
 											"POST /experiences/{id}/detach"
 										]
