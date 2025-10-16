@@ -8,7 +8,7 @@ title: Charge User
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.payments.chargeUser({
-	// The affiliate code to use for the checkout session
+	// The affiliate code to use for the checkout configuration
 	affiliateCode: "some string",
 
 	// The amount to charge the user
@@ -24,7 +24,7 @@ const result = await whopSdk.payments.chargeUser({
 	// Additional metadata for the charge
 	metadata: { any: "json" },
 
-	// The URL to redirect the user to after the checkout session is created
+	// The URL to redirect the user to after the checkout configuration is created
 	redirectUrl: "some string",
 
 	// The ID of the user to charge
@@ -40,12 +40,12 @@ const result = {
 	// The status of the charge attempt
 	status: "needs_action" /* Valid values: needs_action | success */,
 
-	// The checkout session if additional action is needed
+	// The checkout configuration if additional action is needed
 	inAppPurchase: {
-		// The ID of the checkout session
+		// The ID of the checkout configuration
 		id: "xxxxxxxxxxx",
 
-		// The ID of the plan to use for the checkout session
+		// The ID of the plan to use for the checkout configuration
 		planId: "xxxxxxxxxxx",
 	},
 };
