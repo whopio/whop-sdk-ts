@@ -263,6 +263,10 @@
 										"pages": ["GET /companies/{id}"]
 									},
 									{
+										"group": "Members",
+										"pages": ["GET /members", "GET /members/{id}"]
+									},
+									{
 										"group": "Memberships",
 										"pages": [
 											"GET /memberships",
