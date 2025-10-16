@@ -614,9 +614,6 @@ importers:
 
   packages/react:
     dependencies:
-      '@whop/api':
-        specifier: workspace:^
-        version: link:../api
       '@whop/iframe':
         specifier: workspace:^
         version: link:../iframe
