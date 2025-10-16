@@ -330,6 +330,14 @@
 										]
 									},
 									{
+										"group": "Forums",
+										"pages": [
+											"GET /forums",
+											"GET /forums/{id}",
+											"PATCH /forums/{id}"
+										]
+									},
+									{
 										"group": "Messages",
 										"pages": [
 											"GET /messages",
