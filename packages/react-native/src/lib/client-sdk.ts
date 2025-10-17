@@ -16,7 +16,7 @@ function getAppOrigin() {
 
 const appOrigin = getAppOrigin();
 
-export const whop = new Whop({
+export const whopsdk = new Whop({
 	apiKey: "client",
 	appID: "client",
 	baseURL: new URL("/_whop/api/v1/", appOrigin).href,
