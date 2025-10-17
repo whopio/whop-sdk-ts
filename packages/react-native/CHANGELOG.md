@@ -1,5 +1,11 @@
 # @whop/react-native
 
+## 0.1.0
+
+### Minor Changes
+
+- 0ba95cf: Updated to use expose typescript SDK
+
 ## 0.0.22
 
 ### Patch Changes
