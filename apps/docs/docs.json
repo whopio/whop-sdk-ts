@@ -132,6 +132,32 @@
 						"tab": "Build apps",
 						"groups": [
 							{
+								"group": "Build apps",
+								"pages": [
+									"apps/introduction",
+									"apps/getting-started",
+									"apps/get-api-key",
+									{
+										"group": "App Views",
+										"pages": [
+											"apps/app-views/experience-view",
+											"apps/app-views/dashboard-view",
+											"apps/app-views/discover-view"
+										]
+									},
+									"apps/permissions",
+									"apps/tutorials"
+								]
+							},
+							{
+								"group": "Tutorials",
+								"pages": [
+									"apps/tutorials/ai-car-customizer",
+									"apps/tutorials/chat-bot",
+									"apps/tutorials/ai-image-generator"
+								]
+							},
+							{
 								"group": "React Native",
 								"pages": [
 									"apps/react-native/installation",
@@ -915,37 +941,6 @@
 							{
 								"group": "iFrame",
 								"pages": ["sdk/iframe-setup", "sdk/external-url"]
-							}
-						]
-					},
-					{
-						"tab": "Old GraphQL Docs",
-						"groups": [
-							{
-								"group": "Build apps",
-								"pages": [
-									"apps/old/introduction",
-									"apps/old/getting-started",
-									"apps/old/get-api-key",
-									{
-										"group": "App Views",
-										"pages": [
-											"apps/old/app-views/experience-view",
-											"apps/old/app-views/dashboard-view",
-											"apps/old/app-views/discover-view"
-										]
-									},
-									"apps/old/permissions",
-									"apps/old/tutorials"
-								]
-							},
-							{
-								"group": "Tutorials",
-								"pages": [
-									"apps/old/tutorials/ai-car-customizer",
-									"apps/old/tutorials/chat-bot",
-									"apps/old/tutorials/ai-image-generator"
-								]
 							}
 						]
 					}
