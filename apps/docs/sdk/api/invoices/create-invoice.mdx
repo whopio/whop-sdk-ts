@@ -77,7 +77,9 @@ const result = await whopSdk.invoices.createInvoice({
 		// The interval at which the plan charges (expiration plans).
 		expirationDays: 10,
 
-		// An additional amount charged upon first purchase.
+		// An additional amount charged upon first purchase. Use only if a one time
+		// payment OR you want to charge an additional amount on top of the renewal
+		// price. Provided as a number in dollars. Eg: 10.43 for $10.43
 		initialPrice: "some string",
 
 		// A personal description or notes section for the business.
@@ -89,7 +91,8 @@ const result = await whopSdk.invoices.createInvoice({
 		// This is the release method the business uses to sell this plan.
 		releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
 
-		// The amount the customer is charged every billing period.
+		// The amount the customer is charged every billing period. Use only if a
+		// recurring payment. Provided as a number in dollars. Eg: 10.43 for $10.43
 		renewalPrice: "some string",
 
 		// The number of free trial days added before a renewal plan.
