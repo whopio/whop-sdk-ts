@@ -1,0 +1,111 @@
+---
+title: Getting started
+description: Create an app and get your API keys
+---
+
+## Getting your API key
+
+1. Go to [your developer dashboard](https://whop.com/dashboard/developer).
+
+2. Click the **Create app** button and give your app a name. _You can change this name later._
+
+3. Your API key is the hidden text after `WHOP_API_KEY` in the `Environment variables` section.
+
+   Use the reveal button to show the key, copy it and keep it in a safe place.
+
+   You will need it to make API calls.
+
+## Making API calls
+
+Our public api is available at `https://api.whop.com/api/v1`
+
+You can test the api by using curl to fetch your public user profile data:
+
+```bash
+# replace "j" with your own whop username
+curl https://api.whop.com/api/v1/users/j
+```
+
+To make authenticated requests you need to include your API key in the `Authorization` header using the `Bearer` scheme:
+
+```bash
+# replace "YOUR_API_KEY" with your real API key
+curl https://api.whop.com/api/v1/payments/pay_xxxxxxxxxxxxxx \
+    -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Using an SDK
+
+We recommending using our SDKs to make API calls in your apps. We currently support
+
+- [Typescript / Javascript](https://npmjs.com/package/@whop/sdk) / [Docs](https://github.com/whopio/whopsdk-typescript)
+
+  ```bash
+  pnpm install @whop/sdk
+  ```
+
+- [Python](https://pypi.org/project/whop-sdk) / [Docs](https://github.com/whopio/whopsdk-python)
+
+  ```bash
+  pip install whop-sdk
+  ```
+
+- [Ruby](https://rubygems.org/gems/whop-sdk) / [Docs](https://github.com/whopio/whopsdk-ruby)
+
+  ```bash
+  gem install whop-sdk
+  ```
+
+## Example usage
+
+<Note>
+  Make sure you app has the required permissions to make api calls. See
+  [Permissions](/apps/api/permissions) for more information.
+</Note>
+
+<CodeGroup>
+
+```typescript Typescript
+import Whop from "@whop/sdk";
+
+const client = new Whop({
+  appID: "app_xxxxxxxxxxxxxx",
+  apiKey: process.env["WHOP_API_KEY"], // This is the default and can be omitted
+});
+
+const page = await client.payments.list({ company_id: "biz_xxxxxxxxxxxxxx" });
+const paymentListResponse = page.data[0];
+
+console.log(paymentListResponse.id);
+```
+
+```python Python
+import os
+from whop_sdk import Whop
+
+client = Whop(
+    app_id="app_xxxxxxxxxxxxxx",
+    api_key=os.environ.get("WHOP_API_KEY"),  # This is the default and can be omitted
+)
+
+page = client.payments.list(
+    company_id="biz_xxxxxxxxxxxxxx",
+)
+print(page.data)
+```
+
+```ruby Ruby
+require "bundler/setup"
+require "whop_sdk"
+
+whop = WhopSDK::Client.new(
+  api_key: ENV["WHOP_API_KEY"], # This is the default and can be omitted
+  app_id: "app_xxxxxxxxxxxxxx"
+)
+
+page = whop.payments.list(company_id: "biz_xxxxxxxxxxxxxx")
+
+puts(page.id)
+```
+
+</CodeGroup>

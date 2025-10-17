@@ -4,7 +4,8 @@
 	"version": "1.0.5",
 	"scripts": {
 		"dev": "mintlify dev",
-		"generate:openapi": "node generate-openapi-sections.js"
+		"generate:openapi": "node scripts/generate-openapi-sections.js",
+		"clean": "node scripts/cleanup-unused-files.mjs"
 	},
 	"packageManager": "pnpm@9.15.9",
 	"devDependencies": {

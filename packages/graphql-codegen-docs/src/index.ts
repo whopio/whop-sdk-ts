@@ -138,8 +138,11 @@ function updateMintJson(
 	const mintJsonPath = `${BASE_OUTPUT_PATH}/../../docs.json`;
 	const mintJson = readFileSync(mintJsonPath, "utf-8");
 	const mintJsonObject = JSON.parse(mintJson);
-	const navigation = mintJsonObject.navigation.versions[0].tabs
-		.find((t: { tab: string }) => t.tab === "SDK Reference")
+	const navigation = mintJsonObject.navigation.versions
+		.find((v: { version: string }) => v.version === "GraphQL SDK - Deprecated")
+		.tabs.find(
+			(t: { tab: string }) => t.tab === "GraphQL SDK Reference - Deprecated",
+		)
 		.groups.find((o: { group: string }) => o.group === "Resources");
 	navigation.pages = reformatMintJson(groupedOperations);
 	const formattedJson = formatCode(

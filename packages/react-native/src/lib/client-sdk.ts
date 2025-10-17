@@ -1,4 +1,4 @@
-import { WhopClientSdk } from "@whop/api";
+import Whop from "@whop/sdk";
 import { Platform } from "react-native";
 import { __internal_execSync } from "./native-whop-core-wrapper";
 
@@ -16,9 +16,10 @@ function getAppOrigin() {
 
 const appOrigin = getAppOrigin();
 
-export const whopSdk: WhopClientSdk = WhopClientSdk({
-	apiOrigin: appOrigin,
-	apiPath: "/_whop/public-graphql/",
+export const whopSdk = new Whop({
+	apiKey: "client",
+	appID: "client",
+	baseURL: new URL("/_whop/api/v1/", appOrigin).href,
 });
 
-export * from "@whop/api";
+export * from "@whop/sdk";
