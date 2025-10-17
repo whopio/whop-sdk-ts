@@ -958,7 +958,11 @@
 		"dark": "/logo/white.png"
 	},
 	"api": {
-		"openapi": ["v5.yaml", "v2.json", "access.yaml"],
+		"openapi": [
+			"openapi-schemas/v5.yaml",
+			"openapi-schemas/v2.json",
+			"openapi-schemas/access.yaml"
+		],
 		"mdx": {
 			"server": "https://api.whop.com"
 		}

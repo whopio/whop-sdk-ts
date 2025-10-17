@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: Whop Access API
+  version: 1.0.0
+servers:
+  - url: https://access.api.whop.com
+paths:
+  /check/{access_expression}:
+    get:
+      security:
+        - ApiAuth: []
+      summary: Check Access
+      description: This endpoint checks the given access expression.
+      parameters:
+        - in: path
+          name: access_expression
+          required: true
+          schema:
+            type: string
+          description: The access expression to be checked.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: boolean
+
+components:
+  securitySchemes:
+    ApiAuth:
+      type: http
+      scheme: bearer
+      description: The users access token, this can be fetched from the `whop_user_token` cookie.

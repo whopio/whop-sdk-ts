@@ -1,0 +1,5447 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "Whop API",
+		"version": "0.1.1"
+	},
+	"servers": [
+		{
+			"url": "https://api.whop.com/api"
+		}
+	],
+	"tags": [
+		{
+			"name": "OAuth",
+			"description": "Operations about OAuths"
+		},
+		{
+			"name": "Products",
+			"description": "Operations about Products"
+		},
+		{
+			"name": "Plans",
+			"description": "Operations about Plans"
+		},
+		{
+			"name": "Memberships",
+			"description": "Operations about Memberships"
+		},
+		{
+			"name": "Companies",
+			"description": "Operations about Companies"
+		},
+		{
+			"name": "Experiences",
+			"description": "Operations about Experiences"
+		},
+		{
+			"name": "Payments",
+			"description": "Operations about Payments"
+		},
+		{
+			"name": "Payment Fees",
+			"description": "Operations about Payment Fees"
+		},
+		{
+			"name": "Checkout Sessions",
+			"description": "Operations about Checkout Sessions"
+		},
+		{
+			"name": "Members",
+			"description": "Operations about Members"
+		},
+		{
+			"name": "Customers",
+			"description": "Operations about Customers"
+		},
+		{
+			"name": "Promo Codes",
+			"description": "Operations about Promo Codes"
+		},
+		{
+			"name": "Webhooks",
+			"description": "Operations about Webhooks"
+		},
+		{
+			"name": "Reviews",
+			"description": "Operations about Reviews"
+		}
+	],
+	"paths": {
+		"/v2/oauth/company": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve Company",
+				"description": "Retrieves the company object that is selling the software. For example, if the company is \"Larry's Newsletters\" and your software is a newsletter software, you can use this endpoint to pull attributes like company image, company description, etc from Larry's Newsletters.",
+				"operationId": "oauth_company_retrieve",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Company",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Company"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/company/products": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve Company Products",
+				"description": "Retrieves a list of product objects from the company using your software",
+				"operationId": "oauth_company_products",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "visibility",
+						"in": "query",
+						"description": "The visibility of the Product",
+						"schema": {
+							"type": "string",
+							"enum": ["visible", "hidden", "archived", "quick_link"]
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Company Products",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Product"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/company/products/{id}": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve a Product",
+				"description": "Returns a specific Product, using its unique ID.",
+				"operationId": "oauth_retrieve_product",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Product, which will look like `prod_*************` or `pass_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Product",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Product"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/company/plans/{id}": {
+			"post": {
+				"tags": ["OAuth"],
+				"summary": "Update a plan using an experience access token",
+				"description": "Update a plan using an experience access token",
+				"operationId": "oauth_update_company_plan",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Plan, which will look like `plan_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/oauth_update_company_plan"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a plan using an experience access token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Plan"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "oauth_update_company_plan"
+			}
+		},
+		"/v2/oauth/user/memberships": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve User Memberships",
+				"description": "Retrieve memberships possessed by the currently authenticated user as it relates to the company selling access to the specific software.",
+				"operationId": "oauth_user_memberships",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "valid",
+						"in": "query",
+						"description": "Whether or not the Membership has a valid status",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve User Memberships",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Membership"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/user/experiences": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve User Experiences",
+				"description": "Retrieves a list of experience objects that the authenticated user has access to.",
+				"operationId": "oauth_user_experiences",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve User Experiences",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Experience"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/user": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve User",
+				"description": "Retrieves the user object that for the authenticated user.",
+				"operationId": "oauth_user",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve User",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/info": {
+			"get": {
+				"tags": ["OAuth"],
+				"summary": "Retrieve Info",
+				"description": "Retrieve the company object, user object, and experiences objects that are available to the user. This endpoint is useful for gathering data about the customer using your software and the company selling your software.",
+				"operationId": "oauth_info",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "A user's access token, which must be retrieved from the Whop OAuth2 authentication flow. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Info",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"user": {
+											"$ref": "#/components/schemas/User"
+										},
+										"company": {
+											"$ref": "#/components/schemas/Company"
+										},
+										"experiences": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Experience"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/oauth/token": {
+			"post": {
+				"tags": ["OAuth"],
+				"summary": "Obtain a user's access token",
+				"description": "This is how you obtain an access token for a user. In the OAuth flow, your backend will receive a one time use \"code\" parameter. You will then exchange the code you received for a long lived access token by calling this endpoint.",
+				"operationId": "oauth_token",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/oauth_token"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Obtain a user's access token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OauthToken"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "oauth_token"
+			}
+		},
+		"/v2/products/{id}": {
+			"get": {
+				"tags": ["Products"],
+				"summary": "Retrieve a Product",
+				"description": "Returns a specific Product, using its unique ID.",
+				"operationId": "retrieve_product",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Product, which will look like `prod_*************` or `pass_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Experiences and Plans on the returned Product(s). Pass an array with each object(s) you want to expand, e.g. `[experiences, plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["experiences", "plans"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Product",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Product"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Products"],
+				"summary": "Update a Product",
+				"description": "Update a Product's attributes, using its unique ID. Keep in mind, any changes made to the pass will be reflected on the User's account.",
+				"operationId": "update_product",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Product, which will look like `prod_*************` or `pass_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Experiences and Plans on the returned Product(s). Pass an array with each object(s) you want to expand, e.g. `[experiences, plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["experiences", "plans"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_product"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a Product",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Product"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"example": {
+									"error": {
+										"code": 400,
+										"message": "Parameter :example is invalid. Please ensure you are passing the correct type for this parameter."
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized (Credentials missing/incorrect/expired)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"example": {
+									"error": {
+										"code": 401,
+										"message": "Unauthorized"
+									}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden (Credentials not permitted to access the specified resource)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"example": {
+									"error": {
+										"code": 403,
+										"message": "Forbidden"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"example": {
+									"error": {
+										"code": 404,
+										"message": "No such Resource found with the provided ID: xxx_123"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"example": {
+									"error": {
+										"code": 500,
+										"message": "Uh oh, something went wrong. This is something we need to fix, and isn't on your end. We've been notified and are working on a fix"
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_product"
+			}
+		},
+		"/v2/products": {
+			"get": {
+				"tags": ["Products"],
+				"summary": "List Products",
+				"description": "Returns a collection of Products, based on the supplied filters.",
+				"operationId": "list_products",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "visibility",
+						"in": "query",
+						"description": "The visibility of the Product",
+						"schema": {
+							"type": "string",
+							"enum": ["visible", "hidden", "archived", "quick_link"]
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Experiences and Plans on the returned Product(s). Pass an array with each object(s) you want to expand, e.g. `[experiences, plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["experiences", "plans"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Products",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Product"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/plans/{id}": {
+			"get": {
+				"tags": ["Plans"],
+				"summary": "Retrieve a Plan",
+				"description": "Returns a specific Plan, using its unique ID. Plans represent a pricing and release method configuration used to purchase a Product.",
+				"operationId": "retrieve_plan",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Plan, which will look like `plan_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Product on the returned Plan(s). Pass an array with each object(s) you want to expand, e.g. `[product]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Plan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Plan"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Plans"],
+				"summary": "Update a Plan",
+				"description": "Updates a plans information/options",
+				"operationId": "update_plan",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Plan, which will look like `plan_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_plan"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a Plan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Plan"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_plan"
+			}
+		},
+		"/v2/plans/{mimic_plan_id}/create_quick_link": {
+			"post": {
+				"tags": ["Plans"],
+				"summary": "Create a quick link",
+				"description": "Create a quick link (or release link) for a plan. This will copy over all data from an existing plan and make a new plan with the same data that can be used as a one-time release link. You can change the stock and metadata on the new plan.",
+				"operationId": "create_quick_link",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "mimic_plan_id",
+						"in": "path",
+						"description": "The ID of a plan you want to copy the data from, which will look like `plan_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Product on the returned Plan(s). Pass an array with each object(s) you want to expand, e.g. `[product]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/create_quick_link"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Create a quick link for a plan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Plan"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "create_quick_link"
+			}
+		},
+		"/v2/plans": {
+			"get": {
+				"tags": ["Plans"],
+				"summary": "List Plans",
+				"description": "Returns a collection of Plans, based on the supplied filters. Plans represent a pricing and release method configuration used to purchase a Product.",
+				"operationId": "list_plans",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "visibility",
+						"in": "query",
+						"description": "The level of visibility of the Plan",
+						"schema": {
+							"type": "string",
+							"enum": ["visible", "hidden", "archived", "quick_link"]
+						}
+					},
+					{
+						"name": "access_pass_id",
+						"in": "query",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "product_id",
+						"in": "query",
+						"description": "The Plan's Product ID, which will look like `prod_*************` or `pass_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Product on the returned Plan(s). Pass an array with each object(s) you want to expand, e.g. `[product]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Plans",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Plan"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Plans"],
+				"summary": "Create a plan",
+				"description": "Create a plan",
+				"operationId": "create_plan",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Product on the returned Plan(s). Pass an array with each object(s) you want to expand, e.g. `[product]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/create_plan"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Create a plan",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Plan"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "create_plan"
+			}
+		},
+		"/v2/memberships/{id}/validate_license": {
+			"post": {
+				"tags": ["Memberships"],
+				"summary": "Validate a License Key",
+				"description": "Validate an instance of your software by sending metadata about the user. For example, by sending metadata containing the HWID of the device most recently logged in, you can ensure an instance of your software is only being used on one device at a time.",
+				"operationId": "validate_license",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`, or the license key of the membership.",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/validate_license"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Validate a membership's license key",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "validate_license"
+			}
+		},
+		"/v2/memberships/{id}": {
+			"get": {
+				"tags": ["Memberships"],
+				"summary": "Retrieve a Membership",
+				"description": "Returns a specific Membership, using its unique ID. A Membership represents an instance of a User purchasing a Product.",
+				"operationId": "retrieve_membership",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`, or the license key of the membership.",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Membership",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Memberships"],
+				"summary": "Update a Membership",
+				"description": "Use the update license endpoint to add metadata like hwid to an instance of the License.",
+				"operationId": "update_membership",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_membership"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a Membership",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_membership"
+			}
+		},
+		"/v2/memberships/{id}/cancel": {
+			"post": {
+				"tags": ["Memberships"],
+				"summary": "Cancel a Membership",
+				"description": "Cancels a specific Membership, using its unique ID. It will set the Membership to cancel at period end.",
+				"operationId": "cancel_membership",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Cancel a Membership",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/memberships/{id}/terminate": {
+			"post": {
+				"tags": ["Memberships"],
+				"summary": "Terminate a Membership",
+				"description": "Terminates a specific Membership, using its unique ID. It will immediately invalidate the Membership, and the User will/should have their Product's Experiences unfulfilled. Termination is irreversible, so a User will have to re-purchase if they wish to continue their access.",
+				"operationId": "terminate_membership",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Terminate a Membership",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/memberships/{id}/add_free_days": {
+			"post": {
+				"tags": ["Memberships"],
+				"summary": "Add Free Days to a Membership",
+				"description": "Extend a Membership's next renewal date or expiration date by a specified number of days. Once the Membership's updated renewal/expiration date has been reached, it will renew or expire as normal.",
+				"operationId": "add_free_days_membership",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Membership, which will look like `mem_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/add_free_days_membership"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Add Free Days",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Membership"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "add_free_days_membership"
+			}
+		},
+		"/v2/memberships": {
+			"get": {
+				"tags": ["Memberships"],
+				"summary": "List Memberships",
+				"description": "Returns a collection of Memberships, based on the supplied filters. If a Membership is valid, the User has/should have access to the Experiences associated with the Product. If a Membership is invalid, the User will/should have their Product's Experiences unfulfilled. By default, results are returned 10 objects at a time.",
+				"operationId": "list_memberships",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "status",
+						"in": "query",
+						"description": "The status of the Membership",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"active",
+								"trialing",
+								"past_due",
+								"completed",
+								"unresolved",
+								"canceled",
+								"expired"
+							]
+						}
+					},
+					{
+						"name": "plan_id",
+						"in": "query",
+						"description": "The ID of the Plan attached to this Membership, which will look like `plan_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "access_pass_id",
+						"in": "query",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "product_id",
+						"in": "query",
+						"description": "The ID of the Product attached to this Membership, which will look like `prod_*************` or `pass_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "user_id",
+						"in": "query",
+						"description": "The ID of the User that owns this Membership, which will look like `user_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "discord_id",
+						"in": "query",
+						"description": "The ID of the Discord account attached to this Membership",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "wallet_address",
+						"in": "query",
+						"description": "The crypto wallet address used to pay for the Membership (if paid through the one-time ETH or renewal WETH Whop contracts)",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "valid",
+						"in": "query",
+						"description": "Whether or not the Membership has a valid status",
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"name": "hide_metadata",
+						"in": "query",
+						"description": "Whether or not to hide the metadata returned on responses. Passing true will hide the metadata, default value is false.",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					},
+					{
+						"name": "direction",
+						"in": "query",
+						"description": "The direction to order the results by. Either 'desc' or 'asc'. Default is 'desc'.",
+						"schema": {
+							"type": "string",
+							"default": "desc",
+							"enum": ["asc", "desc"]
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Plan, Product, or Promo Code on the returned Membership(s). Pass an array with each object(s) you want to expand, e.g. `[product, plan, user, promo_code]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user", "plan", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Memberships",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Membership"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/company": {
+			"get": {
+				"tags": ["Companies"],
+				"summary": "Retrieve a Company",
+				"description": "Returns the Company that is attached the the API key.",
+				"operationId": "retrieve_company",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Company",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Company"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/experiences/{id}": {
+			"get": {
+				"tags": ["Experiences"],
+				"summary": "Retrieve an Experience",
+				"description": "Returns a specific Experience, using its unique ID. Experiences represent what the customer receives or unlocks when they purchase a Membership.",
+				"operationId": "retrieve_experience",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Experience, which will look like `exp_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Products on the returned Experience(s). Pass an array with each object(s) you want to expand, e.g. `[products]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve an Experience",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Experience"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Experiences"],
+				"summary": "Update an Experience",
+				"description": "Returns a specific Experience, using its unique ID. Experiences represent what the customer receives or unlocks when they purchase a Membership.",
+				"operationId": "update_experience",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Experience, which will look like `exp_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Products on the returned Experience(s). Pass an array with each object(s) you want to expand, e.g. `[products]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_experience"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update an Experience",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Experience"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_experience"
+			},
+			"delete": {
+				"tags": ["Experiences"],
+				"summary": "Delete an Experience",
+				"description": "Returns a specific Experience, using its unique ID. Experiences represent what the customer receives or unlocks when they purchase a Membership.",
+				"operationId": "delete_experience",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Experience, which will look like `exp_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Successfully deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Experience"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/experiences": {
+			"get": {
+				"tags": ["Experiences"],
+				"summary": "List Experiences",
+				"description": "Returns a collection of Experiences, based on the supplied filters. Experiences represent what the customer receives or unlocks when they purchase an Product. By default, results are returned 10 objects at a time",
+				"operationId": "list_experiences",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "experience_type",
+						"in": "query",
+						"description": "The type of Experience",
+						"schema": {
+							"type": "string",
+							"enum": ["has_interface"]
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Products on the returned Experience(s). Pass an array with each object(s) you want to expand, e.g. `[products]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Experiences",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Experience"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/payments/{id}": {
+			"get": {
+				"tags": ["Payments"],
+				"summary": "Retrieve a Payment",
+				"description": "Returns a specific Payment, using its unique ID. Only Payments with a status of paid have been successfully processed.",
+				"operationId": "retrieve_payment",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Payment, which will look like `pay_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Membership, Plan, or Product on the returned Payment. Pass an array with each object(s) you want to expand, e.g. `[product, plan, membership, user]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "membership", "plan", "user"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Payment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Payment"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/payments": {
+			"get": {
+				"tags": ["Payments"],
+				"summary": "List Payments",
+				"description": "Returns a collection of Payments, based on the supplied filters. Only Payments with a status of paid have been successfully processed.",
+				"operationId": "list_payments",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "status",
+						"in": "query",
+						"description": "The status of the Payment",
+						"schema": {
+							"type": "string",
+							"enum": ["draft", "open", "paid", "uncollectible", "void"]
+						}
+					},
+					{
+						"name": "membership_id",
+						"in": "query",
+						"description": "The Membership this Payment part of. By default this will just be the ID of the Membership, but you can expand it to get more information about the Membership by passing `[membership]` in the `expand` parameter.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "checkout_session_id",
+						"in": "query",
+						"description": "The ID of the Checkout Session that was used to make the Payment, if any.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User, Membership, Plan, or Product on the returned Payment. Pass an array with each object(s) you want to expand, e.g. `[product, plan, membership, user]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "membership", "plan", "user"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Payments",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Payment"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/payments/{receipt_id}/refund": {
+			"post": {
+				"tags": ["Payments"],
+				"summary": "Refund a payment",
+				"description": "Refund a specific Payment, using its unique ID. Refunds are irreversible, so be careful when issuing them.",
+				"operationId": "refund_payment",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "receipt_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/refund_payment"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Refund a payment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Payment"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "refund_payment"
+			}
+		},
+		"/v2/payment_fees": {
+			"get": {
+				"tags": ["Payment Fees"],
+				"summary": "List Payment Fees",
+				"description": "Returns a collection of Payment Fees for a given payment.",
+				"operationId": "list_payment_fees",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "payment_id",
+						"in": "query",
+						"description": "The ID of the Payment, which will look like `pay_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Payment Fees",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/PaymentFee"
+											}
+										},
+										"fees_sum": {
+											"type": "number",
+											"format": "float"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/checkout_sessions/{id}": {
+			"get": {
+				"tags": ["Checkout Sessions"],
+				"summary": "Retrieve a Checkout Session",
+				"description": "Returns a collection of Checkout Sessions, based on the supplied filters. By default, results are returned 10 objects at a time.",
+				"operationId": "retrieve_checkout_session",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the session, which will look like `ch_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Checkout Session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutSession"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"delete": {
+				"tags": ["Checkout Sessions"],
+				"summary": "Delete a Checkout Session",
+				"description": "Deletes a specific Checkout Session, using its unique ID.",
+				"operationId": "delete_checkout_session",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the session, which will look like `ch_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Successfully deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutSession"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/checkout_sessions": {
+			"get": {
+				"tags": ["Checkout Sessions"],
+				"summary": "List Checkout Sessions",
+				"description": "Returns a collection of Checkout Sessions, based on the supplied filters. By default, results are returned 10 objects at a time.",
+				"operationId": "list_checkout_sessions",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "plan_id",
+						"in": "query",
+						"description": "The ID of the plan that the checkout session is associated with, which will look like `plan_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Checkout Sessions",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/CheckoutSession"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Checkout Sessions"],
+				"summary": "Create a Checkout Session",
+				"description": "Creates a new Checkout Session. A Checkout Session allows specific data to be attached to a Membership upon purchase and customization of the checkout experience.",
+				"operationId": "create_checkout_session",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/create_checkout_session"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Create a Checkout Session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutSession"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "create_checkout_session"
+			}
+		},
+		"/v2/members/{search}": {
+			"get": {
+				"tags": ["Members"],
+				"summary": "Retrieve Member",
+				"description": "Retrieves a member",
+				"operationId": "retrieve_member",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "search",
+						"in": "path",
+						"description": "Any identifier that can be used to represent a User. This can be a Whop account ID, Discord account ID, or email address",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Member",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/members": {
+			"get": {
+				"tags": ["Members"],
+				"summary": "List Members",
+				"description": "Returns a list of all your members. Members are users who have a currently active membership.",
+				"operationId": "list_members",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Members",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/User"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/customers/{search}": {
+			"get": {
+				"tags": ["Customers"],
+				"summary": "Retrieve Customer",
+				"description": "Retrieves a member",
+				"operationId": "retrieve_customer",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "search",
+						"in": "path",
+						"description": "Any identifier that can be used to represent a User. This can be a Whop account ID, Discord account ID, or email address",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Customer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/customers": {
+			"get": {
+				"tags": ["Customers"],
+				"summary": "List Customers",
+				"description": "Returns a list of all your members. Members are users who have a currently active membership.",
+				"operationId": "list_customers",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Customers",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/User"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/promo_codes/{id}": {
+			"get": {
+				"tags": ["Promo Codes"],
+				"summary": "Retrieve a promo code",
+				"description": "Retrieve a promo code",
+				"operationId": "retrieve_promo_code",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Promo Code, which will look like `promo_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Plans on the returned Promo Code(s). Pass an array with each object(s) you want to expand, e.g. `[plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["plans", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a promo code",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PromoCode"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Promo Codes"],
+				"summary": "Update a promo code",
+				"description": "Update a promo code's applicable plans",
+				"operationId": "update_promo_code",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Promo Code, which will look like `promo_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Plans on the returned Promo Code(s). Pass an array with each object(s) you want to expand, e.g. `[plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["plans", "promo_code"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_promo_code"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a promo code",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PromoCode"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_promo_code"
+			},
+			"delete": {
+				"tags": ["Promo Codes"],
+				"summary": "Delete a promo code",
+				"description": "Delete a promo code. You can only delete a promo code that has not been used yet. We recommend using the update endpoint and setting its status to 'archived' over this.",
+				"operationId": "delete_promo_code",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Promo Code, which will look like `promo_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Successfully deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PromoCode"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/promo_codes": {
+			"get": {
+				"tags": ["Promo Codes"],
+				"summary": "List Promo Codes",
+				"description": "List all promo codes.",
+				"operationId": "list_promo_codes",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "status",
+						"in": "query",
+						"description": "Indicates if the Promo Code is live, disabled, or archived.",
+						"schema": {
+							"type": "string",
+							"enum": ["active", "inactive", "archived"]
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Plans on the returned Promo Code(s). Pass an array with each object(s) you want to expand, e.g. `[plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["plans", "promo_code"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Promo Codes",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/PromoCode"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Promo Codes"],
+				"summary": "Create a promo code",
+				"description": "Creates a new promo code with the given parameters. A promo code can offer a discount or a free period for a specific set of plans or for all plans in your company.",
+				"operationId": "create_promo_code",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the Plans on the returned Promo Code(s). Pass an array with each object(s) you want to expand, e.g. `[plans]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["plans", "promo_code"]
+							}
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/create_promo_code"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Creates a promo code",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PromoCode"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "create_promo_code"
+			}
+		},
+		"/v2/webhooks/{id}": {
+			"get": {
+				"tags": ["Webhooks"],
+				"summary": "Retrieve a Webhook",
+				"description": "Retrieve a specific Webhook URL",
+				"operationId": "retrieve_webhook",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Webhook URL to search by, which will look like `hook_*************`, or the URL of the Webhook (e.g. https://website.com/api/whop-webhook)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a Webhook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Webhook"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Webhooks"],
+				"summary": "Update a Webhook",
+				"description": "Retrieve a specific Webhook URL",
+				"operationId": "update_webhook",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Webhook URL to search by, which will look like `hook_*************`, or the URL of the Webhook (e.g. https://website.com/api/whop-webhook)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/update_webhook"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Update a Webhook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Webhook"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "update_webhook"
+			},
+			"delete": {
+				"tags": ["Webhooks"],
+				"summary": "Delete a Webhook",
+				"description": "Delete a specific Webhook URL",
+				"operationId": "delete_webhook",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Webhook URL to search by, which will look like `hook_*************`, or the URL of the Webhook (e.g. https://website.com/api/whop-webhook)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Successfully deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Webhook"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/webhooks": {
+			"get": {
+				"tags": ["Webhooks"],
+				"summary": "List Webhooks",
+				"description": "List all Webhook URLs",
+				"operationId": "list_webhooks",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "enabled",
+						"in": "query",
+						"description": "Whether or not the specified Webhook is enabled/turned on for new event notifications",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Webhooks",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Webhook"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": ["Webhooks"],
+				"summary": "Create a Webhook",
+				"description": "Add a new Webhook URL",
+				"operationId": "create_webhook",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/create_webhook"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Create a Webhook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Webhook"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false,
+				"x-codegen-request-body-name": "create_webhook"
+			}
+		},
+		"/v2/reviews/{id}": {
+			"get": {
+				"tags": ["Reviews"],
+				"summary": "Retrieve a review",
+				"description": "Retrieves a specific Review, using its unique ID.",
+				"operationId": "retrieve_review",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The ID of the Review, which will look like `rev_*************`",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User or Product on the returned Review(s). Pass an array with each object(s) you want to expand, e.g. `[product, user]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve a review",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Review"
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/v2/reviews": {
+			"get": {
+				"tags": ["Reviews"],
+				"summary": "List Reviews",
+				"description": "Returns a list of all your reviews. Can be searched by User or by Product",
+				"operationId": "list_reviews",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Your API key, which can be found on the Whop Business Dashboard. You must prepend your key with the word 'Bearer', which will look like `Bearer ***************************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The page number to retrieve",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "per",
+						"in": "query",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					},
+					{
+						"name": "user_id",
+						"in": "query",
+						"description": "The ID of the User that made the Review(s), which will look like `user_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "product_id",
+						"in": "query",
+						"description": "The ID of the Product to find Reviews on, which will look like `prod_*************` or `pass_*************`",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "access_pass_id",
+						"in": "query",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass.",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "expand",
+						"in": "query",
+						"description": "Whether or not to expand the User or Product on the returned Review(s). Pass an array with each object(s) you want to expand, e.g. `[product, user]`",
+						"style": "form",
+						"explode": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["product", "user"]
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Reviews",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"pagination": {
+											"$ref": "#/components/schemas/Pagination"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Review"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"deprecated": false
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Company": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Company, which will look like `biz_*************`"
+					},
+					"title": {
+						"type": "string",
+						"description": "The title of the Company"
+					},
+					"route": {
+						"type": "string",
+						"description": "The URL route of the company. It will be whop.com/{route}"
+					},
+					"image_url": {
+						"type": "string",
+						"description": "The avatar/logo of the Company"
+					},
+					"hostname": {
+						"type": "string",
+						"description": "This is the custom domain connected to a Company"
+					}
+				},
+				"description": "Company model"
+			},
+			"Pagination": {
+				"type": "object",
+				"properties": {
+					"current_page": {
+						"type": "integer",
+						"description": "The current page of the paginated response",
+						"format": "int32"
+					},
+					"total_page": {
+						"type": "integer",
+						"description": "The total number of pages in the paginated response",
+						"format": "int32"
+					},
+					"total_count": {
+						"type": "integer",
+						"description": "The total number of objects in the paginated response (automatically maxed out at 50)",
+						"format": "int32"
+					}
+				},
+				"description": "Pagination model"
+			},
+			"Product": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Product, which will look like `prod_*************` or `pass_*************`"
+					},
+					"title": {
+						"type": "string",
+						"description": "The title of the Product"
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Product"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The visibility of the Product",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Product was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Product is for, which will look like `biz_*************`"
+					},
+					"experiences": {
+						"type": "array",
+						"description": "The Experiences that are included in this Product",
+						"items": {
+							"type": "array"
+						}
+					},
+					"plans": {
+						"type": "array",
+						"description": "The visible Plans that are included in this Product. Quick links and archived plans will not be included. There is a limit of 10 plans that can be returned for this field.",
+						"items": {
+							"type": "array"
+						}
+					}
+				},
+				"description": "Product model"
+			},
+			"Experience": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Experience, which will look like `exp_*************`"
+					},
+					"experience_type": {
+						"type": "string",
+						"description": "The type of Experience",
+						"enum": ["has_interface"]
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Experience"
+					},
+					"description": {
+						"type": "string",
+						"description": "A short description of what the Experience offers"
+					},
+					"properties": {
+						"type": "object",
+						"properties": {},
+						"description": "The properties of the Experience, used specifically for fields on different Experience types"
+					},
+					"products": {
+						"type": "string",
+						"description": "The Products that are connected to this Experience. By default this will just an array of IDs of these Products, but you can expand it to get more information about each Product by passing `[product]` in the `expand` parameter."
+					},
+					"access_passes": {
+						"type": "string"
+					}
+				},
+				"description": "Experience model"
+			},
+			"AccessPass": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Product, which will look like `prod_*************` or `pass_*************`"
+					},
+					"title": {
+						"type": "string",
+						"description": "The title of the Product"
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Product"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The visibility of the Product",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Product was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Product is for, which will look like `biz_*************`"
+					}
+				}
+			},
+			"Plan": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Plan, which will look like `plan_*************`"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Plan is for, which will look like `biz_*************`"
+					},
+					"product": {
+						"type": "string",
+						"description": "The Product this Plan is tied to. By default this will just be the ID of the Product, but you can expand it to get more information about the Product by passing `[product]` in the `expand` parameter."
+					},
+					"plan_type": {
+						"type": "string",
+						"description": "Whether the Plan is a renewal or one-time purchase"
+					},
+					"release_method": {
+						"type": "string",
+						"description": "The method the customer will use to gain access to this Plan's Product"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The level of visibility of the Plan",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"billing_period": {
+						"type": "integer",
+						"description": "How often a user will get charged for their membership (if it is a renewal plan), in number of days",
+						"format": "int32"
+					},
+					"internal_notes": {
+						"type": "string",
+						"description": "A nickname for the Plan set by the company and not visible to the customer"
+					},
+					"payment_link_description": {
+						"type": "string",
+						"description": "The description of the Plan as seen by the customer on the checkout page"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A polymorphic object containing information that can be user defined"
+					},
+					"direct_link": {
+						"type": "string",
+						"description": "A URL that targets a customer on this specific Plan"
+					},
+					"renewal_price": {
+						"type": "number",
+						"description": "The price to be charged for each successive billing period",
+						"format": "float"
+					},
+					"initial_price": {
+						"type": "number",
+						"description": "The price to be initially charged when a user first purchases the Plan",
+						"format": "float"
+					},
+					"base_currency": {
+						"type": "string",
+						"description": "The base currency"
+					},
+					"requirements": {
+						"type": "object",
+						"properties": {},
+						"description": "Represents the different restrictions (if any) in place for purchasing the Plan"
+					},
+					"release_method_settings": {
+						"type": "object",
+						"properties": {},
+						"description": "Configurable settings on how this Plan is released."
+					},
+					"accepted_payment_methods": {
+						"type": "array",
+						"description": "An array of payment methods that are currently accepted for this Plan. These are the high-level payment processors that are eligible to be used. This list is dynamically generated based on the plan amount, plan currency, the status of the account's connected payout accounts, and any processor specific enable/disable toggles. The acceptable values are: stripe, coinbase, free, paypal, sezzle, splitit, platform_balance, multi_psp",
+						"items": {
+							"type": "array",
+							"enum": [
+								"stripe",
+								"coinbase",
+								"free",
+								"paypal",
+								"sezzle",
+								"splitit",
+								"platform_balance",
+								"multi_psp"
+							]
+						}
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The amount of stock left in the Plan",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Plan offers unlimited stock"
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Plan was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"access_pass": {
+						"type": "string",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass."
+					},
+					"card_payments": {
+						"type": "boolean",
+						"description": "Whether or not card payments are allowed for this plan."
+					},
+					"custom_fields": {
+						"type": "array",
+						"description": "An array of Custom Field objects that collect additional information from customers during checkout, commonly used with checkout questions.",
+						"items": {
+							"$ref": "#/components/schemas/CustomField"
+						}
+					},
+					"description": {
+						"type": "string",
+						"description": "A short description of the Plan"
+					},
+					"allow_multiple_quantity": {
+						"type": "boolean",
+						"description": "Marks whether customers can purchase multiple quantity of the Plan."
+					},
+					"coinbase_commerce_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"splitit_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Splitit payments are allowed. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"platform_balance_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Platform Balance payments are allowed. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"expiration_days": {
+						"type": "integer",
+						"description": "The interval at which the Plan charges (expiration plans).",
+						"format": "int32"
+					},
+					"grace_period_days": {
+						"type": "integer",
+						"description": "The time period (in days) after a Membership expires where the customer can still top-up.",
+						"format": "int32"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a user. Used most likely for free trial plans. Default is false"
+					},
+					"refillable": {
+						"type": "boolean",
+						"description": "Marks whether an expiration Plan can/can't be topped-up."
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"paypal_accepted": {
+						"type": "boolean",
+						"description": "Marks whether paypal payments are/aren't accepted."
+					},
+					"split_pay_required_payments": {
+						"type": "integer",
+						"description": "The number of payments required before pausing the subscription.",
+						"format": "int32"
+					},
+					"ach_payments": {
+						"type": "boolean",
+						"description": "Whether or not ACH payments are accepted"
+					},
+					"cancel_collab_passes": {
+						"type": "boolean",
+						"description": "Whether or not to cancel dependant collab passes if a user loses access to this one. Default is true"
+					},
+					"cancel_discount_intervals": {
+						"type": "integer",
+						"description": "Number of billing periods to offer the cancel discount for",
+						"format": "int32"
+					},
+					"cancel_discount_percentage": {
+						"type": "integer",
+						"description": "Cancel discount percentage",
+						"format": "int32"
+					},
+					"offer_cancel_discount": {
+						"type": "boolean",
+						"description": "Whether or not to offer a discount on cancellation"
+					},
+					"one_per_company": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a company. Used most likely for free trial plans. Default is false"
+					},
+					"override_tax_type": {
+						"type": "string",
+						"description": "Overrides the default tax behavior"
+					}
+				},
+				"description": "Plan model"
+			},
+			"CustomField": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The unique ID of the Custom Field, which will look like `cf_*************`"
+					},
+					"field_type": {
+						"type": "string",
+						"description": "The type of the Custom Field (text only currently)"
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Custom Field shown to customers (the question)"
+					},
+					"order": {
+						"type": "integer",
+						"description": "The display order of the Custom Field in checkout forms",
+						"format": "int32"
+					},
+					"placeholder": {
+						"type": "string",
+						"description": "The placeholder text shown in the Custom Field (example answer to the question)"
+					},
+					"required": {
+						"type": "boolean",
+						"description": "Whether customers must fill this field to complete checkout"
+					}
+				}
+			},
+			"oauth_update_company_plan": {
+				"type": "object",
+				"properties": {
+					"stock": {
+						"type": "integer",
+						"description": "The amount of stock left in the Plan",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Plan offers unlimited stock"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The level of visibility of the Plan",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"allow_multiple_quantity": {
+						"type": "boolean",
+						"description": "Marks whether customers can purchase multiple quantity of the Plan."
+					},
+					"card_payments": {
+						"type": "boolean",
+						"description": "Whether or not card payments are allowed for this plan."
+					},
+					"coinbase_commerce_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"expiration_days": {
+						"type": "integer",
+						"description": "The interval at which the Plan charges (expiration plans).",
+						"format": "int32"
+					},
+					"grace_period_days": {
+						"type": "integer",
+						"description": "The time period (in days) after a Membership expires where the customer can still top-up.",
+						"format": "int32"
+					},
+					"initial_price": {
+						"type": "number",
+						"description": "The price to be initially charged when a user first purchases the Plan",
+						"format": "float"
+					},
+					"payment_link_description": {
+						"type": "string",
+						"description": "The description of the Plan as seen by the customer on the checkout page"
+					},
+					"internal_notes": {
+						"type": "string",
+						"description": "A nickname for the Plan set by the company and not visible to the customer"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a user. Used most likely for free trial plans. Default is false"
+					},
+					"refillable": {
+						"type": "boolean",
+						"description": "Marks whether an expiration Plan can/can't be topped-up."
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					},
+					"paypal_accepted": {
+						"type": "boolean",
+						"description": "Marks whether paypal payments are/aren't accepted."
+					}
+				},
+				"description": "Update a plan using an experience access token"
+			},
+			"Membership": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Membership, which will look like `mem_*************`"
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Membership is for, which will look like `biz_*************`"
+					},
+					"product": {
+						"type": "string",
+						"description": "The Product attached to this Membership. By default this will just be the ID of the Product, but you can expand it to get more information about the Product by passing `[product]` in the `expand` parameter."
+					},
+					"user": {
+						"type": "string",
+						"description": "The User that owns this Membership. By default this will just be the ID of the User, but you can expand it to get more information about the User by passing `[user]` in the `expand` parameter."
+					},
+					"plan": {
+						"type": "string",
+						"description": "The Plan attached to this Membership. By default this will just be the ID of the Plan, but you can expand it to get more information about the Plan by passing `[plan]` in the `expand` parameter."
+					},
+					"promo_code": {
+						"type": "string",
+						"description": "The Promo Code used to purchase this Membership. By default this will just be the ID of the Promo Code, but you can expand it to get more information about the Promo Code by passing `[promo_code]` in the `expand` parameter."
+					},
+					"email": {
+						"type": "string",
+						"description": "The email of the User attached to this Membership"
+					},
+					"stripe_subscription_id": {
+						"type": "string",
+						"description": "The Stripe Subscription ID attached to this Membership if it was checked out using Stripe"
+					},
+					"stripe_customer_id": {
+						"type": "string",
+						"description": "The Stripe Customer ID attached to this Membership if it was checked out using Stripe"
+					},
+					"status": {
+						"type": "string",
+						"description": "The status of the Membership",
+						"enum": [
+							"trialing",
+							"active",
+							"past_due",
+							"completed",
+							"canceled",
+							"expired",
+							"unresolved"
+						]
+					},
+					"valid": {
+						"type": "boolean",
+						"description": "Whether or not the Membership has a valid status"
+					},
+					"cancel_at_period_end": {
+						"type": "boolean",
+						"description": "Whether or not this membership is scheduled to cancel at the end of the renewal period."
+					},
+					"payment_processor": {
+						"type": "string",
+						"description": "The payment processor used to pay for the Membership.",
+						"enum": [
+							"free",
+							"stripe",
+							"coinbase",
+							"crypto",
+							"paypal",
+							"apple",
+							"multi_psp",
+							"sezzle",
+							"splitit",
+							"platform_balance"
+						]
+					},
+					"license_key": {
+						"type": "string",
+						"description": "The license key of the Membership"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "The metadata of the Membership"
+					},
+					"acquisition_data": {
+						"type": "object",
+						"properties": {},
+						"description": "The UTM data of the Membership, which is used to track where the user came from when they purchased the Membership"
+					},
+					"quantity": {
+						"type": "integer",
+						"description": "The amount of items included in the Membership",
+						"format": "int32"
+					},
+					"wallet_address": {
+						"type": "string",
+						"description": "The crypto wallet address used to pay for the Membership (if paid through the one-time ETH or renewal WETH Whop contracts)"
+					},
+					"custom_field_responses": {
+						"type": "array",
+						"description": "Questions and answers collected from the User at checkout",
+						"items": {
+							"$ref": "#/components/schemas/CustomFieldResponse"
+						}
+					},
+					"custom_fields_responses": {
+						"type": "object",
+						"properties": {},
+						"description": "Questions and answers collected from the User at checkout"
+					},
+					"custom_fields_responses_v2": {
+						"type": "object",
+						"properties": {},
+						"description": "Questions and answers collected from the User at checkout"
+					},
+					"discord": {
+						"$ref": "#/components/schemas/Discord"
+					},
+					"nft_tokens": {
+						"type": "string"
+					},
+					"expires_at": {
+						"type": "integer",
+						"description": "The time of when the Membership is set to go expired",
+						"format": "int32"
+					},
+					"renewal_period_start": {
+						"type": "integer",
+						"description": "The UTC timestamp of when the Membership will begin",
+						"format": "int32"
+					},
+					"renewal_period_end": {
+						"type": "integer",
+						"description": "The UTC timestamp of when the Membership will end",
+						"format": "int32"
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Membership was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"manage_url": {
+						"type": "string",
+						"description": "The URL to manage the Membership (top-up, cancel, etc.) "
+					},
+					"affiliate_page_url": {
+						"type": "string",
+						"description": "Gives the url of the page with the user's affiliate code appended. Does not guarantee the user can affiliate anything on the page."
+					},
+					"checkout_session": {
+						"type": "string",
+						"description": "The ID of the checkout session (like `ch_***************`) used to purchase this membership, if any."
+					},
+					"affiliate_username": {
+						"type": "string",
+						"description": "The username of the affiliate who referred the user to this membership, if any."
+					},
+					"access_pass": {
+						"type": "string",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass."
+					},
+					"telegram_account_id": {
+						"type": "string",
+						"description": "The Whop ID of their connected Telegram account, if any."
+					},
+					"phone_number": {
+						"type": "string",
+						"description": "The phone number of the User attached to this Membership, if its allowed to be shared."
+					},
+					"split_pay_required_payments": {
+						"type": "integer",
+						"description": "The number of payments required to complete a split pay purchase, if applicable.",
+						"format": "int32"
+					}
+				},
+				"description": "Membership model"
+			},
+			"User": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the User, which will look like `user_*************`"
+					},
+					"name": {
+						"type": "string",
+						"description": "The user's first and last name, if available."
+					},
+					"username": {
+						"type": "string",
+						"description": "The User's Whop username"
+					},
+					"email": {
+						"type": "string",
+						"description": "The User's email address"
+					},
+					"profile_pic_url": {
+						"type": "string",
+						"description": "An image URL of the User's profile photo, primarily pulled from Discord"
+					},
+					"social_accounts": {
+						"$ref": "#/components/schemas/SocialAccount"
+					},
+					"roles": {
+						"type": "string"
+					},
+					"authorized_user": {
+						"$ref": "#/components/schemas/AuthorizedUser"
+					}
+				},
+				"description": "User model"
+			},
+			"SocialAccount": {
+				"type": "object",
+				"properties": {
+					"service": {
+						"type": "string",
+						"description": "The platform for the account"
+					},
+					"username": {
+						"type": "string",
+						"description": "The username or handle for the account"
+					},
+					"id": {
+						"type": "string",
+						"description": "The ID of the social account on the respective platform"
+					}
+				}
+			},
+			"AuthorizedUser": {
+				"type": "object",
+				"properties": {
+					"role": {
+						"type": "string",
+						"description": "The Member's permission level",
+						"enum": [
+							"owner",
+							"admin",
+							"sales_manager",
+							"moderator",
+							"app_manager",
+							"support",
+							"manager"
+						]
+					},
+					"permission_level": {
+						"type": "string",
+						"description": "A number based permission system. 0 = owner, 1 = admin, 2 = moderator"
+					},
+					"company": {
+						"type": "string",
+						"description": "The Company this member is an Authorized User for"
+					}
+				}
+			},
+			"PromoCode": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Promo Code, which will look like `promo_*************`"
+					},
+					"plans": {
+						"type": "string",
+						"description": "The Plans this Promo Code is valid for. By default this will just be the IDs of the Plans, but you can expand it to get more information about the Plan by passing `[plan]` in the `expand` parameter."
+					},
+					"amount_off": {
+						"type": "number",
+						"description": "The amount off (percentage or flat amount) for the Promo Code.",
+						"format": "float"
+					},
+					"base_currency": {
+						"type": "string",
+						"description": "The monetary currency of the Promo Code.",
+						"enum": [
+							"usd",
+							"sgd",
+							"inr",
+							"aud",
+							"brl",
+							"cad",
+							"dkk",
+							"eur",
+							"nok",
+							"gbp",
+							"sek",
+							"chf",
+							"hkd",
+							"huf",
+							"jpy",
+							"mxn",
+							"myr",
+							"pln",
+							"czk",
+							"nzd",
+							"aed",
+							"eth",
+							"ape",
+							"cop",
+							"ron",
+							"thb",
+							"bgn",
+							"idr",
+							"dop",
+							"php",
+							"try",
+							"krw",
+							"twd",
+							"vnd",
+							"pkr",
+							"clp",
+							"uyu",
+							"ars",
+							"zar",
+							"dzd",
+							"tnd",
+							"mad",
+							"kes",
+							"kwd",
+							"jod",
+							"all",
+							"xcd",
+							"amd",
+							"bsd",
+							"bhd",
+							"bob",
+							"bam",
+							"khr",
+							"crc",
+							"xof",
+							"egp",
+							"etb",
+							"gmd",
+							"ghs",
+							"gtq",
+							"gyd",
+							"ils",
+							"jmd",
+							"mop",
+							"mga",
+							"mur",
+							"mdl",
+							"mnt",
+							"nad",
+							"ngn",
+							"mkd",
+							"omr",
+							"pyg",
+							"pen",
+							"qar",
+							"rwf",
+							"sar",
+							"rsd",
+							"lkr",
+							"tzs",
+							"ttd",
+							"uzs",
+							"rub",
+							"btc"
+						]
+					},
+					"code": {
+						"type": "string",
+						"description": "The specific code used to apply the Promo Code at checkout."
+					},
+					"new_users_only": {
+						"type": "boolean",
+						"description": "Restricts Promo Code use to users who haven't purchased from the company before."
+					},
+					"number_of_intervals": {
+						"type": "integer",
+						"description": "The number of billing cycles the Promo Code is applied for. By default, it is applied forever (0).",
+						"format": "int32"
+					},
+					"plan_ids": {
+						"type": "array",
+						"description": "Please use `plans` instead, as this field is deprecated.",
+						"items": {
+							"type": "array"
+						}
+					},
+					"promo_type": {
+						"type": "string",
+						"description": "Whether the Promo Code is a percentage or flat amount off.",
+						"enum": ["percentage", "flat_amount"]
+					},
+					"status": {
+						"type": "string",
+						"description": "Indicates if the Promo Code is live, disabled, or archived.",
+						"enum": ["active", "inactive", "archived"]
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The number of total uses remaining for the Promo Code.",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Promo Code has unlimited uses."
+					},
+					"uses": {
+						"type": "integer",
+						"description": "The amount of times the Promo Code has been used.",
+						"format": "int32"
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Promo Code was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"expiration_datetime": {
+						"type": "integer",
+						"description": "The date/time of when the Promo Code expires.",
+						"format": "int32"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A polymorphic object containing information that can be user defined"
+					},
+					"duration": {
+						"type": "string",
+						"description": "The duration setting for the promo code.",
+						"enum": ["forever", "once", "repeating"]
+					},
+					"existing_memberships_only": {
+						"type": "boolean",
+						"description": "If true, the promo code can only be applied to existing memberships (post checkout)."
+					}
+				},
+				"description": "PromoCode model"
+			},
+			"CustomFieldResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The unique ID of the custom field response."
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "Timestamp when the response was created.",
+						"format": "int32"
+					},
+					"updated_at": {
+						"type": "integer",
+						"description": "Timestamp when the response was last updated.",
+						"format": "int32"
+					},
+					"question": {
+						"type": "string",
+						"description": "The question the user was asked."
+					},
+					"answer": {
+						"type": "string",
+						"description": "The user's response to the custom field question."
+					}
+				}
+			},
+			"Discord": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The Discord account's user ID (~18 digits)"
+					},
+					"username": {
+						"type": "string",
+						"description": "The Discord account's username, including the discriminator (Ex. John#1234)"
+					},
+					"image_url": {
+						"type": "string",
+						"description": "The image URL from Discord"
+					}
+				}
+			},
+			"oauth_token": {
+				"required": [
+					"client_id",
+					"client_secret",
+					"code",
+					"grant_type",
+					"redirect_uri"
+				],
+				"type": "object",
+				"properties": {
+					"grant_type": {
+						"type": "string",
+						"description": "This should always be \"authorization_code\".",
+						"enum": ["authorization_code"]
+					},
+					"code": {
+						"type": "string",
+						"description": "This is the code that you received to your OAuth callback as the \"code\" parameter. Pass it up directly"
+					},
+					"client_id": {
+						"type": "string",
+						"description": "This is your client ID"
+					},
+					"client_secret": {
+						"type": "string",
+						"description": "This is your client secret"
+					},
+					"redirect_uri": {
+						"type": "string",
+						"description": "This is your redirect URL. If you are just gating your webapp, this redirect URL will be registered on your developer portal in the Whop Dashboard. If you are building general purpose software, aka an experience, this should be your \"{base_url}/{your_hub_path}\"."
+					}
+				},
+				"description": "Obtain a user's access token"
+			},
+			"OauthToken": {
+				"type": "object",
+				"properties": {
+					"access_token": {
+						"type": "string",
+						"description": "The token you will use to authenticate your user"
+					}
+				},
+				"description": "OauthToken model"
+			},
+			"update_product": {
+				"type": "object",
+				"properties": {
+					"page": {
+						"type": "integer",
+						"description": "The page number to retrieve",
+						"format": "int32",
+						"default": 1
+					},
+					"per": {
+						"type": "integer",
+						"description": "The number of resources to return per page. There is a limit of 50 results per page.",
+						"format": "int32",
+						"default": 10
+					},
+					"name": {
+						"type": "string",
+						"description": "The name of the Product"
+					},
+					"title": {
+						"type": "string",
+						"description": "The title of the Product"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Whether or not a user can purchase multiple of the same Product"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The visibility of the Product",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"shuffleable": {
+						"type": "boolean",
+						"description": "Whether or not license keys attached to this Product should be shuffleable by users (So if the key is leaked and the user does not want anyone else to use their key, they can have their key remade under the same membership)"
+					}
+				},
+				"description": "Update a Product"
+			},
+			"Error": {
+				"type": "object",
+				"properties": {
+					"error": {
+						"type": "object",
+						"properties": {
+							"status": {
+								"type": "string"
+							},
+							"message": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"description": "Error model"
+			},
+			"update_plan": {
+				"type": "object",
+				"properties": {
+					"stock": {
+						"type": "integer",
+						"description": "The amount of stock left in the Plan",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Plan offers unlimited stock"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The level of visibility of the Plan",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"allow_multiple_quantity": {
+						"type": "boolean",
+						"description": "Marks whether customers can purchase multiple quantity of the Plan."
+					},
+					"card_payments": {
+						"type": "boolean",
+						"description": "Whether or not card payments are allowed for this plan."
+					},
+					"coinbase_commerce_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"expiration_days": {
+						"type": "integer",
+						"description": "The interval at which the Plan charges (expiration plans).",
+						"format": "int32"
+					},
+					"grace_period_days": {
+						"type": "integer",
+						"description": "The time period (in days) after a Membership expires where the customer can still top-up.",
+						"format": "int32"
+					},
+					"initial_price": {
+						"type": "number",
+						"description": "The price to be initially charged when a user first purchases the Plan",
+						"format": "float"
+					},
+					"payment_link_description": {
+						"type": "string",
+						"description": "The description of the Plan as seen by the customer on the checkout page"
+					},
+					"internal_notes": {
+						"type": "string",
+						"description": "A nickname for the Plan set by the company and not visible to the customer"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a user. Used most likely for free trial plans. Default is false"
+					},
+					"refillable": {
+						"type": "boolean",
+						"description": "Marks whether an expiration Plan can/can't be topped-up."
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					},
+					"paypal_accepted": {
+						"type": "boolean",
+						"description": "Marks whether paypal payments are/aren't accepted."
+					}
+				},
+				"description": "Update a Plan"
+			},
+			"create_quick_link": {
+				"type": "object",
+				"properties": {
+					"internal_notes": {
+						"type": "string",
+						"description": "A nickname for the Plan set by the company and not visible to the customer"
+					},
+					"payment_link_description": {
+						"type": "string",
+						"description": "The description of the Plan as seen by the customer on the checkout page"
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"custom_password": {
+						"type": "string",
+						"description": "The password that must be entered to use this plan. It will automatically be appended to the `direct_link`"
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The amount of stock left in the Plan",
+						"format": "int32",
+						"default": 1
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					},
+					"requirements": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of requirements.  By default, requirements will pull from the mimic_plan. Whichever ones are here will overwrite those"
+					}
+				},
+				"description": "Create a quick link for a plan"
+			},
+			"create_plan": {
+				"type": "object",
+				"properties": {
+					"product_id": {
+						"type": "string",
+						"description": "The Plan's Product ID, which will look like `prod_*************` or `pass_*************`"
+					},
+					"access_pass_id": {
+						"type": "string",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass."
+					},
+					"plan_type": {
+						"type": "string",
+						"description": "Whether the Plan is a renewal or one-time purchase",
+						"default": "one_time",
+						"enum": ["renewal", "one_time"]
+					},
+					"allow_multiple_quantity": {
+						"type": "boolean",
+						"description": "Marks whether customers can purchase multiple quantity of the Plan."
+					},
+					"base_currency": {
+						"type": "string",
+						"description": "The base currency",
+						"default": "usd",
+						"enum": [
+							"usd",
+							"sgd",
+							"inr",
+							"aud",
+							"brl",
+							"cad",
+							"dkk",
+							"eur",
+							"nok",
+							"gbp",
+							"sek",
+							"chf",
+							"hkd",
+							"huf",
+							"jpy",
+							"mxn",
+							"myr",
+							"pln",
+							"czk",
+							"nzd",
+							"aed",
+							"eth",
+							"ape",
+							"cop",
+							"ron",
+							"thb",
+							"bgn",
+							"idr",
+							"dop",
+							"php",
+							"try",
+							"krw",
+							"twd",
+							"vnd",
+							"pkr",
+							"clp",
+							"uyu",
+							"ars",
+							"zar",
+							"dzd",
+							"tnd",
+							"mad",
+							"kes",
+							"kwd",
+							"jod",
+							"all",
+							"xcd",
+							"amd",
+							"bsd",
+							"bhd",
+							"bob",
+							"bam",
+							"khr",
+							"crc",
+							"xof",
+							"egp",
+							"etb",
+							"gmd",
+							"ghs",
+							"gtq",
+							"gyd",
+							"ils",
+							"jmd",
+							"mop",
+							"mga",
+							"mur",
+							"mdl",
+							"mnt",
+							"nad",
+							"ngn",
+							"mkd",
+							"omr",
+							"pyg",
+							"pen",
+							"qar",
+							"rwf",
+							"sar",
+							"rsd",
+							"lkr",
+							"tzs",
+							"ttd",
+							"uzs",
+							"rub",
+							"btc"
+						]
+					},
+					"billing_period": {
+						"type": "integer",
+						"description": "How often a user will get charged for their membership (if it is a renewal plan), in number of days",
+						"format": "int32"
+					},
+					"card_payments": {
+						"type": "boolean",
+						"description": "Whether or not card payments are allowed for this plan."
+					},
+					"coinbase_commerce_accepted": {
+						"type": "boolean",
+						"description": "Whether or not Coinbase Commerce payments are accepted. If disabled, it will never show. If enabled, it will be shown if the purchase meets the correct configuration requirements."
+					},
+					"expiration_days": {
+						"type": "integer",
+						"description": "The interval at which the Plan charges (expiration plans).",
+						"format": "int32"
+					},
+					"grace_period_days": {
+						"type": "integer",
+						"description": "The time period (in days) after a Membership expires where the customer can still top-up.",
+						"format": "int32"
+					},
+					"initial_price": {
+						"type": "number",
+						"description": "The price to be initially charged when a user first purchases the Plan",
+						"format": "float"
+					},
+					"internal_notes": {
+						"type": "string",
+						"description": "A nickname for the Plan set by the company and not visible to the customer"
+					},
+					"payment_link_description": {
+						"type": "string",
+						"description": "The description of the Plan as seen by the customer on the checkout page"
+					},
+					"one_per_user": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a user. Used most likely for free trial plans. Default is false"
+					},
+					"refillable": {
+						"type": "boolean",
+						"description": "Marks whether an expiration Plan can/can't be topped-up."
+					},
+					"release_method": {
+						"type": "string",
+						"description": "The method the customer will use to gain access to this Plan's Product",
+						"enum": ["buy_now", "waitlist", "raffle"]
+					},
+					"release_method_settings": {
+						"type": "object",
+						"properties": {},
+						"description": "Configurable settings on how this Plan is released."
+					},
+					"renewal_price": {
+						"type": "number",
+						"description": "The price to be charged for each successive billing period",
+						"format": "float"
+					},
+					"requirements": {
+						"type": "object",
+						"properties": {},
+						"description": "Represents the different restrictions (if any) in place for purchasing the Plan"
+					},
+					"short_link": {
+						"type": "string",
+						"description": "The short link identifier for the Plan."
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The amount of stock left in the Plan",
+						"format": "int32"
+					},
+					"trial_period_days": {
+						"type": "integer",
+						"description": "The number of free trial days added before a renewal Plan.",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Plan offers unlimited stock"
+					},
+					"visibility": {
+						"type": "string",
+						"description": "The level of visibility of the Plan",
+						"enum": ["visible", "hidden", "archived", "quick_link"]
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					},
+					"paypal_accepted": {
+						"type": "boolean",
+						"description": "Marks whether paypal payments are/aren't accepted."
+					},
+					"split_pay_required_payments": {
+						"type": "integer",
+						"description": "The number of split pay required payments",
+						"format": "int32"
+					},
+					"ach_payments": {
+						"type": "boolean",
+						"description": "Whether or not ACH payments are accepted"
+					},
+					"cancel_collab_passes": {
+						"type": "boolean",
+						"description": "Whether or not to cancel dependant collab passes if a user loses access to this one. Default is true"
+					},
+					"cancel_discount_intervals": {
+						"type": "integer",
+						"description": "Number of billing periods to offer the cancel discount for",
+						"format": "int32"
+					},
+					"cancel_discount_percentage": {
+						"type": "integer",
+						"description": "Cancel discount percentage",
+						"format": "int32"
+					},
+					"custom_fields": {
+						"type": "array",
+						"description": "An array of Custom Field objects that collect additional information from customers during checkout, commonly used with checkout questions.",
+						"items": {
+							"required": ["field_type", "name"],
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of the Custom Field shown to customers (the question)"
+								},
+								"field_type": {
+									"type": "string",
+									"description": "The type of the Custom Field (text only currently)",
+									"enum": ["text"]
+								},
+								"placeholder": {
+									"type": "string",
+									"description": "The placeholder text shown in the Custom Field (example answer to the question)"
+								},
+								"required": {
+									"type": "boolean",
+									"description": "Whether customers must fill this field to complete checkout",
+									"default": false
+								},
+								"order": {
+									"type": "integer",
+									"description": "The display order of the Custom Field in checkout forms",
+									"format": "int32"
+								}
+							}
+						}
+					},
+					"description": {
+						"type": "string",
+						"description": "A short description of the Plan"
+					},
+					"mimic_plan_id": {
+						"type": "string",
+						"description": "The ID of a plan you want to copy the data from, which will look like `plan_*************`"
+					},
+					"offer_cancel_discount": {
+						"type": "boolean",
+						"description": "Whether or not to offer a discount on cancellation"
+					},
+					"one_per_company": {
+						"type": "boolean",
+						"description": "Marks whether or not a Plan can be purchased multiple times by a company. Used most likely for free trial plans. Default is false"
+					},
+					"override_tax_type": {
+						"type": "string",
+						"description": "Overrides the default tax behavior"
+					},
+					"set_as_default": {
+						"type": "boolean",
+						"description": "Sets this plan as the default for the company"
+					}
+				},
+				"description": "Create a plan"
+			},
+			"validate_license": {
+				"required": ["metadata"],
+				"type": "object",
+				"properties": {
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A polymorphic object containing information that can be user defined"
+					}
+				},
+				"description": "Validate a membership's license key"
+			},
+			"update_membership": {
+				"required": ["metadata"],
+				"type": "object",
+				"properties": {
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A polymorphic object containing information that can be user defined"
+					}
+				},
+				"description": "Update a Membership"
+			},
+			"add_free_days_membership": {
+				"required": ["days"],
+				"type": "object",
+				"properties": {
+					"days": {
+						"type": "integer",
+						"description": "The number of free days the owner of the Membership should be given",
+						"format": "int32"
+					}
+				},
+				"description": "Add Free Days"
+			},
+			"update_experience": {
+				"required": ["name"],
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "The name of the Experience"
+					}
+				},
+				"description": "Update an Experience"
+			},
+			"Payment": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Payment, which will look like `pay_*************`"
+					},
+					"product": {
+						"type": "string",
+						"description": "The Product this Payment is for. By default this will just be the ID of the Product, but you can expand it to get more information about the Product by passing `[product]` in the `expand` parameter."
+					},
+					"membership": {
+						"type": "string",
+						"description": "The Membership this Payment part of. By default this will just be the ID of the Membership, but you can expand it to get more information about the Membership by passing `[membership]` in the `expand` parameter."
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Payment is for, which will look like `biz_*************`"
+					},
+					"affiliate_reward": {
+						"type": "number",
+						"description": "The amount paid to the Affiliate for this Payment",
+						"format": "float"
+					},
+					"plan": {
+						"type": "string",
+						"description": "The Plan this Payment is under. By default this will just be the ID of the Plan, but you can expand it to get more information about the Plan by passing `[plan]` in the `expand` parameter."
+					},
+					"user": {
+						"type": "string",
+						"description": "The User who made the Payment. By default this will just be the ID of the User, but you can expand it to get more information about the User by passing `[user]` in the `expand` parameter."
+					},
+					"final_amount": {
+						"type": "number",
+						"description": "The total amount paid by the User, including any discounts or taxes",
+						"format": "float"
+					},
+					"subtotal": {
+						"type": "number",
+						"description": "The subtotal for the payment, before any discounts or taxes",
+						"format": "float"
+					},
+					"total": {
+						"type": "number",
+						"description": "The total amount for the payment",
+						"format": "float"
+					},
+					"currency": {
+						"type": "string",
+						"description": "The three letter currency the Payment was made in"
+					},
+					"last4": {
+						"type": "string",
+						"description": "The last four digits of the credit/debit card used to make the Payment"
+					},
+					"card_brand": {
+						"type": "string",
+						"description": "The brand of the credit/debit card used to make the Payment. Ex. visa."
+					},
+					"payments_failed": {
+						"type": "integer",
+						"description": "The number of times the Payment has failed",
+						"format": "int32"
+					},
+					"failure_message": {
+						"type": "string",
+						"description": "The reason why the payment failed, if applicable."
+					},
+					"payment_processor": {
+						"type": "string",
+						"description": "Which platform was used to process the Payment"
+					},
+					"refunded_amount": {
+						"type": "number",
+						"description": "The amount that was refunded to the User (if applicable)",
+						"format": "float"
+					},
+					"status": {
+						"type": "string",
+						"description": "The status of the Payment"
+					},
+					"crypto_tx_hash": {
+						"type": "string",
+						"description": "The transaction hash for the Payment if it was made with a cryptocurrency"
+					},
+					"wallet_address": {
+						"type": "string",
+						"description": "The crypto wallet address use to make this Payment"
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the Payment was created. Measured in seconds since the Unix epoch. Does not necessarily reflect the time the Payment was successful.",
+						"format": "int32"
+					},
+					"paid_at": {
+						"type": "integer",
+						"description": "The time at which the Payment was successfully paid at. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"refunded_at": {
+						"type": "integer",
+						"description": "The UTC timestamp of the date the Payment was refunded (if applicable)",
+						"format": "int32"
+					},
+					"last_payment_attempt": {
+						"type": "integer",
+						"description": "The UTC timestamp of the last time the Payment was attempted",
+						"format": "int32"
+					},
+					"next_payment_attempt": {
+						"type": "integer",
+						"description": "The UTC timestamp of the next time the Payment will be attempted",
+						"format": "int32"
+					},
+					"access_pass": {
+						"type": "string",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass."
+					},
+					"billing_first_name": {
+						"type": "string",
+						"description": "The first name of customer who made the payment"
+					},
+					"billing_last_name": {
+						"type": "string",
+						"description": "The last name of customer who made the payment"
+					},
+					"billing_address": {
+						"$ref": "#/components/schemas/Address"
+					},
+					"membership_metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "The metadata attached to the receipt's Membership."
+					},
+					"payment_method_type": {
+						"type": "string",
+						"description": "The type of payment method that was used to make the purchase."
+					},
+					"billing_reason": {
+						"type": "string",
+						"description": "The reason why the payment was made, ex whether or not it was a one time purchase, initial subscription purchase, or a recurring payment on an existing subscription.",
+						"enum": [
+							"subscription_create",
+							"subscription_cycle",
+							"subscription_update",
+							"one_time",
+							"manual",
+							"subscription"
+						]
+					},
+					"checkout_request_id": {
+						"type": "string",
+						"description": "The ID of the Checkout Request that was used to make the Payment, if any."
+					},
+					"acquisition_data": {
+						"type": "object",
+						"properties": {},
+						"description": "The UTM data of the Payment, which is used to track where the user came from when they made the Payment"
+					}
+				},
+				"description": "Payment model"
+			},
+			"Address": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "The name of the address"
+					},
+					"line1": {
+						"type": "string",
+						"description": "The first line of the address"
+					},
+					"line2": {
+						"type": "string",
+						"description": "The second line of the address"
+					},
+					"city": {
+						"type": "string",
+						"description": "The city of the address"
+					},
+					"state": {
+						"type": "string",
+						"description": "The state of the address"
+					},
+					"postal_code": {
+						"type": "string",
+						"description": "The postal code of the address"
+					},
+					"country": {
+						"type": "string",
+						"description": "The country of the address"
+					}
+				}
+			},
+			"refund_payment": {
+				"type": "object",
+				"properties": {
+					"partial_amount": {
+						"type": "number",
+						"description": "The amount that was partially paid for the Payment.",
+						"format": "float"
+					}
+				},
+				"description": "Refund a payment"
+			},
+			"PaymentFee": {
+				"type": "object",
+				"properties": {
+					"payment_id": {
+						"type": "string",
+						"description": "The ID of the Payment, which will look like `pay_*************`"
+					},
+					"refund_id": {
+						"type": "string",
+						"description": "The ID of the Refund, which will look like `rf_*************`"
+					},
+					"amount": {
+						"type": "number",
+						"description": "The amount of the fee",
+						"format": "float"
+					},
+					"currency": {
+						"type": "string",
+						"description": "The currency of the fee"
+					},
+					"collected_at": {
+						"type": "integer",
+						"description": "The time at which the fee was collected. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					},
+					"settled_usd_amount": {
+						"type": "number",
+						"description": "The amount of the fee in USD",
+						"format": "float"
+					},
+					"fee_type": {
+						"type": "string",
+						"description": "The type of fee"
+					},
+					"created_at": {
+						"type": "integer",
+						"description": "The time at which the fee was created. Measured in seconds since the Unix epoch.",
+						"format": "int32"
+					}
+				},
+				"description": "PaymentFee model"
+			},
+			"create_checkout_session": {
+				"type": "object",
+				"properties": {
+					"plan_id": {
+						"type": "string",
+						"description": "The ID of the plan that the checkout session is associated with, which will look like `plan_*************`"
+					},
+					"price": {
+						"required": ["currency", "plan_type", "product_id"],
+						"type": "object",
+						"properties": {
+							"product_id": {
+								"type": "string",
+								"description": "The ID of the product to attach the plan to"
+							},
+							"initial_price": {
+								"type": "number",
+								"description": "Initial price (ex. 10.00)",
+								"format": "float"
+							},
+							"renewal_price": {
+								"type": "number",
+								"description": "Renewal price in cents (ex. 5.00)",
+								"format": "float"
+							},
+							"billing_period": {
+								"type": "integer",
+								"description": "Billing period in days (ex. 30)",
+								"format": "int32"
+							},
+							"plan_type": {
+								"type": "string",
+								"description": "Plan type (ex. one_time, renewal)",
+								"enum": ["one_time", "renewal"]
+							},
+							"currency": {
+								"type": "string",
+								"description": "Currency (ex. usd, eur, cad)"
+							}
+						}
+					},
+					"affiliate_code": {
+						"type": "string",
+						"description": "The code to apply as the affiliate for the transaction. Codes are a User object's `username` field."
+					},
+					"redirect_url": {
+						"type": "string",
+						"description": "The URL the user will be navigated to after successfully completing a checkout with this session"
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "The metadata that will be attached to the Membership upon successful purchase."
+					}
+				},
+				"description": "Create a Checkout Session"
+			},
+			"CheckoutSession": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the session, which will look like `ch_*************`"
+					},
+					"redirect_url": {
+						"type": "string",
+						"description": "The URL the user will be navigated to after successfully completing a checkout with this session"
+					},
+					"affiliate_code": {
+						"type": "string",
+						"description": "The code to apply as the affiliate for the transaction. Codes are a User object's `username` field."
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "The metadata that will be attached to the Membership upon successful purchase."
+					},
+					"plan_id": {
+						"type": "string",
+						"description": "The ID of the plan that the checkout session is associated with, which will look like `plan_*************`"
+					},
+					"purchase_url": {
+						"type": "string",
+						"description": "The URL that the customer can use to purchase with this checkout session."
+					},
+					"company_id": {
+						"type": "string",
+						"description": "The ID of the Company this Checkout Session is for, which will look like `biz_*************`"
+					}
+				},
+				"description": "CheckoutSession model"
+			},
+			"update_promo_code": {
+				"type": "object",
+				"properties": {
+					"plan_ids": {
+						"type": "array",
+						"description": "The IDs of plans associated with the Promo Code. Use JSON as your content-type when setting this. Form encoded data will not work well with arrays.",
+						"items": {
+							"type": "string"
+						}
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The number of total uses remaining for the Promo Code.",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Promo Code has unlimited uses."
+					},
+					"status": {
+						"type": "string",
+						"description": "Indicates if the Promo Code is live, disabled, or archived.",
+						"enum": ["active", "inactive", "archived"]
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					}
+				},
+				"description": "Update a promo code"
+			},
+			"create_promo_code": {
+				"required": ["amount_off", "base_currency", "code", "promo_type"],
+				"type": "object",
+				"properties": {
+					"amount_off": {
+						"type": "number",
+						"description": "The amount off (percentage or flat amount) for the Promo Code.",
+						"format": "float"
+					},
+					"base_currency": {
+						"type": "string",
+						"description": "The monetary currency of the Promo Code.",
+						"enum": [
+							"usd",
+							"sgd",
+							"inr",
+							"aud",
+							"brl",
+							"cad",
+							"dkk",
+							"eur",
+							"nok",
+							"gbp",
+							"sek",
+							"chf",
+							"hkd",
+							"huf",
+							"jpy",
+							"mxn",
+							"myr",
+							"pln",
+							"czk",
+							"nzd",
+							"aed",
+							"eth",
+							"ape",
+							"cop",
+							"ron",
+							"thb",
+							"bgn",
+							"idr",
+							"dop",
+							"php",
+							"try",
+							"krw",
+							"twd",
+							"vnd",
+							"pkr",
+							"clp",
+							"uyu",
+							"ars",
+							"zar",
+							"dzd",
+							"tnd",
+							"mad",
+							"kes",
+							"kwd",
+							"jod",
+							"all",
+							"xcd",
+							"amd",
+							"bsd",
+							"bhd",
+							"bob",
+							"bam",
+							"khr",
+							"crc",
+							"xof",
+							"egp",
+							"etb",
+							"gmd",
+							"ghs",
+							"gtq",
+							"gyd",
+							"ils",
+							"jmd",
+							"mop",
+							"mga",
+							"mur",
+							"mdl",
+							"mnt",
+							"nad",
+							"ngn",
+							"mkd",
+							"omr",
+							"pyg",
+							"pen",
+							"qar",
+							"rwf",
+							"sar",
+							"rsd",
+							"lkr",
+							"tzs",
+							"ttd",
+							"uzs",
+							"rub",
+							"btc"
+						]
+					},
+					"code": {
+						"type": "string",
+						"description": "The specific code used to apply the Promo Code at checkout."
+					},
+					"promo_type": {
+						"type": "string",
+						"description": "Whether the Promo Code is a percentage or flat amount off.",
+						"enum": ["percentage", "flat_amount"]
+					},
+					"expiration_datetime": {
+						"type": "integer",
+						"description": "The date/time of when the Promo Code expires.",
+						"format": "int32"
+					},
+					"new_users_only": {
+						"type": "boolean",
+						"description": "Restricts Promo Code use to users who haven't purchased from the company before.",
+						"default": false
+					},
+					"number_of_intervals": {
+						"type": "integer",
+						"description": "The number of billing cycles the Promo Code is applied for. By default, it is applied forever (0).",
+						"format": "int32",
+						"default": 0
+					},
+					"plan_ids": {
+						"type": "array",
+						"description": "The IDs of plans associated with the Promo Code. Use JSON as your content-type when setting this. Form encoded data will not work well with arrays.",
+						"items": {
+							"type": "string"
+						}
+					},
+					"stock": {
+						"type": "integer",
+						"description": "The number of total uses remaining for the Promo Code.",
+						"format": "int32"
+					},
+					"unlimited_stock": {
+						"type": "boolean",
+						"description": "Whether or not the Promo Code has unlimited uses."
+					},
+					"metadata": {
+						"type": "object",
+						"properties": {},
+						"description": "A key value pair of metadata. Whatever you put on here will be assigned to any memberships that are created on this plan"
+					}
+				},
+				"description": "Creates a promo code"
+			},
+			"update_webhook": {
+				"type": "object",
+				"properties": {
+					"enabled": {
+						"type": "boolean",
+						"description": "Whether or not the specified Webhook is enabled/turned on for new event notifications"
+					},
+					"url": {
+						"type": "string",
+						"description": "The URL where new Webhook events will be sent to (e.g. https://website.com/api/whop-webhook)"
+					}
+				},
+				"description": "Update a Webhook"
+			},
+			"Webhook": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Webhook, which will look like `hook_*************`"
+					},
+					"enabled": {
+						"type": "boolean",
+						"description": "Whether or not the specified Webhook is enabled/turned on for new event notifications"
+					},
+					"url": {
+						"type": "string",
+						"description": "The URL where new Webhook events will be sent to (e.g. https://website.com/api/whop-webhook)"
+					},
+					"created_at": {
+						"type": "string",
+						"description": "The time at which the Webhook was created. Measured in seconds since the Unix epoch."
+					}
+				},
+				"description": "Webhook model"
+			},
+			"create_webhook": {
+				"required": ["url"],
+				"type": "object",
+				"properties": {
+					"url": {
+						"type": "string",
+						"description": "The URL where new Webhook events will be sent to (e.g. https://website.com/api/whop-webhook)"
+					},
+					"enabled": {
+						"type": "boolean",
+						"description": "Whether or not the specified Webhook is enabled/turned on for new event notifications",
+						"default": true
+					},
+					"events": {
+						"type": "array",
+						"description": "An array of the events the webhook will fire for. By default all events are enabled.",
+						"items": {
+							"type": "string",
+							"default": "",
+							"enum": [
+								"membership_went_valid",
+								"membership_went_invalid",
+								"membership_metadata_updated",
+								"payment_succeeded",
+								"payment_failed",
+								"payment_pending",
+								"refund_created",
+								"refund_updated",
+								"dispute_created",
+								"dispute_updated",
+								"dispute_alert_created",
+								"resolution_created",
+								"resolution_updated",
+								"resolution_decided",
+								"membership_cancel_at_period_end_changed",
+								"payment_affiliate_reward_created",
+								"membership_experience_claimed",
+								"app_membership_went_valid",
+								"app_membership_went_invalid",
+								"app_payment_succeeded",
+								"app_payment_failed",
+								"app_payment_pending",
+								"app_membership_cancel_at_period_end_changed"
+							]
+						}
+					}
+				},
+				"description": "Create a Webhook"
+			},
+			"Review": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the Review, which will look like `rev_*************`"
+					},
+					"user": {
+						"type": "string",
+						"description": "The User that made this Review. By default this will just be the ID of the User, but you can expand it to get more information about the User by passing `[user]` in the `expand` parameter."
+					},
+					"product": {
+						"type": "string",
+						"description": "The Product attached to this Review. By default this will just be the ID of the Product, but you can expand it to get more information about the Product by passing `[product]` in the `expand` parameter."
+					},
+					"stars": {
+						"type": "integer",
+						"description": "The number of starts the user gave your Product",
+						"format": "int32"
+					},
+					"title": {
+						"type": "string",
+						"description": "The title of this Review"
+					},
+					"description": {
+						"type": "string",
+						"description": "The body or written description of this review"
+					},
+					"created_at": {
+						"type": "string",
+						"description": "The time at which the Review was created. Measured in seconds since the Unix epoch."
+					},
+					"access_pass": {
+						"type": "string",
+						"description": "Access Pass has been deprecated for Product. Please use product instead and do not use access_pass."
+					}
+				},
+				"description": "Review model"
+			}
+		}
+	},
+	"x-original-swagger-version": "2.0"
+}
