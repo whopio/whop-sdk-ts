@@ -2,7 +2,12 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 
-const docsJsonPath = join(import.meta.dirname, "docs.json");
+const GETTING_STARTED_SECTION = {
+	group: "Getting started",
+	pages: ["apps/api/get-started"],
+};
+
+const docsJsonPath = join(import.meta.dirname, "..", "docs.json");
 
 const docs = readFileSync(docsJsonPath, "utf8");
 
@@ -33,6 +38,22 @@ for (const endpoint of Object.keys(endpoints)) {
 	}
 }
 
+for (const [key, value] of Object.entries(schema.webhooks)) {
+	const resource = value.post.tags[0];
+	let found = false;
+	for (const group of Object.values(groups)) {
+		if (group[resource]) {
+			group[resource].push(`webhook ${key}`);
+			found = true;
+		}
+	}
+	if (!found) {
+		throw new Error(
+			`Webhook ${key} for resource ${resource} not found in any group`,
+		);
+	}
+}
+
 const groupsJson = Object.entries(groups).map(([group, resources]) => ({
 	group,
 	pages: Object.entries(resources).map(([group, pages]) => ({
@@ -41,7 +62,7 @@ const groupsJson = Object.entries(groups).map(([group, resources]) => ({
 	})),
 }));
 
-openapiTab.groups = groupsJson;
+openapiTab.groups = [GETTING_STARTED_SECTION, ...groupsJson];
 
 const newDocs = JSON.stringify(docsJson, null, "\t");
 

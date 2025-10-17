@@ -191,6 +191,10 @@
 						"openapi": "https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml",
 						"groups": [
 							{
+								"group": "Introduction",
+								"pages": ["apps/api/getting-started", "apps/api/permissions"]
+							},
+							{
 								"group": "Payments",
 								"pages": [
 									{
@@ -229,7 +233,11 @@
 											"GET /invoices",
 											"POST /invoices",
 											"GET /invoices/{id}",
-											"POST /invoices/{id}/void"
+											"POST /invoices/{id}/void",
+											"webhook invoice.created",
+											"webhook invoice.paid",
+											"webhook invoice.past_due",
+											"webhook invoice.voided"
 										]
 									},
 									{
@@ -260,6 +268,10 @@
 									{
 										"group": "Companies",
 										"pages": ["GET /companies/{id}"]
+									},
+									{
+										"group": "Members",
+										"pages": ["GET /members", "GET /members/{id}"]
 									},
 									{
 										"group": "Memberships",
@@ -326,6 +338,14 @@
 											"GET /forum_posts",
 											"POST /forum_posts",
 											"GET /forum_posts/{id}"
+										]
+									},
+									{
+										"group": "Forums",
+										"pages": [
+											"GET /forums",
+											"GET /forums/{id}",
+											"PATCH /forums/{id}"
 										]
 									},
 									{
