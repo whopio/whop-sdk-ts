@@ -3,8 +3,8 @@ import { join } from "node:path";
 import { parse } from "yaml";
 
 const GETTING_STARTED_SECTION = {
-	group: "Getting started",
-	pages: ["apps/api/get-started"],
+	group: "Introduction",
+	pages: ["apps/api/getting-started", "apps/api/permissions"],
 };
 
 const docsJsonPath = join(import.meta.dirname, "..", "docs.json");
