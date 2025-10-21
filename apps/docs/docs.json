@@ -112,7 +112,6 @@
 								"pages": [
 									"payments/send-an-invoice",
 									"payments/refund-customer",
-									"payments/taxes",
 									"payments/payment-declines",
 									"payments/financing",
 									"payments/billing-portal"
