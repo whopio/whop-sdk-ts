@@ -8,6 +8,7 @@ import {
 	getEmail,
 	getEmbeddedCheckoutIframeUrl,
 	onWhopCheckoutMessage,
+	parseSetupFutureUsage,
 	setAddress,
 	setEmail,
 	submitCheckoutFrame,
@@ -199,6 +200,7 @@ function mount(node: HTMLElement) {
 		node.dataset.whopCheckoutDisableEmail === "true",
 		node.dataset.whopCheckoutHideAddress === "true",
 		node.dataset.whopCheckoutAffiliateCode,
+		parseSetupFutureUsage(node.dataset.whopCheckoutSetupFutureUsage),
 	);
 
 	const iframe = document.createElement("iframe");

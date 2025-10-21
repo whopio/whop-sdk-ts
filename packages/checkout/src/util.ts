@@ -112,6 +112,11 @@ export function submitCheckoutFrame(
 	);
 }
 
+export function parseSetupFutureUsage(val?: string) {
+	if (val === "off_session") return "off_session" as const;
+	return undefined;
+}
+
 export type { WhopCheckoutSubmitDetails };
 
 export interface WhopEmbeddedCheckoutStyleOptions {
@@ -149,11 +154,25 @@ export function getEmbeddedCheckoutIframeUrl(
 	disableEmail?: boolean,
 	hideAddressForm?: boolean,
 	affiliateCode?: string,
+	setupFutureUsage?: "off_session",
 ) {
 	const iframeUrl = new URL(
 		`/embedded/checkout/${planId}/`,
 		origin ?? "https://whop.com/",
 	);
+
+	try {
+		let currentParent: Window = window;
+		while (currentParent.parent !== currentParent) {
+			currentParent = currentParent.parent;
+		}
+		const topLevelHost = currentParent.location.hostname;
+		if (currentParent.location.protocol === "https:" && topLevelHost) {
+			iframeUrl.searchParams.set("t", topLevelHost);
+		}
+	} catch {
+		// ignore cross origin and other errors
+	}
 
 	iframeUrl.searchParams.set("h", window.location.origin);
 
@@ -186,6 +205,9 @@ export function getEmbeddedCheckoutIframeUrl(
 	}
 	if (affiliateCode) {
 		iframeUrl.searchParams.set("a", affiliateCode);
+	}
+	if (setupFutureUsage) {
+		iframeUrl.searchParams.set("setup_future_usage", setupFutureUsage);
 	}
 	if (utm) {
 		for (const [key, value] of Object.entries(utm).sort((a, b) =>

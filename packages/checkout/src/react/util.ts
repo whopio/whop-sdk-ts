@@ -53,6 +53,7 @@ function useWarnOnIframeUrlChange(
 		disableEmail,
 		hideAddressForm,
 		affiliateCode,
+		setupFutureUsage,
 	]: GetEmbeddedCheckoutIframeUrlParams
 ) {
 	const updatedIframeUrl = useMemo(
@@ -74,6 +75,7 @@ function useWarnOnIframeUrlChange(
 				disableEmail,
 				hideAddressForm,
 				affiliateCode,
+				setupFutureUsage,
 			),
 		[
 			planId,
@@ -91,6 +93,7 @@ function useWarnOnIframeUrlChange(
 			disableEmail,
 			hideAddressForm,
 			affiliateCode,
+			setupFutureUsage,
 		],
 	);
 
