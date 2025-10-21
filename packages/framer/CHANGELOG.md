@@ -1,5 +1,12 @@
 # @whop/framer
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [ce909da]
+  - @whop/checkout@0.0.42
+
 ## 0.0.22
 
 ### Patch Changes

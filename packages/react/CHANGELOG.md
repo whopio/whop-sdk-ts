@@ -1,5 +1,11 @@
 # @whop/react
 
+## 0.3.0
+
+### Minor Changes
+
+- 0ba95cf: Updated to use expose typescript SDK
+
 ## 0.2.46
 
 ### Patch Changes
