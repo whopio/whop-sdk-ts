@@ -265,6 +265,14 @@ Defaults to `false`
 <WhopCheckoutEmbed hideAddressForm planId="plan_XXXXXXXXX" />
 ```
 
+#### **`setupFutureUsage`**
+
+**Optional** - The setup future usage to use for the checkout. When using the `chargeUser` API you need to set this to `off_session`. This will filter out payment methods that are not supported with that API.
+
+```tsx
+<WhopCheckoutEmbed setupFutureUsage="off_session" planId="plan_XXXXXXXXX" />
+```
+
 #### **`onAddressValidationError`**
 
 **Optional** - A callback function that will be called when the address validation error occurs.
@@ -487,7 +495,8 @@ Defaults to `false`
 
 <Note>
   When using this Option, you will need to [programmatically submit](#submit)
-  the checkout form.
+  the checkout form. Using this option will also hide Apple Pay. Read more about
+  Apple Pay [here](#apple-pay).
 </Note>
 
 ```md
@@ -626,6 +635,14 @@ Defaults to `false`
 <div data-whop-checkout-hide-address="true" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
 ```
 
+#### **`data-whop-checkout-setup-future-usage`**
+
+**Optional** - The setup future usage to use for the checkout. When using the `chargeUser` API you need to set this to `off_session`. This will filter out payment methods that are not supported with that API.
+
+```md
+<div data-whop-checkout-setup-future-usage="off_session" data-whop-checkout-plan-id="plan_XXXXXXXXX"></div>
+```
+
 #### **`data-whop-checkout-on-address-validation-error`**
 
 **Optional** - The callback to call when the address validation error occurs.
@@ -682,6 +699,19 @@ Defaults to `false`
 	</body>
 </html>
 ```
+
+## Apple Pay
+
+Apple Pay is a payment method that allows users to pay with their Apple Wallet. To enable Apple Pay, you need to register your domain first. To do so go to your [whop's settings](https://whop.com/dashboard/settings/checkout/) and click **Configure** in the **Payment domains** section. Click the plus button to add a new domain.
+
+Verifying your domain will require you to host [this file](https://whop.com/.well-known/apple-developer-platform-integrator-domain-association) on `https://<your-domain>/.well-known/apple-developer-merchantid-domain-association`. Please refer to your framework's or hosting provider's documentation on how to host this file.
+
+<Note>
+  Apple Pay will not work consistently when programmatically submitting the
+  checkout form. For this reason the Apple Pay will be hidden when using the
+  hideSubmitButton option. We are actively working on implementing support for
+  programmatically submitting the checkout form with Apple Pay.
+</Note>
 
 ## FAQs
 

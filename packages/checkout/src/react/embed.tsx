@@ -20,6 +20,7 @@ import {
 	getAddress,
 	getEmail,
 	onWhopCheckoutMessage,
+	parseSetupFutureUsage,
 	setAddress,
 	setEmail,
 	submitCheckoutFrame,
@@ -135,6 +136,8 @@ export interface WhopCheckoutEmbedProps {
 	/**
 	 * **Optional** - Set to `true` to hide the submit button in the embedded checkout form.
 	 *
+	 * Note that using this option will currently disable Apple Pay. We are actively working on implementing support for programmatically submitting the checkout form with Apple Pay.
+	 *
 	 * @default false
 	 */
 	hideSubmitButton?: boolean;
@@ -166,6 +169,12 @@ export interface WhopCheckoutEmbedProps {
 	 * **Optional** - The affiliate code to use for the checkout.
 	 */
 	affiliateCode?: string;
+	/**
+	 * **Optional** - The setup future usage to use for the checkout. When using the `chargeUser` API you need to set this to `off_session`. This will filter out payment methods that are not supported with that API.
+	 *
+	 * @default undefined
+	 */
+	setupFutureUsage?: "off_session";
 }
 
 export type {
@@ -197,6 +206,7 @@ const WhopCheckoutEmbedInner = forwardRef<
 			disableEmail = false,
 			hideAddressForm = false,
 			affiliateCode,
+			setupFutureUsage,
 		},
 		ref,
 	) => {
@@ -227,6 +237,7 @@ const WhopCheckoutEmbedInner = forwardRef<
 			disableEmail,
 			hideAddressForm,
 			affiliateCode,
+			parseSetupFutureUsage(setupFutureUsage),
 		);
 
 		const iframeRef = useRef<HTMLIFrameElement>(null);
