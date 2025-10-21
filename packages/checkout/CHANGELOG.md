@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.42
+
+### Patch Changes
+
+- ce909da: add embedded apple pay support
+
 ## 0.0.41
 
 ### Patch Changes
