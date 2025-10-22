@@ -294,7 +294,11 @@
 											"GET /entries",
 											"GET /entries/{id}",
 											"POST /entries/{id}/approve",
-											"POST /entries/{id}/deny"
+											"POST /entries/{id}/deny",
+											"webhook entry.created",
+											"webhook entry.approved",
+											"webhook entry.denied",
+											"webhook entry.deleted"
 										]
 									},
 									{
@@ -388,7 +392,8 @@
 										"group": "Course lesson interactions",
 										"pages": [
 											"GET /course_lesson_interactions",
-											"GET /course_lesson_interactions/{id}"
+											"GET /course_lesson_interactions/{id}",
+											"webhook course_lesson_interaction.completed"
 										]
 									}
 								]
