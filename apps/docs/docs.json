@@ -223,7 +223,10 @@
 											"GET /payments/{id}",
 											"POST /payments/{id}/refund",
 											"POST /payments/{id}/retry",
-											"POST /payments/{id}/void"
+											"POST /payments/{id}/void",
+											"webhook payment.succeeded",
+											"webhook payment.failed",
+											"webhook payment.pending"
 										]
 									},
 									{
@@ -280,7 +283,9 @@
 											"PATCH /memberships/{id}",
 											"POST /memberships/{id}/cancel",
 											"POST /memberships/{id}/pause",
-											"POST /memberships/{id}/resume"
+											"POST /memberships/{id}/resume",
+											"webhook membership.activated",
+											"webhook membership.deactivated"
 										]
 									},
 									{
