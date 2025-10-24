@@ -13,9 +13,6 @@ title: Create Promo Code
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.promoCodes.createPromoCode({
-	// The access pass to lock the promo code to, if any.
-	accessPassId: "prod_XXXXXXXX",
-
 	// The amount off (% or flat amount) for the promo.
 	amountOff: "some string" /* Required! */,
 
@@ -36,19 +33,23 @@ const result = await whopSdk.promoCodes.createPromoCode({
 	existingMembershipsOnly: true,
 
 	// The date/time of when the promo expires.
-	expirationDatetime: 1716931200,
+	expiresAt: 1716931200,
 
 	// Restricts promo use to only users who have never purchased from the company before.
 	newUsersOnly: true /* Required! */,
 
-	// The number of billing cycles the promo is applied for.
-	numberOfIntervals: 10 /* Required! */,
-
 	// Restricts promo use to only be applied once per customer.
 	onePerCustomer: true,
 
-	// The IDs of the plans that the affiliate can refer.
+	// The IDs of the plans that the promo code applies to. If product_id is
+	// provided, it will only apply to plans attached to that product
 	planIds: ["xxxxxxxxxxx"],
+
+	// The product to lock the promo code to, if any. If provided will filter out any plan ids not attached to this product
+	productId: "xxxxxxxxxxx",
+
+	// The number of months this promo code is applied and valid for.
+	promoDurationMonths: 10,
 
 	// The type (% or flat amount) of the promo.
 	promoType:
@@ -98,7 +99,7 @@ const result = {
 	// Restricts promo use to only be applied to already purchased memberships.
 	existingMembershipsOnly: true,
 
-	// The number of billing cycles the promo is applied for.
+	// The number of months the promo is applied for.
 	numberOfIntervals: 10,
 
 	// Indicates if the promo code is live or disabled.
