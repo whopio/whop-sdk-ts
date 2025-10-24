@@ -1,5 +1,0 @@
-mutation deleteAssessmentQuestionImage(
-	$input: DeleteAssessmentQuestionImageInput!
-) {
-	deleteAssessmentQuestionImage(input: $input)
-}

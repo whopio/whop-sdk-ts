@@ -1,5 +1,0 @@
-mutation createAssessmentQuestion($input: CreateAssessmentQuestionInput!) {
-	createAssessmentQuestion(input: $input) {
-		...CourseAssessmentQuestion
-	}
-}
