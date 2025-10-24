@@ -261,6 +261,15 @@
 											"POST /checkout_configurations",
 											"GET /checkout_configurations/{id}"
 										]
+									},
+									{
+										"group": "Promo codes",
+										"pages": [
+											"GET /promo_codes",
+											"POST /promo_codes",
+											"GET /promo_codes/{id}",
+											"DELETE /promo_codes/{id}"
+										]
 									}
 								]
 							},
@@ -337,7 +346,38 @@
 											"PATCH /experiences/{id}",
 											"DELETE /experiences/{id}",
 											"POST /experiences/{id}/attach",
-											"POST /experiences/{id}/detach"
+											"POST /experiences/{id}/detach",
+											"POST /experiences/{id}/duplicate"
+										]
+									},
+									{
+										"group": "Courses",
+										"pages": [
+											"GET /courses",
+											"POST /courses",
+											"GET /courses/{id}",
+											"PATCH /courses/{id}",
+											"DELETE /courses/{id}"
+										]
+									},
+									{
+										"group": "Course chapters",
+										"pages": [
+											"GET /course_chapters",
+											"POST /course_chapters",
+											"GET /course_chapters/{id}",
+											"PATCH /course_chapters/{id}",
+											"DELETE /course_chapters/{id}"
+										]
+									},
+									{
+										"group": "Course lessons",
+										"pages": [
+											"GET /course_lessons",
+											"POST /course_lessons",
+											"GET /course_lessons/{id}",
+											"PATCH /course_lessons/{id}",
+											"DELETE /course_lessons/{id}"
 										]
 									},
 									{
@@ -345,7 +385,8 @@
 										"pages": [
 											"GET /forum_posts",
 											"POST /forum_posts",
-											"GET /forum_posts/{id}"
+											"GET /forum_posts/{id}",
+											"PATCH /forum_posts/{id}"
 										]
 									},
 									{
@@ -361,7 +402,8 @@
 										"pages": [
 											"GET /messages",
 											"POST /messages",
-											"GET /messages/{id}"
+											"GET /messages/{id}",
+											"PATCH /messages/{id}"
 										]
 									},
 									{
@@ -863,13 +905,10 @@
 									{
 										"group": "Courses",
 										"pages": [
-											"sdk/api/courses/create-assessment-question",
 											"sdk/api/courses/create-chapter",
 											"sdk/api/courses/create-course",
 											"sdk/api/courses/create-lesson",
-											"sdk/api/courses/delete-assessment-question-image",
 											"sdk/api/courses/delete-chapter",
-											"sdk/api/courses/delete-lesson-attachment",
 											"sdk/api/courses/delete-lesson",
 											"sdk/api/courses/get-course",
 											"sdk/api/courses/get-lesson",
@@ -880,7 +919,6 @@
 											"sdk/api/courses/move-course",
 											"sdk/api/courses/update-chapter-order",
 											"sdk/api/courses/update-chapter",
-											"sdk/api/courses/update-lesson-order",
 											"sdk/api/courses/update-lesson"
 										]
 									},
