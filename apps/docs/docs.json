@@ -346,7 +346,8 @@
 											"PATCH /experiences/{id}",
 											"DELETE /experiences/{id}",
 											"POST /experiences/{id}/attach",
-											"POST /experiences/{id}/detach"
+											"POST /experiences/{id}/detach",
+											"POST /experiences/{id}/duplicate"
 										]
 									},
 									{
@@ -354,7 +355,8 @@
 										"pages": [
 											"GET /forum_posts",
 											"POST /forum_posts",
-											"GET /forum_posts/{id}"
+											"GET /forum_posts/{id}",
+											"PATCH /forum_posts/{id}"
 										]
 									},
 									{
@@ -370,7 +372,8 @@
 										"pages": [
 											"GET /messages",
 											"POST /messages",
-											"GET /messages/{id}"
+											"GET /messages/{id}",
+											"PATCH /messages/{id}"
 										]
 									},
 									{
