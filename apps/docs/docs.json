@@ -875,13 +875,10 @@
 									{
 										"group": "Courses",
 										"pages": [
-											"sdk/api/courses/create-assessment-question",
 											"sdk/api/courses/create-chapter",
 											"sdk/api/courses/create-course",
 											"sdk/api/courses/create-lesson",
-											"sdk/api/courses/delete-assessment-question-image",
 											"sdk/api/courses/delete-chapter",
-											"sdk/api/courses/delete-lesson-attachment",
 											"sdk/api/courses/delete-lesson",
 											"sdk/api/courses/get-course",
 											"sdk/api/courses/get-lesson",
@@ -892,7 +889,6 @@
 											"sdk/api/courses/move-course",
 											"sdk/api/courses/update-chapter-order",
 											"sdk/api/courses/update-chapter",
-											"sdk/api/courses/update-lesson-order",
 											"sdk/api/courses/update-lesson"
 										]
 									},
