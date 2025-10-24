@@ -261,6 +261,15 @@
 											"POST /checkout_configurations",
 											"GET /checkout_configurations/{id}"
 										]
+									},
+									{
+										"group": "Promo codes",
+										"pages": [
+											"GET /promo_codes",
+											"POST /promo_codes",
+											"GET /promo_codes/{id}",
+											"DELETE /promo_codes/{id}"
+										]
 									}
 								]
 							},

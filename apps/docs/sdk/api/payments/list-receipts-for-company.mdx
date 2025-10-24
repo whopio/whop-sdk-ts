@@ -166,7 +166,7 @@ const result = {
 				// Whether the payment can be refunded.
 				refundable: true,
 
-				// Whether the payment can be retried.
+				// A payment can be retried if the associated membership is past due
 				retryable: true,
 
 				// The datetime the payment was paid
@@ -272,7 +272,7 @@ const result = {
 					// The type (% or flat amount) of the promo.
 					promoType: "flat_amount" /* Valid values: flat_amount | percentage */,
 
-					// The number of billing cycles the promo is applied for.
+					// The number of months the promo is applied for.
 					numberOfIntervals: 10,
 				},
 
