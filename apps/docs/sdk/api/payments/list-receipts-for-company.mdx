@@ -111,7 +111,11 @@ const result = {
 				// The final converted amount of the payment in USD.
 				settledUsdAmount: 10,
 
-				// The billing reason
+				// Human-readable reason for the charge, derived from the payments's
+				// `billing_reason` enum. Source values include `subscription_create`,
+				// `subscription_cycle`, `subscription_update`, `subscription`, `manual`, and
+				// `one_time`, which are mapped to labels such as "Subscription creation",
+				// "Subscription renewal", or "One time payment".
 				billingReason: "some string",
 
 				// The last 4 digits of the card used to make the payment.
@@ -138,7 +142,12 @@ const result = {
 				paymentProcessor:
 					"apple" /* Valid values: apple | coinbase | crypto | free | multi_psp | nft | paypal | platform_balance | sezzle | splitit | stripe */,
 
-				// Returns the type of payment method used for the payment, if available. Ex. klarna, affirm, card, cashapp
+				// Machine-readable identifier for the payment method used on the payment.
+				// Examples include `card`, `cashapp`, `link`, `amazon_pay`, local methods such
+				// as `ideal`, `sofort`, `bancontact`, `eps`, `p24`, `acss_debit`, `pix`, BNPL
+				// options like `klarna`, `affirm`, `afterpay_clearpay`, `zip`, `sezzle`,
+				// `splitit`, and processor-specific values such as `us_bank_account`, `apple`,
+				// `platform_balance`, or `crypto`. Returns `null` when the processor does not supply a type.
 				paymentMethodType: "some string",
 
 				// When an alert came in that this transaction will be disputed
@@ -163,10 +172,13 @@ const result = {
 				// If the payment failed, the reason for the failure.
 				failureMessage: "some string",
 
-				// Whether the payment can be refunded.
+				// True only for payments that are `paid`, have not been fully refunded, and were
+				// processed by a payment processor that allows refunds.
 				refundable: true,
 
-				// A payment can be retried if the associated membership is past due
+				// True when the payment status is `open` and its membership is in one of the
+				// retry-eligible states (`active`, `trialing`, `completed`, or `past_due`);
+				// otherwise false. Used to decide if Whop can attempt the charge again.
 				retryable: true,
 
 				// The datetime the payment was paid
