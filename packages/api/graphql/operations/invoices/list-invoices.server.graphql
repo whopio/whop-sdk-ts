@@ -4,19 +4,26 @@ query listInvoices(
 	$before: String
 	$first: Int
 	$last: Int
+	$filters: InvoicesFiltersInput
+	$order: InvoicesSortableColumns
 ) {
-	company(id: $companyId) {
-		invoices(after: $after, before: $before, first: $first, last: $last) {
-			totalCount
-			pageInfo {
-				endCursor
-				hasNextPage
-				hasPreviousPage
-				startCursor
-			}
-			nodes {
-				...BaseInvoice
-			}
+	listInvoices(
+		id: $companyId
+		after: $after
+		before: $before
+		first: $first
+		last: $last
+		filters: $filters
+		order: $order
+	) {
+		nodes {
+			...BaseInvoice
+		}
+		pageInfo {
+			endCursor
+			hasNextPage
+			hasPreviousPage
+			startCursor
 		}
 	}
 }
