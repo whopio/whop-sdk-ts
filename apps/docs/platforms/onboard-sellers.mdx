@@ -1,0 +1,100 @@
+---
+title: "Onboard sellers"
+description: "Connect sellers, products, and payouts to your platform using Whop"
+---
+
+<Note>
+  After a seller signs up on your platform (you own auth and profile UI), you
+  can follow the below flow to start earning a take rate on your sellers.
+</Note>
+
+<AccordionGroup>
+<Accordion title="Step 1: Create a `Company` via our API">
+<Note>
+  Each company that is created using your API keys will be a platform managed
+  company.
+</Note>
+
+```ts
+// pseudo-code
+const whop = new Whop({ apiKey: process.env.WHOP_API_KEY });
+
+const company = await whop.company.create({
+  name: "",
+  seller_email: "steven@google.com", // this will create an account for the seller
+  description: "Access to premium features",
+  take_rate: 20, // your platform will earn 20% of all revenue collected by your sellers
+});
+
+const companyId = company.id;
+
+saveCompanyIdInDatabaseOnCurrentUser(companyId);
+```
+
+</Accordion>
+
+<Accordion title="Step 2: Render the dashboard or balance page in your application">
+
+### Option A — Deep link to Whop
+
+Fastest approach. Link your sellers to their manage their dashbaord Whop in a new tab.
+
+```md
+<a href="https://whop.com/@me/balance" target="_blank" rel="noopener">View balance</a>
+```
+
+### Option B — Iframe embed (pseudo)
+
+Render an iframe pointing to a balance view you control that calls Whop’s APIs server-side.
+
+```tsx
+// React pseudo-code
+<iframe src="https://whop.com/embedded/dashboard/[bizId]" />
+```
+
+### Option C — Pull data using Whop API
+
+<Note>
+  If you want more control or customization, you can always use [our
+  API](/api/getting-started) to pull data about sellers on your platform.
+</Note>
+
+</Accordion>
+
+<Accordion title="Step 3: Create products and checkout sessions [Optional]">
+<Note>
+  If you embed the dashboard, your sellers can create products directly from that UI on your own website or app.
+</Note>
+
+```ts
+// pseudo-code
+const whop = new Whop({ apiKey: process.env.WHOP_API_KEY });
+
+const company = await whop.products.create({
+  name: "1-1 Coaching",
+  description: "Access to premium features",
+  company_id: companyId,
+});
+
+// create a plan
+const company = await whop.plans.create({
+  name: "1-1 Coaching",
+  description: "Access to premium features",
+  company_id: companyId,
+  take_rate: 20, // your platform account will receive 20% of the transaction
+});
+
+// redirect to checkout link or embed checkout directly on your site
+```
+
+<Note>
+  See more about our Product API [here](/api/getting-started/products).
+</Note>
+
+</Accordion>
+
+<Accordion title="Step 4: Receive webhooks to maintain your database state [Optional]">
+  hi i dont know shit about webhooks hehe
+</Accordion>
+
+</AccordionGroup>

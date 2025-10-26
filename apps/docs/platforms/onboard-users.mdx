@@ -1,0 +1,60 @@
+---
+title: "Onboard users"
+description: "Pay out users at scale and earn take rate on embedded fintech."
+---
+
+<Note>
+  After a user signs up on your platform (you own auth and profile UI), you can
+  follow the below flow to pay your users and optionally give them embedded
+  fintech.
+</Note>
+
+<AccordionGroup>
+<Accordion title="Step 1: Pay users from your platform account">
+
+```ts
+// pseudo-code
+const whop = new Whop({ apiKey: process.env.WHOP_API_KEY });
+
+const company = await whop.payUser({
+  name: "",
+  user: "steven@google.com", // this will create an account for the user if it does not yet exist
+  description: "Payout for creating content",
+});
+
+const companyId = company.id;
+
+saveCompanyIdInDatabaseOnCurrentUser(companyId);
+```
+
+</Accordion>
+
+<Accordion title="Step 2: Render the user payouts portal in your application">
+
+### Option A — Deep link to Whop
+
+Fastest approach. Link your sellers to their manage their dashbaord Whop in a new tab.
+
+```md
+<a href="https://whop.com/@me/balance" target="_blank" rel="noopener">View balance</a>
+```
+
+### Option B — Iframe embed (pseudo)
+
+Render an iframe pointing to a balance view you control that calls Whop’s APIs server-side.
+
+```tsx
+// React pseudo-code
+<iframe src="https://whop.com/embedded/payouts/[userId]" />
+```
+
+### Option C — Pull data using Whop API
+
+<Note>
+  If you want more control or customization, you can always use [our
+  API](/api/getting-started) to pull data about sellers on your platform.
+</Note>
+
+</Accordion>
+
+</AccordionGroup>

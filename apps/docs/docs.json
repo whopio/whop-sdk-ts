@@ -18,7 +18,7 @@
 						"groups": [
 							{
 								"group": "Overview",
-								"pages": ["get-started", "refer-businesses-to-whop", "fees"]
+								"pages": ["get-started", "refer-businesses-to-whop"]
 							},
 							{
 								"group": "Start your own whop",
@@ -97,32 +97,34 @@
 						"tab": "Payments",
 						"groups": [
 							{
-								"group": "Set up payment processing",
+								"group": "Payments",
 								"pages": [
 									"payments/overview",
-									"payments/create-a-whop",
-									"payments/create-a-product",
 									"payments/create-checkout-link",
 									"payments/checkout-embed",
-									"payments/set-up-payouts"
-								]
-							},
-							{
-								"group": "Manage payments",
-								"pages": [
 									"payments/send-an-invoice",
-									"payments/refund-customer",
-									"payments/payment-declines",
 									"payments/financing",
-									"payments/billing-portal"
+									"payments/payment-declines",
+									"payments/set-up-payouts",
+									"payments/fees"
 								]
 							},
 							{
-								"group": "Manage disputes",
+								"group": "Platforms",
+								"pages": [
+									"platforms/overview",
+									"platforms/onboard-sellers",
+									"platforms/onboard-users",
+									"platforms/billing-portal"
+								]
+							},
+							{
+								"group": "Manage disputes and refunds",
 								"pages": [
 									"payments/resolution-center",
 									"payments/dispute-fighter",
-									"payments/credit-card-disputes"
+									"payments/credit-card-disputes",
+									"payments/refund-customer"
 								]
 							}
 						]

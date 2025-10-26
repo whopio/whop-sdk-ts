@@ -1,0 +1,77 @@
+---
+title: "Embed wallet balance"
+description: "Show a buyer’s Whop balance and transactions inside your platform"
+---
+
+Expose wallet balances and recent activity inside your platform UI. Use this as a read-only surface to reduce context switching for your users.
+
+<Tip>
+  Wallet balances are typically tied to a user account. Make sure you map your
+  platform user to the corresponding Whop user before showing balances.
+</Tip>
+
+## Option A — Deep link to Whop
+
+Fastest approach. Link users to their balance page on Whop in a new tab.
+
+```md
+<a href="https://whop.com/@me/balance" target="_blank" rel="noopener">View balance</a>
+```
+
+## Option B — Iframe embed (pseudo)
+
+Render an iframe pointing to a balance view you control that calls Whop’s APIs server-side.
+
+```tsx
+// React pseudo-code
+export function WalletBalancePanel({ userId }: { userId: string }) {
+  const { data } = useSWR(`/api/wallet?userId=${userId}`, fetcher);
+  return (
+    <section>
+      <h3>Balance</h3>
+      <strong>
+        {formatCurrency(data?.balance_cents, data?.currency || "usd")}
+      </strong>
+      <h4>Recent activity</h4>
+      <ul>
+        {data?.transactions?.map((t: any) => (
+          <li key={t.id}>
+            {t.type} · {formatCurrency(t.amount_cents, t.currency)}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+```
+
+```ts
+// /api/wallet (server) pseudo-code
+import { Whop } from "@whop/api";
+
+export default async function handler(req, res) {
+  const userId = requireAuth(req);
+  const whop = new Whop({ apiKey: process.env.WHOP_API_KEY });
+
+  // Map your user to a Whop user (store this mapping when you first link accounts)
+  const whopUserId = await getWhopUserId(userId);
+
+  const balance = await whop.company.wallets.retrieve({ user_id: whopUserId });
+  const transactions = await whop.company.wallets.listTransactions({
+    user_id: whopUserId,
+    limit: 10,
+  });
+
+  res.json({
+    balance_cents: balance.available_cents,
+    currency: balance.currency,
+    transactions,
+  });
+}
+```
+
+## Security notes
+
+- Call Whop APIs from your server, not the browser.
+- Enforce auth and authorization for the viewing user.
+- Do not expose API keys; use environment variables and server-side fetches.
