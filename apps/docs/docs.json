@@ -150,7 +150,7 @@
 							},
 							{
 								"group": "Guides",
-								"pages": ["apps/guides/payins"]
+								"pages": ["apps/guides/payins", "apps/guides/payouts"]
 							},
 							{
 								"group": "React Native",

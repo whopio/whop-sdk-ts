@@ -1,0 +1,98 @@
+---
+title: Payouts
+description: Send money to users and companies on whop
+---
+
+Your app can use the whop api to easily pay users and companies throughout the platform.
+This allows your app to implement flexible and custom revenue sharing, user rewards or payouts solutions.
+
+A transfer of balance is represented by the [`Transfer`](/api-reference/transfer/retrieve-transfer) resource in the API.
+
+<Steps>
+    <Step title="Choose your origin">
+        By default, your app can send money from it's owning company balance.
+        For this step the origin of the transfer should be set to the company id that owns the app.
+
+        You can find this in the URL when looking at your app dashboard (looks like `biz_XXXXXXXXX`)
+
+        For advanced use cases, apps can also transfer balance from the accounts of other companies
+        that the app is installed in. To do this you must request the `payout:transfer_funds` permission
+        using the permission system.
+    </Step>
+
+    <Step title="Choose your destination">
+        The destination id can be any valid user, company or ledger account id.
+        These will look like `user_xxxxxx`, `biz_xxxxxx` or `ldgr_xxxxxx` respectively.
+    </Step>
+
+    <Step title="Make the transfer">
+        Once you have your origin and destination, use the SDK or api to create a transfer.
+        The funds will be transferred immediately.
+
+        <CodeGroup>
+            ```typescript Typescript
+            const transfer = await client.transfers.create({
+              amount: 6.9,
+              currency: 'usd',
+              destination_id: 'user_xxxxx',
+              origin_id: 'biz_xxxxx',
+              notes: 'Revenue share from MyApp',
+            });
+            ```
+
+            ```python Python
+            transfer = client.transfers.create(
+                amount=6.9,
+                currency="usd",
+                destination_id="user_xxxxx",
+                origin_id="biz_xxxxx",
+                notes='Revenue share from MyApp',
+            )
+            ```
+
+            ```ruby Ruby
+            transfer = whop.transfers.create(
+              amount: 6.9,
+              currency: :usd,
+              destination_id: "user_xxxxx",
+              origin_id: "biz_xxxxx",
+              notes: 'Revenue share from MyApp'
+            )
+            ```
+
+            ```bash Curl
+            curl --request POST \
+              --url https://api.whop.com/api/v1/transfers \
+              --header 'Authorization: Bearer <token>' \
+              --header 'Content-Type: application/json' \
+              --data '{
+              "amount": 6.9,
+              "currency": "usd",
+              "destination_id": "user_xxxxx",
+              "notes": "Revenue share from MyApp",
+              "origin_id": "biz_xxxxx"
+            }'
+            ```
+        </CodeGroup>
+
+        <Warning>
+            When creating a transfer we recommend that you include an `idempotence_key` in the request body.
+            An idempotence key will prevent 2 api calls with the same `idempotence_key` value
+            from transferring money twice.
+
+            For example when implementing revenue sharing for every received payment, it is wise to derive the
+            `idempotence_key` from the payment id, meaning you will never share revenue from the same payment twice.
+
+            Idempotence keys are scoped to your app.
+        </Warning>
+    </Step>
+</Steps>
+
+## Withdrawing whop balance
+
+Whop pays out in over 241+ territories with every payout method imaginable!
+Users can get paid via ACH (bank deposit), Crypto, Venmo, CashApp and more.
+
+Recipients of your funds are able to withdraw them after completing KYC.
+
+[Learn more here](/payments/set-up-payouts)
