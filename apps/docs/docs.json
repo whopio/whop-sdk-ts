@@ -144,25 +144,14 @@
 									"apps/guides/payouts",
 									"apps/guides/webhooks",
 									"apps/guides/oauth",
+									"apps/guides/dev-proxy",
 									"apps/guides/iframe",
 									"apps/guides/notifications",
 									"apps/guides/forums",
 									"apps/guides/chat",
 									"apps/guides/frosted_ui",
-									"apps/guides/upload-media"
-								]
-							},
-							{
-								"group": "React Native (beta)",
-								"pages": [
-									"apps/react-native/installation",
-									"apps/react-native/project-structure",
-									"apps/react-native/fetching-data",
-									"apps/react-native/using-libraries",
-									"apps/react-native/styling",
-									"apps/react-native/deploying",
-									"apps/react-native/advanced",
-									"apps/react-native/troubleshooting"
+									"apps/guides/upload-media",
+									"apps/guides/react-native"
 								]
 							}
 						]

@@ -2,3 +2,106 @@
 title: Authentication
 description: Authenticate and authorized the current user.
 ---
+
+# Authenticating the current user
+
+To figure out who is making a request to your app, the whop iframe will pass a JWT token
+inside the `x-whop-user-token` header on every request made to your app from an embedded iframe.
+Our SDKs includes methods that make it easy to verify and decode this JWT into a whop `user_id`.
+
+<Info>Ensure your SDK client is setup. [Learn more here](/apps/getting-started)</Info>
+
+<CodeGroup>
+    ```typescript JS/TS + NextJS
+    import { headers } from "next/headers";
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export default async function MyServerRenderedPage() {
+    	const { userId } = await whopsdk.verifyUserToken(await headers());
+        // this function throws on validation failure. Ensure you handle errors,
+        // or pass `{ dontThrow: true }` as the second argument
+
+        // ... the rest of your component / api route etc...
+	}
+    ```
+
+    ```javascript JS/TS + ExpressJS
+    import express from "express";
+    import { whopsdk } from "./lib/whop-sdk";
+
+    const app = express();
+
+    app.get("/my-route", async (req, res) => {
+        const { userId } = await whopsdk.verifyUserToken(req.headers);
+        // this function throws on validation failure. Ensure you handle errors,
+        // or pass `{ dontThrow: true }` as the second argument
+
+        // ... the rest of your route handler
+    });
+    ```
+
+    ```python Python + FastAPI
+    from fastapi import FastAPI, Request
+    from lib.whop_sdk import whopsdk
+
+    app = FastAPI()
+
+    @app.get("/my-route")
+    async def my_route(request: Request):
+        result = await whopsdk.verify_user_token(request.headers)
+        # this function throws on validation failure. Ensure you handle errors,
+        # or pass `dont_throw=True` as a keyword argument
+
+        user_id = result.user_id
+
+        # ... the rest of your route handler
+    ```
+
+    ```ruby Ruby on Rails
+    class MyController < ApplicationController
+      def my_action
+        auth_result = whopsdk.verify_user_token!(request.headers)
+        # this function throws on validation failure. For a non-throwing version,
+        # use `verify_user_token` which returns nil on failure
+
+        user_id = auth_result.user_id
+
+        # ... the rest of your controller action
+      end
+    end
+    ```
+</CodeGroup>
+
+This token can only be included for requests made to the `window.location.origin` of your app displayed in the iframe.
+Ie relative page navigations like `<a href="/sub_page">...</a>`, or fetches that don't specify
+a domain. eg: `await fetch("/api/quizzes")`. All these requests are sent to the `App.base_url` domain.
+
+<Accordion title="My API is on a different domain">
+    If you app frontend is running on `example.com` however, your API is running on `api.example.com`
+    we recommend that you reverse proxy your api requests through `example.com/api` such that you can still receive
+    and verify the `x-whop-user-token` header.
+
+    If your domain is on cloudflare, you can create an ["origin rule"](https://developers.cloudflare.com/rules/origin-rules/features/#dns-record)
+    from `/api` on `example.com` to rewrite to `api.example.com/api`.
+
+    If you use nextjs you can also [setup a rewrite](https://developers.cloudflare.com/rules/origin-rules/features/#dns-record) in your `next.config.mjs`.
+
+    Rewriting like this can also be configured in `nginx` and `caddy` and many other popular services.
+    Refer to your respective server documentation for how to handle this.
+
+    <Note>
+        This setup is required due to the strict browser cross origin cookie policies.
+    </Note>
+</Accordion>
+
+## Local setup
+
+When developing locally, whop provides a locally runnable reverse proxy that perfectly matches the behaviour of the production setup.
+This means you dont need to change your code to support local development.
+[Learn how set it up here.](/apps/guides/dev-proxy)
+
+# Authorization
+
+Now that you know who is making a request, you need to check their access level.
+
+Whop
