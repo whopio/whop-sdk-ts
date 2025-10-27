@@ -132,33 +132,28 @@
 						"groups": [
 							{
 								"group": "Build apps",
-								"pages": [
-									"apps/introduction",
-									"apps/getting-started",
-									"apps/get-api-key",
-									{
-										"group": "App Views",
-										"pages": [
-											"apps/app-views/experience-view",
-											"apps/app-views/dashboard-view",
-											"apps/app-views/discover-view"
-										]
-									},
-									"apps/permissions",
-									"apps/tutorials"
-								]
+								"pages": ["apps/introduction", "apps/getting-started"]
 							},
 							{
 								"group": "Guides",
 								"pages": [
-									"apps/guides/introduction",
+									"apps/guides/permissions",
+									"apps/guides/authentication",
+									"apps/guides/app-views",
 									"apps/guides/payins",
 									"apps/guides/payouts",
-									"apps/guides/webhooks"
+									"apps/guides/webhooks",
+									"apps/guides/oauth",
+									"apps/guides/iframe",
+									"apps/guides/notifications",
+									"apps/guides/forums",
+									"apps/guides/chat",
+									"apps/guides/frosted_ui",
+									"apps/guides/upload-media"
 								]
 							},
 							{
-								"group": "React Native",
+								"group": "React Native (beta)",
 								"pages": [
 									"apps/react-native/installation",
 									"apps/react-native/project-structure",
@@ -168,20 +163,6 @@
 									"apps/react-native/deploying",
 									"apps/react-native/advanced",
 									"apps/react-native/troubleshooting"
-								]
-							},
-							{
-								"group": "Features",
-								"pages": [
-									"apps/features/websocket-guide",
-									"apps/features/payments-and-payouts",
-									"apps/features/subscriptions",
-									"apps/features/send-push-notification",
-									"apps/features/post-to-feed",
-									"apps/features/upload-media",
-									"apps/features/webhooks",
-									"apps/features/affiliate-commissions",
-									"apps/features/oauth-guide"
 								]
 							}
 						]

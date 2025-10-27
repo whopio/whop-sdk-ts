@@ -1,101 +1,79 @@
 ---
 title: Introduction
-description: Build Whop apps and sell them into Whop communities with thousands of members.
+description: Build your idea on Whop
 ---
 
-# What are Whop Apps?
+# What are Whop apps?
 
-A Whop app is a web app that can be embedded into a whop community. These apps can be installed by any Whop creator through our [app store](https://whop.com/discover/app-store/). As the developer, you can charge for the app using several options offered by our Whop SDK. Our Whop SDK makes it easy to leverage the infrastructure of whop, to build full-blown apps in hours, not weeks.
+Whop apps allow you to build and integrate your own custom software into Whop.
+Leverage Whop’s payments, authentication, and distribution infrastructure to launch and monetize your ideas.
+Use our SDKs and APIs to programmatically access data and create custom user experiences on and off the platform.
 
-# Examples of apps
+Below are some common use cases for whop apps.
 
-- [AI image generator](https://whop.com/apps/app_KHqcozSfEGNyhl/install/)
-- [Pay-to-play game](https://whop.com/apps/app_scKdeUGhiBtYPr/install/)
-- [Chat bot](https://whop.com/apps/app_3rqpGo1tsmPDHg/install/)
-- [AI car customizer](https://whop.com/apps/app_S42iB0COVVUVwO/install/)
+### B2B Apps
 
-# Why build Whop apps?
+Build dashboard apps that directly enhance the functionality of the whop business dashboard.
 
-## Distribution
+These apps can provide custom UI visible to creators directly inside their dashboard,
+and they can access rich data about the company, such as payments data, member information and more.
 
-You will be placed in the Whop App Store. The app store is visited by tens of thousands of creators who are looking to offer more value to their communities. You focus on building the best app you can, and we will handle getting you customers.
+<Info>
+    For example, you can build an app that uses the [Member](/api-reference/members/list-members),
+    [Plan](/api-reference/plans/create-plan) and [Promo Code](/api-reference/promo-codes/create-promo-code) APIs
+    to allow creators to send upsells to loyal customers via email.
+</Info>
 
-## Authentication
+### Consumer Apps
 
-Zero authentication required. Since your app is embedded into a whop, we handle all user authentication for you. You have access to a load of user information via the Whop SDK.
+Consumer apps on whop can provide custom _experiences_ to members of a whop. They are displayed right
+inline with native whop experiences such as chat, forums and courses.
 
-## Payments
+After installing your app, creators can spawn one or more experiences powered by your app.
+An `Experience` on whop maps to a single item in the whop's sidebar. Each one can render a unique custom view.
 
-Tap into the power of Whop's payment system. Accept payment with extremely low effort.
+<Info>
+    For example, you can build an app that allows creators to run LIVE quizzes directly within their community.
+    Associate quizzes with the provided experience id parameter, allow admins to create and manage the quizzes
+    and allow members to vote and see results.
+</Info>
 
-### Explore how to collect payments
+### External Integrations
 
-<AccordionGroup>
+Build a whop app to integrate your existing app, service or platform with Whop.
+Use our payment APIs, webhooks, OAuth and embedded checkout to supercharge your existing app.
 
-<Accordion title="Transaction fees">
+As whop apps can be installed on multiple companies this allows your integration to be multi-tenant,
+allowing it to be used by multiple creators.
 
-Enable in-app purchases and take a transaction fee on each sale. For example, selling game credits, running a watch marketplace, or letting creators sell custom t-shirts.
+<Info>
+    For example, you can create [Checkout Configurations](/api-reference/checkout-configurations/create-checkout-configuration)
+    and [Embedded Checkout](/payments/checkout-embed) to create dynamic checkouts for customers on your external site.
+    Receive [webhooks](/apps/guides/webhooks) when the payments settle and automatically fulfill orders.
+</Info>
 
-</Accordion>
+# Why build on whop?
 
-<Accordion title="Installation fee">
+### Payments
 
-Charge a one-time installation fee of $5000 and let Whop creators offer your app as a free benefit for joining their community.
+Tap into the power of Whop's payment system. Accept payments with low effort and low fees!
 
-</Accordion>
+- Easily accept card, ACH, BNPL, and crypto payments
+- Payout to over 241+ territories in local currencies, or instantly withdraw to crypto.
+- Pay users and companies instantly on platform via a simple [Transfer API](/api-reference/transfers/create-transfer).
+- Easily create and manage subscriptions.
+- Checkout everywhere: on-platform, mobile, embedded into your site, or via direct link.
 
-<Accordion title="Per seat">
+### Authentication
 
-Charge $1 per member inside of a whop and let creators offer your app as a free benefit for joining their community
+Whop offers simple, out of the box solutions for authentication and authorization.
 
-</Accordion>
+Identifying users, checking ownership of product, managing admin or customer permissions
+and more are all just one function call in our SDKs
 
-<Accordion title="Monthly subscription">
+### Distribution
 
-Charge Whop creators $300 per month to let their members use your app freely.
+You app is directly visible to over 200k active creators looking to grow their business.
+Just build an amazing app, and whop will bring you customers.
 
-</Accordion>
-
-<Accordion title="Affiliate commission">
-
-Let whop creators sell your app inside their community for $29/month and earn a referral fee for every customer they bring you.
-
-</Accordion>
-
-</AccordionGroup>
-
-## Get started
-
-<CardGroup cols={2}>
-
-{" "}
-
-<Card
-  title="View our tutorials"
-  href="/apps/tutorials"
-  icon="book-open"
-  color="#16a34a"
->
-  Step-by-step guides to help you get started building with Whop.
-</Card>
-
-    <Card
-    title="Clone our starter template"
-    href="/apps/getting-started"
-    icon="code"
-    color="#16a34a"
-    >
-    Clone our starter template to get started building your app.
-    </Card>
-
-    <Card
-    title="Watch a tutorial"
-    href="https://www.youtube.com/watch?v=-zKMt3a8GJ4"
-    icon="video"
-    color="#16a34a"
-     img="https://i.ytimg.com/vi/-zKMt3a8GJ4/maxresdefault.jpg"
-    >
-    Watch an end to end tutorial on how to build a Whop app with Next.js.
-    </Card>
-
-</CardGroup>
+# Get started
