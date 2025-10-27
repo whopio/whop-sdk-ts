@@ -3,8 +3,8 @@ title: Introduction
 description: Build your idea on Whop
 ---
 
-```
-# Get Started:
+<Accordion title="Structure">
+**Get Started:**
 
 - Introduction
 - Create an app
@@ -14,7 +14,7 @@ description: Build your idea on Whop
 	- Consumer Apps
 	- External Integrations
 
-# Guides:
+**Guides:**
 
 Using the API
 - API + SDKs - How to make api requests + install SDKs in different languages
@@ -39,8 +39,7 @@ Consumer experience features
 - Push notifications (target groups / deeplinking)
 - Messages (on behalf of, markdown, metions, chat/dms/support)
 - Forums (markdown, emails, mentions, comments / engagement metrics)
-
-```
+</Accordion>
 
 # What are Whop apps?
 
@@ -54,57 +53,65 @@ Below are some common use cases for whop apps.
 
 Build dashboard apps that directly enhance the functionality of the whop business dashboard.
 
+These apps can provide custom UI visible to creators directly inside their dashboard,
+and they can access rich data about the company, such as payments data, member information and more.
+
+<Info>
+    For example, you can build an app that uses the [Member](/api-reference/members/list-members),
+    [Plan](/api-reference/plans/create-plan) and [Promo Code](/api-reference/promo-codes/create-promo-code) APIs
+    to allow creators to send upsells to loyal customers via email.
+</Info>
 
 ### Consumer Apps
 
+Consumer apps on whop can provide custom _experiences_ to members of a whop. They are displayed right
+inline with native whop experiences such as chat, forums and courses.
+
+After installing your app, creators can spawn one or more experiences powered by your app.
+An `Experience` on whop maps to a single item in the whop's sidebar. Each one can render a unique custom view.
+
+<Info>
+    For example, you can build an app that allows creators to run LIVE quizzes directly within their community.
+    Associate quizzes with the provided experience id parameter, allow admins to create and manage the quizzes
+    and allow members to vote and see results.
+</Info>
+
 ### External Integrations
+
+Build a whop app to integrate your existing app, service or platform with Whop.
+Use our payment APIs, webhooks, OAuth and embedded checkout to supercharge your existing app.
+
+As whop apps can be installed on multiple companies this allows your integration to be multi-tenant,
+allowing it to be used by multiple creators.
+
+<Info>
+    For example, you can create [Checkout Configurations](/api-reference/checkout-configurations/create-checkout-configuration)
+    and [Embedded Checkout](/payments/checkout-embed) to create dynamic checkouts for customers on your external site.
+    Receive [webhooks](/apps/guides/webhooks) when the payments settle and automatically fulfill orders.
+</Info>
 
 # Why build on whop?
 
 ### Payments
 
+Tap into the power of Whop's payment system. Accept payments with low effort and low fees!
+
+- Easily accept card, ACH, BNPL, and crypto payments
+- Payout to over 241+ territories in local currencies, or instantly withdraw to crypto.
+- Pay users and companies instantly on platform via a simple [Transfer API](/api-reference/transfers/create-transfer).
+- Easily create and manage subscriptions.
+- Checkout everywhere: on-platform, mobile, embedded into your site, or via direct link.
+
 ### Authentication
+
+Whop offers simple, out of the box solutions for authentication and authorization.
+
+Identifying users, checking ownership of product, managing admin or customer permissions
+and more are all just one function call in our SDKs
 
 ### Distribution
 
-## Get started
+You app is directly visible to over 200k active creators looking to grow their business.
+Just build an amazing app, and whop will bring you customers.
 
-<CardGroup cols={2}>
-
-    <Card
-    	title="Get your API key"
-    	href="/apps/get-api-key"
-    	icon="key"
-    	color="#16a34a"
-    >
-    	Create an app on whop and make your first API request.
-    </Card>
-
-    <Card
-    	title="Explore our API"
-    	href="/api-reference"
-    	icon="book-open"
-    	color="#16a34a"
-    >
-        Visit our API reference to see the full list of functionality available to you.
-    </Card>
-
-    <Card
-    	title="Build a consumer app"
-    	href="/apps/react-native/installation"
-    	icon="mobile"
-    	color="#16a34a"
-    >
-        Build a consumer app with our react-native SDK
-    </Card>
-
-    <Card
-    	title="Build a consumer app"
-    	href="/apps/react-native/installation"
-    	icon="mobile"
-    	color="#16a34a"
-    >
-        Build a b2b app with our nextjs SDK
-    </Card>
-
-</CardGroup>
+# Get started
