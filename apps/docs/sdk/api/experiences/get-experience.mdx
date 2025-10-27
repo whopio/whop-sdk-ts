@@ -3,6 +3,10 @@ title: Get Experience
 description: Fetch an experience.
 ---
 
+
+### Required Permissions
+ - _`plan:basic:read` (optional)_
+
 ### Usage
 
 ```typescript
@@ -124,7 +128,7 @@ const result = {
 		// This is the release method the business uses to sell this plan.
 		releaseMethod: "buy_now" /* Valid values: buy_now | waitlist */,
 
-		// An un-used field - do not use.
+		// The number of units available for purchase. Only displayed to authorized actors
 		stock: 10,
 
 		// Shows or hides the plan from public/business view.
