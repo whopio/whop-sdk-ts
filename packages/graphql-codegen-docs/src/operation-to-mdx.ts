@@ -59,6 +59,7 @@ export function operationToMdx(
 
 	const file = `---
 title: ${camelCaseToTitleCase(value.name?.value ?? "")}${description}
+noindex: true
 ---
 ${availabilityNotice}${permissionsText}
 ### Usage
