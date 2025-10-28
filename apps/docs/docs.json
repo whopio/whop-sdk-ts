@@ -38,6 +38,15 @@
 								]
 							},
 							{
+								"group": "Affiliates",
+								"pages": [
+									"affiliates/promote-your-business",
+									"affiliates/setup-global",
+									"affiliates/setup-custom",
+									"affiliates/setup-rev-share"
+								]
+							},
+							{
 								"group": "Business models",
 								"pages": [
 									"supported-business-models/paid-groups",
