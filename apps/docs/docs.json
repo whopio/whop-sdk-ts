@@ -141,55 +141,26 @@
 						"groups": [
 							{
 								"group": "Build apps",
-								"pages": [
-									"apps/introduction",
-									"apps/getting-started",
-									"apps/get-api-key",
-									{
-										"group": "App Views",
-										"pages": [
-											"apps/app-views/experience-view",
-											"apps/app-views/dashboard-view",
-											"apps/app-views/discover-view"
-										]
-									},
-									"apps/permissions",
-									"apps/tutorials"
-								]
+								"pages": ["apps/introduction", "apps/getting-started"]
 							},
 							{
-								"group": "Tutorials",
+								"group": "Guides",
 								"pages": [
-									"apps/tutorials/ai-car-customizer",
-									"apps/tutorials/chat-bot",
-									"apps/tutorials/ai-image-generator"
-								]
-							},
-							{
-								"group": "React Native",
-								"pages": [
-									"apps/react-native/installation",
-									"apps/react-native/project-structure",
-									"apps/react-native/fetching-data",
-									"apps/react-native/using-libraries",
-									"apps/react-native/styling",
-									"apps/react-native/deploying",
-									"apps/react-native/advanced",
-									"apps/react-native/troubleshooting"
-								]
-							},
-							{
-								"group": "Features",
-								"pages": [
-									"apps/features/websocket-guide",
-									"apps/features/payments-and-payouts",
-									"apps/features/subscriptions",
-									"apps/features/send-push-notification",
-									"apps/features/post-to-feed",
-									"apps/features/upload-media",
-									"apps/features/webhooks",
-									"apps/features/affiliate-commissions",
-									"apps/features/oauth-guide"
+									"apps/guides/permissions",
+									"apps/guides/authentication",
+									"apps/guides/app-views",
+									"apps/guides/payins",
+									"apps/guides/payouts",
+									"apps/guides/webhooks",
+									"apps/guides/oauth",
+									"apps/guides/dev-proxy",
+									"apps/guides/iframe",
+									"apps/guides/notifications",
+									"apps/guides/forums",
+									"apps/guides/chat",
+									"apps/guides/frosted_ui",
+									"apps/guides/upload-media",
+									"apps/guides/react-native"
 								]
 							}
 						]
@@ -333,6 +304,10 @@
 											"GET /authorized_users",
 											"GET /authorized_users/{id}"
 										]
+									},
+									{
+										"group": "Reviews",
+										"pages": ["GET /reviews", "GET /reviews/{id}"]
 									}
 								]
 							},
@@ -836,16 +811,7 @@
 						"groups": [
 							{
 								"group": "SDK Reference",
-								"pages": [
-									"sdk/installation",
-									"sdk/local-development",
-									"sdk/whop-api-client",
-									"sdk/ai"
-								]
-							},
-							{
-								"group": "Authentication",
-								"pages": ["sdk/retrieve-current-user", "sdk/validate-access"]
+								"pages": ["sdk/local-development", "sdk/whop-api-client"]
 							},
 							{
 								"group": "Resources",
@@ -1013,10 +979,6 @@
 										]
 									}
 								]
-							},
-							{
-								"group": "iFrame",
-								"pages": ["sdk/iframe-setup", "sdk/external-url"]
 							}
 						]
 					}
