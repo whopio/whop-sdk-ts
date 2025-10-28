@@ -1,5 +1,11 @@
 # @whop/checkout
 
+## 0.0.43
+
+### Patch Changes
+
+- 2740e4b: feat: support programmatic checkout submission with apple pay
+
 ## 0.0.42
 
 ### Patch Changes
