@@ -46,6 +46,50 @@ This URL is unique to each membership. Users must be logged in to access the por
   `manage_url` field
 </Card>
 
+## For Platforms
+
+Platforms can expose billing management in two ways:
+
+- **Deep link**: render a button in your UI that opens the membership’s `manage_url` in a new tab.
+- **Embed pattern (pseudo)**: create a page in your platform that proxies Whop data and links (recommended for tighter UX without iframing the portal).
+
+```tsx
+// Deep link example
+export function ManageSubscription({ manageUrl }: { manageUrl: string }) {
+  return (
+    <a href={manageUrl} target="_blank" rel="noopener noreferrer">
+      Manage subscription
+    </a>
+  );
+}
+```
+
+```ts
+// Server pseudo-code to fetch memberships and surface manage links
+import { Whop } from "@whop/api";
+
+export async function listBuyerMemberships(userId: string) {
+  const whop = new Whop({ apiKey: process.env.WHOP_API_KEY });
+  const whopUserId = await mapToWhopUserId(userId);
+  const { data: memberships } = await whop.company.memberships.list({
+    user_id: whopUserId,
+  });
+  return memberships.map((m: any) => ({
+    id: m.id,
+    product: m.product?.name,
+    status: m.status,
+    renews_at: m.renews_at,
+    manage_url: m.manage_url,
+  }));
+}
+```
+
+<Note>
+  Avoid iframing the portal directly; the URL requires an authenticated Whop
+  session. Deep-link or show the `manage_url` as an action from your own list of
+  memberships.
+</Note>
+
 ## Related resources
 
 <CardGroup cols={2}>
