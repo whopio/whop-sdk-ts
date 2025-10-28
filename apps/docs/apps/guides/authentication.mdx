@@ -1,6 +1,6 @@
 ---
 title: Authentication
-description: Authenticate and authorized the current user.
+description: Authenticate and authorize the current user.
 ---
 
 # Authenticating the current user
@@ -73,11 +73,11 @@ Our SDKs includes methods that make it easy to verify and decode this JWT into a
 </CodeGroup>
 
 This token can only be included for requests made to the `window.location.origin` of your app displayed in the iframe.
-Ie relative page navigations like `<a href="/sub_page">...</a>`, or fetches that don't specify
-a domain. eg: `await fetch("/api/quizzes")`. All these requests are sent to the `App.base_url` domain.
+I.e. relative page navigations like `<a href="/sub_page">...</a>`, or fetches that don't specify
+a domain. e.g. `await fetch("/api/quizzes")`. All these requests are sent to the `App.base_url` domain.
 
 <Accordion title="My API is on a different domain">
-    If you app frontend is running on `example.com` however, your API is running on `api.example.com`
+    If your app frontend is running on `example.com` however, your API is running on `api.example.com`
     we recommend that you reverse proxy your api requests through `example.com/api` such that you can still receive
     and verify the `x-whop-user-token` header.
 
@@ -97,7 +97,7 @@ a domain. eg: `await fetch("/api/quizzes")`. All these requests are sent to the 
 ## Local setup
 
 When developing locally, whop provides a locally runnable reverse proxy that perfectly matches the behaviour of the production setup.
-This means you dont need to change your code to support local development.
+This means you don't need to change your code to support local development.
 [Learn how set it up here.](/apps/guides/dev-proxy)
 
 # Authorization

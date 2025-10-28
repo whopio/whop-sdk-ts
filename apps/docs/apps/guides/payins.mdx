@@ -27,7 +27,7 @@ Use in-app purchases to accept payments for one-time purchases or subscriptions 
 
 <Steps>
     <Step title="Create a checkout configuration">
-       Use the api to create a checkout configuration. This will allow you to attach custom metadata about this specific purchase
+       Use the API to create a checkout configuration. This will allow you to attach custom metadata about this specific purchase.
 
        Do this on your server/backend, when the user selects the item / plan / option they want to purchase.
 
@@ -207,7 +207,7 @@ Use in-app purchases to accept payments for one-time purchases or subscriptions 
 
         In your application framework, setup a webhook handler and fulfill purchases and/or update your database.
         We recommend handling webhooks in an async queue or `waitUntil` block to ensure the request
-        handler responds quickly to avoid unneccessary webhook retries.
+        handler responds quickly to avoid unnecessary webhook retries.
 
         <Info>
             To see exactly what data you will receive, check out the [API Reference](/api-reference/payments/payment-succeeded)

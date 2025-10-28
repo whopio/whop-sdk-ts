@@ -53,8 +53,8 @@ App webhooks allow your app to receive webhooks for events that happen on compan
 
 Use this mode if you are processing payments on behalf of other companies, or your integration needs to know when events happen on installed companies in order to function.
 
-You may use both company webhooks and app webhooks simultaneously. For example you may want to listen to waitlist entry creation events on installed companies,
-but you only care about payments on your own company. In this case make a company webhook for payments and an app webhook for waitlist entry creation.
+You may use both company webhooks and app webhooks simultaneously. For example, you may want to listen to waitlist entry creation events on installed companies,
+but you only care about payments on your own company. In this case, make a company webhook for payments and an app webhook for waitlist entry creation.
 
 To setup company webhooks, follow these steps
 
@@ -92,8 +92,8 @@ To setup company webhooks, follow these steps
     </Step>
 
     <Step title="Handle webhook events">
-        Now the provided url will receive `POST` requests for the selected webhook triggers,
-        for all resources that belong to any company on which the app is installed in.
+        Now the provided URL will receive `POST` requests for the selected webhook triggers,
+        for all resources that belong to any company on which the app is installed.
 
         To test this, install the app on your own company, or another test company and trigger the webhooks.
 

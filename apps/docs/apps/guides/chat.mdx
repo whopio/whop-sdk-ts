@@ -3,7 +3,171 @@ title: Chat
 description: Send and read messages from whop chat
 ---
 
-## Coming soon...
+<Note type="warning">
+  **These docs are still under construction**
 
-We're working hard on adding code support and documentation for this feature.
-Come back soon.
+  We're still working on adding:
+  - Sending messages with custom sender name + image from apps
+  - SSE events to live listen to reactions and new chat messages
+</Note>
+
+## What's Currently Supported
+
+The new SDK already supports the following chat functionality:
+
+- **Chat Channels**: Retrieve, update settings, and list chat channels
+- **Messages**: Create, retrieve, and list messages in channels
+- **Support Channels**: Create, retrieve, and list support channels
+- **Reactions**: Add, retrieve, and list reactions on messages
+
+## Basic Usage
+
+### Initialize the SDK
+
+```typescript
+import Whop from '@whop/sdk';
+
+const client = new Whop({
+  appID: 'app_xxxxxxxxxxxxxx',
+  apiKey: process.env['WHOP_API_KEY'],
+});
+```
+
+### Sending Messages
+
+```typescript
+// Create a message in a chat channel
+const message = await client.messages.create({
+  channel_id: 'channel_id_or_experience_id',
+  content: 'Hello world! **Markdown** is supported',
+  attachments: [
+    {
+      direct_upload_id: 'upload_id_from_S3',
+    },
+  ],
+});
+```
+
+### Reading Messages
+
+```typescript
+// List messages in a channel with auto-pagination
+for await (const messageListResponse of client.messages.list({
+  channel_id: 'channel_id_or_experience_id',
+  direction: 'desc',
+  first: 20,
+})) {
+  console.log(messageListResponse);
+}
+
+// Retrieve a specific message
+const message = await client.messages.retrieve('message_id');
+```
+
+### Managing Chat Channels
+
+```typescript
+// Retrieve a chat channel
+const chatChannel = await client.chatChannels.retrieve('id');
+
+// Update chat channel settings
+const updatedChannel = await client.chatChannels.update('id', {
+  ban_media: false,
+  ban_urls: false,
+  banned_words: ['word1', 'word2'],
+  user_posts_cooldown_seconds: 10,
+  who_can_post: 'everyone', // 'everyone' | 'members_only' | 'admins_only'
+  who_can_react: 'everyone', // 'everyone' | 'members_only' | 'admins_only'
+});
+
+// List chat channels in a company
+for await (const chatChannelListResponse of client.chatChannels.list({
+  company_id: 'biz_xxxxxxxxxxxxxx',
+  product_id: 'product_id_optional',
+  first: 10,
+})) {
+  console.log(chatChannelListResponse);
+}
+```
+
+### Adding Reactions
+
+```typescript
+// Create a reaction on a message
+const reaction = await client.reactions.create({
+  resource_id: 'message_id',
+  emoji: '😀', // Unicode emoji or ':heart:' format
+});
+
+// List reactions on a message
+for await (const reactionListResponse of client.reactions.list({
+  resource_id: 'message_id',
+  first: 20,
+})) {
+  console.log(reactionListResponse);
+}
+```
+
+### Support Channels
+
+```typescript
+// Create or get existing support channel for a user
+const supportChannel = await client.supportChannels.create({
+  company_id: 'biz_xxxxxxxxxxxxxx',
+  user_id: 'user_xxxxxxxxxxxxx',
+});
+
+// List support channels (e.g., for a support dashboard)
+for await (const supportChannelListResponse of client.supportChannels.list({
+  company_id: 'biz_xxxxxxxxxxxxxx',
+  open: true, // Filter for unresolved channels
+  order: 'last_post_sent_at',
+  direction: 'desc',
+  first: 10,
+})) {
+  console.log(supportChannelListResponse);
+}
+```
+
+## Required Permissions
+
+Make sure your app has the following permissions enabled:
+
+- `chat:read` - For reading messages, channels, and reactions
+- `chat:message:create` - For creating messages
+- `chat:moderate` - For updating chat channel settings
+- `support_chat:create` - For creating support channels
+- `support_chat:read` - For reading support channels
+
+## Message Structure
+
+Messages returned from the API include:
+
+```typescript
+{
+  id: string;
+  content: string | null;
+  created_at: string;
+  is_edited: boolean;
+  is_pinned: boolean;
+  message_type: 'text' | 'image' | 'video' | 'poll';
+  poll: {
+    options: Array<{ id: string; text: string }> | null;
+  } | null;
+  poll_votes: Array<{
+    count: number;
+    option_id: string | null;
+  }>;
+  reaction_counts: Array<{
+    count: number;
+    emoji: string | null;
+  }>;
+  replying_to_message_id: string | null;
+  updated_at: string;
+  user: {
+    id: string;
+    name: string | null;
+    username: string;
+  };
+}
+```

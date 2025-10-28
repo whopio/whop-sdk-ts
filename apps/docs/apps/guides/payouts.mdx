@@ -3,7 +3,7 @@ title: Payouts
 description: Pay users and companies on whop
 ---
 
-Your app can use the whop api to easily pay users and companies throughout the platform.
+Your app can use the whop API to easily pay users and companies throughout the platform.
 This allows your app to implement flexible and custom revenue sharing, user rewards or payouts solutions.
 
 A transfer of balance is represented by the [`Transfer`](/api-reference/transfer/retrieve-transfer) resource in the API.
@@ -26,7 +26,7 @@ A transfer of balance is represented by the [`Transfer`](/api-reference/transfer
     </Step>
 
     <Step title="Make the transfer">
-        Once you have your origin and destination, use the SDK or api to create a transfer.
+        Once you have your origin and destination, use the SDK or API to create a transfer.
         The funds will be transferred immediately.
 
         <CodeGroup>
@@ -77,11 +77,11 @@ A transfer of balance is represented by the [`Transfer`](/api-reference/transfer
 
         <Warning>
             When creating a transfer we recommend that you include an `idempotence_key` in the request body.
-            An idempotence key will prevent 2 api calls with the same `idempotence_key` value
+            An idempotence key will prevent 2 API calls with the same `idempotence_key` value
             from transferring money twice.
 
-            For example when implementing revenue sharing for every received payment, it is wise to derive the
-            `idempotence_key` from the payment id, meaning you will never share revenue from the same payment twice.
+            For example, when implementing revenue sharing for every received payment, it is wise to derive the
+            `idempotence_key` from the payment ID, meaning you will never share revenue from the same payment twice.
 
             Idempotence keys are scoped to your app.
         </Warning>
