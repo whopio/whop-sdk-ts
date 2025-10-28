@@ -13,6 +13,15 @@ noindex: true
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.courses.updateLesson({
+	// Completion requirements for quiz/knowledge check lessons
+	assessmentCompletionRequirement: {
+		// The minimum grade percentage required to pass (0-100). Cannot be set together with minimum_questions_correct.
+		minimumGradePercent: 10,
+
+		// The minimum number of questions that must be answered correctly. Cannot be set together with minimum_grade_percent.
+		minimumQuestionsCorrect: 10,
+	},
+
 	// Assessment questions for quiz/knowledge check lessons. Replaces all existing questions.
 	assessmentQuestions: [
 		{
