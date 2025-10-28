@@ -162,7 +162,7 @@
 						"groups": [
 							{
 								"group": "Introduction",
-								"pages": ["apps/api/getting-started", "apps/api/permissions"]
+								"pages": ["apps/api/getting-started"]
 							},
 							{
 								"group": "Payments",
