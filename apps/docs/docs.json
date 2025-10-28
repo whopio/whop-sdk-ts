@@ -171,7 +171,7 @@
 						"groups": [
 							{
 								"group": "Introduction",
-								"pages": ["apps/api/getting-started"]
+								"pages": ["apps/api/getting-started", "apps/api/permissions"]
 							},
 							{
 								"group": "Payments",

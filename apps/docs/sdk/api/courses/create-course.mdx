@@ -13,11 +13,17 @@ noindex: true
 import { whopSdk } from "@/lib/whop-sdk";
 
 const result = await whopSdk.courses.createCourse({
+	// Whether the course will award its students a PDF certificate after completing all lessons
+	certificateAfterCompletionEnabled: true,
+
 	// The cover image URL of the course
 	coverImage: "some string",
 
 	// The ID of the experience to create the course in
 	experienceId: "exp_XXXXXXXX" /* Required! */,
+
+	// Whether the course requires students to complete the previous lesson before moving on to the next one
+	requireCompletingLessonsInOrder: true,
 
 	// The tagline of the course
 	tagline: "some string",
