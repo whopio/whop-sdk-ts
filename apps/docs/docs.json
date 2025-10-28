@@ -50,6 +50,15 @@
 									"supported-business-models/dtc-ecommerce",
 									"supported-business-models/brick-and-mortar"
 								]
+							},
+							{
+								"group": "Affiliates",
+								"pages": [
+									"affiliates/promote-your-business",
+									"affiliates/setup-global",
+									"affiliates/setup-custom",
+									"affiliates/setup-rev-share"
+								]
 							}
 						]
 					},
