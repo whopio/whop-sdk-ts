@@ -21,6 +21,9 @@ const result = await whopSdk.users.banUser({
 	// The ID of the feed to delete messages from
 	deleteMessagesInFeedId: "xxxxxxxxxxx",
 
+	// Delete all user's posts from the company
+	deletePosts: true,
+
 	// The reason for banning the user
 	reason:
 		"botting_content_rewards" /* Valid values: botting_content_rewards | botting_negative_reviews | control_center_blocked_country | harassment | other | spamming */,
