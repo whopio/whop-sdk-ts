@@ -2,4 +2,208 @@
 title: Getting started
 ---
 
-Building a whop app is
+To build a Whop app, follow these steps.
+
+1. Create a whop app on the dashboard and get your api keys.
+2. Setup your development environment
+3. Build your app view page. Either experience view or dashboard view.
+4. Deploy to production
+5. Apply to discover
+
+## Create your Whop app.
+
+<Steps>
+    <Step title="Go to your company dashboard">
+        Navigate to the [developer page](https://whop.com/dashboard/developer).
+        Find the app section underneath webhooks
+        <Info>
+            You cannot change the company that your app is built in later.
+        </Info>
+    </Step>
+
+    <Step title="Create your app">
+        Click on "Create App" and give it a name. You can change this later.
+    </Step>
+
+    <Step title="Copy your environment variables">
+        You will need these to run your app and access the api.
+
+        <Frame>
+          <video
+            autoPlay
+            src="/how-to-videos/copy-environment-variables.mp4"
+            alt="Copy your app environment variables"
+          />
+        </Frame>
+    </Step>
+</Steps>
+
+## Setup your development environment
+
+You can build whop apps in any programming language and framework.
+Our SDKs are currently available in
+[Javascript / Typescript](https://npmjs.com/package/@whop/sdk),
+[Python](https://pypi.org/project/whop-sdk),
+[Ruby](https://rubygems.org/gems/whop-sdk) and
+Go (coming soon)
+
+If you are new, the easiest way to get started is to use our [NextJS template](https://github.com/whopio/whop-nextjs-app-template).
+
+<Steps>
+    <Step title="Create your app">
+        <CodeGroup>
+            ```bash NextJS
+            pnpm create next-app@latest \
+                -e https://github.com/whopio/whop-nextjs-app-template \
+                my_whop_app
+
+            cd my_whop_app
+            ```
+
+            ```bash Python
+            # we don't have an app template for python yet,
+            # We recommend making a Fast API / Django / Flask app
+            # and installing our sdk
+            pip install whop-sdk
+            ```
+
+            ```bash Ruby
+            # we don't have an app template for ruby yet,
+            # We recommend making a Ruby on Rails app
+            # and installing our sdk
+            gem install whop_sdk
+            ```
+        </CodeGroup>
+    </Step>
+
+    <Step title="Setup your SDK">
+        1. Paste your environment variables from above into a `.env.development.local` file in your project.
+
+        2. Initialize the Whop SDK with the environment variables and export it so it can be reused throughout your app.
+
+            <Note>This is already done in the NextJS template. Find it at `./lib/whop-sdk.ts`</Note>
+
+
+            <CodeGroup>
+            ```typescript NextJS
+            import Whop from "@whop/sdk";
+
+            export const whopsdk = new Whop({
+              apiKey: process.env.WHOP_API_KEY, // This is the default and can be omitted
+              appID: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+            });
+            ```
+
+            ```python Python
+            import os
+            from whop_sdk import Whop
+
+            whop_sdk = Whop(
+                api_key=os.environ.get("WHOP_API_KEY"),  # This is the default and can be omitted
+                app_id=os.environ.get("WHOP_APP_ID"), # This is the default and can be omitted
+            )
+            ```
+
+            ```ruby Ruby
+            require "bundler/setup"
+            require "whop_sdk"
+
+            whop_sdk = WhopSDK::Client.new(
+              api_key: ENV["WHOP_API_KEY"], # This is the default and can be omitted
+              app_id: ENV["WHOP_APP_ID"], # This is the default and can be omitted
+            )
+            ```
+            </CodeGroup>
+    </Step>
+
+    <Step title="Start your development server">
+        <CodeGroup>
+        ```bash NextJS
+        pnpm dev
+        ```
+
+        ```bash Other Frameworks
+        # First terminal
+        rails server --port 5000 # or whatever your local dev command is
+
+        # second terminal - run whop dev proxy (see below for more info)
+        npx @whop-apps/dev-proxy --standalone --upstreamPort=5000 --proxyPort=3000
+        ```
+        </CodeGroup>
+
+        <Note>
+            You need to run your dev server through the whop dev proxy. This is the default behaviour in the NextJS template. [Learn more](/apps/guides/dev-proxy)
+        </Note>
+    </Step>
+
+    <Step title="Configure your app views">
+        The app view determines the initial path that is opened when you app is loaded in the whop UI.
+
+        If you are building a consumer focussed app for members, ensure your "App View" is set to `/experiences/[experienceId]`. (This is the default)
+
+        If you are building a dashboard app for business owners, remove the "App View" and set the "Dashboard View" to `/dashboard/[companyId]`
+
+        > Configure this in the "Hosting" section in your App Details tab in the App Dashboard
+
+        <Frame>
+            ![App Views](/images/app-settings-hosting.png)
+        </Frame>
+    </Step>
+
+    <Step title="Install your whop app">
+        Visit your install link (which can be found on your app details page)
+        and install your app into your whop.
+
+        <Frame>
+            ![App Install Button](/images/app-settings-install-app-button.png)
+        </Frame>
+
+        If building a consumer app _(ie: "App path" is set)_ then this will take you
+        to the experience view inside the "whop" view within your community.
+
+        If building a dashboard app, _(ie: "Dashboard path" is set)_ this will take you to the
+        dashboard view for you app inside the dashboard view of the company you selected during install.
+    </Step>
+
+    <Step title="Enable development mode">
+        The current page you're on will now show an error, as your app is missing the `Base Url` for production use.
+
+        For now, enable `Localhost mode` using the development mode setting overlay in the app frame.
+        This will load the app that's running on localhost in your setup.
+
+        <Info>
+            If you are building using an online AI coding platform, directly set the `Base URL`
+            to the URL provided by the platform. In this case, you don't need "Localhost" mode.
+        </Info>
+
+        <Frame>
+          <video
+            autoPlay
+            src="/how-to-videos/experience-app-preview-set-localhost.mp4"
+            alt="Set localhost mode in the app frame"
+          />
+        </Frame>
+    </Step>
+</Steps>
+
+<Check>You should now see your local development environment live inside whop.</Check>
+
+## Build your app view page.
+
+## Deploy to production
+
+## Apply to discover
+
+Apply to discover to have your app listed on the Whop app store.
+
+<Note>
+    You don't need to be listed on the app store in order to use your app.
+
+    You can always share your install link directly or link to from your website.
+</Note>
+
+<Steps>
+    <Step title="Complete your branding">
+        Set an App Icon
+    </Step>
+</Steps>
