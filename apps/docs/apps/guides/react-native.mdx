@@ -70,6 +70,10 @@ Get these credentials from the [Whop Developer Dashboard](https://whop.com/dashb
 
 ## Views
 
+<Frame>
+![Project Structure](/images/react-native-project-structure.png)
+</Frame>
+
 Whop apps use different "views" depending on where they're displayed. Each view receives authenticated context as props.
 
 ### Experience View
@@ -184,6 +188,10 @@ For server-side operations, create API routes and call them from your React Nati
 
   <Step title="Set your API base URL">
     Configure your API origin in the [developer dashboard](https://whop.com/dashboard/developer) under "Base URL".
+
+    <Frame>
+    ![Base URL](/images/app-settings-base-url.png)
+    </Frame>
   </Step>
 
   <Step title="Create an API endpoint">
@@ -632,7 +640,19 @@ pnpm clean         # Clean build directory
 5. Select your development build
 6. Click "Promote to Production"
 
+<Frame>
+![Promote to production](/images/promote-build.png)
+</Frame>
+
 Your app will be reviewed and deployed to all users once approved.
+
+### Rollback
+
+From the builds screen you can also instantly rollback to a previous production build which will be pushed live to all users across Whop.
+
+<Frame>
+![Rollback](/images/rollback-build.png)
+</Frame>
 
 ---
 

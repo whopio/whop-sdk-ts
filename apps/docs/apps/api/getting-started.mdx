@@ -27,6 +27,7 @@ curl https://api.whop.com/api/v1/users/j
 ```
 
 To make authenticated requests you need to include your API key in the `Authorization` header using the `Bearer` scheme:
+You also need to ensure your API keys has the [required permissions](/apps/guides/permissions)
 
 ```bash
 # replace "YOUR_API_KEY" with your real API key
@@ -60,7 +61,7 @@ We recommending using our SDKs to make API calls in your apps. We currently supp
 
 <Note>
   Make sure you app has the required permissions to make api calls. See
-  [Permissions](/apps/api/permissions) for more information.
+  [Permissions](/apps/guides/permissions) for more information.
 </Note>
 
 <CodeGroup>

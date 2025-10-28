@@ -162,7 +162,7 @@
 						"groups": [
 							{
 								"group": "Introduction",
-								"pages": ["apps/api/getting-started", "apps/api/permissions"]
+								"pages": ["apps/api/getting-started"]
 							},
 							{
 								"group": "Payments",
@@ -798,16 +798,7 @@
 						"groups": [
 							{
 								"group": "SDK Reference",
-								"pages": [
-									"sdk/installation",
-									"sdk/local-development",
-									"sdk/whop-api-client",
-									"sdk/ai"
-								]
-							},
-							{
-								"group": "Authentication",
-								"pages": ["sdk/retrieve-current-user", "sdk/validate-access"]
+								"pages": ["sdk/local-development", "sdk/whop-api-client"]
 							},
 							{
 								"group": "Resources",
@@ -975,10 +966,6 @@
 										]
 									}
 								]
-							},
-							{
-								"group": "iFrame",
-								"pages": ["sdk/iframe-setup", "sdk/external-url"]
 							}
 						]
 					}
