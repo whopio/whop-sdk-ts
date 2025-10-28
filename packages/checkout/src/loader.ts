@@ -19,20 +19,8 @@ if (typeof window !== "undefined" && loaderScriptSrc) {
 			listening: false,
 			frames: new Map(),
 			identifiedFrames: new Map(),
-			submit: (identifier: string, data?: WhopCheckoutSubmitDetails) => {
-				const frame = window.wco?.identifiedFrames.get(identifier);
-				if (!frame)
-					throw new Error(
-						`Failed to submit Whop embedded checkout. No embed with identifier ${identifier} found.`,
-					);
-				frame.dispatchEvent(
-					new CustomEvent("checkout:submit", {
-						detail: data,
-						cancelable: true,
-						bubbles: false,
-						composed: true,
-					}),
-				);
+			submit: (_identifier: string, _data?: WhopCheckoutSubmitDetails) => {
+				throw new Error("Whop Embedded checkout script not initialized");
 			},
 			getEmail: (_identifier: string, _timeout = 2000) => {
 				throw new Error("Whop Embedded checkout script not initialized");

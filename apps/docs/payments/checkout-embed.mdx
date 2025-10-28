@@ -495,8 +495,7 @@ Defaults to `false`
 
 <Note>
   When using this Option, you will need to [programmatically submit](#submit)
-  the checkout form. Using this option will also hide Apple Pay. Read more about
-  Apple Pay [here](#apple-pay).
+  the checkout form.
 </Note>
 
 ```md
@@ -707,10 +706,8 @@ Apple Pay is a payment method that allows users to pay with their Apple Wallet. 
 Verifying your domain will require you to host [this file](https://whop.com/.well-known/apple-developer-platform-integrator-domain-association) on `https://<your-domain>/.well-known/apple-developer-merchantid-domain-association`. Please refer to your framework's or hosting provider's documentation on how to host this file.
 
 <Note>
-  Apple Pay will not work consistently when programmatically submitting the
-  checkout form. For this reason the Apple Pay will be hidden when using the
-  hideSubmitButton option. We are actively working on implementing support for
-  programmatically submitting the checkout form with Apple Pay.
+  When using the `hideSubmitButton` option in react, `@whop/checkout@0.0.43` or
+  later is required for Apple Pay to show up in the embed.
 </Note>
 
 ## FAQs

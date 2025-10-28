@@ -10,9 +10,8 @@ import { useEffect, useMemo } from "react";
 type GetEmbeddedCheckoutIframeUrlParams = Parameters<
 	typeof getEmbeddedCheckoutIframeUrl
 >;
-
 export interface WhopCheckoutEmbedControls {
-	submit: (opts?: WhopCheckoutSubmitDetails) => void;
+	submit: (opts?: WhopCheckoutSubmitDetails) => Promise<void>;
 	getEmail: (timeout?: number) => Promise<string>;
 	setEmail: (email: string, timeout?: number) => Promise<void>;
 	setAddress: (address: WhopCheckoutAddress, timeout?: number) => Promise<void>;

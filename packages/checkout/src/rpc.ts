@@ -1,4 +1,7 @@
-import { WhopCheckoutRpcTimeoutError } from "./errors";
+import {
+	WhopCheckoutRpcAbortedError,
+	WhopCheckoutRpcTimeoutError,
+} from "./errors";
 import {
 	type WhopCheckoutMessage,
 	type WhopCheckoutRpcResponseMessage,
@@ -11,7 +14,8 @@ export function rpc<E extends WhopCheckoutRpcResponseMessage["event"], T>(
 	data: { event: string } & Record<string, unknown>,
 	responseEvent: E,
 	select: (message: Extract<WhopCheckoutRpcResponseMessage, { event: E }>) => T,
-	timeout = 2000,
+	timeout: number | null = 2000,
+	abortSignal?: AbortSignal,
 ) {
 	const origin = new URL(frame.src).origin;
 	const eventId = uuidv4Safe();
@@ -25,10 +29,31 @@ export function rpc<E extends WhopCheckoutRpcResponseMessage["event"], T>(
 	);
 
 	return new Promise<T>((resolve, reject) => {
-		const timeoutId = setTimeout(() => {
-			reject(new WhopCheckoutRpcTimeoutError());
+		if (abortSignal?.aborted) {
+			reject(new Error("Aborted"));
+			return;
+		}
+
+		const cleanup = () => {
+			if (timeoutId) clearTimeout(timeoutId);
 			window.removeEventListener("message", handleMessage);
-		}, timeout);
+			abortSignal?.removeEventListener("abort", onAbort);
+		};
+
+		const timeoutId =
+			timeout !== null
+				? setTimeout(() => {
+						reject(new WhopCheckoutRpcTimeoutError());
+						cleanup();
+					}, timeout)
+				: null;
+
+		const onAbort = () => {
+			reject(new WhopCheckoutRpcAbortedError());
+			cleanup();
+		};
+
+		abortSignal?.addEventListener("abort", onAbort, { once: true });
 
 		const handleMessage = (
 			event: MessageEvent<WhopCheckoutMessage | unknown>,
@@ -37,8 +62,7 @@ export function rpc<E extends WhopCheckoutRpcResponseMessage["event"], T>(
 			if (!isWhopCheckoutResponseMessageMessage(event, responseEvent)) return;
 			if (event.data.event !== responseEvent) return;
 			if (event.data.event_id !== eventId) return;
-			clearTimeout(timeoutId);
-			window.removeEventListener("message", handleMessage);
+			cleanup();
 			try {
 				resolve(select(event.data));
 			} catch (error) {
