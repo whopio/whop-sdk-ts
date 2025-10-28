@@ -188,9 +188,109 @@ If you are new, the easiest way to get started is to use our [NextJS template](h
 
 <Check>You should now see your local development environment live inside whop.</Check>
 
-## Build your app view page.
+## Build your app
+
+You are now ready to start building your app.
+
+Get started by looking into `./app/experiences/[experienceId]/page.tsx`
+or `./app/dashboard/[companyId]/page.tsx` if you're building a dashboard app.
+
+<Note>
+    If you are building in a different framework create these files, such that your server responds to
+
+    `GET /experience/exp_123` or `GET /dashboard/biz_123`
+</Note>
+
+Here are some tips for building your whop app
+
+<AccordionGroup>
+<Accordion title="Authenticate users and validate access">
+    Use the `verifyUserToken` method to identify who is making requests to your app, then use `checkAccess` to verify they have permission to view the requested experience or company.
+
+    ```typescript
+    const { userId } = await whopsdk.verifyUserToken(await headers());
+    const access = await whopsdk.users.checkAccess(experienceId, { id: userId });
+    ```
+
+    [Learn more about authentication](/apps/guides/authentication)
+</Accordion>
+
+<Accordion title="Use Frosted UI for beautiful components">
+    Frosted UI provides pre-built components that automatically adapt to light and dark mode, matching the native Whop design system for a polished, professional look.
+
+    ```bash
+    npm install @whop/frosted-ui
+    ```
+
+    [Learn more about Frosted UI](/apps/guides/frosted_ui)
+</Accordion>
+
+<Accordion title="Accept payments in your app">
+    Create checkout sessions and accept payments directly in your app using the Whop payment APIs. Handle one-time payments, subscriptions, and more with low fees.
+
+    ```typescript
+    const checkout = await whopsdk.checkoutConfigurations.create({
+        company_id: "biz_xxx",
+        // ... configuration
+    });
+    ```
+
+    [Learn more about payments](/apps/guides/payins)
+</Accordion>
+
+<Accordion title="Setup webhooks to respond to events">
+    Listen to events like new memberships, cancellations, and payments to keep your app in sync with Whop. Webhooks are sent in real-time to your server.
+
+    ```typescript
+    const event = whopsdk.webhooks.unwrap(...);
+    ```
+
+    [Learn more about webhooks](/apps/guides/webhooks)
+</Accordion>
+</AccordionGroup>
 
 ## Deploy to production
+
+Once you are happy with your app locally, deploy your app to the a publically accessible hostname.
+
+Popular options are [Vercel](https://vercel.com), [Railway](https://railway.com) or [Cloudflare Pages](https://pages.cloudflare.com).
+
+<Steps>
+    <Step title="Set your environment variables on your hosting provider">
+        Copy the environment variables from your app dashboard, as you did for the local setup.
+    </Step>
+
+    <Step title="Set the base url in the app dashboard">
+        Once your app is deployed, copy the deployment url and paste it into the `Base Url` field in your app dashboard.
+
+        <Frame>
+            ![Base url input box](/images/app-settings-base-url.png)
+        </Frame>
+    </Step>
+
+    <Step title="Switch to production">
+        Open the dev settings in the top right of your app and switch to production mode.
+        Your app is now running in production and will work for all users.
+    </Step>
+</Steps>
+
+#### Troubleshooting
+
+<Accordion title="Server actions don't work when deployed on vercel">
+    Ensure you use the `withWhopAppConfig` wrapper in your `next.config.mjs` file.
+
+    ```typescript
+    // next.config.ts
+    import type { NextConfig } from "next";
+    import { withWhopAppConfig } from "@whop/react/next.config";
+
+    const nextConfig: NextConfig = {
+        // your config options
+    };
+
+    export default withWhopAppConfig(nextConfig);
+    ```
+</Accordion>
 
 ## Apply to discover
 
@@ -205,10 +305,31 @@ Apply to discover to have your app listed on the Whop app store.
 <Steps>
     <Step title="Complete your branding">
         1. Ensure your app has an Icon, short description and good name. (App Details tab)
-        2. Add a short 10-20 second video showcasing how your app is used. (Discover tab)
-        3. Add 2-3 further screenshots of your app.
-        4. Write an app store description that highlights what your app does and how it will benefit creators.
+        2. Select you app store category.
+        3. Add a short 10-20 second video showcasing how your app is used. (Discover tab)
+        4. Add 2-3 further screenshots of your app.
+        5. Write an app store description that highlights what your app does and how it will benefit creators.
+
+        <Info>
+            You can preview your app store listing page at `https://whop.com/apps/<app_xxxxxx>`.
+        </Info>
     </Step>
 
+    <Step title="Submit for review">
+        Click on the "Publish to App Store" button. Whop will review your app.
 
+        To ensure that your app passes review ensure the following criteria are met:
+
+        - [x] You app works end to end, in production on any whop account without bugs.
+        - [x] You app uses the provided [whop authentication](/apps/guides/authentication) and doesn't ask users to sign in again.
+        - [x] You app isn't purely a redirect to an external platform
+        - [x] You app does NOT ask for permissions it doesn't need to function.
+        - [x] Your app is polished and looks good in both light and dark mode (switch between both in the bottom right on whop). [ProTip: Use FrostedUI](/apps/guides/frosted_ui)
+    </Step>
+
+    <Step title="LFG 🚀 - Congratulations on building your first whop app">
+        Your app will be reviewed within a few days. Once you are live you will get a DM from whop.
+
+        Share your install link on X / Twitter. We'd excited to see what you build!
+    </Step>
 </Steps>
