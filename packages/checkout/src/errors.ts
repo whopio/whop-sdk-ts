@@ -21,6 +21,19 @@ export function isWhopCheckoutRpcTimeoutError(
 	return error instanceof WhopCheckoutRpcTimeoutError;
 }
 
+export class WhopCheckoutRpcAbortedError extends WhopCheckoutError {
+	public readonly name = "WhopCheckoutRpcAbortedError";
+	constructor(message?: string) {
+		super(message ?? "Aborted waiting for embed response");
+	}
+}
+
+export function isWhopCheckoutRpcAbortedError(
+	error: unknown,
+): error is WhopCheckoutRpcAbortedError {
+	return error instanceof WhopCheckoutRpcAbortedError;
+}
+
 export class WhopCheckoutSetEmailError extends WhopCheckoutError {
 	public readonly name = "WhopCheckoutSetEmailError";
 }

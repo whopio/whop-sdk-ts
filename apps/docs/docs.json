@@ -295,6 +295,10 @@
 											"GET /authorized_users",
 											"GET /authorized_users/{id}"
 										]
+									},
+									{
+										"group": "Reviews",
+										"pages": ["GET /reviews", "GET /reviews/{id}"]
 									}
 								]
 							},

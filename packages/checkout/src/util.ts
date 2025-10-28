@@ -4,12 +4,19 @@ import {
 	WhopCheckoutSetEmailError,
 } from "./errors";
 import {
+	type PaymentRequestCreateResult,
+	type PaymentRequestUpdateResult,
+	type SubmitRequest,
 	type WhopCheckoutMessage,
 	type WhopCheckoutState,
 	isWhopCheckoutMessage,
 } from "./messages";
+import { WhopPaymentRequest } from "./payment-request/whop-payment-request";
 import { rpc } from "./rpc";
 import type { WhopCheckoutAddress, WhopCheckoutSubmitDetails } from "./types";
+import { uuidv4Safe } from "./uuid-v4";
+
+const HOST_SCRIPT_VERSION = 1;
 
 export { isWhopCheckoutMessage };
 
@@ -17,7 +24,19 @@ export type { WhopCheckoutMessage, WhopCheckoutState };
 
 export function onWhopCheckoutMessage(
 	iframe: HTMLIFrameElement,
-	callback: (message: WhopCheckoutMessage) => void,
+	callback: (
+		message: Exclude<
+			WhopCheckoutMessage,
+			Extract<
+				WhopCheckoutMessage,
+				{
+					event:
+						| "payment-request-create-request"
+						| "payment-request-update-request";
+				}
+			>
+		>,
+	) => void,
 ) {
 	function handleMessage(event: MessageEvent<WhopCheckoutMessage | unknown>) {
 		if (event.source !== iframe.contentWindow) {
@@ -26,6 +45,81 @@ export function onWhopCheckoutMessage(
 
 		if (!isWhopCheckoutMessage(event)) {
 			return;
+		}
+
+		switch (event.data.event) {
+			case "payment-request-create-request": {
+				try {
+					const paymentRequest = WhopPaymentRequest.create(
+						iframe,
+						event.data.method_data,
+						event.data.details,
+						event.data.options,
+					);
+					const createResult: PaymentRequestCreateResult = {
+						__scope: "whop-embedded-checkout",
+						event: "payment-request-create-result",
+						event_id: event.data.event_id,
+						ok: true,
+						id: paymentRequest.id,
+					};
+					const origin = new URL(iframe.src).origin;
+					iframe.contentWindow?.postMessage(createResult, origin);
+				} catch (error) {
+					const createResult: PaymentRequestCreateResult = {
+						__scope: "whop-embedded-checkout",
+						event: "payment-request-create-result",
+						event_id: event.data.event_id,
+						ok: false,
+						error: error instanceof Error ? error.message : "Unknown error",
+					};
+					const origin = new URL(iframe.src).origin;
+					iframe.contentWindow?.postMessage(createResult, origin);
+				}
+
+				return;
+			}
+
+			case "payment-request-update-request": {
+				if ("active" in event.data && typeof event.data.active === "boolean") {
+					WhopPaymentRequest.setActive(iframe, event.data.active);
+				}
+				try {
+					const paymentRequest = WhopPaymentRequest.get(iframe);
+					if (!paymentRequest) {
+						throw new Error("Payment request not found");
+					}
+					if ("method_data" in event.data && event.data.method_data) {
+						paymentRequest.updateMethodData(event.data.method_data);
+					}
+					if ("details" in event.data && event.data.details) {
+						paymentRequest.updateDetails(event.data.details);
+					}
+					if ("options" in event.data && event.data.options) {
+						paymentRequest.updateOptions(event.data.options);
+					}
+					const updateResult: PaymentRequestUpdateResult = {
+						__scope: "whop-embedded-checkout",
+						event: "payment-request-update-result",
+						event_id: event.data.event_id,
+						ok: true,
+					};
+					const origin = new URL(iframe.src).origin;
+					iframe.contentWindow?.postMessage(updateResult, origin);
+				} catch (error) {
+					const updateResult: PaymentRequestUpdateResult = {
+						__scope: "whop-embedded-checkout",
+						event: "payment-request-update-result",
+						event_id: event.data.event_id,
+						ok: false,
+						error: error instanceof Error ? error.message : "Unknown error",
+					};
+					const origin = new URL(iframe.src).origin;
+					iframe.contentWindow?.postMessage(updateResult, origin);
+				}
+
+				return;
+			}
 		}
 
 		callback(event.data);
@@ -98,18 +192,24 @@ export async function getAddress(frame: HTMLIFrameElement, timeout = 2000) {
 	);
 }
 
-export function submitCheckoutFrame(
+export async function submitCheckoutFrame(
 	frame: HTMLIFrameElement,
 	_data?: WhopCheckoutSubmitDetails,
 ) {
+	const submitRequest: SubmitRequest = {
+		__scope: "whop-embedded-checkout",
+		event: "submit",
+		event_id: uuidv4Safe(),
+	};
+
+	const paymentRequest = WhopPaymentRequest.get(frame);
+	if (paymentRequest?.active) {
+		const paymentRequestResult = await paymentRequest.getResult();
+		submitRequest.payment_request_result = paymentRequestResult;
+	}
+
 	const origin = new URL(frame.src).origin;
-	frame.contentWindow?.postMessage(
-		{
-			__scope: "whop-embedded-checkout",
-			event: "submit",
-		},
-		origin,
-	);
+	frame.contentWindow?.postMessage(submitRequest, origin);
 }
 
 export function parseSetupFutureUsage(val?: string) {
@@ -161,6 +261,9 @@ export function getEmbeddedCheckoutIframeUrl(
 		origin ?? "https://whop.com/",
 	);
 
+	iframeUrl.searchParams.set("h", window.location.origin);
+	iframeUrl.searchParams.set("v", HOST_SCRIPT_VERSION.toString());
+
 	try {
 		let currentParent: Window = window;
 		while (currentParent.parent !== currentParent) {
@@ -173,8 +276,6 @@ export function getEmbeddedCheckoutIframeUrl(
 	} catch {
 		// ignore cross origin and other errors
 	}
-
-	iframeUrl.searchParams.set("h", window.location.origin);
 
 	if (theme) {
 		iframeUrl.searchParams.set("theme", theme);
