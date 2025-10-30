@@ -421,6 +421,13 @@
 											"GET /course_lesson_interactions/{id}",
 											"webhook course_lesson_interaction.completed"
 										]
+									},
+									{
+										"group": "Course students",
+										"pages": [
+											"GET /course_students",
+											"GET /course_students/{id}"
+										]
 									}
 								]
 							},
