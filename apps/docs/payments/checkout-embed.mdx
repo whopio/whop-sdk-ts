@@ -703,7 +703,7 @@ Defaults to `false`
 
 Apple Pay is a payment method that allows users to pay with their Apple Wallet. To enable Apple Pay, you need to register your domain first. To do so go to your [whop's settings](https://whop.com/dashboard/settings/checkout/) and click **Configure** in the **Payment domains** section. Click the plus button to add a new domain.
 
-Verifying your domain will require you to host [this file](https://whop.com/.well-known/apple-developer-platform-integrator-domain-association) on `https://<your-domain>/.well-known/apple-developer-merchantid-domain-association`. Please refer to your framework's or hosting provider's documentation on how to host this file.
+Verifying your domain will require you to host [this file](https://whop.com/.well-known/apple-platform-integrator/apple-developer-merchantid-domain-association) on `https://<your-domain>/.well-known/apple-developer-merchantid-domain-association`. Please refer to your framework's or hosting provider's documentation on how to host this file.
 
 <Note>
   When using the `hideSubmitButton` option in react, `@whop/checkout@0.0.43` or
