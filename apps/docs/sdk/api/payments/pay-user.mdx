@@ -36,6 +36,9 @@ const result = await whopSdk.payments.payUser({
 	// The ledger account id to transfer from.
 	ledgerAccountId: "ldgr_XXXXXXXX",
 
+	// A hash of metadata to attach to the transfer.
+	metadata: { any: "json" },
+
 	// Notes for the transfer. Maximum of 50 characters.
 	notes: "some string",
 

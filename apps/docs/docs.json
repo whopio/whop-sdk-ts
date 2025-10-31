@@ -258,7 +258,11 @@
 								"pages": [
 									{
 										"group": "Companies",
-										"pages": ["GET /companies/{id}"]
+										"pages": [
+											"GET /companies",
+											"POST /companies",
+											"GET /companies/{id}"
+										]
 									},
 									{
 										"group": "Members",
