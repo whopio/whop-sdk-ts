@@ -1,0 +1,291 @@
+---
+title: Authentication
+description: Authenticate and authorize the current user.
+---
+
+# Authenticating the current user
+
+To figure out who is making a request to your app, the whop iframe will pass a JWT token
+inside the `x-whop-user-token` header on every request made to your app from an embedded iframe.
+Our SDKs includes methods that make it easy to verify and decode this JWT into a whop `user_id`.
+
+<Info>Ensure your SDK client is setup. [Learn more here](/apps/getting-started)</Info>
+
+<CodeGroup>
+    ```typescript JS/TS + NextJS
+    import { headers } from "next/headers";
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export default async function MyServerRenderedPage() {
+    	const { userId } = await whopsdk.verifyUserToken(await headers());
+        // this function throws on validation failure. Ensure you handle errors,
+        // or pass `{ dontThrow: true }` as the second argument
+
+        // ... the rest of your component / api route etc...
+	}
+    ```
+
+    ```javascript JS/TS + ExpressJS
+    import express from "express";
+    import { whopsdk } from "./lib/whop-sdk";
+
+    const app = express();
+
+    app.get("/my-route", async (req, res) => {
+        const { userId } = await whopsdk.verifyUserToken(req.headers);
+        // this function throws on validation failure. Ensure you handle errors,
+        // or pass `{ dontThrow: true }` as the second argument
+
+        // ... the rest of your route handler
+    });
+    ```
+
+    ```python Python + FastAPI
+    from fastapi import FastAPI, Request
+    from lib.whop_sdk import whopsdk
+
+    app = FastAPI()
+
+    @app.get("/my-route")
+    async def my_route(request: Request):
+        result = await whopsdk.verify_user_token(request.headers)
+        # this function throws on validation failure. Ensure you handle errors,
+        # or pass `dont_throw=True` as a keyword argument
+
+        user_id = result.user_id
+
+        # ... the rest of your route handler
+    ```
+
+    ```ruby Ruby on Rails
+    class MyController < ApplicationController
+      def my_action
+        auth_result = whopsdk.verify_user_token!(request.headers)
+        # this function throws on validation failure. For a non-throwing version,
+        # use `verify_user_token` which returns nil on failure
+
+        user_id = auth_result.user_id
+
+        # ... the rest of your controller action
+      end
+    end
+    ```
+</CodeGroup>
+
+This token can only be included for requests made to the `window.location.origin` of your app displayed in the iframe.
+I.e. relative page navigations like `<a href="/sub_page">...</a>`, or fetches that don't specify
+a domain. e.g. `await fetch("/api/quizzes")`. All these requests are sent to the `App.base_url` domain.
+
+<Accordion title="My API is on a different domain">
+    If your app frontend is running on `example.com` however, your API is running on `api.example.com`
+    we recommend that you reverse proxy your api requests through `example.com/api` such that you can still receive
+    and verify the `x-whop-user-token` header.
+
+    If your domain is on cloudflare, you can create an ["origin rule"](https://developers.cloudflare.com/rules/origin-rules/features/#dns-record)
+    from `/api` on `example.com` to rewrite to `api.example.com/api`.
+
+    If you use nextjs you can also [setup a rewrite](https://developers.cloudflare.com/rules/origin-rules/features/#dns-record) in your `next.config.mjs`.
+
+    Rewriting like this can also be configured in `nginx` and `caddy` and many other popular services.
+    Refer to your respective server documentation for how to handle this.
+
+    <Note>
+        This setup is required due to the strict browser cross origin cookie policies.
+    </Note>
+</Accordion>
+
+## Local setup
+
+When developing locally, whop provides a locally runnable reverse proxy that perfectly matches the behaviour of the production setup.
+This means you don't need to change your code to support local development.
+[Learn how set it up here.](/apps/guides/dev-proxy)
+
+# Authorization
+
+Now that you know who is making a request, you need to check their access level. This ensures you only show content to users with the appropriate permissions.
+
+The Whop API and SDKs provide a [`checkAccess`](/api-reference/users/check-access) method to verify access to an Experience, Company, or Product.
+
+## Check Access
+
+<CodeGroup>
+    ```typescript JS/TS
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    const response = await whopsdk.users.checkAccess(
+        "resource_id",
+        { id: "user_xxxxxxxxxxxxx" }
+    );
+
+    // Response:
+    // {
+    //   "has_access": true,
+    //   "access_level": "customer"
+    // }
+    ```
+
+    ```python Python
+    response = whopsdk.users.check_access(
+        resource_id="resource_id",
+        id="user_xxxxxxxxxxxxx",
+    )
+
+    # Response:
+    # {
+    #   "has_access": True,
+    #   "access_level": "customer"
+    # }
+    ```
+
+    ```ruby Ruby
+    response = whopsdk.users.check_access(
+        "resource_id",
+        id: "user_xxxxxxxxxxxxx"
+    )
+
+    # Response:
+    # {
+    #   "has_access": true,
+    #   "access_level": "customer"
+    # }
+    ```
+
+    ```bash cURL
+    curl --request GET \
+      --url https://api.whop.com/api/v1/users/{id}/access/{resource_id} \
+      --header 'Authorization: Bearer <token>'
+    ```
+</CodeGroup>
+
+### Resource IDs
+
+The `resource_id` can be:
+- **Company ID** (`biz_xxxx`) - Check access to a company
+- **Product ID** (`prod_xxxx`) - Check access to a specific product
+- **Experience ID** (`exp_xxxx`) - Check access to an experience
+
+### Access Levels
+
+The response includes an `access_level` field with one of three values:
+
+- **`customer`** - User has a valid membership but is not a team member
+  - For **experiences**: User has a valid membership to any product connected to the experience
+  - For **products**: User has a valid membership to that specific product
+  - For **companies**: User has a valid membership to any product on the company
+
+- **`admin`** - User is a team member of the company (any role including moderator)
+
+- **`no_access`** - User has no access (`has_access` will be `false`)
+
+### Customer app (Experience View)
+
+When you are building a customer app, you should ensure that users who visit your
+app have access to the experience id that they are viewing the app for.
+
+This experience id will be passed in path parameters dynamically as `experienceId`.
+
+<CodeGroup>
+    ```typescript Server Component
+    import { headers } from "next/headers";
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export default async function ExperiencePage({
+        params,
+    }: {
+        params: Promise<{ experienceId: string }>;
+    }) {
+        const { experienceId } = await params;
+        const { userId } = await whopsdk.verifyUserToken(await headers());
+
+        const access = await whopsdk.users.checkAccess(
+            experienceId,
+            { id: userId }
+        );
+
+        if (!access.has_access) {
+            return <div>Access denied</div>;
+        }
+
+        return <div>Welcome to the experience!</div>;
+    }
+    ```
+
+    ```typescript API Route
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export async function GET(
+        request: Request,
+        { params }: { params: Promise<{ experienceId: string }> }
+    ) {
+        const { experienceId } = await params;
+        const { userId } = await whopsdk.verifyUserToken(request.headers);
+
+        const access = await whopsdk.users.checkAccess(
+            experienceId,
+            { id: userId }
+        );
+
+        if (!access.has_access) {
+            return new Response("Access denied", { status: 403 });
+        }
+
+        return Response.json({ message: "Welcome!" });
+    }
+    ```
+</CodeGroup>
+
+### Dashboard app (Dashboard View)
+
+Dashboard apps should only be accessible to admins of the company.
+
+The company id will be passed in the path parameters when your app is loaded as `companyId`.
+
+<CodeGroup>
+    ```typescript Server Component
+    import { headers } from "next/headers";
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export default async function DashboardPage({
+        params,
+    }: {
+        params: Promise<{ companyId: string }>;
+    }) {
+        const { companyId } = await params;
+        const { userId } = await whopsdk.verifyUserToken(await headers());
+
+        const access = await whopsdk.users.checkAccess(
+            companyId,
+            { id: userId }
+        );
+
+        if (access.access_level !== "admin") {
+            return <div>Admin access required</div>;
+        }
+
+        return <div>Welcome to the dashboard!</div>;
+    }
+    ```
+
+    ```typescript API Route
+    import { whopsdk } from "@/lib/whop-sdk";
+
+    export async function GET(
+        request: Request,
+        { params }: { params: Promise<{ companyId: string }> }
+    ) {
+        const { companyId } = await params;
+        const { userId } = await whopsdk.verifyUserToken(request.headers);
+
+        const access = await whopsdk.users.checkAccess(
+            companyId,
+            { id: userId }
+        );
+
+        if (access.access_level !== "admin") {
+            return new Response("Admin access required", { status: 403 });
+        }
+
+        return Response.json({ message: "Welcome to dashboard!" });
+    }
+    ```
+</CodeGroup>

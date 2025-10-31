@@ -1,5 +1,6 @@
 ---
 title: Ban User
+noindex: true
 ---
 <Note>This operation is only available on the server.</Note>
 
@@ -20,6 +21,9 @@ const result = await whopSdk.users.banUser({
 
 	// The ID of the feed to delete messages from
 	deleteMessagesInFeedId: "xxxxxxxxxxx",
+
+	// Delete all user's posts from the company
+	deletePosts: true,
 
 	// The reason for banning the user
 	reason:

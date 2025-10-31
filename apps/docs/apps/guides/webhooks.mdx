@@ -1,0 +1,200 @@
+---
+title: Webhooks
+description: Receive payment, membership and other events from whop programmatically
+---
+
+Use webhooks to handle and respond to whop events in realtime.
+
+Choose between setting up company or app webhooks and follow each respective guide
+
+- Company -> only receive events related to your own company. No permission required.
+- App -> receive events on companies your app is installed on. A permission request is required.
+
+## Company webhooks
+
+Webhooks created on a company will receive all events for related to that specific company.
+
+Use this mode if you are
+
+- a creator only interested in events on your particular company.
+- an app developer processing payments on your company.
+
+To setup company webhooks, follow these steps
+
+<Steps>
+    <Step title="Create the webhook in the whop dashboard">
+        Navigate to the base developer tab in your dashboard [here](https://whop.com/dashboard/developer).
+
+        This is _not_ your inside your app dashboard.
+
+        Click **"Create Webhook"** in the top right corner.
+    </Step>
+
+    <Step title="Select events">
+        Enter your webhook URL and select the events that you want to receive.
+        Ensure that you are on API version `v1`.
+
+        <Info>
+            When testing locally use ngrok or cloudflare tunnels to forward requests to your local development environment.
+        </Info>
+    </Step>
+
+    <Step title="Handle webhook events">
+        Now the provided url will receive `POST` requests for the selected webhook triggers,
+        for all resources that belong to the current company for which the webhook was created.
+
+        See the [Receiving and validating webhooks](/apps/guides/webhooks#validating-webhooks) section to see how to handle these events.
+    </Step>
+</Steps>
+
+## App webhooks
+
+App webhooks allow your app to receive webhooks for events that happen on companies that have your app installed.
+
+Use this mode if you are processing payments on behalf of other companies, or your integration needs to know when events happen on installed companies in order to function.
+
+You may use both company webhooks and app webhooks simultaneously. For example, you may want to listen to waitlist entry creation events on installed companies,
+but you only care about payments on your own company. In this case, make a company webhook for payments and an app webhook for waitlist entry creation.
+
+To setup company webhooks, follow these steps
+
+<Steps>
+    <Step title="Create the webhook in the whop app dashboard">
+        1. Navigate to the developer tab in your dashboard and select your app [here](https://whop.com/dashboard/developer).
+
+        2. Select the `webhooks` tab within your specific app dashboard.
+
+        Click **"Create Webhook"** in the top right corner.
+
+        <Info>
+            Note: This webhook should be created, scoped to your specific app. This is not the global company webhook table.
+        </Info>
+    </Step>
+
+    <Step title="Select events">
+        Enter your webhook URL and select the events that you want to receive.
+        Ensure that you are on API version `v1`.
+
+        <Info>
+            When testing locally use ngrok or cloudflare tunnels to forward requests to your local development environment.
+        </Info>
+    </Step>
+
+    <Step title="Request permissions">
+        In order to receive the events you have selected, you must request the appropriate permissions.
+
+        1. Navigate to the permissions tab.
+        2. Click "Add Permissions"
+        3. Select the appropriate `webhook_receive:xxxxxxx` permission relevant to the events you want to receive.
+        4. Click "Add"
+        5. provide a description of why you app needs the permissions
+        6. Click "Save" at the bottom.
+    </Step>
+
+    <Step title="Handle webhook events">
+        Now the provided URL will receive `POST` requests for the selected webhook triggers,
+        for all resources that belong to any company on which the app is installed.
+
+        To test this, install the app on your own company, or another test company and trigger the webhooks.
+
+        See the [Receiving and validating webhooks](/apps/guides/webhooks#validating-webhooks) section to see how to handle these events.
+    </Step>
+</Steps>
+
+## Validating webhooks
+
+When handling webhook events (especially payments related ones) you MUST verify the authenticity of the request.
+This is to avoid malicious actors spoofing whop to send fake events to your webhook handler.
+
+Whop follows the [Standard Webhooks](https://github.com/standard-webhooks/standard-webhooks) spec to send webhooks.
+
+Follow the below steps to learn how to handle webhook events securely.
+
+<Steps>
+    <Step title="Copy your webhook secret and setup your api client">
+        If using the whop sdk in a supported programming language, copy your webhook key
+        (found in the company or app webhooks table) and store it as the `WHOP_WEBHOOK_KEY` environment variable.
+
+        You can also pass in the SDK client creation like so:
+
+        <CodeGroup>
+            ```typescript Typescript
+            import { Whop } from "@whop/sdk";
+
+            export const whopsdk = new Whop({
+               	appID: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+               	apiKey: process.env.WHOP_API_KEY,
+               	webhookKey: btoa(process.env.WHOP_WEBHOOK_SECRET || ""),
+            });
+            ```
+
+            ```python Python
+            # docs coming soon, however, sdk already supports this...
+            ```
+
+            ```ruby Ruby
+            # docs coming soon, however, sdk already supports this...
+            ```
+        </CodeGroup>
+    </Step>
+
+    <Step title="Setup your api handler">
+        Create a route that can accept HTTP POST requests in your application. (you should have provided this URL in the webhook creation flow above)
+
+        This varies on your framework of choice, however here are some examples in common frameworks
+
+        <Note>Our SDK automatically handles unwrapping and verifying the webhook bodies according to the spec.</Note>
+
+        <CodeGroup>
+            ```typescript Typescript + NextJS
+            import { waitUntil } from "@vercel/functions";
+            import type { Payment } from "@whop/sdk/resources.js";
+            import type { NextRequest } from "next/server";
+            import { whopsdk } from "@/lib/whop-sdk";
+
+            export async function POST(request: NextRequest): Promise<Response> {
+               	// Validate the webhook to ensure it's from Whop
+               	const requestBodyText = await request.text();
+               	const headers = Object.fromEntries(request.headers);
+               	const webhookData = whopsdk.webhooks.unwrap(requestBodyText, { headers });
+
+               	// Handle the webhook event
+               	if (webhookData.type === "payment.succeeded") {
+              		waitUntil(handlePaymentSucceeded(webhookData.data));
+               	}
+
+               	// Make sure to return a 2xx status code quickly. Otherwise the webhook will be retried.
+               	return new Response("OK", { status: 200 });
+            }
+
+            async function handlePaymentSucceeded(invoice: Payment) {
+               	// This is a placeholder for a potentially long running operation
+               	// In a real scenario, you might need to fetch user data, update a database, etc.
+               	console.log("[PAYMENT SUCCEEDED]", invoice);
+            }
+            ```
+
+            ```python Python + FastAPI
+            # docs coming soon, however, sdk already supports this...
+            ```
+
+            ```ruby Ruby on Rails
+            # docs coming soon, however, sdk already supports this...
+            ```
+        </CodeGroup>
+    </Step>
+</Steps>
+
+
+## Available webhooks
+
+Every single webhook we send is documented in the [`API Reference`](/api-reference/).
+Within each resource, the `hook` pages specify the webhook event name,
+and the exact schema that will included in the webhook.
+
+Here are some common ones.
+
+- [Payment Succeeded](/api-reference/payments/payment-succeeded) - when a payment is successfully processed.
+- [Membership Activated](/api-reference/memberships/membership-activated) - when someone joins your community on a particular product.
+- [Membership Deactivated](/api-reference/memberships/membership-deactivated) - when someone's membership goes invalid. (Failed payments / Cancelled membership / Left community)
+- [Entry Created](/api-reference/entries/entry-created) - when someone joins a waitlist entry.

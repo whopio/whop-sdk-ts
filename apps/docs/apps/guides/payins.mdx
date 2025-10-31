@@ -1,0 +1,259 @@
+---
+title: Payins
+description: Process payments with your app
+---
+
+Your app can use whop checkout programmatically to accept payments via card,
+BNPL, ACH, crypto and all of whop's supported payment methods.
+
+There are three main ways to programmatically accept pay-ins.
+
+1. [Checkout links](/payments/create-checkout-link)
+2. [Embedded checkout](/payments/checkout-embed)
+3. [In-App purchases](/apps/guides/payins#in-app-purchases)
+
+To initiate a checkout you need a plan, and optionally a checkout configuration.
+
+Plans specify the price shown at checkout and type of purchase (either one_time or renewal)
+as well as many other configurable options. Plans can be created manually in the
+[dashboard](https://whop.com/dashboard/links/checkout) or [via the api](/api-reference/plan/create-plan).
+
+A checkout configuration allows you to attach custom metadata and redirect urls to one or more checkouts created from it.
+These can only be created [via the api](/api-reference/checkout-configuration/create-checkout-configuration).
+
+# In App Purchases
+
+Use in-app purchases to accept payments for one-time purchases or subscriptions directly within your app.
+
+<Steps>
+    <Step title="Create a checkout configuration">
+       Use the API to create a checkout configuration. This will allow you to attach custom metadata about this specific purchase.
+
+       Do this on your server/backend, when the user selects the item / plan / option they want to purchase.
+
+       <Info>
+            For the `company_id` argument, use the company id that your app is owned by.
+            You can find this in the url of you app dashboard. It looks like `biz_XXXXX`.
+
+            In order to process payments on behalf of other companies, request the required permissions,
+            and pass the company id of each respective company.
+            For example you can derive this from the experience id provided in the experience view.
+       </Info>
+
+       <CodeGroup>
+         ```typescript Typescript
+         const checkoutConfiguration = whopsdk.checkoutConfigurations.create({
+           	plan: {
+           		company_id: "biz_XXXXXX",
+           		initial_price: 10,
+           		plan_type: "one_time",
+           	},
+           	metadata: {
+           		item_id: "sword",
+           		variant: "blue",
+           	},
+         });
+         ```
+
+         ```python Python
+         checkout_configuration = whopsdk.checkout_configurations.create(
+           	plan={
+           		"company_id": "biz_XXXXXX",
+           		"initial_price": 10,
+           		"plan_type": "one_time",
+           	},
+           	metadata={
+           		"item_id": "sword",
+           		"variant": "blue",
+           	},
+         )
+         ```
+
+         ```ruby Ruby
+         configuration = whopsdk.checkout_configurations.create(
+           	plan: {
+           		company_id: "biz_XXXXXX",
+           		initial_price: 10,
+           		plan_type: "one_time",
+           	},
+           	metadata: {
+           		item_id: "sword",
+           		variant: "blue",
+           	},
+         )
+         ```
+       </CodeGroup>
+    </Step>
+
+    <Step title="Open the in app purchase modal">
+        Use the [iframe SDK](/apps/guides/iframe) to trigger the in-app purchase modal in the client browser.
+        This step only works inside the whop iframe in client side JS (experience, dashboard or discover view).
+
+        <CodeGroup>
+        ```tsx React
+        "use client";
+        import { useIframeSdk } from "@whop/react";
+
+        export default function PaymentButton() {
+            const iframeSdk = useIframeSdk();
+
+            const [paymentId, setPaymentId] = useState<string>();
+
+            async function handlePurchase() {
+                // 1. Create checkout configuration on server (from step one above)
+                //    (in this example this is a nextjs server action, but it could also be a plain API route)
+                const checkoutConfiguration = await createCheckoutConfiguration(/* can pass options here */);
+
+                // 2. Open payment modal
+                const res = await iframeSdk.inAppPurchase({
+                    planId: checkoutConfiguration.plan.id,
+                    id: checkoutConfiguration.id
+                });
+
+                if (res.status === "ok") {
+                    setPaymentId(res.data.receipt_id);
+                } else {
+                    // handle errors
+                }
+            }
+
+            return <button onClick={handlePurchase}>Purchase</button>;
+        }
+        ```
+
+        ```tsx Vanilla JS
+        import { iframeSdk } from "@/lib/iframe-sdk";
+
+        const paymentButton = document.querySelector("button#payment-button");
+
+        paymentButton.addEventListener(
+            "click",
+            async function onPaymentButtonClick() {
+                // 1. Create checkout configuration on server (from step one above)
+                //    (in this example this is a nextjs server action, but it could also be a plain API route)
+                const checkoutConfiguration = await createCheckoutConfiguration(/* can pass options here */);
+
+                // 2. Open payment modal
+                const res = await iframeSdk.inAppPurchase({
+                    planId: checkoutConfiguration.plan.id,
+                    id: checkoutConfiguration.id
+                });
+
+                if (res.status === "ok") {
+                    const paymentId = res.data.receipt_id;
+                    // Send this id to your backend to validate, or rely on webhooks.
+                    // User has purchased the item, and it can be unlocked.
+                } else {
+                    // handle errors
+                }
+            }
+        );
+        ```
+        </CodeGroup>
+    </Step>
+
+    <Step title="Setup payment webhooks">
+        Webhooks are the most reliable way to be notified on your server about successful payments.
+        We recommend using webhooks to unlock server gated content or fulfill payments.
+
+        If processing payments on your own company, you need to setup a company webhook to receive webhooks correctly.
+
+        1. Go to your [developer dashboard](https://whop.com/dashboard/developer/) _Don't select any app_
+        2. Click "Create Webhook" in the top right.
+        3. Select API version `v1`
+        4. Select `payment_succeeded`
+        5. Copy your webhook key and prepare your SDK:
+
+        <CodeGroup>
+        ```typescript Typescript
+        import { Whop } from "@whop/sdk";
+
+        export const whopsdk = new Whop({
+           	appID: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+           	apiKey: process.env.WHOP_API_KEY,
+           	webhookKey: btoa(process.env.WHOP_WEBHOOK_SECRET || ""),
+        });
+        ```
+
+        ```python Python
+        # coming soon...
+        ```
+
+        ```ruby Ruby
+        # coming soon...
+        ```
+        </CodeGroup>
+
+        <Accordion title="Processing payments on other companies">
+            When processing on other companies, you need to create an app level webhook and
+            request permission to receive payment events.
+
+            1. Go to your [developer dashboard](https://whop.com/dashboard/developer/)
+            2. Select your app from below the company webhooks
+            3. Navigate to the webhooks tab.
+            4. Create a new webhook and enter your server url
+            5. Select API version `v1`
+            6. Select `payment_succeeded`
+            7. Go to the permissions tab, and request `webhook_receive:payments` and hit _save_
+            8. Copy your webhook key and prepare your SDK like above
+
+            You will now receive webhooks for payments made on all companies that install your app.
+        </Accordion>
+
+    </Step>
+
+    <Step title="Verify the payment">
+        After a payment is processed, you should validate it on your server using webhooks to ensure the payment was successful and update your application accordingly.
+
+        In your application framework, setup a webhook handler and fulfill purchases and/or update your database.
+        We recommend handling webhooks in an async queue or `waitUntil` block to ensure the request
+        handler responds quickly to avoid unnecessary webhook retries.
+
+        <Info>
+            To see exactly what data you will receive, check out the [API Reference](/api-reference/payments/payment-succeeded)
+        </Info>
+
+        <CodeGroup>
+            ```typescript Typescript + NextJS
+            import { waitUntil } from "@vercel/functions";
+            import type { Payment } from "@whop/sdk/resources.js";
+            import type { NextRequest } from "next/server";
+            import { whopsdk } from "@/lib/whop-sdk";
+
+            export async function POST(request: NextRequest): Promise<Response> {
+               	// Validate the webhook to ensure it's from Whop
+               	const requestBodyText = await request.text();
+               	const headers = Object.fromEntries(request.headers);
+               	const webhookData = whopsdk.webhooks.unwrap(requestBodyText, { headers });
+
+               	// Handle the webhook event
+               	if (webhookData.type === "payment.succeeded") {
+              		waitUntil(handlePaymentSucceeded(webhookData.data));
+               	}
+
+               	// Make sure to return a 2xx status code quickly. Otherwise the webhook will be retried.
+               	return new Response("OK", { status: 200 });
+            }
+
+            async function handlePaymentSucceeded(invoice: Payment) {
+               	// This is a placeholder for a potentially long running operation
+               	// In a real scenario, you might need to fetch user data, update a database, etc.
+               	console.log("[PAYMENT SUCCEEDED]", invoice);
+            }
+            ```
+
+            ```python Python + FastAPI
+            # coming soon...
+            ```
+
+            ```ruby Ruby + Rails
+            # coming soon...
+            ```
+        </CodeGroup>
+
+        <Note>
+            You can also fetch payment data using the [`GET /api/v1/payments/:id`](/api-reference/payments/retrieve-payment) api route
+            which will return exactly the same data that is included in the webhook.
+        </Note>
+    </Step>
+</Steps>

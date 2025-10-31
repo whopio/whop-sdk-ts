@@ -50,6 +50,15 @@
 									"supported-business-models/dtc-ecommerce",
 									"supported-business-models/brick-and-mortar"
 								]
+							},
+							{
+								"group": "Affiliates",
+								"pages": [
+									"affiliates/promote-your-business",
+									"affiliates/setup-global",
+									"affiliates/setup-custom",
+									"affiliates/setup-rev-share"
+								]
 							}
 						]
 					},
@@ -132,55 +141,26 @@
 						"groups": [
 							{
 								"group": "Build apps",
-								"pages": [
-									"apps/introduction",
-									"apps/getting-started",
-									"apps/get-api-key",
-									{
-										"group": "App Views",
-										"pages": [
-											"apps/app-views/experience-view",
-											"apps/app-views/dashboard-view",
-											"apps/app-views/discover-view"
-										]
-									},
-									"apps/permissions",
-									"apps/tutorials"
-								]
+								"pages": ["apps/introduction", "apps/getting-started"]
 							},
 							{
-								"group": "Tutorials",
+								"group": "Guides",
 								"pages": [
-									"apps/tutorials/ai-car-customizer",
-									"apps/tutorials/chat-bot",
-									"apps/tutorials/ai-image-generator"
-								]
-							},
-							{
-								"group": "React Native",
-								"pages": [
-									"apps/react-native/installation",
-									"apps/react-native/project-structure",
-									"apps/react-native/fetching-data",
-									"apps/react-native/using-libraries",
-									"apps/react-native/styling",
-									"apps/react-native/deploying",
-									"apps/react-native/advanced",
-									"apps/react-native/troubleshooting"
-								]
-							},
-							{
-								"group": "Features",
-								"pages": [
-									"apps/features/websocket-guide",
-									"apps/features/payments-and-payouts",
-									"apps/features/subscriptions",
-									"apps/features/send-push-notification",
-									"apps/features/post-to-feed",
-									"apps/features/upload-media",
-									"apps/features/webhooks",
-									"apps/features/affiliate-commissions",
-									"apps/features/oauth-guide"
+									"apps/guides/permissions",
+									"apps/guides/authentication",
+									"apps/guides/app-views",
+									"apps/guides/payins",
+									"apps/guides/payouts",
+									"apps/guides/webhooks",
+									"apps/guides/oauth",
+									"apps/guides/dev-proxy",
+									"apps/guides/iframe",
+									"apps/guides/notifications",
+									"apps/guides/forums",
+									"apps/guides/chat",
+									"apps/guides/frosted_ui",
+									"apps/guides/upload-media",
+									"apps/guides/react-native"
 								]
 							}
 						]
@@ -191,7 +171,7 @@
 						"groups": [
 							{
 								"group": "Introduction",
-								"pages": ["apps/api/getting-started", "apps/api/permissions"]
+								"pages": ["apps/api/getting-started"]
 							},
 							{
 								"group": "Payments",
@@ -261,6 +241,15 @@
 											"POST /checkout_configurations",
 											"GET /checkout_configurations/{id}"
 										]
+									},
+									{
+										"group": "Promo codes",
+										"pages": [
+											"GET /promo_codes",
+											"POST /promo_codes",
+											"GET /promo_codes/{id}",
+											"DELETE /promo_codes/{id}"
+										]
 									}
 								]
 							},
@@ -315,6 +304,10 @@
 											"GET /authorized_users",
 											"GET /authorized_users/{id}"
 										]
+									},
+									{
+										"group": "Reviews",
+										"pages": ["GET /reviews", "GET /reviews/{id}"]
 									}
 								]
 							},
@@ -337,7 +330,38 @@
 											"PATCH /experiences/{id}",
 											"DELETE /experiences/{id}",
 											"POST /experiences/{id}/attach",
-											"POST /experiences/{id}/detach"
+											"POST /experiences/{id}/detach",
+											"POST /experiences/{id}/duplicate"
+										]
+									},
+									{
+										"group": "Courses",
+										"pages": [
+											"GET /courses",
+											"POST /courses",
+											"GET /courses/{id}",
+											"PATCH /courses/{id}",
+											"DELETE /courses/{id}"
+										]
+									},
+									{
+										"group": "Course chapters",
+										"pages": [
+											"GET /course_chapters",
+											"POST /course_chapters",
+											"GET /course_chapters/{id}",
+											"PATCH /course_chapters/{id}",
+											"DELETE /course_chapters/{id}"
+										]
+									},
+									{
+										"group": "Course lessons",
+										"pages": [
+											"GET /course_lessons",
+											"POST /course_lessons",
+											"GET /course_lessons/{id}",
+											"PATCH /course_lessons/{id}",
+											"DELETE /course_lessons/{id}"
 										]
 									},
 									{
@@ -345,7 +369,8 @@
 										"pages": [
 											"GET /forum_posts",
 											"POST /forum_posts",
-											"GET /forum_posts/{id}"
+											"GET /forum_posts/{id}",
+											"PATCH /forum_posts/{id}"
 										]
 									},
 									{
@@ -361,7 +386,8 @@
 										"pages": [
 											"GET /messages",
 											"POST /messages",
-											"GET /messages/{id}"
+											"GET /messages/{id}",
+											"PATCH /messages/{id}"
 										]
 									},
 									{
@@ -394,6 +420,13 @@
 											"GET /course_lesson_interactions",
 											"GET /course_lesson_interactions/{id}",
 											"webhook course_lesson_interaction.completed"
+										]
+									},
+									{
+										"group": "Course students",
+										"pages": [
+											"GET /course_students",
+											"GET /course_students/{id}"
 										]
 									}
 								]
@@ -785,16 +818,7 @@
 						"groups": [
 							{
 								"group": "SDK Reference",
-								"pages": [
-									"sdk/installation",
-									"sdk/local-development",
-									"sdk/whop-api-client",
-									"sdk/ai"
-								]
-							},
-							{
-								"group": "Authentication",
-								"pages": ["sdk/retrieve-current-user", "sdk/validate-access"]
+								"pages": ["sdk/local-development", "sdk/whop-api-client"]
 							},
 							{
 								"group": "Resources",
@@ -863,13 +887,10 @@
 									{
 										"group": "Courses",
 										"pages": [
-											"sdk/api/courses/create-assessment-question",
 											"sdk/api/courses/create-chapter",
 											"sdk/api/courses/create-course",
 											"sdk/api/courses/create-lesson",
-											"sdk/api/courses/delete-assessment-question-image",
 											"sdk/api/courses/delete-chapter",
-											"sdk/api/courses/delete-lesson-attachment",
 											"sdk/api/courses/delete-lesson",
 											"sdk/api/courses/get-course",
 											"sdk/api/courses/get-lesson",
@@ -880,7 +901,6 @@
 											"sdk/api/courses/move-course",
 											"sdk/api/courses/update-chapter-order",
 											"sdk/api/courses/update-chapter",
-											"sdk/api/courses/update-lesson-order",
 											"sdk/api/courses/update-lesson"
 										]
 									},
@@ -966,10 +986,6 @@
 										]
 									}
 								]
-							},
-							{
-								"group": "iFrame",
-								"pages": ["sdk/iframe-setup", "sdk/external-url"]
 							}
 						]
 					}

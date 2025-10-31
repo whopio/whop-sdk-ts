@@ -1,11 +1,13 @@
 "use client";
 
+import { WhopPaymentRequest } from "@/payment-request/whop-payment-request";
 import type { WhopCheckoutAddress } from "@/types";
 import React, {
 	type MutableRefObject,
 	type ReactNode,
 	forwardRef,
 	useEffect,
+	useImperativeHandle,
 	useMemo,
 	useRef,
 	useState,
@@ -135,8 +137,6 @@ export interface WhopCheckoutEmbedProps {
 	themeOptions?: WhopCheckoutEmbedThemeOptions;
 	/**
 	 * **Optional** - Set to `true` to hide the submit button in the embedded checkout form.
-	 *
-	 * Note that using this option will currently disable Apple Pay. We are actively working on implementing support for programmatically submitting the checkout form with Apple Pay.
 	 *
 	 * @default false
 	 */
@@ -285,11 +285,20 @@ const WhopCheckoutEmbedInner = forwardRef<
 			);
 		}, [onComplete, onStateChange, onAddressValidationError]);
 
-		if (ref) {
-			const controls: WhopCheckoutEmbedControls = {
-				submit: (opts?: WhopCheckoutSubmitDetails) => {
+		useEffect(() => {
+			return () => {
+				if (iframeRef.current) {
+					WhopPaymentRequest.remove(iframeRef.current);
+				}
+			};
+		}, []);
+
+		useImperativeHandle(
+			ref,
+			() => ({
+				submit: async (opts?: WhopCheckoutSubmitDetails) => {
 					if (!iframeRef.current) return;
-					submitCheckoutFrame(iframeRef.current, opts);
+					return await submitCheckoutFrame(iframeRef.current, opts);
 				},
 				getEmail: (timeout?: number) => {
 					if (!iframeRef.current)
@@ -311,13 +320,9 @@ const WhopCheckoutEmbedInner = forwardRef<
 						throw new Error("Whop embedded checkout frame not found");
 					return getAddress(iframeRef.current, timeout);
 				},
-			};
-			if (typeof ref === "function") {
-				ref(controls);
-			} else {
-				ref.current = controls;
-			}
-		}
+			}),
+			[],
+		);
 
 		return (
 			<iframe

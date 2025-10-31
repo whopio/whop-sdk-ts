@@ -1,3 +1,4 @@
+import { WhopPaymentRequest } from "./payment-request/whop-payment-request";
 import {
 	EMBEDDED_CHECKOUT_IFRAME_ALLOW_STRING,
 	EMBEDDED_CHECKOUT_IFRAME_SANDBOX_LIST,
@@ -31,13 +32,6 @@ function invokeCallback<Args extends unknown[]>(
 }
 
 function listen(iframe: HTMLIFrameElement, node: HTMLElement) {
-	iframe.addEventListener("checkout:submit", (ev) => {
-		submitCheckoutFrame(iframe, ev.detail);
-	});
-
-	// this does not have to be cleaned up because the only time this would be removed is when the iframe is
-	// removed from the DOM and that implicitly removes the listener
-
 	window.wco?.frames.set(
 		iframe,
 		onWhopCheckoutMessage(iframe, function handleWhopCheckoutMessage(message) {
@@ -239,6 +233,9 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 			throw new Error(`No embed with identifier ${identifier} found.`);
 		return frame;
 	}
+	window.wco.submit = async function submitImpl(identifier, data) {
+		await submitCheckoutFrame(getFrame(identifier), data);
+	};
 	window.wco.getEmail = function getEmailImpl(identifier, timeout) {
 		return getEmail(getFrame(identifier), timeout);
 	};
@@ -263,14 +260,15 @@ if (typeof window !== "undefined" && window.wco && !window.wco.listening) {
 				}
 			}
 			const removedNodes = Array.from(mutation.removedNodes);
-			for (const [iframe, cleanup] of window.wco?.frames ?? []) {
+			for (const [iframe, removeListeners] of window.wco?.frames ?? []) {
 				if (removedNodes.includes(iframe)) {
 					if (iframe.dataset.whopCheckoutIdentifier) {
 						window.wco?.identifiedFrames.delete(
 							iframe.dataset.whopCheckoutIdentifier,
 						);
 					}
-					cleanup();
+					WhopPaymentRequest.remove(iframe);
+					removeListeners();
 					window.wco?.frames.delete(iframe);
 				}
 			}

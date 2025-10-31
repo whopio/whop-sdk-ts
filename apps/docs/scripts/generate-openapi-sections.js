@@ -4,7 +4,7 @@ import { parse } from "yaml";
 
 const GETTING_STARTED_SECTION = {
 	group: "Introduction",
-	pages: ["apps/api/getting-started", "apps/api/permissions"],
+	pages: ["apps/api/getting-started"],
 };
 
 const docsJsonPath = join(import.meta.dirname, "..", "docs.json");

@@ -1,0 +1,179 @@
+---
+title: Forums
+description: Make forum posts and read existing posts
+---
+
+<Note type="warning">
+  **These docs are still under construction**
+
+  We're still working on adding:
+  - Sending forum posts with custom sender name + image from apps
+  - SSE events to live listen to reactions, forum posts, and comments
+</Note>
+
+## What's Currently Supported
+
+The new SDK already supports the following forum functionality:
+
+- **Forum Posts**: Create, retrieve, and list forum posts
+- **Comments**: Create and list comments on forum posts
+- **Reactions**: Add and list reactions (likes) on forum posts
+
+## Basic Usage
+
+### Initialize the SDK
+
+```typescript
+import Whop from '@whop/sdk';
+
+const client = new Whop({
+  appID: 'app_xxxxxxxxxxxxxx',
+  apiKey: process.env['WHOP_API_KEY'],
+});
+```
+
+### Creating Forum Posts
+
+```typescript
+// Create a new forum post
+const forumPost = await client.forumPosts.create({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  content: 'This is the main body of the post in **Markdown** format',
+  title: 'Optional title for paywalled posts',
+  is_mention: false,
+  pinned: false,
+  paywall_amount: 0, // Optional paywall amount in cents
+});
+```
+
+### Reading Forum Posts
+
+```typescript
+// List forum posts with auto-pagination
+for await (const forumPostListResponse of client.forumPosts.list({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  pinned: false, // Optional - filter pinned posts
+  first: 10,
+})) {
+  console.log(forumPostListResponse);
+}
+
+// Retrieve a specific forum post
+const forumPost = await client.forumPosts.retrieve('post_id');
+```
+
+### Working with Comments
+
+```typescript
+// Create a comment on a forum post
+const comment = await client.forumPosts.create({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  content: 'This is a comment on the post',
+  parent_id: 'parent_post_id', // ID of the post you're commenting on
+});
+
+// List comments on a forum post
+for await (const commentListResponse of client.forumPosts.list({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  parent_id: 'parent_post_id',
+  first: 10,
+})) {
+  console.log(commentListResponse);
+}
+```
+
+### Adding Reactions (Likes)
+
+```typescript
+// Create a reaction on a forum post
+const reaction = await client.reactions.create({
+  resource_id: 'post_id',
+  emoji: ':heart:', // For forums, emoji is always :heart:
+});
+
+// List reactions on a forum post
+for await (const reactionListResponse of client.reactions.list({
+  resource_id: 'post_id',
+  first: 20,
+})) {
+  console.log(reactionListResponse);
+}
+```
+
+## Required Permissions
+
+Make sure your app has the following permissions enabled:
+
+- `forum:read` - For reading forum posts and comments
+- `forum:post:create` - For creating forum posts and comments
+- `chat:read` - For reading and creating reactions
+
+## Forum Post Structure
+
+Forum posts returned from the API include:
+
+```typescript
+{
+  id: string;
+  comment_count: number;
+  content: string | null;
+  is_edited: boolean;
+  is_pinned: boolean;
+  is_poster_admin: boolean;
+  like_count: number | null;
+  parent_id: string | null; // null for top-level posts, set for comments
+  title: string | null;
+  user: {
+    id: string;
+    name: string | null;
+    username: string;
+  };
+  view_count: number | null;
+}
+```
+
+## Advanced Features
+
+### Pinned Posts
+
+You can create pinned posts that appear at the top of the forum:
+
+```typescript
+const pinnedPost = await client.forumPosts.create({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  content: 'Important announcement!',
+  pinned: true,
+});
+```
+
+### Paywalled Posts
+
+Create posts that require payment to view:
+
+```typescript
+const paywalledPost = await client.forumPosts.create({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  content: 'Exclusive content here',
+  title: 'Premium Post',
+  paywall_amount: 500, // $5.00 in cents
+});
+```
+
+### Pagination
+
+All list operations support cursor-based pagination:
+
+```typescript
+// Get first page
+const firstPage = await client.forumPosts.list({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  first: 10,
+});
+
+// Get next page using cursor
+const nextPage = await client.forumPosts.list({
+  experience_id: 'exp_xxxxxxxxxxxxxx',
+  first: 10,
+  before: firstPage.cursor, // Use cursor from previous response
+});
+```

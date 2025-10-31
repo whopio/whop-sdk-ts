@@ -1,9 +1,12 @@
 ---
 title: Create Checkout Session
+noindex: true
 ---
 <Note>This operation is only available on the server.</Note>
 
 ### Required Permissions
+ - `access_pass:create`
+ - `access_pass:update`
  - `checkout_configuration:create`
  - `plan:create`
 
@@ -85,10 +88,85 @@ const result = await whopSdk.payments.createCheckoutSession({
 		overrideTaxType:
 			"exclusive" /* Valid values: exclusive | inclusive | unspecified */,
 
+		// The explicit payment method configuration for the plan. If not provided, the platform or company's defaults will apply.
+		paymentMethodConfiguration: {
+			// An array of payment method identifiers that are explicitly disabled. Only
+			// applies if the include_platform_defaults is true.
+			disabled: [
+				"acss_debit" /* Valid values: acss_debit | affirm | afterpay_clearpay | alipay | alma | amazon_pay | apple | apple_pay | au_becs_debit | bacs_debit | bancontact | billie | bizum | blik | boleto | capchase_pay | card | cashapp | coinbase | crypto | custom | customer_balance | demo_pay | eps | fpx | giropay | google_pay | gopay | grabpay | id_bank_transfer | ideal | kakao_pay | klarna | konbini | kr_card | kr_market | kriya | link | mb_way | mobilepay | mondu | multibanco | naver_pay | netbanking | ng_bank | ng_bank_transfer | ng_card | ng_market | ng_ussd | ng_wallet | nz_bank_account | oxxo | p24 | pay_by_bank | payco | paynow | paypal | paypay | payto | pix | platform_balance | promptpay | qris | rechnung | revolut_pay | samsung_pay | satispay | scalapay | sepa_debit | sequra | sezzle | shop_pay | shopeepay | sofort | south_korea_market | splitit | sunbit | swish | twint | unknown | upi | us_bank_account | vipps | wechat_pay | zip */,
+			] /* Required! */,
+
+			// An array of payment method identifiers that are explicitly enabled. This means
+			// these payment methods will be shown on checkout. Example use case is to only
+			// enable a specific payment method like cashapp, or extending the platform
+			// defaults with additional methods.
+			enabled: [
+				"acss_debit" /* Valid values: acss_debit | affirm | afterpay_clearpay | alipay | alma | amazon_pay | apple | apple_pay | au_becs_debit | bacs_debit | bancontact | billie | bizum | blik | boleto | capchase_pay | card | cashapp | coinbase | crypto | custom | customer_balance | demo_pay | eps | fpx | giropay | google_pay | gopay | grabpay | id_bank_transfer | ideal | kakao_pay | klarna | konbini | kr_card | kr_market | kriya | link | mb_way | mobilepay | mondu | multibanco | naver_pay | netbanking | ng_bank | ng_bank_transfer | ng_card | ng_market | ng_ussd | ng_wallet | nz_bank_account | oxxo | p24 | pay_by_bank | payco | paynow | paypal | paypay | payto | pix | platform_balance | promptpay | qris | rechnung | revolut_pay | samsung_pay | satispay | scalapay | sepa_debit | sequra | sezzle | shop_pay | shopeepay | sofort | south_korea_market | splitit | sunbit | swish | twint | unknown | upi | us_bank_account | vipps | wechat_pay | zip */,
+			] /* Required! */,
+
+			// Whether Whop's platform default payment method enablement settings are
+			// included in this configuration. The full list of default payment methods can
+			// be found in the documentation at docs.whop.com/payments.
+			includePlatformDefaults: true /* Required! */,
+		},
+
 		// Indicates if the plan is a one time payment or recurring.
 		planType: "one_time" /* Valid values: one_time | renewal */,
 
-		// The product the plan is related to.
+		// Pass this object to create a new product for this plan. We will use the
+		// product external identifier to find or create an existing product.
+		product: {
+			// The business type of the product.
+			businessType:
+				"agency" /* Valid values: agency | brick_and_mortar | coaching | coaching_and_courses | community | course | education_program | events | newsletter | other | paid_group | physical_products | saas | software */,
+
+			// Whether or not to collect shipping information at checkout from the customer.
+			collectShippingAddress: true,
+
+			// The custom statement descriptor for the product i.e. WHOP*SPORTS, must be
+			// between 5 and 22 characters, contain at least one letter, and not contain any
+			// of the following characters: <, >, \, ', "
+			customStatementDescriptor: "some string",
+
+			// A written description of the product.
+			description: "some string",
+
+			// A unique ID used to find or create a product. When provided during creation,
+			// we will look for an existing product with this external identifier — if found,
+			// it will be updated; otherwise, a new product will be created.
+			externalIdentifier: "some string" /* Required! */,
+
+			// The percentage of the revenue that goes to the global affiliate program.
+			globalAffiliatePercentage: 10,
+
+			// The status of the global affiliate program for this product.
+			globalAffiliateStatus: "disabled" /* Valid values: disabled | enabled */,
+
+			// The headline of the product.
+			headline: "some string",
+
+			// The industry type of the product.
+			industryType:
+				"accessories" /* Valid values: accessories | agencies | ai | ai_agency | amazon_fba | auto_repair_shop | beauty_and_personal_care | bootcamps | business | careers | clipping | clipping_agency | clothing | coaching_agency | coffee_shop | concerts | convention | customer_support_agency | dating | design_agency | development_agency | ecommerce | electronics_and_gadgets | fitness | fitness_gear | food_and_beverages | gym | health_and_wellness | home_goods | home_services | hotel_lodging | kindle_book_publishing | marketing_agency | masterminds | medical_dentist_office | meetups | other | parties | personal_development | personal_finance | public_speaking | real_estate | recruiting_agency | reselling | restaurant | retail_store | sales | sales_agency | salon_spa | social_media | software | spirituality | sports_betting | supplements | trading | travel | vas | video_games | webinars */,
+
+			// The ID of the product tax code to apply to this product.
+			productTaxCodeId: "xxxxxxxxxxx",
+
+			// The URL to redirect the customer to after a purchase.
+			redirectPurchaseUrl: "some string",
+
+			// The route of the product.
+			route: "some string",
+
+			// The title of the product.
+			title: "some string" /* Required! */,
+
+			// This product will/will not be displayed publicly - default hidden.
+			visibility:
+				"archived" /* Valid values: archived | hidden | quick_link | visible */,
+		},
+
+		// The product the plan is related to. Either this or product is required.
 		productId: "xxxxxxxxxxx",
 
 		// This is the release method the business uses to sell this plan.

@@ -1,5 +1,6 @@
 ---
 title: Update Access Pass
+noindex: true
 ---
 <Note>This operation is only available on the server.</Note>
 
@@ -76,6 +77,15 @@ const result = await whopSdk.accessPasses.updateAccessPass({
 
 	// The route of the product.
 	route: "some string",
+
+	// Configuration for a product on the company's store page.
+	storePageConfig: {
+		// Custom call-to-action text for the product's store page.
+		customCta: "some string",
+
+		// Whether or not to show the price on the product's store page.
+		showPrice: true,
+	},
 
 	// The title of the product.
 	title: "some string",

@@ -1,6 +1,7 @@
 ---
 title: List Promo Codes
 description: Fetch a company
+noindex: true
 ---
 <Note>This operation is only available on the server.</Note>
 
@@ -103,7 +104,7 @@ const result = {
 				// Restricts promo use to only be applied to already purchased memberships.
 				existingMembershipsOnly: true,
 
-				// The number of billing cycles the promo is applied for.
+				// The number of months the promo is applied for.
 				numberOfIntervals: 10,
 
 				// Indicates if the promo code is live or disabled.

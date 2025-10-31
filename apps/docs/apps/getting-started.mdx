@@ -2,71 +2,338 @@
 title: Getting started
 ---
 
-1. Clone our Next.js app template:
+To build a Whop app, follow these steps.
 
-   <CodeGroup>
+1. Create a whop app on the dashboard and get your api keys.
+2. Setup your development environment
+3. Build your app view page. Either experience view or dashboard view.
+4. Deploy to production
+5. Apply to discover
 
-   ```bash Next.js
-   npx create-next-app@latest whop-app -e https://github.com/whopio/whop-nextjs-app-template
-   ```
+## Create your Whop app.
 
-   </CodeGroup>
+<Steps>
+    <Step title="Go to your company dashboard">
+        Navigate to the [developer page](https://whop.com/dashboard/developer).
+        Find the app section underneath webhooks
+        <Info>
+            You cannot change the company that your app is built in later.
+        </Info>
+    </Step>
 
-2. Install packages:
+    <Step title="Create your app">
+        Click on "Create App" and give it a name. You can change this later.
+    </Step>
 
-   <CodeGroup>
+    <Step title="Copy your environment variables">
+        You will need these to run your app and access the api.
 
-   ```bash pnpm
-   pnpm i
-   ```
+        <Frame>
+          <video
+            autoPlay
+            src="/how-to-videos/copy-environment-variables.mp4"
+            alt="Copy your app environment variables"
+          />
+        </Frame>
+    </Step>
+</Steps>
 
-   ```bash npm
-   npm i
-   ```
+## Setup your development environment
 
-   ```bash yarn
-   yarn i
-   ```
+You can build whop apps in any programming language and framework.
+Our SDKs are currently available in
+[Javascript / Typescript](https://npmjs.com/package/@whop/sdk),
+[Python](https://pypi.org/project/whop-sdk),
+[Ruby](https://rubygems.org/gems/whop-sdk) and
+Go (coming soon)
 
-   </CodeGroup>
+If you are new, the easiest way to get started is to use our [NextJS template](https://github.com/whopio/whop-nextjs-app-template).
 
-3. Run the app locally:
+<Steps>
+    <Step title="Create your app">
+        <CodeGroup>
+            ```bash NextJS
+            pnpm create next-app@latest \
+                -e https://github.com/whopio/whop-nextjs-app-template \
+                my_whop_app
 
-   <CodeGroup>
+            cd my_whop_app
+            ```
 
-   ```bash pnpm
-   pnpm dev
-   ```
+            ```bash Python
+            # we don't have an app template for python yet,
+            # We recommend making a Fast API / Django / Flask app
+            # and installing our sdk
+            pip install whop-sdk
+            ```
 
-   ```bash npm
-   npm run dev
-   ```
+            ```bash Ruby
+            # we don't have an app template for ruby yet,
+            # We recommend making a Ruby on Rails app
+            # and installing our sdk
+            gem install whop_sdk
+            ```
+        </CodeGroup>
+    </Step>
 
-   ```bash yarn
-   yarn dev
-   ```
+    <Step title="Setup your SDK">
+        1. Paste your environment variables from above into a `.env.development.local` file in your project.
 
-   </CodeGroup>
+        2. Initialize the Whop SDK with the environment variables and export it so it can be reused throughout your app.
 
-Now open http://localhost:3000 and follow the directions on the page.
+            <Note>This is already done in the NextJS template. Find it at `./lib/whop-sdk.ts`</Note>
 
-<CardGroup cols={2}>
-   <Card
-   title="View our tutorials"
-   href="/apps/tutorials"
-   icon="book-open"
-   color="#16a34a"
-   >
-   Step-by-step guides to help you get started building with Whop.
-   </Card>
 
-    <Card
-    title="SDK Reference"
-    href="/sdk/installation"
-    icon="code"
-    color="#16a34a"
-    >
-    View available functions from our API to make calls in your app.
-    </Card>
+            <CodeGroup>
+            ```typescript NextJS
+            import Whop from "@whop/sdk";
 
-</CardGroup>
+            export const whopsdk = new Whop({
+              apiKey: process.env.WHOP_API_KEY, // This is the default and can be omitted
+              appID: process.env.NEXT_PUBLIC_WHOP_APP_ID,
+            });
+            ```
+
+            ```python Python
+            import os
+            from whop_sdk import Whop
+
+            whop_sdk = Whop(
+                api_key=os.environ.get("WHOP_API_KEY"),  # This is the default and can be omitted
+                app_id=os.environ.get("WHOP_APP_ID"), # This is the default and can be omitted
+            )
+            ```
+
+            ```ruby Ruby
+            require "bundler/setup"
+            require "whop_sdk"
+
+            whop_sdk = WhopSDK::Client.new(
+              api_key: ENV["WHOP_API_KEY"], # This is the default and can be omitted
+              app_id: ENV["WHOP_APP_ID"], # This is the default and can be omitted
+            )
+            ```
+            </CodeGroup>
+    </Step>
+
+    <Step title="Start your development server">
+        <CodeGroup>
+        ```bash NextJS
+        pnpm dev
+        ```
+
+        ```bash Other Frameworks
+        # First terminal
+        rails server --port 5000 # or whatever your local dev command is
+
+        # second terminal - run whop dev proxy (see below for more info)
+        npx @whop-apps/dev-proxy --standalone --upstreamPort=5000 --proxyPort=3000
+        ```
+        </CodeGroup>
+
+        <Note>
+            You need to run your dev server through the whop dev proxy. This is the default behaviour in the NextJS template. [Learn more](/apps/guides/dev-proxy)
+        </Note>
+    </Step>
+
+    <Step title="Configure your app views">
+        The app view determines the initial path that is opened when your app is loaded in the whop UI.
+
+        If you are building a consumer focussed app for members, ensure your "App View" is set to `/experiences/[experienceId]`. (This is the default)
+
+        If you are building a dashboard app for business owners, remove the "App View" and set the "Dashboard View" to `/dashboard/[companyId]`
+
+        > Configure this in the "Hosting" section in your App Details tab in the App Dashboard
+
+        <Frame>
+            ![App Views](/images/app-settings-hosting.png)
+        </Frame>
+    </Step>
+
+    <Step title="Install your whop app">
+        Visit your install link (which can be found on your app details page)
+        and install your app into your whop.
+
+        <Frame>
+            ![App Install Button](/images/app-settings-install-app-button.png)
+        </Frame>
+
+        If building a consumer app _(ie: "App path" is set)_ then this will take you
+        to the experience view inside the "whop" view within your community.
+
+        If building a dashboard app, _(ie: "Dashboard path" is set)_ this will take you to the
+        dashboard view for you app inside the dashboard view of the company you selected during install.
+    </Step>
+
+    <Step title="Enable development mode">
+        The current page you're on will now show an error, as your app is missing the `Base Url` for production use.
+
+        For now, enable `Localhost mode` using the development mode setting overlay in the app frame.
+        This will load the app that's running on localhost in your setup.
+
+        <Info>
+            If you are building using an online AI coding platform, directly set the `Base URL`
+            to the URL provided by the platform. In this case, you don't need "Localhost" mode.
+        </Info>
+
+        <Frame>
+          <video
+            autoPlay
+            src="/how-to-videos/experience-app-preview-set-localhost.mp4"
+            alt="Set localhost mode in the app frame"
+          />
+        </Frame>
+    </Step>
+</Steps>
+
+<Check>You should now see your local development environment live inside whop.</Check>
+
+## Build your app
+
+You are now ready to start building your app.
+
+Get started by looking into `./app/experiences/[experienceId]/page.tsx`
+or `./app/dashboard/[companyId]/page.tsx` if you're building a dashboard app.
+
+<Note>
+    If you are building in a different framework create these files, such that your server responds to
+
+    `GET /experience/exp_123` or `GET /dashboard/biz_123`
+</Note>
+
+Here are some tips for building your whop app
+
+<AccordionGroup>
+<Accordion title="Authenticate users and validate access">
+    Use the `verifyUserToken` method to identify who is making requests to your app, then use `checkAccess` to verify they have permission to view the requested experience or company.
+
+    ```typescript
+    const { userId } = await whopsdk.verifyUserToken(await headers());
+    const access = await whopsdk.users.checkAccess(experienceId, { id: userId });
+    ```
+
+    [Learn more about authentication](/apps/guides/authentication)
+</Accordion>
+
+<Accordion title="Use Frosted UI for beautiful components">
+    Frosted UI provides pre-built components that automatically adapt to light and dark mode, matching the native Whop design system for a polished, professional look.
+
+    ```bash
+    npm install @whop/frosted-ui
+    ```
+
+    [Learn more about Frosted UI](/apps/guides/frosted_ui)
+</Accordion>
+
+<Accordion title="Accept payments in your app">
+    Create checkout sessions and accept payments directly in your app using the Whop payment APIs. Handle one-time payments, subscriptions, and more with low fees.
+
+    ```typescript
+    const checkout = await whopsdk.checkoutConfigurations.create({
+        company_id: "biz_xxx",
+        // ... configuration
+    });
+    ```
+
+    [Learn more about payments](/apps/guides/payins)
+</Accordion>
+
+<Accordion title="Setup webhooks to respond to events">
+    Listen to events like new memberships, cancellations, and payments to keep your app in sync with Whop. Webhooks are sent in real-time to your server.
+
+    ```typescript
+    const event = whopsdk.webhooks.unwrap(...);
+    ```
+
+    [Learn more about webhooks](/apps/guides/webhooks)
+</Accordion>
+</AccordionGroup>
+
+## Deploy to production
+
+Once you are happy with your app locally, deploy your app to a publicly accessible hostname.
+
+Popular options are [Vercel](https://vercel.com), [Railway](https://railway.com) or [Cloudflare Pages](https://pages.cloudflare.com).
+
+<Steps>
+    <Step title="Set your environment variables on your hosting provider">
+        Copy the environment variables from your app dashboard, as you did for the local setup.
+    </Step>
+
+    <Step title="Set the base url in the app dashboard">
+        Once your app is deployed, copy the deployment url and paste it into the `Base Url` field in your app dashboard.
+
+        <Frame>
+            ![Base url input box](/images/app-settings-base-url.png)
+        </Frame>
+    </Step>
+
+    <Step title="Switch to production">
+        Open the dev settings in the top right of your app and switch to production mode.
+        Your app is now running in production and will work for all users.
+    </Step>
+</Steps>
+
+#### Troubleshooting
+
+<Accordion title="Server actions don't work when deployed on vercel">
+    Ensure you use the `withWhopAppConfig` wrapper in your `next.config.mjs` file.
+
+    ```typescript
+    // next.config.ts
+    import type { NextConfig } from "next";
+    import { withWhopAppConfig } from "@whop/react/next.config";
+
+    const nextConfig: NextConfig = {
+        // your config options
+    };
+
+    export default withWhopAppConfig(nextConfig);
+    ```
+</Accordion>
+
+## Apply to discover
+
+Apply to discover to have your app listed on the Whop app store.
+
+<Note>
+    You don't need to be listed on the app store in order to use your app.
+
+    You can always share your install link directly or link to from your website.
+</Note>
+
+<Steps>
+    <Step title="Complete your branding">
+        1. Ensure your app has an Icon, short description and good name. (App Details tab)
+        2. Select your app store category.
+        3. Add a short 10-20 second video showcasing how your app is used. (Discover tab)
+        4. Add 2-3 further screenshots of your app.
+        5. Write an app store description that highlights what your app does and how it will benefit creators.
+
+        <Info>
+            You can preview your app store listing page at `https://whop.com/apps/<app_xxxxxx>`.
+        </Info>
+    </Step>
+
+    <Step title="Submit for review">
+        Click on the "Publish to App Store" button. Whop will review your app.
+
+        To ensure that your app passes review ensure the following criteria are met:
+
+        - [x] Your app works end to end, in production on any whop account without bugs.
+        - [x] Your app uses the provided [whop authentication](/apps/guides/authentication) and doesn't ask users to sign in again.
+        - [x] Your app isn't purely a redirect to an external platform.
+        - [x] Your app does NOT ask for permissions it doesn't need to function.
+        - [x] Your app is polished and looks good in both light and dark mode (switch between both in the bottom right on whop). [ProTip: Use FrostedUI](/apps/guides/frosted_ui)
+        - [x] Your app delivers a clear creator-facing benefit or solves a specific problem.
+        - [x] Your app delivers a measurable useful outcome (not just a demo or concept).
+        - [x] Your app has no placeholder elements (all features are complete and functional).
+        - [x] Members do not have access to admin details or settings (proper access control is implemented).
+    </Step>
+
+    <Step title="LFG 🚀 - Congratulations on building your first whop app">
+        Your app will be reviewed within a few days. Once you are live you will get a DM from whop.
+
+        Share your install link on X / Twitter. We're excited to see what you build!
+    </Step>
+</Steps>
