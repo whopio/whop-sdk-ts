@@ -96,8 +96,14 @@ const result = await whopSdk.invoices.createInvoice({
 		// recurring payment. Provided as a number in dollars. Eg: 10.43 for $10.43
 		renewalPrice: "some string",
 
+		// The number of units available for purchase.
+		stock: 10,
+
 		// The number of free trial days added before a renewal plan.
 		trialPeriodDays: 10,
+
+		// Limits/doesn't limit the number of units available for purchase.
+		unlimitedStock: true,
 
 		// Shows or hides the plan from public/business view.
 		visibility:
